@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: _book
+  output-dir: docs
 
 book:
   title: "Fiscal Futures"
@@ -16,9 +16,9 @@ book:
 
 #bibliography: references.bib
 
-format:
-  html:
-    theme: cosmo
+#format:
+#  html:
+#    theme: cosmo
   #pdf:
   #  documentclass: scrreprt
 
