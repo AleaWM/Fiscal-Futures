@@ -2,7 +2,9 @@
 
 > This document is UNFINISHED. Every section is a work in progress and will continue to be updated. - AWM 1/2/2023
 
-This is a living document in which we aim to describe things as clearly as possible in the time we have, share it with others, and improve as we come back to it. If we wait till we have time to write flawless docs, it\'ll never happen.
+This is a living document in which we aim to describe things as clearly as possible in the time we have, share it with others, and improve as we come back to it. If we wait till we have time to write flawless docs, it'll never happen.
+
+Code and information on the analysis of Illinois' expenditures and revenues. The Fiscal Future Project is associated with the Institute of Government and Policy Affairs but publicly sharing the code and creating a website was done by Alea Wilbur-Mujtaba. Any errors with code or findings are the fault of the author, not the research institute. Data originally from annual FOIA requests to the Illinois Office of the Comptroller.
 
 ```{r warning = FALSE, message=FALSE}
 
