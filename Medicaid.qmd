@@ -1,0 +1,38 @@
+# Medicaid
+
+```{r warning = FALSE, message=FALSE}
+
+library(tidyverse)
+library(haven)
+library(formatR)
+library(lubridate)
+library(smooth)
+library(forecast)
+library(scales)
+library(kableExtra)
+library(ggplot2)
+library(readxl)
+library(tidyverse)
+library(data.table)
+library(quantmod)
+library(geofacet)
+library(janitor)
+
+
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE, eval=FALSE)
+
+```
+
+## Federal Medicaid Reimbursements and Medicaid Costs
+
+```{r}
+medicaid_cost <- exp_temp %>% filter(agency=="478" & (appr_org=="01" | appr_org == "65" | appr_org=="88") & (object=="4900" | object=="4400")) %>% group_by(fy) %>% summarize(sum=sum(expenditure))
+
+med_reimburse <- rev_temp %>% filter(rev_type=="57" & agency=="478" & (source=="0618"|source=="2364"|source=="0660"|source=="1552"| source=="2306"| source=="2076"|source=="0676"|source=="0692")) %>% group_by(fy) %>% summarize(sum=sum(receipts))
+
+ggplot()+
+
+  geom_line(data=medicaid_cost, aes(x=fy, y=sum), color = "red") + 
+
+  geom_line(data=med_reimburse, aes(x=fy, y = sum), color="black") + labs(title = "Medicaid reimbursements and Medicaid expenditures", caption = "Medicaid expenditures include funds provided to medical providers. ")
+```
