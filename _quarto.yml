@@ -14,13 +14,13 @@ book:
     - Healthcare.qmd
     - references.qmd
 
-bibliography: references.bib
+#bibliography: references.bib
 
 format:
   html:
     theme: cosmo
-  pdf:
-    documentclass: scrreprt
+  #pdf:
+  #  documentclass: scrreprt
 
 editor: visual
 
