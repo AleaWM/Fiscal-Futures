@@ -8,7 +8,11 @@
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],
-    "includes": {},
+    "includes": {
+      "include-in-header": [
+        "<link href=\"site_libs/pagedtable-1.1/css/pagedtable.css\" rel=\"stylesheet\" />\r\n<script src=\"site_libs/pagedtable-1.1/js/pagedtable.js\"></script>\r\n"
+      ]
+    },
     "engineDependencies": {},
     "preserve": {},
     "postProcess": true

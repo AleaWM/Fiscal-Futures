@@ -8,19 +8,24 @@ book:
   date: last-modified
   chapters:
     - index.qmd
-    - Medicaid.qmd
     - Debt.qmd
     - Pensions.qmd
     - Healthcare.qmd
+    - FederalRevenue.qmd
+    - Medicaid.qmd
+    - FiscalGap.qmd
     - references.qmd
+    
+format:
+  html:
+    code-fold: true
+    df-print: paged
+    theme: cosmo
+
 
 #bibliography: references.bib
 
-#format:
-#  html:
-#    theme: cosmo
-  #pdf:
-  #  documentclass: scrreprt
+
 
 editor: visual
 

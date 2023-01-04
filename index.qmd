@@ -25,7 +25,7 @@ library(geofacet)
 library(janitor)
 
 
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 ```
 
@@ -228,7 +228,8 @@ anti_join(orgs22, orgs_past, by = c("appr_org", "org_name")) %>% arrange(appr_or
 
 **New Revenue Funds, Sources, and New Agencies:**
 
-```{r }
+```{r}
+
 #### From Revenue Data ####
 
 # agencies_past # 108 agencies ever

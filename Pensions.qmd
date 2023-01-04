@@ -19,7 +19,7 @@ library(geofacet)
 library(janitor)
 
 
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE, eval=FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 ```
 
@@ -27,13 +27,12 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRU
 
 Pension expenditures referenced in the analysis are based on state payments to the following pension systems:
 
-• Teachers Retirement System (TRS)\
-- New POB bond in 2019: Accelerated Bond Fund paid benefits in advance as lump sum
-
-• State Employee Retirement System (SERS)\
-• State University Retirement System (SURS)\
-• Judges Retirement System (JRS)\
-• General Assembly Retirement System (GARS)
+-   Teachers Retirement System (TRS)
+-   New POB bond in 2019: Accelerated Bond Fund paid benefits in advance as lump sum
+-   State Employee Retirement System (SERS)
+-   State University Retirement System (SURS)
+-   Judges Retirement System (JRS)
+-    General Assembly Retirement System (GARS)
 
 **Additional context:**\
 For the \$10 billion in 2004, they borrowed money and invested it in pension portfolio and hoped that the returns would be greater than the interest on the debt. If returns\>interest, then they increased the pension funds and it was a good idea. Otherwise a short term band-aid causes even more problems later. This added a significant amount to the unfunded pension liabilities. In 2010 and 2011, POBs served as a type of general borrowing for the state by borrowing against what was owed to the pension systems and using that revenue that should have funded pensions to instead subsidize the cost of providing core services. Illinois borrowed money (POBs) and used it to pay for government services. A temporary way to fill a budget gap for that 2010 that then costs more in the long run due to increased unfunded liabilities and interest on the borrowed money. - "Basket Case" by Dye 2015
@@ -74,7 +73,12 @@ Employer contributions for pensions are excluded from analysis to avoid double c
 
 Most of these funds were found by either using CTRL-F with pension related words or scrowllin through code options on the comptroller's website.
 
-```{r eval=FALSE}
+```{r}
+
+exp_temp <- read_csv("exp_temp.csv")
+rev_temp <- read_csv("rev_temp.csv")
+
+
 # check what is being included in pensions
 
 # funds related to pension contributions
@@ -122,7 +126,8 @@ Pension contributions from employees and employers are not included as revenue s
 
 \
 
-```{r}
+```{r eval=FALSE}
+
 # # contributions and benefits paid comparison
 # ggplot()+
 #   geom_line(data=employee_contributions, aes(x=fy, y=contributions), color=" light green") +

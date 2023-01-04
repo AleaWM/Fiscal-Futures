@@ -19,47 +19,41 @@ library(geofacet)
 library(janitor)
 
 
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE, eval=FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 ```
 
 Debt Service expenditures include interest payment on both short-term and long-term debt. We do not include escrow or principal payments.
 
-\*\*Decision from Sept 30 2022:\*\* We are no longer including short term principal payments as a cost; only interest on borrowing is a cost. Pre FY22 and the FY21 correction, we did include an escrow payment and principle payments as costs but not bond proceeds as revenues. This caused expenditures to be inflated because we were essentially counting debt twice - the principle payment and whatever the money was spent on in other expenditure categories, which was incorrect.
+**Decision from Sept 30 2022:** We are no longer including short term principal payments as a cost; only interest on borrowing is a cost. Pre FY22 and the FY21 correction, we did include an escrow payment and principle payments as costs but not bond proceeds as revenues. This caused expenditures to be inflated because we were essentially counting debt twice - the principle payment and whatever the money was spent on in other expenditure categories, which was incorrect.
 
 **Objects:**
 
-8813 interest \*\*INCLUDE AS COST\*\*
+-   8813 interest \*\*INCLUDE AS COST\*\*
+-   8811 is for principle \*\*EXCLUDE from aggregate debt expenditure\*\*
+-   8841 is for escrow payments \*\*EXCLUDE from aggregate debt expenditure\*\*
+-   8800 is for capital projects debt service (e.g. Build Illinois Bonds, Civic Center, Tollway \*\*EXCLUDE tollway in debt cost\*\*
 
-8811 is for principle \*\*EXCLUDE from aggregate debt expenditure\*\*
+*Note: debt principle and interest are both included in capital projects because they are combined in the data observations; bond proceeds are not considered a revenue source. Can't include capital projects interest as easily as the GO bonds.*
 
-8841 is for escrow payments \*\*EXCLUDE from aggregate debt expenditure\*\*
+**Obj_seq_type:**
 
-8800 is for capital projects debt service (e.g. Build Illinois Bonds, Civic Center, Tollway \*\*EXCLUDE tollway in debt cost\*\*
+-   Exclude: Bond principle payments: obj_seq_type == 88110008
+-   Exclude: Short term borrowing principle: obj_seq_type == 88110108
+-   Include: General Obligation Bond Interest: obj_seq_type == 88130000 & 88130008
+-   Include: Interest on short-term borrowing: 88130108
+-   Exclude: Escrow payment == 88410008
+-    Include: Build IL Bonds, capital projects principal AND interest
+    -   Tollway is obj_seq_type == 88000055, filter out fund == 0455 to remove tollway
 
--   Note: debt principle and interest are both included in capital projects because they are combined in the data observations; bond proceeds are not considered a revenue source. Can't include capital projects interest as easily as the GO bonds.
-
-\*\*Obj_seq_type:\*\*
-
-\- Exclude: Bond principle payments: obj_seq_type == 88110008
-
-\- Exclude: Short term borrowing principle: obj_seq_type == 88110108
-
-\- Include: General Obligation Bond Interest: obj_seq_type == 88130000 & 88130008
-
-\- Include: Interest on short-term borrowing: 88130108
-
-\- Exclude: Escrow payment == 88410008
-
-\- Include: Build IL Bonds, capital projects principal AND interest
-
--   Tollway is obj_seq_type == 88000055, filter out fund == 0455 to remove tollway
-
--   fund == 0455 is the IL State Toll Highway fund, items mostly for operations and maintenance
+    -   fund == 0455 is the IL State Toll Highway fund, items mostly for operations and maintenance
 
 #### Tollway Debt, Revenue, and Expenditures
 
 ```{r tollway}
+exp_temp <- read_csv("exp_temp.csv")
+rev_temp <- read_csv("rev_temp.csv")
+
 
 tollway <- exp_temp %>% filter(fund == "0455") #all tollway expenditures
 
@@ -141,9 +135,9 @@ ggplot()+
 
 Filtering for interest on short term borrowing and GO bonds (88130008, 88130000, and 88130108) and GO bond principal amounts (88110008).
 
-\- object == 8813 is for all debt service interest but obj_seq_type is used to specify short term borrowing versus regular debt service.
+-   object == 8813 is for all debt service interest but obj_seq_type is used to specify short term borrowing versus regular debt service.
 
-\- an Interest to Principal ratio is also calculated in the table below.
+-   an Interest to Principal ratio is also calculated in the table below.
 
 Looking only at general obligation principal payments and interest payments:
 
@@ -151,23 +145,23 @@ Looking only at general obligation principal payments and interest payments:
 # GO bond principal and GO bond interest
 
 GObond_debt <- exp_temp %>% 
-
+  
   filter(obj_seq_type == "88110008" |obj_seq_type == "88130000" | obj_seq_type == "88130008") %>% 
-
+  
   group_by(fy, obj_seq_type) %>% 
-
+  
   summarize(sum = sum(expenditure, na.rm=TRUE)) %>% 
-
+  
   pivot_wider(names_from = obj_seq_type, values_from = sum) %>% 
-
+  
   mutate(principal = `88110008`,
-
+         
          interest = sum(`88130008`+`88130000`, na.rm = TRUE),
-
+         
          ratio = (as.numeric(interest)/as.numeric(principal)))
 
 GObond_debt %>% select(principal, interest, ratio) %>%
-
+  
   mutate(across(principal:interest, ~format(., big.mark= ",", scientific = F)))
 
 # GObond_debt %>% ggplot() + 
@@ -179,11 +173,11 @@ GObond_debt %>% select(principal, interest, ratio) %>%
 #   labs(title = "General Obligation principal and interest payments")
 
 GObond_debt %>% ggplot() +   
-
+  
   geom_col(aes(x=fy, y=interest/1000000, fill = "Interest")) + 
-
+  
   geom_col(aes(x=fy, y=principal/1000000, fill = "Principal"))+ 
-
+  
   labs(title = "Debt Service", subtitle = "General Obligation Principal and Interest Payments")
 
 

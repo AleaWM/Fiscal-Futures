@@ -19,7 +19,7 @@ library(geofacet)
 library(janitor)
 
 
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE, eval=FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 ```
 
@@ -33,31 +33,24 @@ HIRF is the fund mainly used to administer the group insurance program. Funding 
 
 In FY2013, the Local Government Health Insurance fund was transferred to the department of Central Management Services (agency changes from 478 to 416 in data.)
 
-Employer group insurance contributions for health insurance are excluded to avoid double counting the cost of healthcare provision. All employer group insurance contributions are coded as object = 1180. BUT the last two fiscal years were coded as 1900 instead of 1180 for lump sums instead of employer contributions
+Employer group insurance contributions for health insurance are excluded to avoid double counting the cost of healthcare provision. All employer group insurance contributions are coded as object = 1180. BUT the last two fiscal years were coded as 1900 instead of 1180 for lump sums instead of employer contributions --- anything to do with pandemic money categorization?
 
-\- anything to do with pandemic money categorization?
+-   Fund = 0907 = health insurance reserve, in_ff = 1
+-   Fund = 0457 is "Group insurance premium", in_ff = 1
+-   Fund = 0193 is "Local govt health insurance reserve", in=ff = 0
+-   fund = 0477 is "Community College Health Insurance", in=ff = 0.
+    -   had large amount in early years
+-   Fund = 9939 is "group self-insurers' insolv", in_ff = 1
+-   Fund = 0940 is Self-Insurers security, in_ff = 0
+-   Fund = 0739 is Group Workers Comp Pool Insol, in_ff = 1
+    -   eehc = 0 means it is NOT a state healthcare cost but it is an employer contribution of some type to some fund
 
-Fund = 0907 = health insurance reserve, in_ff = 1
-
-Fund = 0457 is "Group insurance premium", in_ff = 1
-
-Fund = 0193 is "Local govt health insurance reserve", in=ff = 0
-
-fund = 0477 is "Community College Health Insurance", in=ff = 0.
-
-\- had large amount in early years
-
-Fund = 9939 is "group self-insurers' insolv", in_ff = 1
-
-Fund = 0940 is Self-Insurers security, in_ff = 0
-
-Fund = 0739 is Group Workers Comp Pool Insol, in_ff = 1
-
-\- eehc = 0 means it is NOT a state healthcare cost but it is an employer contribution of some type to some fund
-
-\- eehc = 1 means it is a state employee healthcare cost and it is an employer contribution to health insurance
+    -   eehc = 1 means it is a state employee healthcare cost and it is an employer contribution to health insurance
 
 ```{r healthcare-employer-contributions}
+exp_temp <- read_csv("exp_temp.csv")
+rev_temp <- read_csv("rev_temp.csv")
+
 
 health_ins_reserve <- exp_temp %>% filter(fund == "0907") %>%  group_by(fy) %>% 
 
@@ -120,27 +113,17 @@ Employee insurance premiums for healthcare are a revenue source for the state in
 
 Source \#'s:
 
-0120 = ins prem-option life
-
-0120 = ins prem-optional life/univ
-
-0347 = optional health - HMO
-
-0348 = optional health - dental
-
-0349 = optional health - univ/local SI
-
-0350 = optional health - univ/local
-
-0351 = optional health - retirement
-
-0352 = optional health - retirement SI
-
-0353 = optional health - retire/dental
-
-0354 = optional health - retirement hmo
-
-2199-2209 = various HMOs, dental, health plans from Health Insurance Reserve (fund)
+-   0120 = ins prem-option life
+-   0120 = ins prem-optional life/univ
+-   0347 = optional health - HMO
+-   0348 = optional health - dental
+-   0349 = optional health - univ/local SI
+-   0350 = optional health - univ/local
+-   0351 = optional health - retirement
+-   0352 = optional health - retirement SI
+-   0353 = optional health - retire/dental
+-   0354 = optional health - retirement hmo
+-   2199-2209 = various HMOs, dental, health plans from Health Insurance Reserve (fund)
 
 ```{r employee-insurance-premiums}
 
