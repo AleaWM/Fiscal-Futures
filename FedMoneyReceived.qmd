@@ -1,0 +1,353 @@
+# Federal COVID Money Received
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message = FALSE)
+library(tidyverse)
+library(haven)
+
+library(lubridate)
+library(smooth)
+library(forecast)
+library(scales)
+
+library(ggplot2)
+library(readxl)
+library(tidyverse)
+library(data.table)
+library(quantmod)
+library(geofacet)
+library(fredr)
+library(sf)
+library(usmap)
+library(janitor)
+
+library(RColorBrewer)
+library(networkD3)
+library(ggsankey)
+library(ggalluvial)
+```
+
+## Revenue Graphs
+
+All graphs have two versions: one without labels and one with labels. This is done so that labels can be added manually in Publisher after the final style is chosen. These labels can then have fund totals added too.
+
+```{r with-DCEO}
+sankeydata <- read_csv("sankeyattempt2022.csv")
+
+sankeydata2 <- sankeydata %>% select(Federal, StateFunds, StFund, Expenditures, value, Notes) %>%
+  filter(StFund == "Total") %>%
+  mutate(StateFunds = factor(StateFunds, levels = c("Total_received_fy21", "Total_received_fy22")),
+                  Federal = as.factor(Federal),
+                  Expenditures = factor(Expenditures, levels = c("Community Development", "Transit", "Public Health", "Medicaid", "K-12", "Federal Other")),
+         Notes = factor(Notes, levels = c("CARES", "CRRSA", "ARPA", "Other *")))
+
+
+sankey4 <- sankeydata2
+ggplot(sankey4, 
+       aes(y = value, axis3 = Federal, axis2 = StateFunds, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = Notes), color = "black") +
+ # guides(fill = FALSE) +   
+  geom_stratum()+
+ # geom_text(stat = "stratum", label.strata = TRUE) + 
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+     scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") )+ 
+  #    geom_text_repel(stat = "stratum", aes(label = after_stat(stratum)), size = 4)
+  ggtitle("")
+
+
+
+# sankey4 <- sankeydata %>% select(Federal, StateFunds, StFund, Expenditures, value, Notes) %>%
+#   filter(StFund == "Total") %>%
+#   mutate(StateFunds = factor(StateFunds, levels = c("Total_received_fy21", "Total_received_fy22")),
+#                   Federal = as.factor(Federal),
+#                   Expenditures = as.factor(Expenditures) )
+
+ggplot(sankey4, 
+       aes(y = value, 
+           axis3 = Federal, axis2 = StateFunds, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
+ # guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+ # geom_text(stat = "stratum", label.strata = TRUE) + 
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+     scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") )+ 
+      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)
+ # ggtitle("With Labels")
+```
+
+```{r}
+sankey <- sankeydata %>% select(Federal, StateFunds, StFund, Expenditures, stfundname, value, Notes) %>%
+    filter(StFund == "Total") %>%
+
+  mutate(StateFunds = factor(StateFunds, levels = c("Total_received_fy21", "Total_received_fy22")),
+         stfundname = as.factor(stfundname),
+         Federal = as.factor(Federal),
+         
+                   Expenditures = factor(Expenditures, levels = c("Transit", "Medicaid", "Public Health",  "K-12", "Federal Other", "Community Development")),
+         Notes = factor(Notes, levels = c( "Other *", "CARES","CRRSA", "ARPA")))
+
+
+ggplot(sankey, 
+       aes(y = value, axis3 = StateFunds, axis2 = stfundname, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black") +
+  # guides(fill = FALSE) +   
+  geom_stratum()+
+  # geom_text(stat = "stratum", label.strata = TRUE) + 
+  coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+     scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") )+ 
+  #    geom_text_repel(stat = "stratum", aes(label = after_stat(stratum)), size = 4)
+  ggtitle("")
+
+
+ggplot(sankey, 
+       aes(y = value, axis3 = StateFunds, axis2 = stfundname, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black",reverse=FALSE) +
+  guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+ # geom_text(stat = "stratum", label.strata = TRUE) + 
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+     scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") )+ 
+      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)
+ # ggtitle("With Labels")
+```
+
+```{r}
+
+ggplot(sankey, 
+       aes(y = value, axis3 = Notes, axis2 = stfundname, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black",reverse=FALSE) +
+ # guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+ # geom_text(stat = "stratum", label.strata = TRUE) + 
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+     scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") ) #+ 
+    #  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2)
+ # ggtitle("With Labels")
+
+
+ggplot(sankey, 
+       aes(y = value, axis3 = Notes, axis2 = stfundname, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black", reverse=FALSE) +
+ # guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+ # geom_text(stat = "stratum", label.strata = TRUE) + 
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+     scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") )+ 
+      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2,reverse=FALSE)
+ # ggtitle("With Labels")
+```
+
+```{r}
+
+sankey <- sankeydata %>% select(Federal, StateFunds, StFund, Expenditures, stfundname, value, Notes) %>%
+    filter(StFund == "Total") %>%
+
+  mutate(StateFunds = factor(StateFunds, levels = c( "Total_received_fy21", "Total_received_fy22")),
+         stfundname = as.factor(stfundname),
+         Federal = as.factor(Federal),
+         
+                   Expenditures = factor(Expenditures, levels = c("Community Development", "Public Health", "Medicaid", "K-12", "Federal Other", "Transit")),
+         Notes = factor(Notes, levels = c(  "CARES", "Other *","CRRSA", "ARPA")))
+
+
+ggplot(sankey, 
+       aes(y = value, axis3 = StateFunds, axis2 = Notes, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black") +
+ # guides(fill = FALSE) +   
+  geom_stratum()+
+ # geom_text(stat = "stratum", label.strata = TRUE) + 
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+     scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") ) #+ 
+    #  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2)
+ # ggtitle("With Labels")
+
+
+ggplot(sankey, 
+       aes(y = value, axis3 = StateFunds, axis2 = Notes, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black", reverse=FALSE) +
+ # guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+ # geom_text(stat = "stratum", label.strata = TRUE) + 
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+     scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") ) + 
+     geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2,  reverse=FALSE)
+
+ # ggtitle("With Labels")
+
+ggplot(sankey, 
+       aes(y = value, 
+           axis3 = Notes, axis2 = StateFunds, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black", reverse=FALSE) +
+ # guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+ # geom_text(stat = "stratum", label.strata = TRUE) + 
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+     #scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") )+  # doesn't work
+      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse = FALSE)
+ # ggtitle("With Labels")
+```
+
+> Note: CARES funds were originally received and spent in Disaster Response Funds within Public Safety category. Remaining CARES funds were transfered to State CURE fund for FY22.
+
+> Revenue from Local Cure is the Local Government Transfers.
+
+Using new file called federalcoviddollars.xlsx:
+
+```{r}
+library(readxl)
+sankeydata <- read_excel("federalcoviddollars.xlsx")
+sankey <- sankeydata %>% 
+  #select(Federal, StateFunds, StFund, Expenditures, stfundname, value, Notes) %>%
+  #  filter(StFund == "Total") %>%
+
+  mutate(StateFunds = factor(FY, levels = c( "FY21", "FY22")),
+        Legislation = factor(Legislation2, levels = c( "Other", "CARES", "CRRSA", "ARPA"))
+)
+         
+                 #  Expenditures = factor(Expenditures, levels = c("Community Development", "Public Health", "Medicaid", "K-12", "Federal Other", "Transit")),
+      #   Notes = factor(Notes, levels = c(  "CARES", "Other *","CRRSA", "ARPA")))
+
+
+ggplot(sankey, 
+       aes(y = `Dollars Received`, axis3 = FY, axis2 = Recipient, axis1=FF_Cat, label = "stratum")) +
+  geom_flow(aes(fill = Legislation), color = "black", reverse=FALSE) +
+ # guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+   #  scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") ) #+ 
+     geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)
+ # ggtitle("With Labels")
+
+sankey %>% group_by(FY)%>%summarize(TotalReceived=sum(`Dollars Received`))
+
+sankey %>% group_by(Legislation)%>%summarize(TotalReceived=sum(`Dollars Received`))
+
+
+sankey %>% group_by(Recipient)%>%summarize(TotalReceived=sum(`Dollars Received`))
+
+sankey %>% group_by(Legislation, Recipient)%>%summarize(TotalReceived=sum(`Dollars Received`)) %>% pivot_wider(names_from = Legislation, values_from = TotalReceived)
+
+sankey %>% group_by(Legislation, FF_Cat)%>%summarize(TotalReceived=sum(`Dollars Received`)) %>% pivot_wider(names_from = Legislation, values_from = TotalReceived)
+
+sankey %>% group_by(FY, FF_Cat)%>%summarize(TotalReceived=sum(`Dollars Received`)) %>% pivot_wider(names_from = FY, values_from = TotalReceived)
+
+
+
+```
+
+## Expenditures Graphs
+
+```{r}
+sankeydata <- read_csv("sankeyattempt2022.csv")
+
+sankey <- sankeydata %>% select(Federal, StateFunds, StFund, Expenditures, stfundname, value, Notes, FF_Cat) %>%
+    filter(StFund == "Total_spent") %>%
+
+  mutate(StateFunds = factor(StateFunds),
+         stfundname = as.factor(stfundname),
+         Federal = as.factor(Federal),
+         
+                   Expenditures = factor(Expenditures),
+         Notes = factor(Notes))
+
+
+ggplot(sankey, 
+       aes(y = value, axis3 = StateFunds, axis2 = stfundname, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black", reverse=FALSE) +
+  # guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+  # geom_text(stat = "stratum", label.strata = TRUE) + 
+  coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+     scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") )+ 
+  #    geom_text_repel(stat = "stratum", aes(label = after_stat(stratum)), size = 4)
+  ggtitle("")
+
+
+ggplot(sankey, 
+       aes(y = value, axis3 = StateFunds, axis2 = stfundname, axis1=FF_Cat, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black",reverse=FALSE) +
+  guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+ # geom_text(stat = "stratum", label.strata = TRUE) + 
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+     scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") )+ 
+      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)
+ # ggtitle("With Labels")
+
+ggplot(sankey, 
+       aes(y = value, axis3 = stfundname, axis2 = StateFunds, axis1=FF_Cat, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black",reverse=FALSE) +
+  guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+ # geom_text(stat = "stratum", label.strata = TRUE) + 
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+     scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") )+ 
+      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)
+ # ggtitle("With Labels")
+```
+
+```{r works, warning=FALSE, message=FALSE, eval=FALSE}
+sankey2 <- read_csv("sankeyattempt.csv") %>% select(source, target, value)
+# From these flows we need to create a node data frame: it lists every entities involved in the flow
+
+nodes <- data.frame(
+  name=c(as.character(sankey2$source), 
+  as.character(sankey2$target)) %>% unique()
+)
+ 
+# With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
+sankey2$IDsource <- match(sankey2$source, nodes$name)-1 
+sankey2$IDtarget <- match(sankey2$target, nodes$name)-1
+ 
+
+p <- sankeyNetwork(Links = sankey2, Nodes = nodes,
+              Source = "IDsource", Target = "IDtarget",
+              Value = 'value', NodeID = "name", nodeWidth = 30,
+              sinksRight=TRUE)
+              
+              #align = "center", units = "Billions", title = "Federal Funds to State Expenditures FY 2021", showNodeValues = TRUE)
+p
+
+# Add a 'group' column to the nodes data frame:
+nodes$group <- as.factor(c("a","b","b","b","b", "b","b", "c", "c", "c", "c", "c"))
+ 
+# Give a color for each group:
+my_color <- 'd3.scaleOrdinal() .domain(["a", "b", "c"]) .range(["#69b3a2", "steelblue", "purple"])'
+
+
+sankeyNetwork(Links = sankey2, Nodes = nodes,
+              Source = "IDsource", Target = "IDtarget",
+              Value = "value", NodeID = "name",
+              colourScale = my_color, NodeGroup = "group", nodeWidth = 40, fontSize = 14, units = "Billions of Dollars"
+              )
+```
+
+[ggsankey info and example](https://cheatography.com/seleven/cheat-sheets/ggalluvial/)
+
+> Note: TANF, SNAP, Increased Matching Grant, Medicare Continuous Coverage Requirement, all count as Federal Medicaid Revenue.
