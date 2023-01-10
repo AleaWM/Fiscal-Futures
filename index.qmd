@@ -1,6 +1,6 @@
 # Background Info {.unnumbered}
 
-> This document is UNFINISHED. Every section is a work in progress and will continue to be updated. - AWM 1/2/2023
+> This document is UNFINISHED. Every section is a work in progress and will continue to be updated. - AWM 1/9/2023
 
 This is a living document in which we aim to describe things as clearly as possible in the time we have, share it with others, and improve as we come back to it. If we wait till we have time to write flawless docs, it'll never happen.
 
@@ -424,7 +424,7 @@ exp_temp <- exp_temp %>%
 
 ```
 
-\- the initial combined years of data are saved as dataframes named \`exp_1998_2022\` and \`rev_1998_2022\`. These are then saved as exp_temp and rev_temp while recoding variables. This is BEFORE category groups are created and cleaned below. \`exp_temp\` and \`rev_temp\` are only temporary files; do not use for aggregating totals yet!
+-   the initial combined years of data are saved as dataframes named `exp_1998_2022` and `rev_1998_2022`. These are then saved as exp_temp and rev_temp while recoding variables. This is BEFORE category groups are created and cleaned below. `exp_temp` and `rev_temp` are only temporary files; do not use for aggregating totals yet!
 
 ```{r remove-all_obs_df, include=FALSE}
 

@@ -8,12 +8,15 @@ book:
   date: last-modified
   chapters:
     - index.qmd
+    - LocalTransfers.qmd
     - Debt.qmd
     - Pensions.qmd
     - Healthcare.qmd
     - FederalRevenue.qmd
     - Medicaid.qmd
     - FiscalGap.qmd
+    - FedMoneyReceived.qmd
+    - Everything.qmd
     - references.qmd
     
 format:

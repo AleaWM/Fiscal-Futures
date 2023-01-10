@@ -1,1 +1,408 @@
 # Yearly Fiscal Gap
+
+```{r warning = FALSE, message=FALSE}
+
+library(tidyverse)
+library(haven)
+library(formatR)
+library(lubridate)
+library(smooth)
+library(forecast)
+library(scales)
+library(kableExtra)
+library(ggplot2)
+library(readxl)
+library(tidyverse)
+library(data.table)
+library(quantmod)
+library(geofacet)
+library(janitor)
+
+
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval=FALSE)
+
+exp_temp <- read_csv("exp_temp.csv")
+rev_temp <- read_csv("rev_temp.csv")
+```
+
+Graphs made from `aggregated_totals_long` dataframe.
+
+```{r}
+
+annotation <- data.frame(
+  x = c(2004, 2017, 2019),
+  y = c(60000, 50000, 5000),  
+  label = c("Expenditures","Revenue", "Fiscal Gap")
+)
+
+# with trend lines:
+year_totals %>%  
+  ggplot() +
+  # geom_smooth adds regression line, graphed first so it appears behind line graph
+  geom_smooth(aes(x = Year, y = Revenue), color = "rosybrown2", alpha = 0.7, method = "lm", se = FALSE) + 
+  geom_smooth(aes(x = Year, y = Expenditures), color = "gray", method = "lm", se = FALSE) +
+  
+  # line graph of revenue and expenditures
+  geom_line(aes(x = Year, y = Revenue), color = "Black", size=1) +
+  geom_line(aes(x = Year, y = Expenditures), color = "red", size=1) +
+  
+  # labels
+    theme_bw() +
+  scale_y_continuous(labels = comma)+
+  xlab("Year") + 
+  ylab("Millions of Dollars")  +
+  ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
+
+
+# without trend lines:
+year_totals %>%  
+  ggplot() +
+  # line graph of revenue and expenditures
+  geom_line(aes(x = Year, y = Revenue), color = "Black", size=1) +
+  geom_line(aes(x = Year, y = Expenditures), color = "red", size=1) +
+      theme_bw() +
+  scale_y_continuous(labels = comma)+
+  xlab("Year") + 
+  ylab("Millions of Dollars")  +
+  ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
+
+
+
+fiscal_gap <- year_totals %>%  
+  ggplot() +
+  geom_hline(yintercept = 0) +
+  # geom_smooth adds regression line, graphed first so it appears behind line graph
+  geom_smooth(aes(x = Year, y = Revenue), color = "gray", alpha = 0.7, method = "lm", se = FALSE) + 
+  #  scale_linetype_manual(values="dashed")+
+  geom_smooth(aes(x = Year, y = Expenditures), color ="rosybrown2", linetype = "dashed", method = "lm", se = FALSE, alpha = 0.7) +
+
+  # line graph of revenue and expenditures
+  geom_line(aes(x = Year, y = Revenue), color = "Black", size=1) +
+  geom_line(aes(x = Year, y = Expenditures, linetype = "dashed"), color = "red", lwd=1) +
+  geom_line(aes(x = Year, y = `Fiscal Gap`), color = "gray") +
+  
+  geom_text(data = annotation, aes(x=x, y=y, label=label))+
+  # labels
+    theme_bw() +
+    theme(legend.position = "none")+
+
+    scale_linetype_manual(values = c("dashed", "dashed")) +
+
+  scale_y_continuous(labels = comma)+
+  xlab("Year") + 
+  ylab("Millions of Dollars")  +
+  ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
+
+fiscal_gap
+
+
+
+annotation_billions <- data.frame(
+  x = c(2004, 2017, 2019),
+  y = c(60, 50, 5),  
+  label = c("Expenditures","Revenue", "Fiscal Gap")
+)
+fiscal_gap2 <- year_totals %>%  
+  ggplot() +
+  geom_hline(yintercept = 0) +
+  geom_line(aes(x = Year, y = Revenue/1000), color = "Black", lwd=1) +
+  geom_line(aes(x = Year, y = Expenditures/1000, linetype = "dashed"), color = "red", lwd=1) +
+  geom_line(aes(x = Year, y = `Fiscal Gap`/1000), color = "gray") +
+  
+  geom_text(data = annotation, aes(x=x, y=y/1000, label=label))+
+    theme_bw() +
+  theme(legend.position = "none")+
+    scale_linetype_manual(values = c("dashed", "dashed")) +
+
+  scale_y_continuous(labels = comma)+
+  xlab("Year") + 
+  ylab("Billions of Dollars")  +
+  ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
+
+fiscal_gap2
+
+
+```
+
+```{r}
+aggregated_totals_long %>%  
+  filter(type == "exp") %>% # uses only expenditures
+  ggplot(aes(x = Year, y = Dollars, group = Category, color = Category)) +
+  geom_line()+
+    xlab("Year") + 
+    ylab("Millions of Dollars")  +
+    ggtitle("Illinois Expenditures by Category")
+
+aggregated_totals_long %>%  
+  filter(type == "rev") %>% #uses only revenues
+  ggplot(aes(x = Year, y = Dollars, group = Category, color = Category)) +
+  geom_line()+
+    xlab("Year") + 
+    ylab("Millions of Dollars")  +
+    ggtitle("Illinois Revenues by Category")
+  
+
+
+```
+
+**Expenditure and revenue amounts in millions of dollars:**
+
+```{r}
+exp_long %>%
+  filter(Year == 2022) %>%
+  #mutate(`Total Expenditures`= sum(Dollars, na.rm = TRUE)) %>%
+ # select(-c(Year, `Total Expenditures`)) %>%
+  arrange(desc(`Dollars`)) %>%
+  ggplot() + 
+  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`, fill = "red"))+ 
+  coord_flip() +
+      theme_bw()+
+  theme(legend.position = "none") +
+  labs(title = "Expenditures for FY2022") +
+    xlab("Expenditure Categories") +
+  ylab("Millions of Dollars") 
+
+rev_long %>%
+  filter(Year == 2022) %>%
+  #mutate(`Total Expenditures`= sum(Dollars, na.rm = TRUE)) %>%
+ # select(-c(Year, `Total Expenditures`)) %>%
+  arrange(desc(`Dollars`)) %>%
+  ggplot() + 
+  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`))+ 
+  coord_flip() +
+    theme_bw() +
+    theme(legend.position = "none") +
+      labs(title = "Revenues for FY2022")+
+    xlab("Revenue Categories") +
+  ylab("Millions of Dollars") 
+
+```
+
+```{r eval = FALSE, include = FALSE}
+# Both graphs include Total revenue and expenditures as a bar on the top. 
+
+exp_long %>%
+  filter(Year == 2022) %>%
+  #mutate(`Total Expenditures`= sum(Dollars, na.rm = TRUE)) %>%
+ # select(-c(Year, `Total Expenditures`)) %>%
+  arrange(desc(`Dollars`)) %>%
+  ggplot() + 
+  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`))+ 
+  coord_flip() +
+    labs(title = "Expenditures for FY2022") +
+    xlab("Expenditure Categories") +
+  ylab("Millions of Dollars") +
+    theme_bw()
+
+rev_long %>%
+  filter(Year == 2022) %>%
+  #mutate(`Total Expenditures`= sum(Dollars, na.rm = TRUE)) %>%
+ # select(-c(Year, `Total Expenditures`)) %>%
+  arrange(desc(`Dollars`)) %>%
+  ggplot() + 
+  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`))+ 
+  coord_flip() +
+    xlab("Revenue Categories") +
+  ylab("Millions of Dollars") +
+    theme_bw()
+```
+
+**Expenditure and revenues when focusing on largest categories and combining others into "All Other Expenditures(Revenues)":**
+
+```{r}
+exp_long %>%
+  filter( Year == 2022) %>%
+  mutate(rank = rank(Dollars),
+        Category_name = ifelse(rank > 13, Category_name, 'All Other Expenditures')) %>%
+ # select(-c(Year, Dollars, rank)) %>%
+  arrange(desc(Dollars)) %>%
+  ggplot() + 
+  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`), fill = "rosybrown2")+ 
+  coord_flip() +
+      theme_bw() +
+    labs(title = "Expenditures for FY2022") +
+    xlab("") +
+  ylab("Millions of Dollars")
+
+rev_long %>%
+  filter( Year == 2022) %>%
+  mutate(rank = rank(Dollars),
+        Category_name = ifelse(rank > 10, Category_name, 'All Other Sources')) %>%
+  arrange(desc(Dollars)) %>%
+  ggplot() + 
+  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`), fill = "dark gray")+ 
+  coord_flip() +
+      theme_bw() +
+    labs(title = "Revenues for FY2022") +
+    xlab("") +
+  ylab("Millions of Dollars")
+```
+
+**Changes in Categories - 2021 to 2022** Dot Plot Attempt:
+
+```{r}
+rev_long %>%
+    filter(Year == "2022" | Year == "2021") %>%
+  mutate(Year = as.character(Year)) %>%
+  ggplot(aes(x = Dollars, y = reorder(Category, Dollars))) +
+  geom_line(aes(group = Category) )+
+    geom_text(aes(x = ifelse(Year == "2022", as.numeric(Dollars), NA),  label = ifelse(Year == "2022", Category_name, "")),  
+            hjust = -0.2,
+            size = 2.8) +
+         geom_point(aes(color = Year), size=2)  +
+  labs(title = "2021 to 2022 Change in Revenue", x = "Millions of Dollars" , y = "",  caption = "")  +
+   scale_fill_manual(values = c("#d62828", "#003049"), labels = c("FY 2021", "FY 2022"))+
+    scale_color_manual(values = c("#d62828", "#003049")) +   
+  theme_classic()+ 
+    theme(
+   legend.position = "bottom" ,
+  axis.text.y = element_blank(),
+  axis.ticks.y = element_blank(),
+  axis.line.y.left  = element_blank(),
+ # axis.line.x = element_blank(),
+  #  axis.title.y = element_blank(),
+ # axis.ticks.x = element_blank()
+ )+
+  scale_x_continuous(limits = c(0, 31000), labels = comma)
+
+
+
+
+exp_long %>%
+    filter(Year == "2022" | Year == "2021") %>%
+  mutate(Year = as.character(Year)) %>%
+  ggplot(aes(x = Dollars, y = reorder(Category, Dollars))) +
+  geom_line(aes(group = Category) )+
+  geom_text(aes(x = ifelse(Year == "2022", (as.numeric(Dollars)+1100), NA),  
+                label = ifelse(Year == "2022", Category_name, "")),  
+            hjust = 0,
+            size = 2.8) +
+  geom_point(aes(color = Year), size=2 #, alpha = 0.5
+             )  +
+  labs(title = "2021 to 2022 Change in Expenditures", x = "Millions of Dollars" , y = "",  caption = "")  +
+   scale_fill_manual(values = c("#d62828", "#003049"), labels = c("FY 2021", "FY 2022"))+
+    scale_color_manual(values = c("#d62828", "#003049")) +
+
+   theme_classic()+ 
+    theme(
+    legend.position = "bottom" ,
+  axis.text.y = element_blank(),
+  axis.ticks.y = element_blank(),
+  axis.line.y.left  = element_blank(),
+  #axis.line.x = element_blank(),
+   # axis.title.y = element_blank(),
+  #axis.ticks.x = element_blank()
+  )+
+  scale_x_continuous(limits = c(0, 31000), labels = comma)
+```
+
+```{r eval = FALSE, include = FALSE}
+
+# **Keeping the top 13 categories and grouping the rest to All Other Expenditures(Revenues). 
+# Shown as a percentage of total expenditures(revenues)**
+
+
+exp_long %>%
+  filter( Year == 2022) %>%
+  mutate(`Total Expenditures` = sum(Dollars, na.rm = TRUE),
+        `Percent of Total Expenditures` = round((Dollars / `Total Expenditures`*100), 2),
+        rank = rank(-Dollars),
+        Category = ifelse(rank <= 13, Category, 'All Other Expenditures')) %>%
+  select(-c(Year, `Total Expenditures`, rank)) %>%
+  arrange(desc(`Percent of Total Expenditures`)) %>%
+
+  ggplot() + 
+  geom_col(aes(x = fct_reorder(Category, `Percent of Total Expenditures`), y = `Percent of Total Expenditures`), fill = "light green")+ 
+  coord_flip() +
+    xlab("") +
+      ylab("Percent of Total Expenditure") +
+    theme_bw()
+
+
+exp_long %>%
+  filter( Year == 2022) %>%
+  mutate(`Total Expenditures` = sum(Dollars, na.rm = TRUE),
+        `Percent of Total Expenditures` = round((Dollars / `Total Expenditures`*100), 2),
+        rank = rank(-Dollars),
+        Category_name = ifelse(rank <= 13, Category_name, 'All Other Expendiures')) %>%
+  select(-c(Year, `Total Expenditures`, rank)) %>%
+  arrange(desc(`Percent of Total Expenditures`)) %>%
+
+  ggplot() + 
+  geom_col(aes(x = fct_reorder(Category_name, `Percent of Total Expenditures`), y = `Percent of Total Expenditures`), fill = "light green")+ 
+  coord_flip() +
+  xlab("")+
+    ylab("Percent of Total Expenditure") +
+    theme_bw()
+
+
+
+
+```
+
+### Top 3 Revenues
+
+```{r}
+
+annotation <- data.frame(
+  x = c(2012, 2019, 2012),
+  y = c(16000, 10000, 5000),  
+  label = c("Individual Income Tax", "Sales Tax", "Corporate Income Tax")
+)
+
+top3 <- rev_long  %>% 
+  filter(Category == "02" | Category == "03" | Category == "06") %>%
+  ggplot()+
+  geom_line(aes(x=Year, y=Dollars, color = Category_name)) + 
+  geom_text(data = annotation, aes(x=x, y=y, label=label))+
+    theme_bw() +
+  
+  scale_y_continuous(labels = comma)+
+  scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
+
+  theme(legend.position = "none")+
+  labs(title = "Top 3 Own Source Revenues", 
+       subtitle = "Individual Income Taxes, Sales Tax, and Corporate income taxes",
+       y = "Nominal Dollars (in Millions)") 
+  
+
+top3
+```
+
+### Own Source and Fed Transfers
+
+```{r}
+
+ownsource_rev <- rev_long %>%
+  filter(!Category %in% c("57", "58", "59")) %>%
+  group_by(Year) %>% 
+  summarize(Dollars = sum(Dollars))
+
+# ownsource_rev %>% 
+#   ggplot()+geom_line(aes(x=Year, y=Dollars)) + 
+#   labs(title = "Own Source Revenues", subtitle = "Total own source revenue", y = "Millions of Dollars")
+
+fed_rev <- ff_rev %>% select(fy, rev_57, rev_58, rev_59) %>%
+  mutate(fed_total = rev_57+rev_58+rev_59)
+
+
+annotation <- data.frame(
+  x = c(2010, 2010),
+  y = c(50000, 25000),  
+  label = c("Own Source Revenue", "Federal Transfers")
+)
+
+
+ggplot() + 
+  geom_line(data = ownsource_rev, aes(x=Year, y=Dollars), color = "Red") + 
+  geom_line(data = fed_rev, aes(x=fy, y=fed_total), color = "Black") + 
+    geom_text(data = annotation, aes(x=x, y=y, label=label))+
+    scale_y_continuous(labels = comma)+
+  theme(legend.position = "none")+
+
+  theme_bw()+
+  labs(title = "Own Source Revenue and Federal Transfers", 
+  y = "Nominal Dollars (in Millions)")
+
+
+```
