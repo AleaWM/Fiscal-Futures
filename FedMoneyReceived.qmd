@@ -255,12 +255,22 @@ coord_flip()+
   theme_void() +
       geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 4, reverse=FALSE)+
   theme(legend.position = "bottom")+
-  ggtitle("$52 Billion for Illinois (including Local Governments, education, healthcare providers)")
+  ggtitle("$43 Billion for Illinois (Excluding Local CURE funds for Local Governments)")
 
 
 
 data %>% filter(FF_Cat2 != "Exclude") %>%
 ggplot(aes(y = Committed, axis3 = StateOrDepartments, axis2=FundPurpose2, axis1=FF_Cat, label = "stratum")) +
+  geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+theme(legend.position = "bottom") + 
+  ggtitle("Received: $16 Billion for Illinois + $23.3 for State Departments ($39.7 Billion total)")
+
+data %>% filter(FF_Cat2 != "Exclude") %>%
+ggplot(aes(y = Committed, axis3 = StateOrDepartments, axis2=`Government Program`, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+
 coord_flip()+
