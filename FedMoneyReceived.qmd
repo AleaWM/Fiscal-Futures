@@ -94,11 +94,9 @@ A little information on Sankey graphs is below:
 -   Alluvium correspond to the fixed value of each axis variable. Proportional to how the sum of however you are grouping your data.
 -   Flows are the segments of the alluvia between adjacent axes.
 
-Read the charts from the top to the bottom. Most of the graphs below begin with either the year the money was received or the name of the Law that provided the funds and then shows it flowing down to either who received the money or how it was spent.
+Read the charts from the top to the bottom. Most of the graphs below begin with either the year the money was committed or the name of the Law that provided the funds and then shows it flowing down to either who received the money or how it was spent.
 
-The graphs below focus on when the money from each Federal Act arrived and where it was received (local governments, the State government, or directly to a state department) and the spending category that it would be considered using the Fiscal Futures categorization.
-
-The second graph is the same as the first except that it drops revenue received by local governments. The State government received \$11.7 billion, state departments received \$31.4 billion, and local governments received \$8.9 billion from FY 2020 through FY 2022.
+The graphs below focus on when the money from each Federal Act arrived and where it was received (local governments, the State government, or directly to a state department) and the spending category that it would be considered using the Fiscal Futures categorization. The State government received \$11.7 billion, state departments received \$31.4 billion, and local governments received \$8.9 billion between FY 2020 and FY 2022. Not all funds have been distributed by the federal government, but they have been committed on the federal level and allocated on the state level.
 
 ```{r results='hold'}
 sankeydata <- read_excel("federalcoviddollars.xlsx")
@@ -245,9 +243,9 @@ sankey %>% group_by(FY, FF_Cat2)%>%summarize(TotalReceived=sum(`Dollars Received
 
 ```
 
-More graph variations.
+```{r results='hold', include=FALSE}
+# More graph variations.
 
-```{r results='hold'}
 data <- read_excel("attemptJan15.xlsx") %>% filter(FF_Cat2 != "Exclude")
 
 ggplot(data, 
@@ -322,6 +320,36 @@ cure_exp <- cure_exp %>%
          FF_Cat = factor(FF_Cat, levels = c("Econ Dev", "Human Services", "K-12", "Local Transfers", "Public Health", "Medicaid", "Public Safety", "Lost Revenue", "UI Fund", "FY23+"))
          )
 
+cure_exp %>% group_by(FY_Received)%>% summarize(Expenditures=sum(`FY Expenditures`))
+
+cure_exp %>% group_by(`Federal Funds`)%>% summarize(Expenditures=sum(`FY Expenditures`))
+
+cure_exp %>% group_by(State_local2)%>% summarize(Expenditures=sum(`FY Expenditures`))
+
+
+cure_exp%>% summarize(Expenditures=sum(`FY Expenditures`))
+cure_exp %>% group_by(`FY_Spent`)%>% summarize(Expenditures=sum(`FY Expenditures`))
+
+cure_exp %>% group_by(`FF_Cat`)%>% summarize(Expenditures=sum(`FY Expenditures`))
+
+cure_exp %>% group_by(Law)%>% summarize(Expenditures=sum(`FY Expenditures`))
+
+
+cure_exp %>% group_by(Law, FY_Spent, FF_Cat)%>% summarize(Expenditures=sum(`FY Expenditures`)) %>%
+  pivot_wider(names_from = FY_Spent, values_from = Expenditures) 
+
+
+cure_exp %>% group_by(Law, FY_Received)%>% summarize(Expenditures=sum(`FY Expenditures`)) %>%
+  pivot_wider(names_from = Law, values_from = Expenditures) %>% arrange(FY_Received)
+
+cure_exp %>% group_by(Law, FY_Spent)%>% summarize(Expenditures=sum(`FY Expenditures`)) %>%
+  pivot_wider(names_from = Law, values_from = Expenditures) %>% arrange(FY_Spent)
+
+
+```
+
+```{r results='hold'}
+
 # Year Spent, Agency received, FF Spending Category 
 ggplot(cure_exp, 
        aes(y = `FY Expenditures`, axis3 = FY_Spent, axis2 = Agency, axis1=FF_Cat, label = "stratum")) +
@@ -333,7 +361,9 @@ ggplot(cure_exp,
         geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
   theme_void() + 
   theme(legend.position="bottom")+
-  ggtitle("$12.2 Billion Spent So far: Year Spent, Agency received, FF Spending Category")
+  ggtitle("CURE & ESSER
+          $12.2 Billion Spent So far: Year Spent, Agency received, FF Spending Category")
+
 
 # Switch Year Spent & Agency received, FF Spending Category 
 ggplot(cure_exp, 
@@ -448,30 +478,7 @@ ggplot(aes(y = `FY Expenditures`, axis4 = FY_Received, axis3 = `Agency`,  axis2 
   ggtitle("Year Received, Federal Fund, Year Spent, and Purpose")
 
 
-cure_exp %>% group_by(FY_Received)%>% summarize(Expenditures=sum(`FY Expenditures`))
 
-cure_exp %>% group_by(`Federal Funds`)%>% summarize(Expenditures=sum(`FY Expenditures`))
-
-cure_exp %>% group_by(State_local2)%>% summarize(Expenditures=sum(`FY Expenditures`))
-
-
-cure_exp%>% summarize(Expenditures=sum(`FY Expenditures`))
-cure_exp %>% group_by(`FY_Spent`)%>% summarize(Expenditures=sum(`FY Expenditures`))
-
-cure_exp %>% group_by(`FF_Cat`)%>% summarize(Expenditures=sum(`FY Expenditures`))
-
-cure_exp %>% group_by(Law)%>% summarize(Expenditures=sum(`FY Expenditures`))
-
-
-cure_exp %>% group_by(Law, FY_Spent, FF_Cat)%>% summarize(Expenditures=sum(`FY Expenditures`)) %>%
-  pivot_wider(names_from = FY_Spent, values_from = Expenditures) 
-
-
-cure_exp %>% group_by(Law, FY_Received)%>% summarize(Expenditures=sum(`FY Expenditures`)) %>%
-  pivot_wider(names_from = Law, values_from = Expenditures) %>% arrange(FY_Received)
-
-cure_exp %>% group_by(Law, FY_Spent)%>% summarize(Expenditures=sum(`FY Expenditures`)) %>%
-  pivot_wider(names_from = Law, values_from = Expenditures) %>% arrange(FY_Spent)
 
 
 ```
@@ -608,7 +615,7 @@ ggplot(cure_exp,
 
 ## Other Revenue Graphs
 
-Sankeyattempt2022.csv file totals \$32 billion flowing into the state. \$16.15 billion came in FY21 and \$16.1 billion in FY22.
+Sankeyattempt2022.csv file totals \$32 billion flowing into the state. \$3.5 came in FY20, \$12 billion came in FY21 and \$16.1 billion in FY22.
 
 ```{r results='hold' }
 sankeydata <- read_csv("sankeyattempt2022.csv") %>% filter(StFund == "Total")
