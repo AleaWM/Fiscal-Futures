@@ -35,9 +35,7 @@ While it is called an "All Funds" Budget, that is a slight exaggeration. Illinoi
 
 **Criterion 1: INCLUDE IF the fund collects a state-levied tax.**
 
-The state collects both state-levied taxes and locally levied taxes (typically local-option sales and utility taxes).  The state collects and returns local taxes to the local governments.  Upon receipt, local tax revenues are
-deposited into specifically-designated, non-appropriated state trust
-funds.  In cases where the state is solely acting as a collection agent for a local taxing body, this receiving trust fund, its revenue and distribution (expenditure) is NOT counted in our analytical frame.  If the tax is collected for the state, the fund and its revenue IS counted in our analytical frame. 
+The state collects both state-levied taxes and locally levied taxes (typically local-option sales and utility taxes).  The state collects and returns local taxes to the local governments.  Upon receipt, local tax revenues are deposited into specifically-designated, non-appropriated state trust funds.  In cases where the state is solely acting as a collection agent for a local taxing body, this receiving trust fund, its revenue and distribution (expenditure) is NOT counted in our analytical frame.  If the tax is collected for the state, the fund and its revenue IS counted in our analytical frame. 
 
 **Criterion 2:  INCLUDE IF the fund supports a statefunction.**
 
@@ -47,7 +45,7 @@ Non-appropriated funds may support state functions such as education, social ser
 
 Many funds are used to hold monies that belong to individuals, not the state.  Most of these funds are non-appropriated, but some are appropriated.  Examples of appropriated funds that we exclude from the frame are child support collection funds or employee pension own-contribution funds.  These funds are holding money that belongs to an individual and will be returned to the person, or used for a payment on behalf of that person, at a later date. 
 
-**Criterion 4:  EXCLUDE IF the fund\'s expenditures or revenues have been counted elsewhere (i.e., avoid double-counting).**
+**Criterion 4:  EXCLUDE IF the fund's expenditures or revenues have been counted elsewhere (i.e., avoid double-counting).**
 
 In some cases, funds receive and disburse moneythat was already counted as revenues to or expenditures from other funds.  For example, the Commercial Consolidation Fund is a huge fund that distributes state benefit payments to individuals, service providers, and local governments by direct deposit.  Payments into this fund are counted, distributions from this fund are not. 
 
@@ -59,10 +57,9 @@ Typically we have excluded non-appropriated funds that hold designated user fees
 
 Non-appropriated funds that are supported by user fees AND perform a state function (e.g., transportation) ARE counted in the frame.  The rationale for this is that the state function would have to be performed even if the user fee and the fund structure did not exist.  The biggest example is the Illinois State Toll Highway Revenue Fund, which collects tolls and supports the expansion and maintenance of Illinois toll roads. 
 
-**Criterion 7:  EXCLUDE IF unclear information, dead fund, small amounts.**
-Some funds are defunct, and our historical information on fund descriptions does not include pre-2005 designations. Fund numbers are re-used, making it impossible to determine the original purpose of some older, defunct funds.  These funds generally appear to be very small.  Because we are projecting forward from the most recently completed fiscal year, we assumed that these funds would not be in the frame. 
+**Criterion 7:  EXCLUDE IF unclear information, dead fund, small amounts.** Some funds are defunct, and our historical information on fund descriptions does not include pre-2005 designations. Fund numbers are re-used, making it impossible to determine the original purpose of some older, defunct funds.  These funds generally appear to be very small.  Because we are projecting forward from the most recently completed fiscal year, we assumed that these funds would not be in the frame. 
 
-## Gathering and Cleaning Data! 
+## Gathering and Cleaning Data!
 
 Information for the Fiscal Futures all funds database comes from detailed information provided by the Illinois Comptroller's office.  Currently the database includes 300,000 individual records for fiscal years 1998 to 2022.
 
@@ -79,65 +76,38 @@ Normally, when your receive the new fiscal year files from the Comptrollers offi
 #Example code below: Read in excel file and rename columns so that it plays well with the other years' files.
 
 revenue_fy22 <- read_xlsx("Fis_Fut_Rev_2022_Final.xlsx") %>% 
-
   rename(fy = 'FY',
-
          fund = 'FUND',
-
          fund_name = 'FUND NAME',
-
          agency = 'AGENCY',
-
          agency_name = 'AGENCY NAME',
-
          source = 'REVENUE SOURCE',
-
          source_name = 'REV SRC NAME',
-
          receipts = 'AMOUNT'
-
   ) 
 
 exp_fy22 <- read_xlsx("Fis_Fut_Exp_2022_Final.xlsx") %>% 
-
   rename(fy = 'FY',
-
          fund = 'FUND',
-
          fund_name = 'FUND NAME',
-
          agency = 'AGENCY',
-
          agency_name = 'AGENCY NAME',
-
          appr_org = 'ORGANIZATION',
-
          org_name = 'ORGANIZATION NAME',
-
          obj_seq_type = 'APPROPRIATION',
-
          wh_approp_name = 'APPROPRIATION NAME',
-
         # exp_net_xfer = 'NET OF TRANS AMOUNT',
-
          expenditure = 'EXPENDED'
 
   ) 
 
 # %>%
-
 #   # these come from ioc_source file after merging
-
 #   mutate(data_source = "exp IOC Aug 2022",
-
 #          object = ,
-
 #          seq = ,
-
 #          type = ,
-
 #          fund_cat = FIND_COLUMN, #create fund_cat column
-
 #          fund_cat_name = FIND_NAME) # create fund_cat_name column
 
 ```
@@ -384,42 +354,25 @@ exp_1998_2022 <- allexpfiles22 %>%
 
       mutate(fund = ifelse(fy < 2002 & fund %in% c("0730", "0241", "0350", "0367", "0381", "0382", "0526", "0603", "0734", "0913", "0379"), str_replace(fund, "0","9"), fund)) %>%
 
-  
-
   mutate(fund = ifelse(fy < 2008 & fund %in% c("0027", "0033", "0037", "0058", "0062", "0066", "0075", "0083", "0116", "0119", "0120", "0122", "0148", "0149", "0157", "0158", "0166", "0194", "0201", "0209", "0211", "0217", "0223", "0231", "0234", "0253", "0320", "0503", "0505", "0512", "0516", "0531", "0532", "0533", "0547", "0563", "0579", "0591", "0606", "0616", "0624", "0659", "0662", "0665", "0676", "0710", 
 
 "0068", "0076", "0115", "0119", "0168", "0182", "0199", "0241", "0307", "0506", "0509", "0513"), str_replace(fund, "0","9"), fund)) %>%
-
   
-
   mutate(fund = ifelse(fy < 2016 & fund %in% c("0263", "0399", "0409"), str_replace(fund, "0","9"), fund)) %>%
 
-  
-
   mutate(fund =  ifelse(fy < 2017 & fund == "0364", str_replace(fund, "0","9"), fund)) %>%
-
-  
 
   mutate(fund =  ifelse(fy < 2018 & fund %in% c("0818", "0767", "0671", "0593", "0578"), str_replace(fund, "0","9"), fund)) %>%
 
   mutate(fund = ifelse(fy>1999 & fy < 2018 & fund == "0231", "10231", fund) ) %>%
-
   
-
   mutate(fund = ifelse(fy < 2019 & fund %in% c("0161", "0489", "0500", "0612", "0893", "0766"), str_replace(fund, "0","9"), fund)) %>%
-
-  
 
   mutate(fund =  ifelse(fy < 2020 & fund %in% c("0254", "0304", "0324", "0610", "0887", "0908", "0939", "0968"), str_replace(fund, "0","9"), fund)) %>%
 
-  
-
   mutate(fund =  ifelse(fy < 2021 & fund %in% c("0255", "0325", "0348", "0967", "0972"), str_replace(fund, "0","9"), fund))  %>%
-
   
-
   #2022 changes
-
   mutate(fund = ifelse(fy < 2022 & fund %in% c("0110","0165","0351", "0392", "0393", "0422", "0544", "0628", "0634",  "0656", "0672", "0683","0723", "0742", "0743"), str_replace(fund, "0","9"), as.character(fund))) %>%  # replaces first 0 it finds with a 9
 
   mutate(fund = ifelse(fy < 2022 & fund == "0367", "10367", as.character(fund)) # fund reused for 3rd time 
@@ -533,19 +486,15 @@ rev_temp <- rev_temp %>%
      # banks and real estate  --> coded as  financial and professional reg
 
     agency == "473" ~ "588", # nuclear safety moved into IEMA
-
     (agency =="531" | agency =="577") ~ "532", # coded as EPA
-
     (agency =="556" | agency == "538") ~ "406", # coded as agriculture
-
     agency == "560" ~ "592", # IL finance authority (fire trucks and agriculture stuff)to state fire marshal
-
     agency == "570" & fund == "0011" ~ "494",   # city of Chicago road fund to transportation
 
     TRUE ~ (as.character(agency))))
 ```
 
 ```{r}
-write_csv(rev_temp, file = "rev_temp.csv")
-write_csv(exp_temp, file = "exp_temp.csv")
+#write_csv(rev_temp, file = "rev_temp.csv")
+#write_csv(exp_temp, file = "exp_temp.csv")
 ```

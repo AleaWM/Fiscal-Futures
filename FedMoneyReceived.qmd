@@ -27,9 +27,9 @@ library(ggalluvial)
 library(readxl)
 ```
 
-Dropping revenue source "Federal Stimulus Package" from the IOC revenue data is one way to start estimating how revenue will look after the COVID relief ends. The graphs below show Illinois revenue with and without Federal Stimulus Package revenue. It is important to note that only the \$8.127 ARPA State CURE and \$3.519 CARES CRF/State CURE revenue was given that label. There was still an additional \$12 billion dollars in other federal revenue that went to the state in FY22 compared to FY19. When trying to understand the states finances and the yearly fiscal gap, we also need to understand when and where the funds were considered revenue in the IOC data and consider the fiscal year that the funds were spent. Finally, allocations or expenditures may be grouped and labeled differently by the State compared to the Fiscal Futures project categorization. Some items that the federal relief are spent on are not included in Fiscal Gap calculations (e.g. the Unemployment Insurance Trust Fund repayments). The biggest challenge when determining the Fiscal Gap for Illinois centers on the the timing of revenue and expenditures occurring in different fiscal years.
+Dropping revenue source "Federal Stimulus Package" from the IOC revenue data is one way to start estimating how revenue will look after the COVID relief ends. The graphs below show Illinois revenue with and without Federal Stimulus Package revenue. It is important to note that only the \$8.127 ARPA State CURE and \$3.519 CARES CRF/State CURE revenue were labeled as "Federal Stimulus Package" in the IOC revenue data. There was still an additional \$12 billion dollars in other federal revenue that went to the state in FY22 compared to FY19. When trying to understand the states finances and the yearly fiscal gap, we also need to understand when and where the funds were considered revenue in the IOC data and consider the fiscal year that the funds were spent. Finally, allocations or expenditures may be grouped and labeled differently by the State compared to the Fiscal Futures project categorization. Some items that the federal relief are spent on are not included in Fiscal Gap calculations (e.g. the Unemployment Insurance Trust Fund repayments). The biggest challenge when determining the Fiscal Gap for Illinois centers around the timing of revenue and expenditures occurring in different fiscal years during the COVID response.
 
-```{r}
+```{r results='hold'}
 
 rev_temp <- read_csv("rev_temp.csv")
 
@@ -85,7 +85,9 @@ fedrev %>%
 
 ## COVID Money Tracker Data
 
-Data was downloaded from COVIDMoneyTracker.org for the State of Illinois. It does not include aid for households or loans to businesses. Data file is named federalcoviddollars.xlsx in Github page used to create this website. A little information on Sankey graphs is below:
+Data was downloaded from COVIDMoneyTracker.org for the State of Illinois. Values reflect the amount committed and not all funds have been disbursed yet. It does not include aid for households or loans to businesses. Data file is named federalcoviddollars.xlsx in Github page used to create this website.
+
+A little information on Sankey graphs is below:
 
 -   The axis is how the observations are grouped at each step. There are multiple axes.
 -   Strata are the options that exist for each level. (e.g. Year received can be 2021 or 2022)
@@ -94,7 +96,9 @@ Data was downloaded from COVIDMoneyTracker.org for the State of Illinois. It doe
 
 Read the charts from the top to the bottom. Most of the graphs below begin with either the year the money was received or the name of the Law that provided the funds and then shows it flowing down to either who received the money or how it was spent.
 
-The graph below focuses on when the money from each Federal Act arrived and where it was received (State or a state department) and the spending category that it would be considered using the Fiscal Futures categorization.
+The graphs below focus on when the money from each Federal Act arrived and where it was received (local governments, the State government, or directly to a state department) and the spending category that it would be considered using the Fiscal Futures categorization.
+
+The second graph is the same as the first except that it drops revenue received by local governments. The State government received \$11.7 billion, state departments received \$31.4 billion, and local governments received \$8.9 billion from FY 2020 through FY 2022.
 
 ```{r results='hold'}
 sankeydata <- read_excel("federalcoviddollars.xlsx")
@@ -123,17 +127,21 @@ coord_flip()+
     theme(legend.position = "bottom")+
   ggtitle("$52 Million Federal COVID Relief to Illinois over 3 years")
 
-ggplot(sankey, 
-       aes(y = `Dollars Received`, axis2 = FY, axis3 = `Broad Category`, axis1=FF_Cat2, label = "stratum")) +
-  geom_flow(aes(fill = Legislation), color = "black", reverse=FALSE) +
- # guides(fill = FALSE) +   
-  geom_stratum(reverse=FALSE)+
-coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() +
-     geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
-    theme(legend.position = "bottom")+
-  ggtitle("$52 Million Federal COVID Relief to Illinois over 3 years")
+
+#switches fiscal Year and Broad Category. Not as helpful. 
+
+# ggplot(sankey, 
+#        aes(y = `Dollars Received`, axis2 = FY, axis3 = `Broad Category`, axis1=FF_Cat2, label = "stratum")) +
+#   geom_flow(aes(fill = Legislation), color = "black", reverse=FALSE) +
+#  # guides(fill = FALSE) +   
+#   geom_stratum(reverse=FALSE)+
+# coord_flip()+
+#    scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+#   theme_void() +
+#      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
+#     theme(legend.position = "bottom")+
+#   ggtitle("$52 Million Federal COVID Relief to Illinois over 3 years")
+
 
 sankey %>% group_by(FY) %>% summarize(sum=sum(`Dollars Received`))
 sankey %>% group_by(Legislation) %>% summarize(sum=sum(`Dollars Received`))
@@ -149,22 +157,12 @@ sankey %>% group_by(Legislation, `Broad Category`,FF_Cat2) %>% summarize(sum=sum
 
 sankey %>% group_by(FY, FF_Cat2) %>% summarize(sum=sum(`Dollars Received`)) %>% pivot_wider(names_from="FY", values_from = sum)
 
-sankey %>% filter(FF_Cat != "Excluded") %>%
-ggplot(
-       aes(y = `Dollars Received`, axis4 = `Broad Category`, axis3 = Category, axis2 = Recipient, axis1=FF_Cat, label = "stratum")) +
-  geom_flow(aes(fill = Legislation), color = "black", reverse=FALSE) +
- # guides(fill = FALSE) +   
-  geom_stratum(reverse=FALSE)+
-coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() +
-     geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
-    theme(legend.position = "bottom")+
-  ggtitle("State CURE and State Departments Received $43.1 Billion")
 
 ```
 
 ```{r include=FALSE}
+## Same graph but without labels for Publisher ##
+
 ggplot(sankey, 
        aes(y = `Dollars Received`, axis3 = FY, axis2 = `Broad Category`, axis1=FF_Cat2, label = "stratum")) +
   geom_flow(aes(fill = Legislation), color = "black", reverse=FALSE) +
@@ -178,34 +176,39 @@ coord_flip()+
   ggtitle("$52 Million Federal COVID Relief to Illinois over 3 years")
 ```
 
-State CURE received \$11.6 billion dollars from State Fiscal Recovery Funds and \$31.5 billion in other federal revenue. This other federal revenue frequently came in the form of increased or new grants to many State Departments that normally receive federal funding. Local Governments within Illinois received an additional \$8.9 billion for economic recovery but we do not include funds given straight to localities in our State COVID recovery fund calculations.
+Legislation values were: ARPA = \$25.6 Billion; CARES = \$15.7 Billion; Families First = \$4.5 Billion; PPP & Health Care = \$2.8 Billion; Response & Relief = \$3.4 Billion. Additional labels were added using Publisher to create the following image:
+
+![](images/image-105349095.png)
+
+Illinois received \$11.7 billion dollars from State Fiscal Recovery Funds and \$31.4 billion in other federal revenue to state departments. This other federal revenue frequently came in the form of increased or new grants to many State Departments that normally receive federal funding. Local Governments within Illinois received an additional \$8.9 billion for economic recovery but we do not include funds given straight to localities in our State COVID recovery fund calculations or Fiscal Gap analysis.
 
 ```{r include=FALSE}
-ggplot(sankey, 
-       aes(y = `Dollars Received`, axis3 = FY, axis2 = Recipient, axis1=FF_Cat, label = "stratum")) +
+
+# another attempt at showing more parts of the data but it is not as useful.
+sankey %>% filter(FF_Cat != "Excluded") %>%
+ggplot(
+       aes(y = `Dollars Received`, axis4 = `Broad Category`, axis3 = Category, axis2 = Recipient, axis1=FF_Cat, label = "stratum")) +
   geom_flow(aes(fill = Legislation), color = "black", reverse=FALSE) +
- # guides(fill = FALSE) +   
+ # guides(fill = FALSE) +
   geom_stratum(reverse=FALSE)+
 coord_flip()+
    scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() +   theme(legend.position = "bottom")
-#+
-   #  scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") ) #+ 
-    # geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)
- # ggtitle("With Labels")
+  theme_void() +
+     geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
+    theme(legend.position = "bottom")+
+  ggtitle("State CURE and State Departments Received $43.1 Billion")
 ```
 
-Below is a graph showing federal stimulus money that was received in each year, the federal agency/fund that it came from, who received the money (e.g. the State of Illinois, Department of Human Services, Local Governments, etc.) and what the funds were ultimately spent on. \$15.7 billion was received in FY20, \$7.24 billion in FY21, and \$29 billion was received in FY22 from multiple COVID response Federal Acts. The graph above shows the year received, the federal government's fund name or purpose, the department that received the funds, and the fiscal futures spending category that the purpose falls under.
+Below is a graph showing federal stimulus money that was received in each year, the federal agency/fund that it came from, and what kind of revenue it was considered (Federal Other, transportation, or medicaid) who received the money (e.g. the State of Illinois, Department of Human Services, Local Governments, etc.). \$15.7 billion was received in FY20, \$7.24 billion in FY21, and \$29 billion was received in FY22 from multiple COVID response Federal Acts. The graph above shows the year received, the federal government's fund name or purpose, the department that received the funds, and the fiscal futures spending category that the purpose falls under.
 
 Again, these graphs show the funds that were received and their intended purpose, NOT the data on how or when it was spent.
 
-```{r results='hold'}
-
+```{r}
 sankey %>% filter(FF_Cat2!= "Excluded") %>%
-  ggplot(aes(y = `Dollars Received`, axis4 = FY, axis3= `Category`, axis2 = Recipient, axis1=FF_Cat2
+  ggplot(aes(y = `Dollars Received`, axis4 = FY, axis3= `Category`,  axis1=FF_Cat2
           # , label = "stratum"
            )) +
-  geom_flow(aes(fill = Legislation2, label = "flow"), 
+  geom_flow(aes(fill = Legislation, label = "flow"), 
             color = "black", reverse=FALSE) +
  # guides(fill = FALSE) +   
   geom_stratum(reverse=FALSE)+
@@ -216,6 +219,9 @@ sankey %>% filter(FF_Cat2!= "Excluded") %>%
   theme_void() +
   theme(legend.position = "bottom")+
   ggtitle("State Received $16 Billion in FY20, $7 Billion in FY21, and $29 Billion in FY22")
+```
+
+```{r results='hold'}
 
 sankey %>% group_by(FY)%>%summarize(TotalReceived=sum(`Dollars Received`))
 
