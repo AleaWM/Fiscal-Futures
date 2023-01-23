@@ -1,5 +1,13 @@
 # Background Info {.unnumbered}
 
+---
+format:
+  html:
+    code-fold: false
+    code-tools: true
+    code-overflow: wrap
+---
+
 > This document is UNFINISHED. Every section is a work in progress and will continue to be updated. - AWM 1/9/2023
 
 This is a living document in which we aim to describe things as clearly as possible in the time we have, share it with others, and improve as we come back to it. If we wait till we have time to write flawless docs, it'll never happen.
@@ -7,6 +15,7 @@ This is a living document in which we aim to describe things as clearly as possi
 Code and information on the analysis of Illinois' expenditures and revenues. The Fiscal Future Project is associated with the Institute of Government and Policy Affairs but publicly sharing the code and creating a website was done by Alea Wilbur-Mujtaba. Any errors with code or findings are the fault of the author, not the research institute. Data originally from annual FOIA requests to the Illinois Office of the Comptroller.
 
 ```{r warning = FALSE, message=FALSE}
+#| include: false
 
 library(tidyverse)
 library(haven)
@@ -37,7 +46,7 @@ While it is called an "All Funds" Budget, that is a slight exaggeration. Illinoi
 
 The state collects both state-levied taxes and locally levied taxes (typically local-option sales and utility taxes).  The state collects and returns local taxes to the local governments.  Upon receipt, local tax revenues are deposited into specifically-designated, non-appropriated state trust funds.  In cases where the state is solely acting as a collection agent for a local taxing body, this receiving trust fund, its revenue and distribution (expenditure) is NOT counted in our analytical frame.  If the tax is collected for the state, the fund and its revenue IS counted in our analytical frame. 
 
-**Criterion 2:  INCLUDE IF the fund supports a statefunction.**
+**Criterion 2:  INCLUDE IF the fund supports a state function.**
 
 Non-appropriated funds may support state functions such as education, social services, transportation, public facilities, regulation, natural resources, and law enforcement.  Generally these are trust funds that hold federal dollars for a specified state project or purpose.  This category of *non-appropriated* funds is essentially the same as a large group of *appropriated* state and federal trust funds.  Because we are counting federal dollars as revenue, it would be inconsistent to count the appropriated funds, but not the non-appropriated funds that do essentially the same thing. 
 
@@ -47,7 +56,7 @@ Many funds are used to hold monies that belong to individuals, not the state.  
 
 **Criterion 4:  EXCLUDE IF the fund's expenditures or revenues have been counted elsewhere (i.e., avoid double-counting).**
 
-In some cases, funds receive and disburse moneythat was already counted as revenues to or expenditures from other funds.  For example, the Commercial Consolidation Fund is a huge fund that distributes state benefit payments to individuals, service providers, and local governments by direct deposit.  Payments into this fund are counted, distributions from this fund are not. 
+In some cases, funds receive and disburse money that was already counted as revenues to or expenditures from other funds.  For example, the Commercial Consolidation Fund is a huge fund that distributes state benefit payments to individuals, service providers, and local governments by direct deposit.  Payments into this fund are counted, distributions from this fund are not. 
 
 **Criterion 5:  EXCLUDE IF the fund holds designated user fees targeted for a specific purpose that is not a public function (conduit).**
 
@@ -71,7 +80,11 @@ Information for the Fiscal Futures all funds database comes from detailed inform
 
 Normally, when your receive the new fiscal year files from the Comptrollers office, you will need to change the variable names so that they are consistent with past years. This is an example of reading in the new file and changing the variable names. They seem to change almost every year in the file received from the FOIA so if the code breaks here, check to make sure that the columns you are trying to rename exist and are spelled correctly! Once variables are the same, you will want to save the file as a csv file in its Revenue/Expenditure file and bind all past years and the current year together in one dataframe.
 
-```{r eval=FALSE}
+```{r}
+#| code-fold: false
+#| eval: false
+
+
 
 #Example code below: Read in excel file and rename columns so that it plays well with the other years' files.
 
@@ -193,23 +206,46 @@ allexpfiles22 <- read_csv("allexpfiles22.csv") #combined but not recoded
 
 # agencies referenced in any year before 2020:
 
-agencies_past <- allexpfiles22 %>% filter(fy < 2022) %>% mutate(agency == as.character(agency)) %>% group_by(agency, agency_name) %>% unique() %>% summarize(expenditure = sum(expenditure, na.rm = TRUE)) %>% drop_na() %>% arrange(agency)
+agencies_past <- allexpfiles22 %>% 
+  filter(fy < 2022) %>% 
+  mutate(agency == as.character(agency)) %>% 
+  group_by(agency, agency_name) %>% 
+  unique() %>% 
+  summarize(expenditure = sum(expenditure, na.rm = TRUE)) %>% 
+  drop_na() %>% 
+  arrange(agency)
 
 # agencies_past # 146 agencies ever
 
 # agencies in 2022 data:
 
-agencies22 <- allexpfiles22  %>% filter(fy == 2022) %>% mutate(agency == as.character(agency)) %>% group_by(agency, agency_name) %>% summarize(expenditure = sum(expenditure, na.rm = TRUE))
+agencies22 <- allexpfiles22  %>% 
+  filter(fy == 2022) %>% 
+  mutate(agency == as.character(agency)) %>% 
+  group_by(agency, agency_name) %>% 
+  summarize(expenditure = sum(expenditure, na.rm = TRUE))
 
 # agencies22 # 107 agencies this year
 
 # 280 and 533 are new agency codes: 
 
-anti_join(agencies22, agencies_past, by = c("agency", "agency_name")) %>% arrange(agency)
+anti_join(agencies22, agencies_past, 
+          by = c("agency", "agency_name")) %>% 
+  arrange(agency)
 
-funds_past <- allexpfiles22  %>% filter(fy < 2022) %>% mutate(fund == as.character(fund)) %>% group_by(fund, fund_name) %>% summarize(count = n(), Expenditure = sum(expenditure, na.rm = TRUE))  %>% drop_na()
+funds_past <- allexpfiles22  %>% 
+  filter(fy < 2022) %>% 
+  mutate(fund == as.character(fund)) %>% 
+  group_by(fund, fund_name) %>% 
+  summarize(count = n(), Expenditure = sum(expenditure, na.rm = TRUE))  %>% 
+  drop_na()
 
-funds22 <- allexpfiles22  %>% filter(fy == 2022) %>% mutate(fund == as.character(fund)) %>% group_by(fund, fund_name) %>%  summarize(count = n(), Expenditure = sum(expenditure, na.rm = TRUE)) %>% unique()
+funds22 <- allexpfiles22  %>% 
+  filter(fy == 2022) %>% 
+  mutate(fund == as.character(fund)) %>% 
+  group_by(fund, fund_name) %>%  
+  summarize(count = n(), Expenditure = sum(expenditure, na.rm = TRUE)) %>% 
+  unique()
 
 # 15 funds were in FY22 data that were not in past data:
 
@@ -217,11 +253,20 @@ anti_join(funds22, funds_past, by = c("fund", "fund_name")) %>% arrange(fund)
 
 # orgs_pastin the past =  916 org groups ever
 
-orgs_past <- allexpfiles22  %>% filter(fy < 2022) %>% mutate(appr_org == as.character(appr_org)) %>% group_by(appr_org, org_name) %>% unique() %>% summarize(Expenditure = sum(expenditure, na.rm = TRUE)) %>% drop_na()
+orgs_past <- allexpfiles22  %>% 
+  filter(fy < 2022) %>% 
+  mutate(appr_org == as.character(appr_org)) %>% 
+  group_by(appr_org, org_name) %>% 
+  unique() %>% 
+  summarize(Expenditure = sum(expenditure, na.rm = TRUE)) %>% drop_na()
 
 # orgs_past # 916 org groups ever
 
-orgs22 <- allexpfiles22  %>% filter(fy == 2022) %>% mutate(appr_org = as.character(appr_org)) %>% group_by(appr_org, org_name) %>% summarize(Expenditure = sum(expenditure, na.rm = TRUE))
+orgs22 <- allexpfiles22  %>% 
+  filter(fy == 2022) %>% 
+  mutate(appr_org = as.character(appr_org)) %>% 
+  group_by(appr_org, org_name) %>% 
+  summarize(Expenditure = sum(expenditure, na.rm = TRUE))
 
 # orgs22 # 396 org groups this year
 
@@ -239,19 +284,40 @@ anti_join(orgs22, orgs_past, by = c("appr_org", "org_name")) %>% arrange(appr_or
 
 # agencies_past # 108 agencies ever
 
-agencies_past <- allrevfiles22  %>% filter(fy < 2022) %>% mutate(agency == as.character(agency)) %>% group_by(agency, agency_name) %>% unique() %>% summarize(Receipts = sum(receipts, na.rm = TRUE)) %>% drop_na()
+agencies_past <- allrevfiles22  %>% 
+  filter(fy < 2022) %>% 
+  mutate(agency == as.character(agency)) %>% 
+  group_by(agency, agency_name) %>% 
+  unique() %>% 
+  summarize(Receipts = sum(receipts, na.rm = TRUE)) %>% 
+  drop_na()
 
 # agencies22 # 80 agencies this year
 
-agencies22 <- allrevfiles22  %>% filter(fy == 2022) %>% mutate(agency == as.character(agency)) %>% group_by(agency, agency_name) %>% summarize(Receipts = sum(receipts, na.rm = TRUE))
+agencies22 <- allrevfiles22  %>% 
+  filter(fy == 2022) %>% 
+  mutate(agency == as.character(agency)) %>% 
+  group_by(agency, agency_name) %>% 
+  summarize(Receipts = sum(receipts, na.rm = TRUE))
 
 # 0 new agencies in revenue data this year
 
 anti_join(agencies22, agencies_past, by = c("agency", "agency_name")) %>% arrange(agency)
 
-funds_past <- allrevfiles22  %>% filter(fy < 2022) %>% mutate(fund == as.character(fund)) %>% group_by(fund, fund_name) %>% summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE))  %>% drop_na()
+funds_past <- allrevfiles22  %>% 
+  filter(fy < 2022) %>% 
+  mutate(fund == as.character(fund)) %>% 
+  group_by(fund, fund_name) %>% 
+  summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE))  %>% 
+  drop_na()
 
-funds22 <- allrevfiles22  %>% filter(fy == 2022) %>% mutate(fund == as.character(fund)) %>% group_by(fund, fund_name) %>%  summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE)) %>% unique() %>% drop_na()
+funds22 <- allrevfiles22  %>% 
+  filter(fy == 2022) %>% 
+  mutate(fund == as.character(fund)) %>% 
+  group_by(fund, fund_name) %>%  
+  summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE)) %>% 
+  unique() %>% 
+  drop_na()
 
 # 19 revenue funds were in FY22 revenue data that were not in past data 
 
@@ -259,9 +325,19 @@ funds22 <- allrevfiles22  %>% filter(fy == 2022) %>% mutate(fund == as.character
 
 anti_join(funds22, funds_past, by = c("fund", "fund_name")) %>% arrange(fund)
 
-sources_past <- allrevfiles22  %>% filter(fy < 2022) %>% mutate(source == as.character(source)) %>% group_by(source, source_name) %>% summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE))  %>% drop_na()
+sources_past <- allrevfiles22  %>% 
+  filter(fy < 2022) %>% 
+  mutate(source == as.character(source)) %>% 
+  group_by(source, source_name) %>% 
+  summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE))  %>% 
+  drop_na()
 
-sources22 <- allrevfiles22  %>% filter(fy == 2022) %>% mutate(source == as.character(source)) %>% group_by(source, source_name) %>%  summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE)) %>% unique()
+sources22 <- allrevfiles22  %>% 
+  filter(fy == 2022) %>% 
+  mutate(source == as.character(source)) %>% 
+  group_by(source, source_name) %>%  
+  summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE)) %>% 
+  unique()
 
 # 20 revenue sources were in FY22 data that were not in past data 
 
@@ -271,7 +347,7 @@ anti_join(sources22, sources_past, by = c("source", "source_name")) %>% arrange(
 
 ```
 
-Sources 2737 through 2756 were not found in the IOC_source file so I added them to \`ioc_source_updated22_AWM.xlsx\`. They do NOT have a rev_type until the Fiscal Futures researchers discuss which revenue type the sources fall under and if they should be included in the analysis in general.
+Sources 2737 through 2756 were not found in the IOC_source file so I added them to `ioc_source_updated22_AWM.xlsx`. Revenue source types were found manually using the Comptroller's website and searching for each source listed above and identifying its type. Then the ioc_source excel file was updated to include the revenue type (Completed Jan. 20 2023, AFTER the FY22 paper totals were calculated. There were very minor differences in aggregated expenditures and revenues.) `ioc_source_updated22_AWM.xlsx` will become the generic `ioc_source.xlsx` file in the future.
 
 ### Recoding New and Reused Funds
 
@@ -279,58 +355,41 @@ New funds will need to be manually added to the funds_ab_in excel file and deter
 
 For funds that were reused once, a 9 replaces the 0 as the first digit. If reused twice, then the first two values are 10.
 
-\- Ex. 0350 \--\> 9350 because its use changed.
-
-\- Ex. 0367 becomes 10367 because its use has changed twice now. There was fund 0367 originally, then its use changed and it was recoded as 9367, and now it changed again so it is a 10367.
-
-\- Excel file also has alternative ways to name funds (e.g. 0397-A and 0397-B) and variables for the year that the fund stopped being used. These have not been updated consistently over the years but it is useful information when trying to find any coding mistakes from the past.
+-   Ex. 0350 \--\> 9350 because its use changed.
+-   Ex. 0367 becomes 10367 because its use has changed twice now. There was fund 0367 originally, then its use changed and it was recoded as 9367, and now it changed again so it is a 10367.
+-   Excel file also has alternative ways to name funds (e.g. 0397-A and 0397-B) and variables for the year that the fund stopped being used. These have not been updated consistently over the years but it is useful information when trying to find any coding mistakes from the past.
 
 New or reused funds revenue file recoding:
 
 ```{r recode-rev-funds}
+#| code-fold: false
 
 # if first character is a 0, replace with a 9 if its purpose has changed
 
 rev_1998_2022 <- allrevfiles22 %>%
 
       mutate(fund = ifelse(fy < 2002 & fund %in% c("0730", "0241", "0350", "0367", "0381", "0382", "0526", "0603", "0734", "0913", "0379"), str_replace(fund, "0","9"), fund)) %>%
-
   
-
   mutate(fund = ifelse (fy < 2008 & fund %in% c("0027", "0033", "0037", "0058", "0062", "0066", "0075", "0083", "0116", "0119", "0120", "0122", "0148", "0149", "0157", "0158", "0166", "0194", "0201", "0209", "0211", "0217", "0223", "0231", "0234", "0253", "0320", "0503", "0505", "0512", "0516", "0531", "0532", "0533", "0547", "0563", "0579", "0591", "0606", "0616", "0624", "0659", "0662", "0665", "0676", "0710", 
 
 "0068", "0076", "0115", "0119", "0168", "0182", "0199", "0241", "0307", "0506", "0509", "0513"), str_replace(fund, "0","9"), fund)) %>%
 
-  
-
   mutate(fund = ifelse(fy < 2016 & fund %in% c("0263", "0399", "0409"), str_replace(fund, "0","9"), fund)) %>%
-
-  
 
   mutate(fund =  ifelse(fy < 2017 & fund == "0364", str_replace(fund, "0","9"), fund)) %>%
 
-  
-
   mutate(fund =  ifelse(fy < 2018 & fund %in% c("0818", "0767", "0671", "0593", "0578"), str_replace(fund, "0","9"), fund)) %>%
 
-  
 
   mutate(fund = ifelse(fy>1999 & fy < 2018 & fund == "0231", "10231", fund) ) %>%
-
   
 
   mutate(fund = ifelse(fy < 2019 & fund %in% c("0161", "0489", "0500", "0612", "0893", "0766"), str_replace(fund, "0","9"), fund)) %>%
 
-  
-
   mutate(fund =  ifelse(fy < 2020 & fund %in% c("0254", "0304", "0324", "0610", "0887", "0908", "0939", "0968"), str_replace(fund, "0","9"), fund)) %>%
 
-  
-
   mutate(fund =  ifelse(fy < 2021 & fund %in% c("0255", "0325", "0348", "0967", "0972"), str_replace(fund, "0","9"), fund) ) %>%
-
   
-
    #2022 changes
 
   mutate(fund = ifelse(fy < 2022 & fund %in% c("0110","0165","0351", "0392", "0393", "0422", "0544", "0628", "0634",  "0656", "0672", "0683", "0723", "0742", "0743"), str_replace(fund, "0","9"), as.character(fund))) %>%  # replaces first 0 it finds with a 9
@@ -347,6 +406,7 @@ For 2022, new funds included The Essential Government Services fund, Electric Ve
 Expenditure recoding:
 
 ```{r recode-exp-funds}
+
 
 # if first character is a 0, replace with a 9
 
@@ -380,32 +440,24 @@ exp_1998_2022 <- allexpfiles22 %>%
   )
 ```
 
-The \`funds_ab_in.xlsx\` file contains all funds that have existed since 1998, if they still exist, indicates if fund numbers have been reused for varying purposes, and is updated yearly with new fund numbers used by the IOC.
+The `funds_ab_in.xlsx` file contains all funds that have existed since 1998, if they still exist, indicates if fund numbers have been reused for varying purposes, and is updated yearly with new fund numbers used by the IOC.
 
 ```{r create-exp_temp, warning = FALSE, message = FALSE}
 
 funds_ab_in_2022 = readxl::read_excel("C:/Users/aleaw/OneDrive/Documents/PhD Fall 2021 - Spring 2022/Merriman RA/Fiscal Futures FY2022/Replication-Files/funds_ab_in_2022.xlsx")
 
 exp_temp <- exp_1998_2022 %>% 
-
   arrange(fund, fy) %>%
-
   filter(expenditure != 0) %>%             # keeps everything that is not zero
-
 # join  funds_ab_in_2021  to exp_temp
-
  left_join(funds_ab_in_2022, by = "fund")  # matches most recent fund number 
 
+
 # Agency == 799 for Statutory transfers 
-
 #  Object == 1993 is for Interfund cash transfers  
-
 exp_temp <- exp_temp %>% 
-
   mutate(transfer = ifelse(org_name == "TRANSFERS", 1, 0),
-
          trans_agency = ifelse(org_name == "TRANSFERS", str_sub(obj_seq_type,1,3), trans_agency),
-
          trans_type = ifelse(org_name == "TRANSFERS", str_sub(obj_seq_type,4,9), trans_type)
 
          )
@@ -432,17 +484,13 @@ rm(revenue_fy22)
 Update Agencies: Some agencies have merged with others or changed names over time.
 
 ```{r agencies-exp}
-
 # recodes old agency numbers to consistent agency number
-
 exp_temp <- exp_temp %>% 
 
   mutate(agency = case_when(
 
     (agency=="438"| agency=="475" |agency == "505") ~ "440",
-
     # financial institution &  professional regulation &
-
      # banks and real estate  --> coded as  financial and professional reg
 
     agency == "473" ~ "588", # nuclear safety moved into IEMA
@@ -454,13 +502,14 @@ exp_temp <- exp_temp %>%
     agency == "560" ~ "592", # IL finance authority (fire trucks and agriculture stuff)to state fire marshal
 
     agency == "570" & fund == "0011" ~ "494",   # city of Chicago road fund to transportation
-
     TRUE ~ (as.character(agency)))) 
 ```
 
 For aggregating revenue, use the rev_1998_2022 dataframe, join the funds_ab_in_2022 file to it, and then join the ioc_source_type file to the dataset. Remember: You need to update the funds_ab_in and ioc_source_type file every year!
 
 ```{r}
+#| code-fold: false
+
 # fund info to revenue for all years
 
 rev_temp <- inner_join(rev_1998_2022, funds_ab_in_2022, by = "fund") %>% arrange(source)
@@ -470,19 +519,13 @@ rev_temp <- inner_join(rev_1998_2022, funds_ab_in_2022, by = "fund") %>% arrange
 ioc_source_type <- readxl::read_xlsx("C:/Users/aleaw/OneDrive/Documents/PhD Fall 2021 - Spring 2022/Merriman RA/Fiscal Futures FY2022/Replication-Files/ioc_source_updated22_AWM.xlsx")
 
 rev_temp <- left_join(rev_temp, ioc_source_type, by = "source")
-
 # automatically used source, source name does not match for the join to work using source_name
 
 # recodes old agency numbers to consistent agency number
-
 rev_temp <- rev_temp %>% 
 
   mutate(agency = case_when(
-
-    (agency=="438"| agency=="475" |agency == "505") ~ "440",
-
-    # financial institution &  professional regulation &
-
+    (agency=="438"| agency=="475" |agency == "505") ~ "440", # financial institution &  professional regulation &
      # banks and real estate  --> coded as  financial and professional reg
 
     agency == "473" ~ "588", # nuclear safety moved into IEMA

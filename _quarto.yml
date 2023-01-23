@@ -22,8 +22,10 @@ book:
 format:
   html:
     code-fold: true
+    code-tools: true
+    code-overflow: wrap
     df-print: paged
-    theme: cosmo
+    theme: darkly
 
 
 #bibliography: references.bib
