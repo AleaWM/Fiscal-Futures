@@ -25,7 +25,7 @@ format:
     code-tools: true
     code-overflow: wrap
     df-print: paged
-    theme: darkly
+    theme: cosmo
 
 
 #bibliography: references.bib
