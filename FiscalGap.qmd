@@ -19,9 +19,9 @@ library(geofacet)
 library(janitor)
 
 
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval=FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = TRUE)
 
-exp_temp <- read_csv("exp_temp.csv")
+exp_temp <- read_csv("exp_temp.csv") 
 rev_temp <- read_csv("rev_temp.csv")
 ```
 

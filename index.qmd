@@ -537,7 +537,9 @@ rev_temp <- rev_temp %>%
     TRUE ~ (as.character(agency))))
 ```
 
-```{r}
-#write_csv(rev_temp, file = "rev_temp.csv")
-#write_csv(exp_temp, file = "exp_temp.csv")
+```{r eval = FALSE}
+
+write_csv(rev_temp, file = "rev_temp.csv")
+
+write_csv(exp_temp, file = "exp_temp.csv")
 ```

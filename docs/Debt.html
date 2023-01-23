@@ -902,7 +902,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>**Expenditure Debt Objects:**</span>
 <span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>8811 is for principle payments **EXCLUDE**</span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a><span class="ss">    -    </span>General principle payments: obj_seq_type == 88110008</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>General principle payments: obj_seq_type == 88110008</span>
 <span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Short term borrowing principle: obj_seq_type == 88110108</span>
 <span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>8813 interest payments **INCLUDE AS COST**</span>
 <span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>General Obligation Bond Interest: obj_seq_type == 88130000 &amp; 88130008</span>
@@ -911,7 +911,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Escrow payment: obj_seq_type == 88410008</span>
 <span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>8800 is for all capital projects debt service (e.g. Build Illinois Bonds, Civic Center) **INCLUDE AS COST**</span>
 <span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>*Note: debt principle and interest are both included in capital projects because they are combined in the data observations; bond proceeds are not considered a revenue source. Can't include capital projects interest as easily as the GO bonds.*</span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a><span class="ss">    -    </span>Build IL Bonds, capital projects principal AND interest (object ==8800)</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Build IL Bonds, capital projects principal AND interest (object ==8800)</span>
 <span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Tollway fund 0455 **EXCLUDE in debt cost**</span>
 <span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Either filter out Tollway obj_seq_type == 88000055 or filter out fund == 0455 to remove tollway fund items from capital project debt service</span>
 <span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a></span>

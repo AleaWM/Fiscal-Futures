@@ -39,7 +39,7 @@ Debt Service expenditures include interest payment on both short-term and long-t
 **Expenditure Debt Objects:**
 
 -   8811 is for principle payments **EXCLUDE**
-    -    General principle payments: obj_seq_type == 88110008
+    -   General principle payments: obj_seq_type == 88110008
     -   Short term borrowing principle: obj_seq_type == 88110108
 -   8813 interest payments **INCLUDE AS COST**
     -   General Obligation Bond Interest: obj_seq_type == 88130000 & 88130008
@@ -48,7 +48,7 @@ Debt Service expenditures include interest payment on both short-term and long-t
     -   Escrow payment: obj_seq_type == 88410008
 -   8800 is for all capital projects debt service (e.g. Build Illinois Bonds, Civic Center) **INCLUDE AS COST**
     -   *Note: debt principle and interest are both included in capital projects because they are combined in the data observations; bond proceeds are not considered a revenue source. Can't include capital projects interest as easily as the GO bonds.*
-    -    Build IL Bonds, capital projects principal AND interest (object ==8800)
+    -   Build IL Bonds, capital projects principal AND interest (object ==8800)
 -   Tollway fund 0455 **EXCLUDE in debt cost**
     -   Either filter out Tollway obj_seq_type == 88000055 or filter out fund == 0455 to remove tollway fund items from capital project debt service
 
