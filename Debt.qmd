@@ -38,29 +38,23 @@ Debt Service expenditures include interest payment on both short-term and long-t
 
 **Expenditure Debt Objects:**
 
--   8811 is for principle **EXCLUDE**
--   8813 interest **INCLUDE AS COST**
+-   8811 is for principle payments **EXCLUDE**
+    -    General principle payments: obj_seq_type == 88110008
+    -   Short term borrowing principle: obj_seq_type == 88110108
+-   8813 interest payments **INCLUDE AS COST**
+    -   General Obligation Bond Interest: obj_seq_type == 88130000 & 88130008
+    -   Interest on short-term borrowing: 88130108
 -   8841 is for escrow payments **EXCLUDE**
--   8800 is for all capital projects debt service (e.g. Build Illinois Bonds, Civic Center, Tollway **EXCLUDE tollway, fund 0455, in debt cost**
-
-*Note: debt principle and interest are both included in capital projects because they are combined in the data observations; bond proceeds are not considered a revenue source. Can't include capital projects interest as easily as the GO bonds.*
-
-**Expenditure Debt Obj_seq_type:**
-
--   Exclude: principle payments: obj_seq_type == 88110008
--   Exclude: Short term borrowing principle: obj_seq_type == 88110108
--   Include: General Obligation Bond Interest: obj_seq_type == 88130000 & 88130008
--   Include: Interest on short-term borrowing: 88130108
--   Exclude: Escrow payment: obj_seq_type == 88410008
--   Include: Build IL Bonds, capital projects principal AND interest (object ==8800)
+    -   Escrow payment: obj_seq_type == 88410008
+-   8800 is for all capital projects debt service (e.g. Build Illinois Bonds, Civic Center) **INCLUDE AS COST**
+    -   *Note: debt principle and interest are both included in capital projects because they are combined in the data observations; bond proceeds are not considered a revenue source. Can't include capital projects interest as easily as the GO bonds.*
+    -    Build IL Bonds, capital projects principal AND interest (object ==8800)
+-   Tollway fund 0455 **EXCLUDE in debt cost**
     -   Either filter out Tollway obj_seq_type == 88000055 or filter out fund == 0455 to remove tollway fund items from capital project debt service
 
 #### State Principal and Interest
 
-Filtering for interest on short term borrowing and GO bonds (88130008, 88130000, and 88130108) and GO bond principal amounts (88110008).
-
--   object == 8813 is for all debt service interest but obj_seq_type is used to specify short term borrowing versus regular debt service.
--   an Interest to Principal ratio is also calculated in the table below.
+Filtering for interest on short term borrowing and GO bonds (88130008, 88130000, and 88130108) and GO bond principal amounts (88110008). Object == 8813 is for all debt service interest but obj_seq_type is used to specify short term borrowing versus regular debt service. An Interest to Principal ratio is also calculated in the table below.
 
 Looking only at general obligation principal payments and interest payments:
 
@@ -96,7 +90,7 @@ GObond_debt %>%
 
 ```
 
-Looking only at short term borrowing principal and interest payments
+Looking only at short term borrowing principal and interest payments:
 
 ```{r}
 # short term borrowing, first observation is in 2004?
@@ -119,38 +113,15 @@ short_debt %>% ggplot() +
   labs(title = "Debt Service", subtitle = "Short Term Borrowing: Principal and Interest Payments", y="Billions of Dollars")
 ```
 
-When including short term borrowing and normal debt service, the debt ratio seems more normal and the total interest and principal payments over the years are smoothed out.
+> When including short term borrowing and normal debt service together, the debt ratio seems more c anonsistent d the total interest and principal payments over the years are smoothed out.
 
-For additional context, here is a very simple graph of all bond proceeds. Bond proceeds are not considered a revenue source in the Fiscal Futures model. We do not dive into the different types of proceeds but that could be an interesting topic by itself.
-
-```{r}
-rev_temp %>% 
-  filter(rev_type == "72")
-
-bond_proceeds <- rev_temp %>% 
-  filter(rev_type == "72") %>% #bond proceeds
-#  filter(agency == "370" & source == "0571") %>%     
-  group_by(fy, fund_cat_name.y) %>% 
-  summarize(sum = sum(receipts/1000000000, na.rm=FALSE))
-
-bond_proceeds %>% ggplot() + 
-  geom_line(aes(x=fy, y=sum, color=fund_cat_name.y)) + 
-  labs(title = "Bond Proceeds, Revenue Type = 72", y="Billions of Dollars")
-```
-
-#### 
-
--   Tollway expenditure = Debt service costs + maintenance & operation costs
-
-Principal and interest amounts calculated for the state exclude the Illinois Tollway debt service and debt service for capital projects (mostly because principal and interest are included as one item in the data). Capital projects include the IL Civic Center and Build Illinois Bonds. Tollway principal and interest has been dropped from the State's total Debt Service expenditure but it is included in the Illinois Tollway Expenditure cost.
-
-Capital projects debt service is examined below:
+Debt service for Capital projects (object==8800) is examined below. Tollway debt service is EXCLUDED from these values. The ratio calculated in the table below is interest/principal.
 
 ```{r}
 capitalprojects <- exp_temp %>% 
   filter(object == "8800" & fund != "0455") # capital debt service except tollway
 
-all_debt <- exp_temp %>%     # all debt except tollway
+all_debt <- exp_temp %>%     # all principal, interest, and debt service except Tollway
   filter(fund != "0455" & (object == "8811" |object == "8813" | object == "8800") )%>% 
   group_by(fy, object) %>% 
   summarize(sum = sum(expenditure, na.rm=TRUE)) %>% 
@@ -170,25 +141,51 @@ all_debt %>%
     geom_line(aes(x=fy, y=interest/1000000, color = "Interest"))+
     geom_line(aes(x=fy, y = CapitalProjects / 1000000, color = "Capital Projects"))+
     labs(y = "Debt ($Millions)",
-         title = "Principal and Interest payments", 
+         title = "Illinois Principal and Interest payments", 
          subtitle = "Principal and interest from short term borrowing and GO Bonds debt service", 
          caption = "Capital projects does not include Illinois tollway debt service.
-  
-         Capital projects data include interest and principal values as one value and cannot be sepearated.")
+         Capital projects data include interest and principal values as one value and is graphed separately.")
 
 
 
+```
+
+#### 
+
+For additional context on bond proceeds coming in compared to the debt service being paid, here is a very simple graph of all bond proceeds. Bond proceeds are not considered a revenue source in the Fiscal Futures model. We do not dive into the different types of proceeds but that could be an interesting topic by itself.
+
+```{r}
+rev_temp %>% 
+  filter(rev_type == "72")
+
+bond_proceeds <- rev_temp %>% 
+  filter(rev_type == "72") %>% #bond proceeds
+#  filter(agency == "370" & source == "0571") %>%     
+  group_by(fy, fund_cat_name.y) %>% 
+  summarize(sum = sum(receipts/1000000000, na.rm=FALSE))
+
+rev_temp %>% filter(rev_type == "72") %>% ggplot() + geom_col(aes(x=fy, y=receipts)) + labs(title = "All Bond Proceeds")
+
+bond_proceeds %>% ggplot() + 
+  geom_line(aes(x=fy, y=sum, color=fund_cat_name.y)) + 
+  labs(title = "Bond Proceeds, Revenue Type = 72", y="Billions of Dollars")
 ```
 
 #### Tollway Debt, Revenue, and Expenditures
 
 A note on what is considered Transportation vs. Tollway vs. Capital Projects:
 
--   Transportation is made up of the road fund (0011) , capital administrative costs, and maintenance costs for the agency=494, Department of Transportation.
+-   Transportation costs is made up of the road fund (0011) , capital administrative costs, and maintenance costs for the agency=494, Department of Transportation.
 -   Tollway expenditures include maintenance and operation, principle and interest payments occurring from fund 0455 and agency = 577.
 -   Capital improvement has a lot of projects that use bond financed funds for schools, sports facilities, etc. Agencies 511, 554, 574, and 598 are coded together as group 946, capital improvement (Capital Development Board, Sports Facilities Development Authority, Metro Pier and Exposition Authority, and Upper River Development Authority which is no longer used). IOC uses object 8800.
 
-*Coding Notes: Tollway agency expenditures = SAME as filtering by fund == 0455*
+*Coding Notes: Filtering by Tollway agency 577 expenditures = SAME as filtering by fund == 0455 expenditures*
+
+-   Total Tollway expenditure = Debt service costs + maintenance & operation costs
+
+Principal and interest amounts calculated for the state exclude the Illinois Tollway debt service and debt service for capital projects (mostly because principal and interest are included as one item in the data). Examples of capital projects include the IL Civic Center and Build Illinois Bonds. Tollway principal and interest IS included in the Illinois Tollway expenditures.
+
+The object `tollway` includes all Tollway expenditures (capital improvements, principal and interest payments, operations, etc).
 
 ```{r tollway}
 
@@ -198,32 +195,38 @@ A note on what is considered Transportation vs. Tollway vs. Capital Projects:
 #   summarize(sum = sum(expenditure)) %>% 
 #   arrange(-fy)
 
-tollway <- exp_temp %>% 
-  filter(fund == "0455") #all tollway expenditures
+alltollway_exp <- exp_temp %>% 
+  filter(fund == "0455") %>% # all tollway expenditures, including debt service
+  group_by(fy) %>% 
+  summarize(expenditure = sum(expenditure))
+alltollway_exp
 
-tollway
-
-tollway_exp <- exp_temp %>% 
-  filter(fund == "0455") %>% 
+tollway_exp <- exp_temp %>% #expenditures without debt service
+  filter(fund == "0455" & object != "8800") %>% 
   group_by(fy) %>% 
   summarize(expenditure = sum(expenditure))
 
+#tollway debt principal and interest
+tollwaydebt <- exp_temp %>%
+  filter(object == "8800" & fund == "0455") %>% 
+  group_by(fy) %>% 
+  summarize(sum=sum(expenditure)) 
 
 
 capitalproject_debtservice <- exp_temp %>%
   filter(object == "8800") # ALL Capital projects debt service including tollway
 
 # look at Illinois tollway bond proceeds and debt service: 
-rev_temp %>% filter(fund == "0455") # examine revenue to fund 0455
+# rev_temp %>% filter(fund == "0455") # examine revenue to fund 0455
 
 
-rev_temp %>% 
-  filter(fund == "0455") %>% 
+alltollway_rev <- rev_temp %>% 
+  filter(fund == "0455") %>%  # includes bond proceeds
   group_by(fy) %>% 
   summarize(sum = sum(receipts)) %>% 
   arrange(-fy)
 
-alltollway <- rev_temp %>% 
+tollway_rev <- rev_temp %>% #tollway revenue without bond proceeds
   filter(fund == "0455" & source != "0571") %>% 
   group_by(fy) %>% 
   summarize(sum = sum(receipts, na.rm = TRUE))
@@ -246,12 +249,7 @@ tollway_bondproc <- rev_temp %>%
 
 #tollwaydebt %>% ggplot() + geom_line(aes(x=fy, y=sum)) + labs(title = "Tollway Debt Service", caption = "Debt service includes principal and interest for the Illinois Tollway. Object = 8800 and fund = 0455")
 
-#tollway debt principal and interest
 
-tollwaydebt <- exp_temp %>%
-  filter(object == "8800" & fund == "0455") %>% 
-  group_by(fy) %>% 
-  summarize(sum=sum(expenditure)) 
 
 
 ## Tollway agency 577 expenditures = SAME as filtering by tollway fund == 0455 ##
@@ -266,7 +264,7 @@ ggplot()+
   geom_col(data=tollway_bondproc, aes(x=fy, y=sum)) +
   geom_line(data= tollwaydebt, aes(x=fy, y = sum, color = 'Debt Service'))+ 
   geom_line(data= tollway_exp, aes(x=fy, y = expenditure, color = 'Tollway Expenditures'))+ 
-  geom_line(data= alltollway, aes(x=fy, y = sum, color = "Tollway Revenue"))+ 
+  geom_line(data= tollway_rev, aes(x=fy, y = sum, color = "Tollway Revenue"))+ 
   scale_color_manual(values = c(
     'Bond Proceeds' = 'darkgray',
     'Debt Service' = 'red',
@@ -276,26 +274,45 @@ ggplot()+
        caption = "Tollway revenue + bond proceeds should be roughly equal to tollway expenditures + debt service.", 
        y = "Dollars")
 
+ggplot()+
+  geom_line(data=alltollway_exp, aes(x=fy, y=expenditure/1000000000, color = "All Tollway Revenue")) +
+  geom_line(data= alltollway_rev, aes(x=fy, y = sum/1000000000, color = 'All Tollway Expenditures'))+ 
+  scale_color_manual(values = c(
+    'All Tollway Revenue' = 'darkgray',
+    'All Tollway Expenditures' = 'red')) +
+  theme(legend.position = "bottom")+
+  labs(title=" All revenues (Tolls + bond proceeds) and all expenditures (operations, capital improvements, & debt service.)", 
+       caption = "Tollway revenue + bond proceeds should be roughly equal to tollway expenditures + debt service.
+       Capital improvements and the cost of principal payments may be double counting those costs.
+       (The cost of the project and then the cost of debt service).", 
+       y = "Billions of Dollars")
+
 ```
 
 #### 
 
 ```{r}
-all_debt %>% 
+all_debt %>%  # all debt does NOT include the tollway expenditures
   ggplot() + 
     geom_line(aes(x=fy, y=principal/1000000, color = "Principal"))+ 
     geom_line(aes(x=fy, y=interest/1000000, color = "Interest"))+
     geom_line(aes(x=fy, y = CapitalProjects / 1000000, color = "Capital Projects Debt Service"))+
     geom_line(data = tollwaydebt, aes( x=fy, y=sum/1000000, color = "Tollway Debt Service"))+
+  theme(legend.position = "bottom") +
     labs(y = "Debt ($Millions)", title = "Short term borrowing and GO Bonds",
-         subtitle = "Principal and Interest payments", caption = "Capital projects does not include Illinois tollway debt service.") 
+         subtitle = "Principal and Interest payments", 
+         caption = "Capital projects (object 8800) does not include Illinois tollway debt service (fund 0455).
+         Tollway debt service is graphed separately.
+         ") 
 
 all_debt %>% 
   ggplot() + 
-    geom_line(aes(x=fy, y=(principal+interest)/1000000, color = "Principal & Interest"))+ 
+    geom_line(aes(x=fy, y=(principal+interest+CapitalProjects)/1000000, color = "All Principal & Interest"))+ 
     #geom_line(aes(x=fy, y=interest/1000000, color = "Interest"))+
-    geom_line(aes(x=fy, y = CapitalProjects / 1000000, color = "Capital Projects Debt Service"))+
+  #  geom_line(aes(x=fy, y = CapitalProjects / 1000000, color = "Capital Projects Debt Service"))+
     geom_line(data = tollwaydebt, aes( x=fy, y=sum/1000000, color = "Tollway Debt Service"))+
-    labs(y = "Debt ($Millions)", title = "Illinois Debt Service Expenditures: Short term borrowing and GO Bonds",
-         subtitle = "Principal and Interest payments", caption = "Capital projects does not include Illinois tollway debt service.") 
+    theme(legend.position = "bottom") +
+    labs(y = "Debt ($Millions)", title = "Illinois Debt Service Expenditure",
+         subtitle = "All Principal and Interest payments", caption = "All principal and interest includes short-term borrowing, GO bonds, and capital projects debt service 
+         EXCEPT the Illinois Tollway debt service. Illinois tollway debt service is graphed separately.") 
 ```
