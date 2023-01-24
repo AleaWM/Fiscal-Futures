@@ -25,7 +25,6 @@ exp_temp <- read_csv("exp_temp.csv")
 rev_temp <- read_csv("rev_temp.csv")
 ```
 
-# Expenditure & Revenue Categorization
 
 ## Modify Expenditure File
 
@@ -84,15 +83,10 @@ exp_temp <- exp_temp %>% filter(refund == "not refund")
 State pension contributions are largely captured with object=4431. **(State payments into pension fund).** State payments to the following pension systems:
 
 -   Teachers Retirement System (TRS)
-
 -   New POB bond in 2019: Accelerated Bond Fund paid benefits in advance as lump sum
-
 -   State Employee Retirement System (SERS)
-
 -   State University Retirement System (SURS)
-
 -   Judges Retirement System (JRS)
-
 -   General Assembly Retirement System (GARS)
 
 Modify exp_temp and move all state pension contributions to their own group (901). For more information on the variables included or excluded, please see the @Pensions chapter.
@@ -384,7 +378,11 @@ medicaid_check %>% group_by(fy) %>% summarize(sum = sum(expenditure)) %>% arrang
 # if we want state CURE as public health or other group number
 # exp_temp <- exp_temp %>% mutate(group = if_else(fund == "0324" & agency=="478" & appr_org == "65" & object=="4900", "478", as.character(group)))
 
-medicaid_check %>% filter(fy>2020) %>% group_by(wh_approp_name,fy) %>% summarize(sum=sum(expenditure)) %>% arrange(wh_approp_name)
+medicaid_check %>% 
+  filter(fy>2020) %>%
+  group_by(wh_approp_name,fy) %>%
+  summarize(sum=sum(expenditure)) %>%
+  arrange(wh_approp_name)
 ```
 
 ### Add Other Fiscal Future group codes
@@ -485,23 +483,9 @@ exp_temp %>% filter(group_name == "Check name")
 
 ```
 
-All expenditures recoded but not aggregated: Allows for inspection of individual expenditures within larger categories. This stage of the data is extremely useful for investigating almost all questions we have about the data.
-
-Note that these are the raw figures BEFORE we take the additional steps:
-
--   Subtract tax refunds from tax revenues by revenue type.
-
-```{r}
-exp_temp %>% 
-  filter(fy>2020 & fund == "0561") %>% 
-  group_by(wh_approp_name, fy) %>% 
-  summarise(sum=sum(expenditure)) %>% 
-  arrange(-sum)
-
-
-```
-
-SBE Federal Department of Education is fund 0561. Fund 0579 is the State Board of Education.
+::: callout-important
+All expenditures recoded but not aggregated: Allows for inspection of individual expenditures within larger categories. This stage of the data is extremely useful for investigating how individual items have been coded before they are aggregated into larger categories.
+:::
 
 ## Modify Revenue data
 
@@ -543,6 +527,8 @@ rev_temp <- rev_temp %>%
 
 ### Federal to State Transfers
 
+For an deeper look at federal revenue to Illinois, [Chapter -@sec-covid-federal-funds].
+
 ```{r create-rev-federal-transfers}
 #rev_temp <- rev_temp %>% filter(in_ff==1)
 
@@ -569,58 +555,11 @@ rev_temp %>%
   theme(legend.position = "bottom", legend.title = element_blank()  )
 ```
 
-Looking at Federal Revenue:
-
-All revenue sources within "Federal - Other" source.
-
-```{r}
-rev_temp %>% filter(rev_type == "57" & fy >2018) %>% group_by(fund_name, source_name_AWM,  fy) %>% summarize(receipts =sum(receipts)) %>% arrange(-receipts) %>% pivot_wider(names_from = fy, values_from = receipts)
-
-fed_rev_compare <- rev_temp %>% filter((rev_type == "57" | rev_type == "58" | rev_type == "59") & (fy == 2022 | fy==2021 | fy==2020 | fy == 2019)) %>%  arrange(-receipts)
-write_csv(fed_rev_compare, "comparefedrev.csv")
-
-
-rev_temp %>% filter(source_name_AWM == "FEDERAL STIMULUS PACKAGE") %>% group_by(fy, fund_name) %>% summarize(receipts =sum(receipts)) %>% arrange(-fy)
-
-rev_temp %>% filter(fy > 2018 & source_name_AWM == "FEDERAL STIMULUS PACKAGE") %>% group_by(fund_name, fy) %>% summarize(receipts =sum(receipts)) %>% arrange(-receipts)
-
-rev_temp %>% filter(rev_type == "57" & fy > 2018 & fund_name == "SBE FEDERAL DEPT OF EDUCATION") %>% group_by(source_name_AWM , fund_name, fy) %>% summarize(receipts =sum(receipts)) %>% arrange(-receipts)
-
-exp_temp %>% filter(fy >2019 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE" | fund_name == "SBE FEDERAL DEPT OF EDUCATION" | fund_name == "DISASTER RESPONSE AND RECOVERY" | fund_name == "ESSENTIAL GOVT SERV SUPPORT" )) %>% group_by(fy, agency_name, wh_approp_name, fund_name) %>% 
-  summarize(sum=sum(expenditure),
-            appropriated = sum(appn_net_xfer)) %>% 
-  arrange(-appropriated)
-
-exp_temp %>% filter(fy >2019 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE" | fund_name == "SBE FEDERAL DEPT OF EDUCATION" | fund_name == "DISASTER RESPONSE AND RECOVERY" | fund_name == "ESSENTIAL GOVT SERV SUPPORT" )) %>% group_by(fy, wh_approp_name, fund_name) %>% 
-  summarize(sum=sum(expenditure),
-            appropriated = sum(appn_net_xfer)) %>% 
-  arrange(-appropriated)
-
-
-exp_temp %>% filter(fy >2019 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE" | fund_name == "SBE FEDERAL DEPT OF EDUCATION" | fund_name == "DISASTER RESPONSE AND RECOVERY" | fund_name == "ESSENTIAL GOVT SERV SUPPORT" )) %>% group_by(fund_name, fy, agency_name) %>% 
-  summarize(sum=sum(expenditure),
-            appropriated = sum(appn_net_xfer)) %>% 
-  arrange(-appropriated)
-
-exp_temp %>% filter(fy == 2022 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE")) %>% group_by(org_name, agency_name, object, wh_approp_name, fund_name) %>% summarize(sum=sum(expenditure)) %>% arrange(-sum)
-
-exp_temp %>% filter(fy == 2022 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE")) %>% group_by(agency_name, object, wh_approp_name, fund_name) %>% summarize(sum=sum(expenditure)) %>% arrange(-sum)
-
-exp_temp %>% filter(fy == 2022 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE")) %>% group_by(fund_name, object, org_name) %>% summarize(sum=sum(expenditure)) %>% arrange(-sum)
-
-
-exp_temp %>% filter(fy == 2022 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE")) %>% group_by(fund_name, agency_name) %>% summarize(sum=sum(expenditure)) %>% arrange(-sum)
-
-exp_temp %>% filter(fy == 2022 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE")) %>% group_by(agency_name) %>% summarize(sum=sum(expenditure)) %>% arrange(-sum)
-
-exp_temp %>% filter(fy == 2021 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE")) %>% group_by(wh_approp_name, fund_name) %>% summarize(sum=sum(expenditure)) %>% arrange(-sum)
-```
-
 **Dropping State CURE Revenue**
 
-The Fiscal Futures model focuses on sustainable revenue sources. To understand our fiscal gap and outlook, we need to exclude these one time revenues. GOMB has emphasized that they have allocated COVID dollars to one time expenditures (unemployment trust fund, budget stabilization fund, etc.). The fiscal gap, graphs,and CAGRs have been recalculated in the [Drop COVID Dollars] section below. In addition, an attempt at forecasting revenue and expenditures is also made after dropping the federal COVID dollars.
+The Fiscal Futures model focuses on sustainable revenue sources. To understand our fiscal gap and outlook, we need to exclude these one time revenues. GOMB has emphasized that they have allocated COVID dollars to one time expenditures (unemployment trust fund, budget stabilization fund, etc.). The fiscal gap, graphs,and CAGRs have been recalculated in the [Drop COVID Dollars] section below.
 
-> NOTE: I have only dropped State and Local CURE revenue so far. Federal money went into other funds during the beginning of pandemic.
+> NOTE: The code chunk below only drops revenue sources with the source name of "Federal Stimulus Package" (which is the State and Local CURE revenue). Additional federal money went into other funds during the beginning of pandemic. Many departments saw increased grants and received other funds (e.g. ESSER funds)
 
 ```{r}
 rev_temp <- rev_temp %>% mutate(covid_dollars = ifelse(source_name_AWM == "FEDERAL STIMULUS PACKAGE",1,0))
@@ -682,20 +621,13 @@ emp_premium_long <- rev_temp %>%  filter(employee_premiums == 1)
 
 ```
 
-*note: In FY21, employee premiums were subtracted from state healthcare costs on the expenditure side to calculate a "Net Healthcare Cost" but that methodology has been discontinued. Totals were practically unchanged: revenue from employee premiums is also very small.*
+*Note: In FY21, employee premiums were subtracted from state healthcare costs on the expenditure side to calculate a "Net Healthcare Cost" but that methodology has been discontinued. Totals were practically unchanged: revenue from employee premiums is also very small.*
 
 ### Transfers in and Out:
 
 Funds that hold and disperse local taxes or fees are dropped from the analysis. Then other excluded revenue types are also dropped.
 
 Drops Blank, Student Fees, Retirement contributions, proceeds/investments, bond issue proceeds, interagency receipts, cook IGT, Prior year refunds:
-
-**I don't have much faith in the transfers in and out steps- AWM**
-
-I am currently choosing to exclude the totals from this step. Overall, this decreases the total revenues in "All Other Revenues" by a few million dollars.
-
--   in_from_out \<- c("0847", "0867", "1175", "1176", "1177", "1178", "1181", "1182", "1582", "1592", "1745", "1982", "2174", "2264")\
--   See the methodology document for the list of what these sources/funds are.
 
 ```{r step-3.8}
 rev_temp <- rev_temp %>% 
@@ -717,8 +649,6 @@ rev_temp <- rev_temp %>%
 # if source contains any of the codes in in_from_out, code them as 76 (all other rev).
 # I end up excluding rev_76 in later steps
 ```
-
-Corporate income tax Individual Income Tax Pass-Through (source =2582) was over 2 billion. The PTE tax allows a workaround to the federal \$10,000 limitation for state and local tax (SALT) deductions and expires Jan 1. 2026 (to correspond with remaining years that the Tax Cuts and Jobs Act SALT limitation is in effect) [Tax Adviser](https://www.thetaxadviser.com/issues/2021/sep/illinois-passthrough-entity-tax-salt-cap-workaround.html). With the enactment of the Tax Cuts and Jobs Act of 2017 ("TCJA"), individual taxpayers were limited to a \$10,000 state and local tax deduction per year. In response to this limitation, many states created a workaround mechanism, introducing a pass-through entity tax ("PTET"). This shifted the state and local tax deduction from an individual taxpayer to the entity level that is not subject to the \$10,000 limitation. Implications: Illinois residents in multistate passthrough entities will need to pay estimated taxes on income that is not subject to the SALT cap tax. TCJA of 2017 decreased
 
 ```{r droprevtypes}
 # revenue types to drop
@@ -763,17 +693,9 @@ rm(exp_1998_2022)
 
 -   Local Government Transfers (exp_970) should be on the expenditure side
 
--   ~~State employer group insurance contributions should be dropped to avoid double counting both the state.~~ Do not do this. This was done for FY21 only and will not be done again.\
-
--   ~~Subtract employee insurance premiums from State Employee Healthcare Expenditures (group == 904) - Employee Premiums = Actual state healthcare costs.~~\
-
--   ~~ff_exp~~$exp904 − emp_premium$employee_premiums_sum = statehealthcarecosts
-
-    -   Did in FY21, but not doing again. Minor difference in fiscal gap overall from change in methodology.
-
 ### Revenues
 
-I chose to drop rev_76 for Transfers in and Out because I do not understand why that step occurs in the previously used Stata code. Rev_76 was created and included in rev_78 for All Other Revenues in old Stata code for years before FY21 but that method has been discontinued for FY22.
+I chose to drop rev_76 for Transfers in and Out because I do not understand why that step occurs in the previously used Stata code. Rev_76 was created and included in rev_78 for All Other Revenues in old Stata code for years before FY21 but that method has been discontinued for FY22. Including vs excluding rev_76 does not change the overall interpretation of the fiscal gap.
 
 ```{r final-ffrev-table}
 ff_rev <- rev_temp %>% 
@@ -883,7 +805,9 @@ ff_exp <- exp_temp %>%
   left_join(transfers) %>%
   mutate(exp_970 = exp_971 + exp_972  + exp_975 + exp_976)
 
-ff_exp<- ff_exp %>% select(-c(debt_cost, exp_971:exp_976)) # drop unwanted columns
+ff_exp<- ff_exp %>% 
+  select(-c(debt_cost, exp_971:exp_976)) # drop unwanted columns
+
 ff_exp
 ```
 
@@ -905,7 +829,7 @@ aggregate_exp_labeled <- exp_temp %>%
 aggregate_exp_labeled
 ```
 
-# Clean Table Outputs
+# Graphs and Tables
 
 Create total revenues and total expenditures only:
 
@@ -1136,7 +1060,7 @@ year_totals <- aggregated_totals_long %>%
 year_totals  %>%  
   kbl(caption = "Fiscal Gap for each Fiscal Year") %>% 
   kable_styling(bootstrap_options = c("striped"))  %>%
-kable_classic() %>%   add_footnote(c("Methodology has changed since past publications","Values include State and Local CURE dollars"))
+kable_classic() %>%   add_footnote(c("Methodology has changed since past publications","Values include State CURE dollars"))
 ```
 
 ```{r include = FALSE}
@@ -1155,63 +1079,65 @@ kable_classic() %>%   add_footnote(c("Methodology has changed since past publica
 
 ```
 
-# Graphs
 
 Graphs made from `aggregated_totals_long` dataframe.
 
-```{r}
+```{r fiscal-gap}
 
 annotation <- data.frame(
   x = c(2004, 2017, 2019),
-  y = c(60000, 50000, 5000),  
+  y = c(60, 50, 5),  
   label = c("Expenditures","Revenue", "Fiscal Gap")
 )
 
 # with trend lines:
-year_totals %>%  
-  ggplot() +
-  # geom_smooth adds regression line, graphed first so it appears behind line graph
-  geom_smooth(aes(x = Year, y = Revenue), color = "rosybrown2", alpha = 0.7, method = "lm", se = FALSE) + 
-  geom_smooth(aes(x = Year, y = Expenditures), color = "gray", method = "lm", se = FALSE) +
-  
-  # line graph of revenue and expenditures
-  geom_line(aes(x = Year, y = Revenue), color = "Black", size=1) +
-  geom_line(aes(x = Year, y = Expenditures), color = "red", size=1) +
-  
-  # labels
-    theme_bw() +
-  scale_y_continuous(labels = comma)+
-  xlab("Year") + 
-  ylab("Millions of Dollars")  +
-  ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
+# year_totals %>%  
+#   ggplot() +
+#   # geom_smooth adds regression line, graphed first so it appears behind line graph
+#   geom_smooth(aes(x = Year, y = Revenue/1000), color = "rosybrown2", alpha = 0.7, method = "lm", se = FALSE) + 
+#   geom_smooth(aes(x = Year, y = Expenditures/1000), color = "gray", method = "lm", se = FALSE) +
+#   
+#   # line graph of revenue and expenditures
+#   geom_line(aes(x = Year, y = Revenue/1000), color = "Black", size=1) +
+#   geom_line(aes(x = Year, y = Expenditures/1000), color = "red", size=1) +
+#   
+#   # labels
+#     theme_bw() +
+#   scale_y_continuous(labels = comma)+
+#   xlab("Year") + 
+#   ylab("Billions of Dollars")  +
+#   ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
 
 
-# without trend lines:
-year_totals %>%  
-  ggplot() +
-  # line graph of revenue and expenditures
-  geom_line(aes(x = Year, y = Revenue), color = "Black", size=1) +
-  geom_line(aes(x = Year, y = Expenditures), color = "red", size=1) +
-      theme_bw() +
-  scale_y_continuous(labels = comma)+
-  xlab("Year") + 
-  ylab("Millions of Dollars")  +
-  ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
 
 
+# # without trend lines:
+# year_totals %>%  
+#   ggplot() +
+#   # line graph of revenue and expenditures
+#   geom_line(aes(x = Year, y = Revenue), color = "Black", size=1) +
+#   geom_line(aes(x = Year, y = Expenditures), color = "red", size=1) +
+#       theme_bw() +
+#   scale_y_continuous(labels = comma)+
+#   xlab("Year") + 
+#   ylab("Millions of Dollars")  +
+#   ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
+
+
+## Dashed line versions for expenditures: 
 
 fiscal_gap <- year_totals %>%  
   ggplot() +
   geom_hline(yintercept = 0) +
   # geom_smooth adds regression line, graphed first so it appears behind line graph
-  geom_smooth(aes(x = Year, y = Revenue), color = "gray", alpha = 0.7, method = "lm", se = FALSE) + 
+  geom_smooth(aes(x = Year, y = Revenue/1000), color = "gray", alpha = 0.7, method = "lm", se = FALSE) + 
   #  scale_linetype_manual(values="dashed")+
-  geom_smooth(aes(x = Year, y = Expenditures), color ="rosybrown2", linetype = "dashed", method = "lm", se = FALSE, alpha = 0.7) +
+  geom_smooth(aes(x = Year, y = Expenditures/1000), color ="rosybrown2", linetype = "dotted", method = "lm", se = FALSE, alpha = 0.7) +
 
   # line graph of revenue and expenditures
-  geom_line(aes(x = Year, y = Revenue), color = "Black", size=1) +
-  geom_line(aes(x = Year, y = Expenditures, linetype = "dashed"), color = "red", lwd=1) +
-  geom_line(aes(x = Year, y = `Fiscal Gap`), color = "gray") +
+  geom_line(aes(x = Year, y = Revenue/1000), color = "Black", size=1) +
+  geom_line(aes(x = Year, y = Expenditures/1000, linetype = "dashed"), color = "red", lwd=1) +
+  geom_line(aes(x = Year, y = (`Fiscal Gap`/1000)), color = "gray") +
   
   geom_text(data = annotation, aes(x=x, y=y, label=label))+
   # labels
@@ -1220,28 +1146,29 @@ fiscal_gap <- year_totals %>%
 
     scale_linetype_manual(values = c("dashed", "dashed")) +
 
-  scale_y_continuous(labels = comma)+
+#  scale_y_continuous(labels = comma)+
   xlab("Year") + 
-  ylab("Millions of Dollars")  +
+  ylab("Billions of Dollars")  +
   ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
 
 fiscal_gap
 
 
 
-annotation_billions <- data.frame(
-  x = c(2004, 2017, 2019),
-  y = c(60, 50, 5),  
-  label = c("Expenditures","Revenue", "Fiscal Gap")
-)
+# annotation_billions <- data.frame(
+#   x = c(2004, 2017, 2019),
+#   y = c(60, 50, 5),  
+#   label = c("Expenditures","Revenue", "Fiscal Gap"))
+
+
 fiscal_gap2 <- year_totals %>%  
   ggplot() +
   geom_hline(yintercept = 0) +
   geom_line(aes(x = Year, y = Revenue/1000), color = "Black", lwd=1) +
   geom_line(aes(x = Year, y = Expenditures/1000, linetype = "dashed"), color = "red", lwd=1) +
-  geom_line(aes(x = Year, y = `Fiscal Gap`/1000), color = "gray") +
+  geom_line(aes(x = Year, y = (`Fiscal Gap`/1000)), color = "gray") +
   
-  geom_text(data = annotation, aes(x=x, y=y/1000, label=label))+
+  geom_text(data = annotation, aes(x=x, y=y, label=label))+
     theme_bw() +
   theme(legend.position = "none")+
     scale_linetype_manual(values = c("dashed", "dashed")) +
@@ -1253,10 +1180,11 @@ fiscal_gap2 <- year_totals %>%
 
 fiscal_gap2
 
-
 ```
 
-```{r}
+```{r include=FALSE, eval=FALSE}
+#Very messy graph of all expenditures and revenues 
+
 aggregated_totals_long %>%  
   filter(type == "exp") %>% # uses only expenditures
   ggplot(aes(x = Year, y = Dollars, group = Category, color = Category)) +
@@ -1277,7 +1205,7 @@ aggregated_totals_long %>%
 
 ```
 
-**Expenditure and revenue amounts in millions of dollars:**
+**Expenditure and revenue amounts in billions of dollars:**
 
 ```{r}
 exp_long %>%
@@ -1286,13 +1214,13 @@ exp_long %>%
  # select(-c(Year, `Total Expenditures`)) %>%
   arrange(desc(`Dollars`)) %>%
   ggplot() + 
-  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`, fill = "red"))+ 
+  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = (`Dollars`/1000), fill = "red"))+ 
   coord_flip() +
       theme_bw()+
   theme(legend.position = "none") +
   labs(title = "Expenditures for FY2022") +
     xlab("Expenditure Categories") +
-  ylab("Millions of Dollars") 
+  ylab("Billions of Dollars") 
 
 rev_long %>%
   filter(Year == 2022) %>%
@@ -1300,13 +1228,13 @@ rev_long %>%
  # select(-c(Year, `Total Expenditures`)) %>%
   arrange(desc(`Dollars`)) %>%
   ggplot() + 
-  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`))+ 
+  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = (`Dollars`/1000)))+ 
   coord_flip() +
     theme_bw() +
     theme(legend.position = "none") +
       labs(title = "Revenues for FY2022")+
     xlab("Revenue Categories") +
-  ylab("Millions of Dollars") 
+  ylab("Billions of Dollars") 
 
 ```
 
@@ -1370,9 +1298,9 @@ rev_long %>%
   ylab("Millions of Dollars")
 ```
 
-**Changes in Categories - 2021 to 2022** Dot Plot Attempt:
+**Changes in Categories - 2021 to 2022**
 
-```{r}
+```{r dotplots}
 rev_long %>%
     filter(Year == "2022" | Year == "2021") %>%
   mutate(Year = as.character(Year)) %>%
@@ -1396,8 +1324,6 @@ rev_long %>%
  # axis.ticks.x = element_blank()
  )+
   scale_x_continuous(limits = c(0, 31000), labels = comma)
-
-
 
 
 exp_long %>%
@@ -1472,7 +1398,7 @@ exp_long %>%
 
 ```
 
-### Top 3 Revenues
+### Top 3 Revenues {#sec-top-3-revenues}
 
 ```{r}
 
@@ -1501,7 +1427,7 @@ top3 <- rev_long  %>%
 top3
 ```
 
-### Own Source and Fed Transfers
+### Own Source and Fed Transfers {#sec-own-source-and-fed-transfers}
 
 ```{r}
 
@@ -1539,13 +1465,15 @@ ggplot() +
 
 ```
 
-# CAGR / Growth
+## Change from Previous Year
 
 Each year, you will need to update the CAGR formulas! Change the filter() year.
 
-`calc_cagr` is a function created for calculating the CAGRs for different spans of time.
+`calc_cagr` is a function created for calculating the CAGRs for different spans of time. 
 
-```{r CAGR-expenditures}
+```{r CAGR-no-totals, eval=FALSE,include=FALSE}
+
+#### Makes CAGR calculations WITHOUT totals row at the the bottom
  
 # function for calculating the CAGR
 calc_cagr <- function(df, n) {
@@ -1596,13 +1524,15 @@ CAGR_expenditures_summary <- data.frame(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10,
 
 CAGR_expenditures_summary %>% # adorn_totals("row") %>% # totals calculated numbers, not what I want
   kbl(caption = "CAGR Calculations for Expenditure Categories") %>% 
-  kable_styling(bootstrap_options = c("striped"))
+  kable_classic()
 
 # to have it as a csv, uncomment the line below
 #write_csv(CAGR_expenditures_summary, "CAGR_expenditures_summary.csv")
-```
 
-```{r CAGR-revenues}
+
+
+#### Makes CAGR calculations WITHOUT totals row at the the bottom
+
   
 calc_cagr <- function(df, n) {
   df <- rev_long %>%
@@ -1644,17 +1574,17 @@ CAGR_revenue_summary <- data.frame(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr
 
 CAGR_revenue_summary %>% 
   kbl(caption = "CAGR Calculations for Revenue Sources") %>% 
-  kable_styling(bootstrap_options = c("striped"))
+  kable_classic()
 
 # to have it as a csv, uncomment the line below
 #write_csv(CAGR_revenue_summary, "CAGR_revenue_summary.csv")
 
 rm(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_24)
-```
 
-Expenditure and Revenue Growth using a lag formula:
 
-```{r growth}
+### Expenditure and Revenue Growth using a lag formula:
+## Not used
+
  exp_long %>% 
   group_by(Category_name) %>% 
   mutate(Growth = ((Dollars) - lag(Dollars))/lag(Dollars) *100) %>% 
@@ -1666,116 +1596,15 @@ Expenditure and Revenue Growth using a lag formula:
   summarize(Growth = round(mean(Growth, na.rm = TRUE), 2))
 ```
 
-# Change from Previous Year
 
-```{r }
-
-revenue_change <- rev_long %>%
-  select(-c(type,Category)) %>%
-  filter(Year > 2020) %>%
-  pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
-  mutate(
-    "FY 2022 Revenues ($ billions)" = round(Dollars_2022/1000, digits = 1),
-#    "Change from 2021 to 2022" = round(Dollars_2022 - Dollars_2021, digits = 2),
-         "Percent Change from 2021 to 2022" = round(((Dollars_2022 -Dollars_2021)/Dollars_2021*100), digits = 2)) %>%
-  left_join(CAGR_revenue_summary, by = c("Category_name" = "Revenue Category")) %>% 
-    arrange(-`FY 2022 Revenues ($ billions)`)%>%
-  #select(-c(Dollars_2021, Dollars_2021, `1 Year CAGR`:`10 Year CAGR`)) %>%
-  rename( "Compound Annual Growth, 1998-2022*" = `24 Year CAGR`, 
-          "FY2022 Revenue Category" = Category_name ) %>%
-  select(-c(Dollars_2021, Dollars_2022, `1 Year CAGR`:`10 Year CAGR`)) 
-
-revenue_change %>% 
-  kbl(caption = "Yearly Change in Revenue") %>% 
-  kable_styling(bootstrap_options = c("striped"))
-
-expenditure_change <- exp_long %>%
-  select(-c(type,Category)) %>%
-  filter(Year > 2020) %>%
-  pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
-  mutate("FY 2022 Expenditures ($ billions)" = round(Dollars_2022/1000, digits = 1),
-  #  "Change from 2021 to 2022" = Dollars_2022 - Dollars_2021,
-         "Percent Change from 2021 to 2022" = round((Dollars_2022 -Dollars_2021)/Dollars_2021*100, digits = 2) )%>%
-  left_join(CAGR_expenditures_summary, by = c("Category_name" = "Expenditure Category")) %>% 
-  arrange(-`FY 2022 Expenditures ($ billions)`)%>%
-  select(-c(Dollars_2022, Dollars_2021, `1 Year CAGR`:`10 Year CAGR`)) %>%
-  rename( "Compound Annual Growth, 1998-2022*" = `24 Year CAGR`, 
-          "FY2022 Expenditure Category" = Category_name )
-
-expenditure_change %>% 
-  kbl(caption = "Yearly Change in Expenditures") %>% 
-  kable_styling(bootstrap_options = c("striped"))
-           
-```
-
-Saves main items in one excel file named `summary_file.xlsx`. Delete `eval=FALSE` to run on local computer.
-
-```{r }
-#install.packages("openxlsx")
-library(openxlsx)
-
-dataset_names <- list('rev_long' = rev_long, 'exp_long' = exp_long, 
-                      `Table 1` = expenditure_change, `Table 2` = revenue_change,
-                      'Table 4.a' = CAGR_revenue_summary, 'Table 4.b' = CAGR_expenditures_summary, 
-                      'year_totals' = year_totals)
-
-write.xlsx(dataset_names, file = 'summary_file_FY2022.xlsx')
-```
-
-# Drop COVID Dollars
-
-If only sustainable revenues are included in the model, then the federal dollars from the pandemic response (CARES, CRSSA,& ARPA)should be excluded from the calculation of the fiscal gap.
-
-The Fiscal Futures model focuses on sustainable revenue sources. To understand our fiscal gap and outlook, we need to exclude these one time revenues. GOMB has emphasized that they have allocated COVID dollars to one time expenditures (unemployment trust fund, budget stabilization fund, etc.). The fiscal gap, graphs,and CAGRs have been recalculated in the [Drop COVID Dollars] section below. In addition, an attempt at forecasting revenue and expenditures is also made after dropping the federal COVID dollars.
-
-> NOTE: I have only dropped State and Local CURE revenue so far. Federal money went into other funds during the beginning of pandemic.
-
--   fund 0628 is essential government support services. Money in the fund is appropriated to cover COVID-19 related expenses. It should be included in our analytical frame based on criteria 2 and6 --- the fund supports an important state function about public safety, which would have to be performed even the fund structure were not existed. Public safety is supported by a combination of departments and boards, including IL Emergency Management Agency, which is the administering agency of the fund.
-
--   Education Stabilization Fund\
-
--   ESSER
-
--   CSLFRF
-
--   Provider Relief Fund
-
--   Coronavirus Relief Fund (CRF)
-
--   Consolidated Appropriations Act
-
--   Families First Cornovirus Response Act
-
--   Paycheck Protection Program and Health Care Enhancement Act
-
-```{r drop-coviddollars}
-rev_temp <- rev_temp %>%  filter(covid_dollars==0) # keeps observations that were not coded as COVID federal funds
+```{r}
+exp_totals <- ff_exp %>% rowwise() %>% mutate(exp_TOTALS = sum(across(exp_402:exp_970)))
+rev_totals <- ff_rev %>%    rowwise() %>% 
+  mutate(rev_TOTALS = sum(across(rev_02:rev_78)))
 
 
-ff_rev <- rev_temp %>% 
-  group_by(rev_type_new, fy) %>% 
-  summarize(sum_receipts = sum(receipts, na.rm=TRUE)/1000000 ) %>%
-  pivot_wider(names_from = "rev_type_new", values_from = "sum_receipts", names_prefix = "rev_")
 
-ff_rev<- left_join(ff_rev, tax_refund)
-
-ff_rev <- mutate_all(ff_rev, ~replace_na(.,0))
-
-
-ff_rev <- ff_rev %>%
-  mutate(rev_02 = rev_02 - ref_02,
-         rev_03 = rev_03 - ref_03,
-         rev_06 = rev_06 - ref_06,
-         rev_09 = rev_09 - ref_09,
-         rev_21 = rev_21 - ref_21,
-         rev_24 = rev_24 - ref_24,
-         rev_35 = rev_35 - ref_35
-
-         ) %>% 
-  select(-c(ref_02:ref_35, rev_99, rev_NA, rev_76
-            ))
-
-rev_long <- pivot_longer(ff_rev, rev_02:rev_78, names_to = c("type","Category"), values_to = "Dollars", names_sep = "_") %>% 
+rev_long <- pivot_longer(rev_totals, rev_02:rev_TOTALS, names_to = c("type","Category"), values_to = "Dollars", names_sep = "_") %>% 
   rename(Year = fy) %>%
   mutate(Category_name = case_when(
     Category == "02" ~ "INDIVIDUAL INCOME TAXES" ,
@@ -1812,6 +1641,742 @@ rev_long <- pivot_longer(ff_rev, rev_02:rev_78, names_to = c("type","Category"),
     Category == "78" ~  "ALL OTHER SOURCES" ,
     Category == "79" ~   "COOK COUNTY IGT", #dropped
     Category == "98" ~  "PRIOR YEAR REFUNDS", #dropped
+Category == "TOTALS" ~ "Total"
+
+  ) ) %>% 
+  select(-type, -Category) %>%  # drop extra columns type and Category number
+  group_by(Year, Category_name) %>%
+  summarise(Dollars= round(sum(Dollars),digits=2)) %>% 
+  mutate(Category_name = str_to_title(Category_name))
+
+# creates wide version of table where each revenue source is a column
+revenue_wide2 <- rev_long %>% pivot_wider(names_from = Category_name, 
+              values_from = Dollars) %>%
+#  relocate("Other Revenue Sources **", .after = last_col()) %>%
+  relocate("Total", .after =  last_col())
+
+```
+
+```{r }
+exp_long <- pivot_longer(exp_totals, exp_402:exp_TOTALS , names_to = c("type", "Category"), values_to = "Dollars", names_sep = "_") %>% 
+  rename(Year = fy ) %>% 
+  mutate(Category_name = 
+           case_when(
+            Category == "402" ~ "AGING" ,
+            Category == "406" ~ "AGRICULTURE", 
+             Category == "416" ~ "Central Management",
+            Category == "418" ~ "CHILDREN AND FAMILY SERVICES", 
+             Category == "420" ~ "Community Development",
+            Category == "422" ~ "NATURAL RESOURCES" ,
+             Category == "426" ~ "CORRECTIONS",
+            Category == "427" ~ "EMPLOYMENT SECURITY" ,
+             Category == "444" ~ "Human Services" ,
+           Category == "478" ~ "HEALTHCARE & FAM SER NET OF MEDICAID", 
+            Category == "482" ~ "PUBLIC HEALTH", 
+            Category == "492" ~ "REVENUE", 
+             Category == "494" ~ "Transportation" ,
+             Category == "532" ~ "ENVIRONMENTAL PROTECT AGENCY" ,
+             Category == "557" ~ "Tollway" ,
+             Category == "684" ~ "IL COMMUNITY COLLEGE BOARD", 
+             Category == "691" ~ "IL STUDENT ASSISTANCE COMM" ,
+             Category == "900" ~ "NOT IN FRAME",
+             Category == "901" ~ "State Pension Contribution",
+             Category == "903" ~ "Debt Service",
+             Category == "904" ~ "State Employee Healthcare",
+             Category == "910" ~ "LEGISLATIVE"  ,
+             Category == "920" ~ "JUDICIAL" ,
+             Category == "930" ~ "ELECTED OFFICERS" , 
+             Category == "940" ~ "OTHER HEALTH-RELATED", 
+             Category == "941" ~ "Public Safety" ,
+             Category == "942" ~ "ECON DEVT & INFRASTRUCTURE" ,
+             Category == "943" ~ "CENTRAL SERVICES",
+             Category == "944" ~ "BUS & PROFESSION REGULATION" ,
+             Category == "945" ~ "Medicaid" ,
+             Category == "946" ~ "Capital Improvement" , 
+             Category == "948" ~ "OTHER DEPARTMENTS" ,
+             Category == "949" ~ "OTHER BOARDS & COMMISSIONS" ,
+             Category == "959" ~ "K-12 Education" ,
+             Category == "960" ~ "UNIVERSITY EDUCATION",
+             Category == "970" ~ "Local Govt Revenue Sharing",
+          Category == "TOTALS" ~ "Total") #,T ~ "All Other Expenditures **")
+           ) %>% 
+  select(-type, -Category) %>% 
+  group_by(Year, Category_name) %>% 
+  summarise(Dollars= round(sum(Dollars),digits=2)) %>% 
+  mutate(Category_name = str_to_title(Category_name))
+
+expenditure_wide2 <- exp_long%>% 
+  pivot_wider(names_from = Category_name, 
+              values_from = Dollars) %>%
+  #relocate("All Other Expenditures **", .after = last_col()) %>%
+  relocate("Total", .after =  last_col())
+
+
+# function for calculating the CAGR
+calc_cagr <- function(df, n) {
+  df <- exp_long %>%
+    #select(-type) %>%
+    arrange(Category_name, Year) %>%
+    group_by(Category_name) %>%
+    mutate(cagr = ((`Dollars` / lag(`Dollars`, n)) ^ (1 / n)) - 1)
+
+  return(df)
+}
+
+# This works for one variable at a time
+cagr_24 <- calc_cagr(exp_long, 24) %>% 
+  # group_by(Category) %>%
+  summarize(cagr_24 = round(sum(cagr*100, na.rm = TRUE), 2))
+
+cagr23_precovid <- exp_long %>%
+  filter(Year <= 2019) %>%
+  calc_cagr(21) %>% 
+  summarize(cagr_21 = round(sum(cagr*100, na.rm = TRUE), 2))
+
+
+
+cagr_10 <- calc_cagr(exp_long, 10) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_10 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_5 <- calc_cagr(exp_long, 5) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_5 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_3 <- calc_cagr(exp_long, 3) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_3 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_2 <- calc_cagr(exp_long, 2) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_2 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_1 <- calc_cagr(exp_long, 1) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_1 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+CAGR_expenditures_summary_tot <- data.frame(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_24 ) %>% 
+  select(-c(Category_name.1, Category_name.2, Category_name.3, Category_name.4, Category_name.5 )) %>% 
+  rename("Expenditure Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10,"24 Year CAGR" = cagr_24 )
+
+move_to_last <- function(df, n) df[c(setdiff(seq_len(nrow(df)), n), n), ]
+
+CAGR_expenditures_summary_tot <- move_to_last(CAGR_expenditures_summary_tot, 29) 
+
+#CAGR_expenditures_summary_tot <-   select(CAGR_expenditures_summary_tot, -1) 
+
+CAGR_expenditures_summary_tot%>%   
+  kbl(caption = "CAGR Calculations for All Expenditure Categories" , row.names=FALSE) %>% 
+     kable_classic() 
+```
+
+```{r }
+  
+calc_cagr <- function(df, n) {
+  df <- rev_long %>%
+    arrange(Category_name, Year) %>%
+    group_by(Category_name) %>%
+    mutate(cagr = ((Dollars / lag(Dollars, n)) ^ (1 / n)) - 1)
+
+  return(df)
+}
+
+# This works for one variable at a time
+cagr_24 <- calc_cagr(rev_long, 24) %>% 
+     # group_by(Category) %>%
+  summarize(cagr_24 = round(sum(cagr*100, na.rm = TRUE), 2))
+
+cagr_10 <- calc_cagr(rev_long, 10) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_10 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_5 <- calc_cagr(rev_long, 5) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_5 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_3 <- calc_cagr(rev_long, 3) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_3 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_2 <- calc_cagr(rev_long, 2) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_2 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+ cagr_1 <- calc_cagr(rev_long, 1) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_1 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+CAGR_revenue_summary_tot <- data.frame(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_24) %>%   
+  select(-c(Category_name.1, Category_name.2, Category_name.3, Category_name.4, Category_name.5 )) %>% 
+  rename("Revenue Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10,"24 Year CAGR" = cagr_24 )
+
+CAGR_revenue_summary_tot <- move_to_last(CAGR_revenue_summary_tot,1)
+CAGR_revenue_summary_tot <- move_to_last(CAGR_revenue_summary_tot,22)
+
+CAGR_revenue_summary_tot %>% 
+  kbl(caption = "CAGR Calculations for All Revenue Sources", row.names = FALSE) %>% 
+     kable_classic() 
+
+rm(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_24)
+```
+
+
+```{r }
+
+revenue_change2 <- rev_long %>%
+  #select(-c(Category)) %>%
+  filter(Year > 2020) %>%
+  pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
+  mutate(
+    "FY 2022 ($ billions)" = round(Dollars_2022/1000, digits = 1),
+    "FY 2021 ($ billions)" = round(Dollars_2021/1000, digits = 1),
+
+#    "Change from 2021 to 2022" = round(Dollars_2022 - Dollars_2021, digits = 2),
+         "1-Year Change" = round(((Dollars_2022 -Dollars_2021)/Dollars_2021*100), digits = 2)) %>%
+  left_join(CAGR_revenue_summary_tot, by = c("Category_name" = "Revenue Category")) %>% 
+    arrange(-`FY 2022 ($ billions)`)%>%
+  #select(-c(Dollars_2021, Dollars_2021, `1 Year CAGR`:`10 Year CAGR`)) %>%
+  rename( "24-Year CAGR" = `24 Year CAGR`, 
+          "Revenue Category" = Category_name ) %>%
+  select(-c(Dollars_2021, Dollars_2022, `1 Year CAGR`:`10 Year CAGR`)) 
+
+
+revenue_change2 <- move_to_last(revenue_change2,8)
+revenue_change2 <- move_to_last(revenue_change2,1)
+
+revenue_change2 %>% 
+  kbl(caption = "Table 1. Yearly Change in Revenue", row.names = FALSE) %>% 
+   kable_classic() %>%
+    row_spec(23, bold = T, color = "black", background = "gray")
+
+
+
+expenditure_change2 <- exp_long %>%
+  #select(-c(type,Category)) %>%
+  filter(Year > 2020) %>%
+  pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
+  mutate(
+    "FY 2022 ($ billions)" = round(Dollars_2022/1000, digits = 1),
+    "FY 2021 ($ billions)" = round(Dollars_2021/1000, digits = 1),
+
+  #  "Change from 2021 to 2022" = Dollars_2022 - Dollars_2021,
+         "1-Year Change" = round((Dollars_2022 -Dollars_2021)/Dollars_2021*100, digits = 2) )%>%
+  left_join(CAGR_expenditures_summary_tot, by = c("Category_name" = "Expenditure Category")) %>% 
+  arrange(-`FY 2022 ($ billions)`)%>%
+  select(-c(Dollars_2022, Dollars_2021, `1 Year CAGR`:`10 Year CAGR`)) %>%
+  rename( "24-Year CAGR" = `24 Year CAGR`, 
+          "Expenditure Category" = Category_name )
+
+expenditure_change2 <- move_to_last(expenditure_change2, 1)
+
+expenditure_change2 %>% 
+  kbl(caption = "Table 2. Yearly Change in Expenditures", row.names = FALSE) %>% 
+  kable_classic() %>%
+    row_spec(31, bold = T, color = "black", background = "gray")
+
+           
+```
+
+
+## Summary Tables - Largest Categories
+
+The 10 largest revenue sources and 13 largest expenditure sources remain separate categories and all other smaller sources/expenditures are combined into "All Other _____". These condensed tables are typically used in the Fiscal Futures articles. They were manually created in past years but this hopefully automates the process a bit until final formatting stages. 
+
+
+- take ff_rev and ff_exp data frames, which were in wide format, pivot them longer and mutate the Category_name variable to nicer labels. Keep largest categories separate and aggregate the rest. 
+
+```{r }
+exp_totals <- ff_exp %>% rowwise() %>% mutate(exp_TOTALS = sum(across(exp_402:exp_970))) # creates total column too
+
+rev_totals <- ff_rev %>% rowwise() %>%  mutate(rev_TOTALS = sum(across(rev_02:rev_78)))
+
+rev_long_majorcats <- pivot_longer(rev_totals, rev_02:rev_TOTALS, names_to = c("type","Category"), values_to = "Dollars", names_sep = "_") %>% 
+  rename(Year = fy) %>%
+  mutate(Category_name = case_when(
+    Category == "02" ~ "Income Tax" ,
+    Category == "03" ~ "Corporate Income Tax" ,
+    Category == "06" ~ "Sales Tax" ,
+    Category == "09" ~ "Motor Fuel Taxes" ,
+ #   Category == "12" ~ "PUBLIC UTILITY TAXES, gross of PPRT" ,
+  #  Category == "15" ~ "CIGARETTE TAXES" ,
+ #   Category == "18" ~ "LIQUOR GALLONAGE TAXES" ,
+ #  Category == "21" ~ "INHERITANCE TAX" ,
+  #  Category == "24" ~ "INSURANCE TAXES&FEES&LICENSES, net of refunds " ,
+   # Category == "27" ~ "CORP FRANCHISE TAXES & FEES" ,
+ #   Category == "30" ~ "HORSE RACING TAXES & FEES",  # in Other
+    Category == "31" ~ "Medical Provider Assessments" ,
+  #  Category == "32" ~ "GARNISHMENT-LEVIES" , # dropped
+  #  Category == "33" ~  "LOTTERY RECEIPTS" ,
+   # Category == "35" ~  "OTHER TAXES" ,
+    Category == "36" ~  "Receipts from Revenue Producing", 
+    Category == "39" ~  "Licenses, Fees, Registration" ,
+   # Category == "42" ~  "MOTOR VEHICLE AND OPERATORS" ,
+#    Category == "45" ~  "STUDENT FEES-UNIVERSITIES",   # dropped
+#    Category == "48" ~  "RIVERBOAT WAGERING TAXES" ,
+  #  Category == "51" ~  "RETIREMENT CONTRIBUTIONS" , # dropped
+   # Category == "54" ~ "GIFTS AND BEQUESTS", 
+    Category == "57" ~  "Federal Other" ,
+    Category == "58" ~  "Federal Medicaid Reimbursements", 
+    Category == "59" ~  "Federal Transportation" ,
+ #   Category == "60" ~  "OTHER GRANTS AND CONTRACTS", #other
+#    Category == "63" ~  "INVESTMENT INCOME", # other
+ #   Category == "66" ~ "PROCEEDS,INVESTMENT MATURITIES" , #dropped
+ #   Category == "72" ~ "BOND ISSUE PROCEEDS",  #dropped
+ #   Category == "75" ~  "INTER-AGENCY RECEIPTS ",  #dropped
+ #   Category == "76" ~  "TRANSFER IN FROM OUT FUNDS",  #other
+   # Category == "78new" ~  "ALL OTHER SOURCES" ,
+   # Category == "79" ~   "COOK COUNTY IGT", #dropped
+ #   Category == "98" ~  "PRIOR YEAR REFUNDS", #dropped
+                
+Category == "TOTALS" ~ "Total Revenue",
+T ~ "All Other Sources **" # any other Category number that was not specifically referenced is cobined into Other Revenue Sources
+
+  ) ) %>% 
+  select(-type, -Category) %>%  # drop extra columns type and Category number
+  group_by(Year, Category_name) %>%
+  summarise(Dollars= round(sum(Dollars),digits=2)) 
+
+# revenue_wide # not actually in wide format yet. 
+# has 10 largest rev sources separate and combined all others to Other in long data format. 
+
+
+# creates wide version of table where each revenue source is a column
+revenue_wide_majorcats <- rev_long_majorcats %>% pivot_wider(names_from = Category_name, 
+              values_from = Dollars) %>%
+  relocate("All Other Sources **", .after = last_col()) %>%
+  relocate("Total Revenue", .after =  last_col())
+
+
+exp_long_majorcats <- pivot_longer(exp_totals, exp_402:exp_TOTALS , names_to = c("type", "Category"), values_to = "Dollars", names_sep = "_") %>% 
+  rename(Year = fy ) %>% 
+  mutate(Category_name = 
+           case_when(
+            # Category == "402" ~ "AGING" ,
+           #  Category == "406" ~ "AGRICULTURE", 
+             Category == "416" ~ "Central Management",
+            # Category == "418" ~ "CHILDREN AND FAMILY SERVICES", 
+             Category == "420" ~ "Community Development",
+           #  Category == "422" ~ "NATURAL RESOURCES" ,
+            # Category == "426" ~ "CORRECTIONS",
+           #  Category == "427" ~ "EMPLOYMENT SECURITY" ,
+             Category == "444" ~ "Human Services" ,
+           #  Category == "478" ~ "HEALTHCARE & FAM SER NET OF MEDICAID", 
+           #  Category == "482" ~ "PUBLIC HEALTH", 
+           #  Category == "492" ~ "REVENUE", 
+             Category == "494" ~ "Transportation" ,
+           #  Category == "532" ~ "ENVIRONMENTAL PROTECT AGENCY" ,
+             Category == "557" ~ "Tollway" ,
+           #  Category == "684" ~ "IL COMMUNITY COLLEGE BOARD", 
+            # Category == "691" ~ "IL STUDENT ASSISTANCE COMM" ,
+           #  Category == "900" ~ "NOT IN FRAME",
+             Category == "901" ~ "State Pension Contribution",
+             Category == "903" ~ "Debt Service",
+             Category == "904" ~ "State Employee Healthcare",
+           #  Category == "910" ~ "LEGISLATIVE"  ,
+          #   Category == "920" ~ "JUDICIAL" ,
+          #   Category == "930" ~ "ELECTED OFFICERS" , 
+            # Category == "940" ~ "OTHER HEALTH-RELATED", 
+             Category == "941" ~ "Public Safety" ,
+           #  Category == "942" ~ "ECON DEVT & INFRASTRUCTURE" ,
+           #  Category == "943" ~ "CENTRAL SERVICES",
+           #  Category == "944" ~ "BUS & PROFESSION REGULATION" ,
+             Category == "945" ~ "Medicaid" ,
+             Category == "946" ~ "Capital Improvement" , 
+           #  Category == "948" ~ "OTHER DEPARTMENTS" ,
+            # Category == "949" ~ "OTHER BOARDS & COMMISSIONS" ,
+             Category == "959" ~ "K-12 Education" ,
+           #  Category == "960" ~ "UNIVERSITY EDUCATION",
+             Category == "970" ~ "Local Govt Revenue Sharing",
+          Category == "TOTALS" ~ "Total Expenditures",
+             T ~ "All Other Expenditures **")
+           ) %>% 
+  select(-type, -Category) %>% 
+  group_by(Year, Category_name) %>% 
+  summarise(Dollars= round(sum(Dollars),digits=2))
+
+expenditure_wide_majorcats <- exp_long_majorcats %>% 
+  pivot_wider(names_from = Category_name, 
+              values_from = Dollars) %>%
+  relocate("All Other Expenditures **", .after = last_col()) %>%
+  relocate("Total Expenditures", .after =  last_col())
+
+
+# CAGR values for largest expenditure categories and combined All Other Expenditures
+
+# function for calculating the CAGR
+calc_cagr <- function(df, n) {
+  df <- exp_long_majorcats %>%
+    #select(-type) %>%
+    arrange(Category_name, Year) %>%
+    group_by(Category_name) %>%
+    mutate(cagr = ((`Dollars` / lag(`Dollars`, n)) ^ (1 / n)) - 1)
+
+  return(df)
+}
+
+# This works for one variable at a time
+cagr_24 <- calc_cagr(exp_long_majorcats, 24) %>% 
+  # group_by(Category) %>%
+  summarize(cagr_24 = round(sum(cagr*100, na.rm = TRUE), 2))
+
+cagr23_precovid <- exp_long_majorcats %>%
+  filter(Year <= 2019) %>%
+  calc_cagr(21) %>% 
+  summarize(cagr_21 = round(sum(cagr*100, na.rm = TRUE), 2))
+
+
+
+cagr_10 <- calc_cagr(exp_long_majorcats, 10) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_10 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_5 <- calc_cagr(exp_long_majorcats, 5) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_5 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_3 <- calc_cagr(exp_long_majorcats, 3) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_3 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_2 <- calc_cagr(exp_long_majorcats, 2) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_2 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_1 <- calc_cagr(exp_long_majorcats, 1) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_1 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+CAGR_expenditures_majorcats_tot <- data.frame(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_24 ) %>% 
+  select(-c(Category_name.1, Category_name.2, Category_name.3, Category_name.4, Category_name.5 )) %>% 
+  rename("Expenditure Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10,"24 Year CAGR" = cagr_24 )
+
+move_to_last <- function(df, n) df[c(setdiff(seq_len(nrow(df)), n), n), ]
+
+CAGR_expenditures_majorcats_tot <- move_to_last(CAGR_expenditures_majorcats_tot, 1)
+CAGR_expenditures_majorcats_tot <- move_to_last(CAGR_expenditures_majorcats_tot, 13) 
+
+
+CAGR_expenditures_majorcats_tot%>%   
+  kbl(caption = "CAGR Calculations for Largest Expenditure Categories" , row.names=FALSE) %>% 
+     kable_classic() 
+
+
+# Yearly change for Top 13 largest expenditure categories
+expenditure_change_majorcats <- exp_long_majorcats %>%
+  filter(Year > 2020) %>%
+  pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
+  mutate("FY 2022 ($ Billions)" = round(Dollars_2022/1000, digits = 1),
+         "FY 2021 ($ Billions)" = round(Dollars_2021/1000, digits = 1),
+         "1-Year Change" = percent((Dollars_2022 -Dollars_2021)/Dollars_2021, accuracy = .1) )  %>%
+  left_join(CAGR_expenditures_majorcats_tot, by = c("Category_name" = "Expenditure Category")) %>% 
+  arrange(-`FY 2022 ($ Billions)`)%>%
+  mutate(`24 Year CAGR` = percent(`24 Year CAGR`/100, accuracy=.1)) %>%
+  select(-c(Dollars_2022, Dollars_2021, `1 Year CAGR`:`10 Year CAGR`)) %>%
+  rename( "24-Year CAGR" = `24 Year CAGR`, 
+          "Expenditure Category" = Category_name )
+
+expenditure_change_majorcats <- move_to_last(expenditure_change_majorcats, 3) 
+
+expenditure_change_majorcats <- move_to_last(expenditure_change_majorcats, 1)
+
+expenditure_change_majorcats %>% 
+  kbl(caption = "Yearly Change in Expenditures", row.names = FALSE, align = "l") %>% 
+  kable_classic() %>%
+    row_spec(15, bold = T, color = "black", background = "gray")
+
+```
+
+Top 10 revenue sources CAGRs and Yearly Change Tables:
+
+
+```{r }
+
+##### Top 10 revenue CAGRs: ####
+
+
+calc_cagr <- function(df, n) {
+  df <- rev_long_majorcats %>%
+    arrange(Category_name, Year) %>%
+    group_by(Category_name) %>%
+    mutate(cagr = ((Dollars / lag(Dollars, n)) ^ (1 / n)) - 1)
+
+  return(df)
+}
+
+# This works for one variable at a time
+cagr_24 <- calc_cagr(rev_long_majorcats, 24) %>% 
+     # group_by(Category) %>%
+  summarize(cagr_24 = round(sum(cagr*100, na.rm = TRUE), 2))
+
+cagr_10 <- calc_cagr(rev_long_majorcats, 10) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_10 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_5 <- calc_cagr(rev_long_majorcats, 5) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_5 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_3 <- calc_cagr(rev_long_majorcats, 3) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_3 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+cagr_2 <- calc_cagr(rev_long_majorcats, 2) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_2 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+ cagr_1 <- calc_cagr(rev_long_majorcats, 1) %>% 
+  filter(Year == 2022) %>%
+  summarize(cagr_1 = case_when(Year == 2022 ~ round(sum(cagr*100, na.rm = TRUE), 2)))
+
+CAGR_revenue_majorcats_tot <- data.frame(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_24) %>%   
+  select(-c(Category_name.1, Category_name.2, Category_name.3, Category_name.4, Category_name.5 )) %>% 
+  rename("Revenue Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10,"24 Year CAGR" = cagr_24 )
+
+CAGR_revenue_majorcats_tot <- move_to_last(CAGR_revenue_majorcats_tot,1)
+CAGR_revenue_majorcats_tot <- move_to_last(CAGR_revenue_majorcats_tot,11)
+
+CAGR_revenue_majorcats_tot %>% 
+  kbl(caption = "CAGR Calculations for Largest Revenue Sources", row.names = FALSE) %>% 
+     kable_classic() 
+
+
+###### Yearly change summary table for Top 10 Revenues #####
+revenue_change_majorcats <- rev_long_majorcats %>%
+  #select(-c(Category)) %>%
+  filter(Year > 2020) %>%
+  pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
+  mutate(
+    "FY 2022 ($ billions)" = round(Dollars_2022/1000, digits = 1),
+            "FY 2021 ($ billions)" = round(Dollars_2021/1000, digits = 1),
+
+         "1-Year Change" = percent(((Dollars_2022 -Dollars_2021)/Dollars_2021), accuracy = .1)) %>%
+  left_join(CAGR_revenue_majorcats_tot, by = c("Category_name" = "Revenue Category")) %>% 
+    arrange(-`FY 2022 ($ billions)`)%>%
+  #select(-c(Dollars_2021, Dollars_2021, `1 Year CAGR`:`10 Year CAGR`)) %>%
+  mutate("24-Year Change" = percent(`24 Year CAGR`/100, accuracy=.1)) %>%
+  rename("Revenue Category" = Category_name ) %>%
+  select(-c(Dollars_2022, Dollars_2021, `1 Year CAGR`:`24 Year CAGR`)) 
+
+revenue_change_majorcats <- move_to_last(revenue_change_majorcats,6)
+
+revenue_change_majorcats <- move_to_last(revenue_change_majorcats,1)
+
+revenue_change_majorcats%>% 
+  kbl(caption = "Yearly Change in Revenue for Main Revenue Sources", row.names = FALSE, align = "l") %>% 
+   kable_classic() %>%
+    row_spec(12, bold = T, color = "black", background = "gray")
+
+```
+
+
+
+
+```{r}
+# #install.packages("openxlsx")
+# library(openxlsx)
+# 
+# dataset_names <- list('rev_long' = rev_long, 'exp_long' = exp_long, 
+#                       `Table 1` = expenditure_change2, `Table 2` = revenue_change2,
+#                       'Table 4.a' = CAGR_revenue_summary_tot, 'Table 4.b' = CAGR_expenditures_summary_tot, 
+#                       'year_totals' = year_totals)
+# 
+# write.xlsx(dataset_names, file = 'summary_file_FY2022_withTotals_Jan11.xlsx')
+```
+
+
+
+
+Export summary file with Totals 
+
+```{r}
+library(openxlsx)
+
+dataset_names <- list('Aggregate Revenues' = revenue_wide2, 
+                      'Aggregate Expenditures' = expenditure_wide2, 
+
+
+                      
+                      'Table 1' = revenue_change_majorcats, #Top categories with yearly change, 23 yr cagr
+                      'Table 2' = expenditure_change_majorcats,
+                      
+                      'Table 1a. AllCats' = revenue_change2,
+                      'Table 2a. AllCats' = expenditure_change2,
+                      
+                      'CAGR Rev-MajorCats' = CAGR_revenue_majorcats_tot, # Categories Match Table 1 in paper
+                      'CAGR Exp-MajorCats' = CAGR_expenditures_majorcats_tot, 
+                                            
+                     # 'Table 1-AllCats' = expenditure_change_allcats,  # All Categories by Year
+                    #  'Table 2-AllCats' = revenue_change_allcats,
+                      
+                    #  'CAGR_Revenue-AllCats' = CAGR_revenue_summary_tot, 
+                   #   'CAGR_Expenditures-AllCats' = CAGR_expenditures_summary_tot, 
+                      
+                      'Fiscal Gap' = year_totals,    # Total Revenue, Expenditure, and Fiscal gap per year
+                      
+                      'aggregated_totals_long' = aggregated_totals_long # all data in long format. Good for creating pivot tables in Excel
+                      )
+
+write.xlsx(dataset_names, file = 'summary_file_FY22_wTotals_Jan11.xlsx')
+```
+
+
+
+```{r include= FALSE}
+## creates tables without totals as bottom row
+
+# revenue_change <- rev_long %>%
+#   select(-c(type,Category)) %>%
+#   filter(Year > 2020) %>%
+#   pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
+#   mutate(
+#     "FY 2022 ($ billions)" = round(Dollars_2022/1000, digits = 1),
+#     "FY 2021 ($ billions)" = round(Dollars_2021/1000, digits = 1),
+# #    "Change from 2021 to 2022" = round(Dollars_2022 - Dollars_2021, digits = 2),
+#          "1-Year Change" = round(((Dollars_2022 -Dollars_2021)/Dollars_2021*100), digits = 2)) %>%
+#   left_join(CAGR_revenue_summary, by = c("Category_name" = "Revenue Category")) %>% 
+#     arrange(-`FY 2022 ($ billions)`)%>%
+#   #select(-c(Dollars_2021, Dollars_2021, `1 Year CAGR`:`10 Year CAGR`)) %>%
+#   rename( "24-Year CAGR" = `24 Year CAGR`, 
+#           "Revenue Category" = Category_name ) %>%
+#   select(-c(Dollars_2021, Dollars_2022, `1 Year CAGR`:`10 Year CAGR`)) 
+# 
+# revenue_change %>% 
+#   kbl(caption = "Table 1. Yearly Change in Revenue") %>% 
+#   kable_styling(bootstrap_options = c("striped"))
+# 
+# 
+# 
+# expenditure_change <- exp_long %>%
+#   select(-c(type,Category)) %>%
+#   filter(Year > 2020) %>%
+#   pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
+#   mutate("FY 2022 ($ billions)" = round(Dollars_2022/1000, digits = 1),
+#          "FY 2021 ($ billions)" = round(Dollars_2021/1000, digits = 1),
+#          "1-Year Change" = round((Dollars_2022 -Dollars_2021)/Dollars_2021*100, digits = 2) )%>%
+#   left_join(CAGR_expenditures_summary, by = c("Category_name" = "Expenditure Category")) %>% 
+#   arrange(-`FY 2022 ($ billions)`)%>%
+#   select(-c(Dollars_2022, Dollars_2021, `1 Year CAGR`:`10 Year CAGR`)) %>%
+#   rename( "24-Year CAGR" = `24 Year CAGR`, 
+#           "Expenditure Category" = Category_name )
+# 
+# expenditure_change %>% 
+#   kbl(caption = "Table 2. Yearly Change in Expenditures") %>% 
+#   kable_styling(bootstrap_options = c("striped"))
+           
+```
+
+
+Saves main items in one excel file named `summary_file.xlsx`. Delete `eval=FALSE` to run on local computer.
+
+```{r }
+# #install.packages("openxlsx")
+# library(openxlsx)
+# 
+# dataset_names <- list('rev_long' = rev_long, 'exp_long' = exp_long, 
+#                       `Table 1` = expenditure_change, `Table 2` = revenue_change,
+#                       'Table 4.a' = CAGR_revenue_summary, 'Table 4.b' = CAGR_expenditures_summary, 
+#                       'year_totals' = year_totals)
+# 
+# write.xlsx(dataset_names, file = 'summary_file_FY2022.xlsx')
+```
+
+# Dropping COVID State CURE Dollars
+
+If only sustainable revenues are included in the model, then the federal dollars from the pandemic response (CARES, CRSSA,& ARPA)should be excluded from the calculation of the fiscal gap.
+
+The Fiscal Futures model focuses on sustainable revenue sources. To understand our fiscal gap and outlook, we need to exclude these one time revenues. GOMB has emphasized that they have allocated COVID dollars to one time expenditures (unemployment trust fund, budget stabilization fund, etc.). The fiscal gap, graphs,and CAGRs have been recalculated in the [Drop COVID Dollars] section below. 
+
+> NOTE: I have only dropped revenue with a source name = `Federal Stimulus Package`. Federal money went into other funds during the beginning of pandemic. All additional money for medicaid reimbursements and healthcare provider funds were not considered "Federal Stimulus Package" in the data and were not dropped.
+
+-   fund 0628 is essential government support services. Money in the fund is appropriated to cover COVID-19 related expenses. It should be included in our frame based on criteria 2 and6 --- the fund supports an important state function about public safety, which would have to be performed even the fund structure were not existed. Public safety is supported by a combination of departments and boards, including IL Emergency Management Agency, which is the administering agency of the fund.
+
+-   Education Stabilization Fund\
+
+-   ESSER
+
+-   CSLFRF
+
+-   Provider Relief Fund
+
+-   Coronavirus Relief Fund (CRF)
+
+-   Consolidated Appropriations Act
+
+-   Families First Cornovirus Response Act
+
+-   Paycheck Protection Program and Health Care Enhancement Act
+
+```{r drop-coviddollars}
+# does not include rev_type == 58, medicaid dollars
+# covid_dollars <- rev_temp %>% filter(covid_dollars==1) # check what was dropped
+
+#covid_dollars %>% group_by(fy,rev_type) %>% summarize(receipts = sum(receipts)) %>% pivot_wider(names_from="rev_type", values_from = "receipts")
+
+
+rev_temp <- rev_temp %>%  filter(covid_dollars==0) # keeps observations that were not coded as COVID federal funds
+
+
+
+ff_rev <- rev_temp %>% 
+  group_by(rev_type_new, fy) %>% 
+  summarize(sum_receipts = sum(receipts, na.rm=TRUE)/1000000 ) %>%
+  pivot_wider(names_from = "rev_type_new", values_from = "sum_receipts", names_prefix = "rev_")
+
+ff_rev<- left_join(ff_rev, tax_refund)
+
+ff_rev <- mutate_all(ff_rev, ~replace_na(.,0))
+
+
+ff_rev <- ff_rev %>%
+  mutate(rev_02 = rev_02 - ref_02,
+         rev_03 = rev_03 - ref_03,
+         rev_06 = rev_06 - ref_06,
+         rev_09 = rev_09 - ref_09,
+         rev_21 = rev_21 - ref_21,
+         rev_24 = rev_24 - ref_24,
+         rev_35 = rev_35 - ref_35
+
+         ) %>% 
+  select(-c(ref_02:ref_35, rev_99, rev_76
+            ))
+
+rev_long <- pivot_longer(ff_rev, rev_02:rev_78, names_to = c("type","Category"), values_to = "Dollars", names_sep = "_") %>% 
+  rename(Year = fy) %>%
+  mutate(Category_name = case_when(
+    Category == "02" ~ "INDIVIDUAL INCOME TAX" ,
+    Category == "03" ~ "CORPORATE INCOME TAX" ,
+    Category == "06" ~ "SALES TAX" ,
+    Category == "09" ~ "MOTOR FUEL TAX" ,
+    Category == "12" ~ "PUBLIC UTILITY TAX" ,
+    Category == "15" ~ "CIGARETTE TAXES" ,
+    Category == "18" ~ "LIQUOR GALLONAGE TAXES" ,
+    Category == "21" ~ "INHERITANCE TAX" ,
+    Category == "24" ~ "INSURANCE TAXES&FEES&LICENSES" ,
+    Category == "27" ~ "CORP FRANCHISE TAXES & FEES" ,
+    Category == "30" ~ "HORSE RACING TAXES & FEES",  # in Other
+    Category == "31" ~ "MEDICAL PROVIDER ASSESSMENTS" ,
+    Category == "32" ~ "GARNISHMENT-LEVIES" , # dropped
+    Category == "33" ~  "LOTTERY RECEIPTS" ,
+    Category == "35" ~  "OTHER TAXES" ,
+    Category == "36" ~  "RECEIPTS FROM REVENUE PRODUCING", 
+    Category == "39" ~  "LICENSES, FEES & REGISTRATIONS" ,
+    Category == "42" ~  "MOTOR VEHICLE AND OPERATORS" ,
+    Category == "45" ~  "STUDENT FEES-UNIVERSITIES",   # dropped
+    Category == "48" ~  "RIVERBOAT WAGERING TAXES" ,
+    Category == "51" ~  "RETIREMENT CONTRIBUTIONS" , # dropped
+    Category == "54" ~ "GIFTS AND BEQUESTS", 
+    Category == "57" ~  "FEDERAL OTHER" ,
+    Category == "58" ~  "FEDERAL MEDICAID", 
+    Category == "59" ~  "FEDERAL TRANSPORTATION" ,
+    Category == "60" ~  "OTHER GRANTS AND CONTRACTS", #other
+    Category == "63" ~  "INVESTMENT INCOME", # other
+    Category == "66" ~ "PROCEEDS,INVESTMENT MATURITIES" , #dropped
+    Category == "72" ~ "BOND ISSUE PROCEEDS",  #dropped
+    Category == "75" ~  "INTER-AGENCY RECEIPTS ",  #dropped
+    Category == "76" ~  "TRANSFER IN FROM OUT FUNDS",  #other
+    Category == "78" ~  "ALL OTHER SOURCES" ,
+    Category == "79" ~   "COOK COUNTY IGT", #dropped
+    Category == "98" ~  "PRIOR YEAR REFUNDS", #dropped
                  T ~ "Check Me!"
 
   ) )%>% 
@@ -1819,11 +2384,72 @@ rev_long <- pivot_longer(ff_rev, rev_02:rev_78, names_to = c("type","Category"),
 
 
 
+ff_exp <- exp_temp %>% 
+  group_by(fy, group) %>% 
+  summarize(sum_expenditures = sum(expenditure, na.rm=TRUE)/1000000 ) %>%
+  pivot_wider(names_from = "group", values_from = "sum_expenditures", names_prefix = "exp_")%>%
+  
+    left_join(debt_keep_yearly) %>%
+  mutate(exp_903 = debt_cost) %>%
+  left_join(transfers) %>%
+  mutate(exp_970 = exp_971 + exp_972  + exp_975 + exp_976)
+
+ff_exp<- ff_exp %>% select(-c(debt_cost, exp_971:exp_976)) # drop unwanted columns
+
+exp_long <- pivot_longer(ff_exp, exp_402:exp_970 , names_to = c("type", "Category"), values_to = "Dollars", names_sep = "_") %>% 
+  rename(Year = fy ) %>% 
+  mutate(Category_name = 
+           case_when(
+             Category == "402" ~ "AGING" ,
+             Category == "406" ~ "AGRICULTURE", 
+             Category == "416" ~ "CENTRAL MANAGEMENT",
+             Category == "418" ~ "CHILDREN AND FAMILY SERVICES", 
+             Category == "420" ~ "COMMERCE AND ECONOMIC OPPORTUNITY",
+             Category == "422" ~ "NATURAL RESOURCES" ,
+             Category == "426" ~ "CORRECTIONS",
+             Category == "427" ~ "EMPLOYMENT SECURITY" ,
+             Category == "444" ~ "HUMAN SERVICES" ,
+             Category == "448" ~ "Innovation and Technology", # AWM added fy2022
+             Category == "478" ~ "HEALTHCARE & FAM SER NET OF MEDICAID", 
+             Category == "482" ~ "PUBLIC HEALTH", 
+             Category == "492" ~ "REVENUE", 
+             Category == "494" ~ "TRANSPORTATION" ,
+             Category == "532" ~ "ENVIRONMENTAL PROTECT AGENCY" ,
+             Category == "557" ~ "IL STATE TOLL HIGHWAY AUTH" ,
+             Category == "684" ~ "IL COMMUNITY COLLEGE BOARD", 
+             Category == "691" ~ "IL STUDENT ASSISTANCE COMM" ,
+             Category == "900" ~ "NOT IN FRAME",
+             Category == "901" ~ "STATE PENSION CONTRIBUTION",
+             Category == "903" ~ "DEBT SERVICE",
+             Category == "904" ~ "State Employee Healthcare",
+             Category == "910" ~ "LEGISLATIVE"  ,
+             Category == "920" ~ "JUDICIAL" ,
+             Category == "930" ~ "ELECTED OFFICERS" , 
+             Category == "940" ~ "OTHER HEALTH-RELATED", 
+             Category == "941" ~ "PUBLIC SAFETY" ,
+             Category == "942" ~ "ECON DEVT & INFRASTRUCTURE" ,
+             Category == "943" ~ "CENTRAL SERVICES",
+             Category == "944" ~ "BUS & PROFESSION REGULATION" ,
+             Category == "945" ~ "MEDICAID" ,
+             Category == "946" ~ "CAPITAL IMPROVEMENT" , 
+             Category == "948" ~ "OTHER DEPARTMENTS" ,
+             Category == "949" ~ "OTHER BOARDS & COMMISSIONS" ,
+             Category == "959" ~ "K-12 EDUCATION" ,
+             Category == "960" ~ "UNIVERSITY EDUCATION",
+             Category == "970" ~ "Local Govt Transfers",
+             T ~ "CHECK ME!")
+           ) %>% 
+  mutate(Category_name = str_to_title(Category_name))
 
 
+#exp_long_nototals <- exp_long %>% filter(Category_name != "Totals")
 
-aggregated_totals_long <- rbind(rev_long, exp_long)
 
+aggregated_totals_long <- rbind(rev_long, exp_long) 
+```
+
+Change plots:
+```{r}
 year_totals2 <- aggregated_totals_long %>% 
   group_by(type, Year) %>% 
   summarize(Dollars = sum(Dollars, na.rm = TRUE)) %>% 
@@ -1835,34 +2461,67 @@ year_totals2 <- aggregated_totals_long %>%
   arrange(desc(Year))
 # creates variable for the Gap each year
 
-year_totals2
+year_totals2 # gap for FY22 changed to 2.3 billion
 
-annotation <- data.frame(
+
+annotation_billions <- data.frame(
   x = c(2004, 2017, 2019),
-  y = c(60000, 50000, 10000),  
-  label = c("Expenditures","Revenue", "Fiscal Gap")
-)
+  y = c(60, 50, 10),  
+  label = c("Expenditures","Revenue", "Fiscal Gap"))
 
-fiscal_gap_droppedCURE<-year_totals2 %>%  
+fiscal_gap1 <- year_totals %>%
+  ggplot() +
+  geom_hline(yintercept = 0) +
+  geom_line(aes(x = Year, y = Revenue/1000), color = "Black", lwd=1) +
+  geom_line(aes(x = Year, y = Expenditures/1000, linetype = "dashed"), color = "red", lwd=1) +
+  geom_line(aes(x = Year, y = `Fiscal Gap`/1000), color = "gray") +
+
+  geom_text(data = annotation_billions, aes(x=x, y=y, label=label))+
+    theme_bw() +
+  theme(legend.position = "none", #axis.text.y = element_blank(),  
+        #axis.ticks.y = element_blank(),
+                                    axis.title.y = element_blank())+
+    scale_linetype_manual(values = c("dashed", "dashed")) +
+  scale_y_continuous(limits = c(-20, 120), labels = comma)+
+    scale_x_continuous(limits=c(1998,2022))
+
+fiscal_gap1
+
+
+fiscal_gap_droppedCURE <- year_totals2 %>%  
   ggplot() +
   geom_hline(yintercept=0)+
-  # geom_smooth adds regression line, graphed first so it appears behind line graph
-  geom_smooth(aes(x = Year, y = Revenue), color = "gray", method = "lm", se = FALSE) + 
-  geom_smooth(aes(x = Year, y = Expenditures), color = "rosybrown2", method = "lm", se = FALSE) +
   
-  # line graph of revenue and expenditures
-  geom_line(aes(x = Year, y = Revenue), color = "black", size=1) +
-  geom_line(aes(x = Year, y = Expenditures), color = "red", size=1) +
-  geom_line(aes(x=Year, y = `Fiscal Gap`), color="gray") +
+    geom_hline(yintercept = 0) +
+  geom_line(aes(x = Year, y = Revenue/1000), color = "Black", lwd=1) +
+  geom_line(aes(x = Year, y = Expenditures/1000, linetype = "dashed"), color = "red", lwd=1) +
+  geom_line(aes(x = Year, y = `Fiscal Gap`/1000), color = "gray") +
   
-  geom_text(data= annotation, aes(x=x, y = y, label=label))+
-  
-  # labels
+  geom_text(data = annotation_billions, aes(x=x, y=y, label=label))+
     theme_bw() +
-  scale_y_continuous(labels = comma)+
-  xlab("Year") + 
-  ylab("Millions of Dollars")  +
-  ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
+  theme(legend.position = "none",# axis.text.y = element_blank(),
+                                    #axis.ticks.y = element_blank(),
+                                    axis.title.y = element_blank() )+
+    scale_linetype_manual(values = c("dashed", "dashed")) +
+  scale_y_continuous(limits=c(-20,120), labels = comma)+
+    scale_x_continuous(limits=c(1998,2022))
+  # # geom_smooth adds regression line, graphed first so it appears behind line graph
+  # geom_smooth(aes(x = Year, y = Revenue), color = "gray", method = "lm", se = FALSE) + 
+  # geom_smooth(aes(x = Year, y = Expenditures), color = "rosybrown2", method = "lm", se = FALSE) +
+  # 
+  # # line graph of revenue and expenditures
+  # geom_line(aes(x = Year, y = Revenue), color = "black", size=1) +
+  # geom_line(aes(x = Year, y = Expenditures), color = "red", size=1) +
+  # geom_line(aes(x=Year, y = `Fiscal Gap`), color="gray") +
+  # 
+  # geom_text(data= annotation, aes(x=x, y = y, label=label))+
+  # 
+  # # labels
+  #   theme_bw() +
+  # scale_y_continuous(labels = comma)+
+  # xlab("Year") + 
+  # ylab("Millions of Dollars")  +
+  # ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
 
 fiscal_gap_droppedCURE
 ```
@@ -1872,26 +2531,13 @@ Compare with and without federal COVID dollars:
 ```{r}
 library(gridExtra)
 
-cowplot::plot_grid(fiscal_gap, fiscal_gap_droppedCURE)
+cowplot::plot_grid(fiscal_gap1,
+                   fiscal_gap_droppedCURE, nrow=1, labels = c("With State CURE Funds", "Without State Cure Funds"))
 ```
 
-**Expenditure and revenue amounts in millions of dollars:**
+**Revenue amounts in millions of dollars:**
 
 ```{r}
-exp_long %>%
-  filter(Year == 2022) %>%
-  #mutate(`Total Expenditures`= sum(Dollars, na.rm = TRUE)) %>%
- # select(-c(Year, `Total Expenditures`)) %>%
-  arrange(desc(`Dollars`)) %>%
-  ggplot() + 
-  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`, fill = "rosybrown2"))+ 
-  coord_flip() +
-      theme_bw() +
-    theme(legend.position = "none") +
-
-  labs(title = "Expenditures for FY2022") +
-    xlab("Expenditure Categories") +
-  ylab("Millions of Dollars") 
 
 rev_long %>%
   filter(Year == 2022) %>%
@@ -2025,11 +2671,13 @@ expenditure_change <- exp_long %>%
   select(-c(Dollars_2022, Dollars_2021, `1 Year CAGR`:`10 Year CAGR`)) %>%
   rename( "Compound Annual Growth, 1998-2022*" = `24 Year CAGR`, 
           "FY2022 Expenditure Category" = Category_name )
-           
+```
 
+Creating the excel file with multiple tables and versions of the data: 
+```{r}
 dataset_names <- list('rev_long' = rev_long, 'exp_long' = exp_long, 
-                      `Table 1` = expenditure_change, `Table 2` = revenue_change,
-                      'Table 4.a' = CAGR_revenue_summary, 'Table 4.b' = CAGR_expenditures_summary, 
+                      'Table 1' = expenditure_change, 'Table 2' = revenue_change,
+                      'Revenue CAGR' = CAGR_revenue_summary, 'Expenditure CAGR' = CAGR_expenditures_summary, 
                       'year_totals' = year_totals2)
 
 write.xlsx(dataset_names, file = 'summary_file_droppeCOVIDrevs_FY2022.xlsx')
@@ -2037,9 +2685,12 @@ write.xlsx(dataset_names, file = 'summary_file_droppeCOVIDrevs_FY2022.xlsx')
 
 ## Forecasting attempt
 
-```{r}
-#### Revenues
+First images use revenue that includes all federal stimulus packages. Revenue projections are skewed heavily due to the large amount of covid money flowing in the past 2 years. 
 
+```{r }
+
+
+## Revenues
 year_totals2 <- year_totals2 %>% 
   arrange(Year)
 
@@ -2056,35 +2707,10 @@ tsrev <- ts(year_totals2$Revenue, start ="1998", frequency = 1) # yearly data
 
 #### ARIMAs
 mymodel <- auto.arima(tsrev, seasonal = FALSE)
-mymodel # ARIMA (0, 1, 0) with drift
+# mymodel          # ARIMA (0, 1, 0) with drift
 myforecastrev <- forecast(mymodel, h = 20)
 #plot(myforecastrev,  xlab ="", ylab ="Total Revenue", main ="Chicago Revenue")
 
-tsexp <- ts(year_totals2$Expenditures, start = "1998", frequency = 1)
-model_exp<- auto.arima(tsexp, seasonal = FALSE)
-model_exp # ARIMA (0,1,1) with drift
-
-forecast_exp <- forecast(model_exp, h = 20) 
-#plot(forecast_exp, xlab ="",  ylab ="Total Expenditures", main ="Chicago Expenditures")
-
-p <- forecast(model_exp,  h = 20) %>% 
-  autoplot() +
-    ylab("Dollars (Millions)") +
-  xlab("Year") +
-  ggtitle("Forecasted Expenditures") +
-  theme_classic() +
-  scale_y_continuous(labels = dollar )
-
-summary(forecast_exp)
-
-annotation <- data.frame(
-  x = c(2027, 2032),
-  y = c(130000, 100000),  label = c("$114 ± 19 Billion in 2027","$128 ± 25 Billion in 2032 ")
-)
-
-p + geom_label(data = annotation, aes(x=x, y=y, label=label), size = 3) + labs(title = "Forecasted Expenditures", caption = "Projected values at 95% confidence interval. 
-Dark blue represents 80% liklihood of falling with that range, 
-                                                                               light blue represents 95% liklihood of being in projected range.")
 
 
 
@@ -2102,14 +2728,55 @@ q <- forecast(forecast_rev,  h = 20) %>%
 
 summary(forecast_rev)
 
+# annotation <- data.frame(
+#   x = c(2027, 2032),
+#   y = c(200000, 300000),  
+#   label = c("$120 billion in 2027","$135 billion in 2032")
+# )
+
 annotation <- data.frame(
-  x = c(2027, 2032),
-  y = c(200000, 300000),  
+  x = c(2020, 2032),
+  y = c(150000, 200000),  
   label = c("$120 billion in 2027","$135 billion in 2032")
 )
 
 q+ geom_label(data = annotation, aes(x=x, y=y, label=label), size = 3) +
   labs(caption = "after dropping federal covid dollars")
+
+
+## Expenditures
+tsexp <- ts(year_totals2$Expenditures, start = "1998", frequency = 1)
+model_exp<- auto.arima(tsexp, seasonal = FALSE)
+# model_exp            # ARIMA (0,1,1) with drift
+
+forecast_exp <- forecast(model_exp, h = 20) 
+#plot(forecast_exp, xlab ="",  ylab ="Total Expenditures", main ="Chicago Expenditures")
+
+p <- forecast(model_exp,  h = 20) %>% 
+  autoplot() +
+    ylab("Dollars (Millions)") +
+  xlab("Year") +
+  ggtitle("Forecasted Expenditures") +
+  theme_classic() +
+  scale_y_continuous(labels = dollar )
+
+summary(forecast_exp)
+
+annotation <- data.frame(
+  x = c(2027, 2032),
+  y = c(130000, 100000),  label = c("$117 ± 20 Billion in 2027","$132 ± 26 Billion in 2032 ")
+)
+
+p + 
+  geom_label(data = annotation, aes(x=x, y=y, label=label), size = 3) + 
+  labs(title = "Forecasted Expenditures", 
+  caption = "Projected values at 95% confidence interval. 
+  Dark blue represents 80% liklihood of falling with that range, 
+  light blue represents 95% liklihood of being in projected range.")
+
+
+
+## Exp and Rev together
 
 autoplot(tsexp) +
   #geom_line(tsexp)+
@@ -2117,7 +2784,9 @@ autoplot(tsexp) +
   autolayer(forecast_rev, series = "Revenue") +
   autolayer(forecast_exp, series = "Expenditure)", alpha = 0.5) +
   geom_line(year_totals, mapping= aes(x = Year, y = Revenue))  + guides(colour = guide_legend("Forecast")) + 
-  labs(title = "Forecasted Revenue and Expenditures", caption = "Revenue without State and Local CURE Dollars")
+  labs(title = "Forecasted Revenue and Expenditures", caption = "Revenue includes State and Local CURE Dollars")
+
+
 ```
 
 Revenue forecasting using precovid trends:
@@ -2144,11 +2813,13 @@ summary(forecast_rev)
 
 annotation <- data.frame(
   x = c(2020, 2032),
-  y = c(130000, 100000),  
-  label = c("$93 ± __ Billion in 2027","$104 ± __ Billion in 2032")
+  y = c(90000, 100000),  
+  label = c("$93 Billion in 2027","$104 Billion in 2032")
 )
 
-c+ geom_label(data = annotation, aes(x=x, y=y, label=label), size = 3) + labs(title= "Revenue Forecasted using Pre-Covid Data", subtitle = "Own Source and Federal Revenues Combined")
+c+ geom_label(data = annotation, aes(x=x, y=y, label=label), size = 3) + 
+  labs(title= "Revenue Forecasted using Pre-Covid Data", 
+       subtitle = "Own Source and Federal Revenues Combined")
 
 autoplot(tsexp2019) +
   #geom_line(tsexp)+
@@ -2156,14 +2827,16 @@ autoplot(tsexp2019) +
   autolayer(forecast_rev, series = "Revenue") +
   autolayer(forecast_exp, series = "Expenditure)", alpha = 0.5) +
   geom_line(year_totals, mapping= aes(x = Year, y = Revenue))  + guides(colour = guide_legend("Forecast")) + 
-  labs(title = "Forecasted Revenue and Expenditures", caption = "Using Pre-Covid revenue data (ending in FY2020)")
+  labs(title = "Forecasted Revenue and Expenditures", subtitle = "Using Pre-Covid revenue data (ending in FY2020) with Actual 2022 expenditures")
 
 
 ```
 
+
+
+```{r eval=FALSE, include=FALSE}
 ### Federal Revenue
 
-```{r}
 fed_rev <- ff_rev %>% select(fy, rev_57, rev_58, rev_59) %>%
   mutate(fed_total = rev_57+rev_58+rev_59)
 
@@ -2211,6 +2884,13 @@ fed59 <- forecast(forecast_fed,  h = 20) %>%
   scale_y_continuous(labels = dollar )
 
 fed59
+```
+
+
+```{r}
+
+fed_rev <- ff_rev %>% select(fy, rev_57, rev_58, rev_59) %>%
+  mutate(fed_total = rev_57+rev_58+rev_59)
 
 fed_tstotal <- ts(fed_rev$fed_total, start ="1998", frequency = 1) # yearly data
 
@@ -2221,7 +2901,7 @@ fedtotal <- forecast(forecast_fed,  h = 20) %>%
   autoplot() +
     ylab("Nominal Dollars (Millions)") +
   xlab("Year") +
-  ggtitle("Forecasted Federal Revenue WITHOUT Federal COVID Dollars", subtitle = "Sum of Transportation, Medicaid, and Other Federal Tranfers") +
+  ggtitle("Forecasted Federal Revenue WITHOUT Federal COVID Dollars", subtitle = "Sum of Transportation, Medicaid, and Other Federal Revenue") +
   theme_classic() +
   scale_y_continuous(labels = dollar ) 
 
@@ -2229,21 +2909,34 @@ fedtotal
 
 fed_tstotal <- ts(fed_rev$fed_total, start ="1998", end = "2020", frequency = 1) # yearly data
 
-model_fed <- auto.arima(fed_tstotal, seasonal = FALSE)
-forecast_fed <- forecast(model_fed, h = 23)
+model_fed2 <- auto.arima(fed_tstotal, seasonal = FALSE)
+forecast_fed2 <- forecast(model_fed2, h = 23)
 
-fedtotal2 <- forecast(forecast_fed,  h = 20) %>% 
+fedtotal2 <- forecast(forecast_fed2,  h = 20) %>% 
   autoplot() +
     ylab("Nominal Dollars (Millions)") +
   xlab("Year") +
-  ggtitle("Forecasted Federal Revenue -- pre-COVID trends", subtitle = "Sum of Transportation, Medicaid, and Other Federal Tranfers") +
+  ggtitle("Forecasted Federal Revenue -- pre-COVID trends", subtitle = "Sum of Transportation, Medicaid, and Other Federal Revenue") +
   theme_classic() +
   scale_y_continuous(labels = dollar ) 
 
 fedtotal2
+
+
+autoplot(tsexp2019) +
+  #geom_line(tsexp)+
+  #geom_line(aes(model_rev))+
+  autolayer(forecast_fed, series = "No Fed Stim Packages") +
+  autolayer(forecast_fed2, series = "Pre-Covid Fed Rev)", alpha = 0.5) +
+  geom_line(year_totals2, mapping= aes(x = Year, y = Revenue))  + 
+  guides(colour = guide_legend("Forecast")) + 
+  labs(title = "Comparison of Combined Federal Revenue without Stimulus Packages and Pre-COVID revenue trend" , 
+       subtitle = "Using Pre-Covid revenue data (ending in FY2020)")
+
 ```
 
-Graphing the 3 federal revenue types together may be the most reliable since some COVID funding is still recorded in Federal Other and some are in other categories (like Disaster Response in FY2021). Need to look at more before using.
+Graphing the 3 federal revenue types together may be the most reliable since some COVID funding is still recorded in Federal Other and some are in other categories (like Disaster Response in FY2021). Need to look at more before using. 
+
 
 ## Tables with Totals
 
@@ -2563,7 +3256,7 @@ dataset_names <- list('Aggregate Revenues' = revenue_wide2,
 write.xlsx(dataset_names, file = 'summary_file_FY22_wTotals.xlsx')
 ```
 
-# Summary Tables - Largest Categories
+## Summary Tables - Largest Categories
 
 The 10 largest revenue sources and 13 largest expenditure sources remain separate categories and all other smaller sources/expenditures are combined into "All Other \_\_\_\_\_". These condensed tables are typically used in the Fiscal Futures articles. They were manually created in past years but this hopefully automates the process a bit until final formatting stages.
 
@@ -2852,7 +3545,7 @@ revenue_change2%>%
 
 ```
 
-### Export Summary Files
+## Export Summary Files
 
 Saves main items in one excel file named `summary_file.xlsx`. Delete `eval=FALSE` to run on local computer.
 

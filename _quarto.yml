@@ -3,11 +3,19 @@ project:
   output-dir: docs
 
 book:
-  title: "Fiscal Futures"
+  title: "Fiscal Futures Project"
   author: "Alea Wilbur-Mujtaba"
   date: last-modified
+  navbar: 
+    right: 
+      - icon: github
+        href: https://github.com/AleaWM/Fiscal-Futures
+        aria-label: GitHub
+  site-url: https://aleawm.github.io/Fiscal-Futures/
+  reader-mode: true
   chapters:
     - index.qmd
+    - code-cleaning.qmd
     - FedMoneyReceived.qmd
     - LocalTransfers.qmd
     - Debt.qmd
@@ -15,18 +23,20 @@ book:
     - Healthcare.qmd
     - FederalRevenue.qmd
     - Medicaid.qmd
-    - FiscalGap.qmd
     - Everything.qmd
-    - references.qmd
-    
+
+#execute: 
+#  freeze: auto
+
 format:
   html:
     code-fold: true
     code-tools: true
     code-overflow: wrap
     df-print: paged
-    theme: cosmo
-
+    theme: 
+      light: lightly
+      dark: darkly
 
 #bibliography: references.bib
 
