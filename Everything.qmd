@@ -17,6 +17,7 @@ library(data.table)
 library(quantmod)
 library(geofacet)
 library(janitor)
+library(cmapplot)
 
 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
@@ -24,7 +25,6 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 exp_temp <- read_csv("exp_temp.csv")
 rev_temp <- read_csv("rev_temp.csv")
 ```
-
 
 ## Modify Expenditure File
 
@@ -547,6 +547,7 @@ rev_temp %>%
   group_by(fy, rev_type, rev_type_name) %>% 
   summarise(receipts = sum(receipts, na.rm = TRUE)/1000000) %>% 
   ggplot() +
+      geom_recessions(xformay = "numeric",text = FALSE)+
   geom_line(aes(x=fy, y=receipts,color=rev_type_name)) +
       theme_bw() +
   scale_y_continuous(labels = comma)+
@@ -557,7 +558,7 @@ rev_temp %>%
 
 **Dropping State CURE Revenue**
 
-The Fiscal Futures model focuses on sustainable revenue sources. To understand our fiscal gap and outlook, we need to exclude these one time revenues. GOMB has emphasized that they have allocated COVID dollars to one time expenditures (unemployment trust fund, budget stabilization fund, etc.). The fiscal gap, graphs,and CAGRs have been recalculated in the [Drop COVID Dollars] section below.
+The Fiscal Futures model focuses on sustainable revenue sources. To understand our fiscal gap and outlook, we need to exclude these one time revenues. GOMB has emphasized that they have allocated COVID dollars to one time expenditures (unemployment trust fund, budget stabilization fund, etc.). The fiscal gap, graphs,and CAGRs have been recalculated in the \[Drop COVID Dollars\] section below.
 
 > NOTE: The code chunk below only drops revenue sources with the source name of "Federal Stimulus Package" (which is the State and Local CURE revenue). Additional federal money went into other funds during the beginning of pandemic. Many departments saw increased grants and received other funds (e.g. ESSER funds)
 
@@ -1079,7 +1080,6 @@ kable_classic() %>%   add_footnote(c("Methodology has changed since past publica
 
 ```
 
-
 Graphs made from `aggregated_totals_long` dataframe.
 
 ```{r fiscal-gap}
@@ -1404,14 +1404,16 @@ exp_long %>%
 
 annotation <- data.frame(
   x = c(2012, 2019, 2012),
-  y = c(16000, 10000, 5000),  
+  y = c(16, 10, 5),  
   label = c("Individual Income Tax", "Sales Tax", "Corporate Income Tax")
 )
 
 top3 <- rev_long  %>% 
-  filter(Category == "02" | Category == "03" | Category == "06") %>%
-  ggplot()+
-  geom_line(aes(x=Year, y=Dollars, color = Category_name)) + 
+  filter(Category == "02" | Category == "03" | Category == "06")
+
+top3 <- ggplot(data = top3, aes(x=Year, y=Dollars/1000))+
+      geom_recessions(text = FALSE)+
+  geom_line(aes(x=Year, y=Dollars/1000, color = Category_name)) + 
   geom_text(data = annotation, aes(x=x, y=y, label=label))+
     theme_bw() +
   
@@ -1421,7 +1423,7 @@ top3 <- rev_long  %>%
   theme(legend.position = "none")+
   labs(title = "Top 3 Own Source Revenues", 
        subtitle = "Individual Income Taxes, Sales Tax, and Corporate income taxes",
-       y = "Nominal Dollars (in Millions)") 
+       y = "Billions of Nominal Dollars") 
   
 
 top3
@@ -1446,21 +1448,22 @@ fed_rev <- ff_rev %>% select(fy, rev_57, rev_58, rev_59) %>%
 
 annotation <- data.frame(
   x = c(2010, 2010),
-  y = c(50000, 25000),  
-  label = c("Own Source Revenue", "Federal Transfers")
+  y = c(50, 25),  
+  label = c("Own Source Revenue", "Federal Revenue")
 )
 
 
-ggplot() + 
-  geom_line(data = ownsource_rev, aes(x=Year, y=Dollars), color = "Red") + 
-  geom_line(data = fed_rev, aes(x=fy, y=fed_total), color = "Black") + 
+ggplot(ownsource_rev, aes(x=Year, y=Dollars/1000)) + 
+  geom_recessions( text = FALSE)+
+  geom_line(data = ownsource_rev, aes(x=Year, y=Dollars/1000), color = "Red") + 
+  geom_line(data = fed_rev, aes(x=fy, y=fed_total/1000), color = "Black") + 
     geom_text(data = annotation, aes(x=x, y=y, label=label))+
     scale_y_continuous(labels = comma)+
   theme(legend.position = "none")+
 
   theme_bw()+
-  labs(title = "Own Source Revenue and Federal Transfers", 
-  y = "Nominal Dollars (in Millions)")
+  labs(title = "Own Source Revenue and Federal Revenue", 
+  y = "Billions of Nominal Dollars")
 
 
 ```
@@ -1469,7 +1472,7 @@ ggplot() +
 
 Each year, you will need to update the CAGR formulas! Change the filter() year.
 
-`calc_cagr` is a function created for calculating the CAGRs for different spans of time. 
+`calc_cagr` is a function created for calculating the CAGRs for different spans of time.
 
 ```{r CAGR-no-totals, eval=FALSE,include=FALSE}
 
@@ -1595,7 +1598,6 @@ rm(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_24)
   mutate(Growth = ((Dollars) - lag(Dollars))/lag(Dollars) *100) %>% 
   summarize(Growth = round(mean(Growth, na.rm = TRUE), 2))
 ```
-
 
 ```{r}
 exp_totals <- ff_exp %>% rowwise() %>% mutate(exp_TOTALS = sum(across(exp_402:exp_970)))
@@ -1820,7 +1822,6 @@ CAGR_revenue_summary_tot %>%
 rm(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_24)
 ```
 
-
 ```{r }
 
 revenue_change2 <- rev_long %>%
@@ -1877,13 +1878,11 @@ expenditure_change2 %>%
            
 ```
 
-
 ## Summary Tables - Largest Categories
 
-The 10 largest revenue sources and 13 largest expenditure sources remain separate categories and all other smaller sources/expenditures are combined into "All Other _____". These condensed tables are typically used in the Fiscal Futures articles. They were manually created in past years but this hopefully automates the process a bit until final formatting stages. 
+The 10 largest revenue sources and 13 largest expenditure sources remain separate categories and all other smaller sources/expenditures are combined into "All Other \_\_\_\_\_". These condensed tables are typically used in the Fiscal Futures articles. They were manually created in past years but this hopefully automates the process a bit until final formatting stages.
 
-
-- take ff_rev and ff_exp data frames, which were in wide format, pivot them longer and mutate the Category_name variable to nicer labels. Keep largest categories separate and aggregate the rest. 
+-   take ff_rev and ff_exp data frames, which were in wide format, pivot them longer and mutate the Category_name variable to nicer labels. Keep largest categories separate and aggregate the rest.
 
 ```{r }
 exp_totals <- ff_exp %>% rowwise() %>% mutate(exp_TOTALS = sum(across(exp_402:exp_970))) # creates total column too
@@ -2088,7 +2087,6 @@ expenditure_change_majorcats %>%
 
 Top 10 revenue sources CAGRs and Yearly Change Tables:
 
-
 ```{r }
 
 ##### Top 10 revenue CAGRs: ####
@@ -2168,9 +2166,6 @@ revenue_change_majorcats%>%
 
 ```
 
-
-
-
 ```{r}
 # #install.packages("openxlsx")
 # library(openxlsx)
@@ -2183,10 +2178,7 @@ revenue_change_majorcats%>%
 # write.xlsx(dataset_names, file = 'summary_file_FY2022_withTotals_Jan11.xlsx')
 ```
 
-
-
-
-Export summary file with Totals 
+Export summary file with Totals
 
 ```{r}
 library(openxlsx)
@@ -2218,8 +2210,6 @@ dataset_names <- list('Aggregate Revenues' = revenue_wide2,
 
 write.xlsx(dataset_names, file = 'summary_file_FY22_wTotals_Jan11.xlsx')
 ```
-
-
 
 ```{r include= FALSE}
 ## creates tables without totals as bottom row
@@ -2265,7 +2255,6 @@ write.xlsx(dataset_names, file = 'summary_file_FY22_wTotals_Jan11.xlsx')
            
 ```
 
-
 Saves main items in one excel file named `summary_file.xlsx`. Delete `eval=FALSE` to run on local computer.
 
 ```{r }
@@ -2284,7 +2273,7 @@ Saves main items in one excel file named `summary_file.xlsx`. Delete `eval=FALSE
 
 If only sustainable revenues are included in the model, then the federal dollars from the pandemic response (CARES, CRSSA,& ARPA)should be excluded from the calculation of the fiscal gap.
 
-The Fiscal Futures model focuses on sustainable revenue sources. To understand our fiscal gap and outlook, we need to exclude these one time revenues. GOMB has emphasized that they have allocated COVID dollars to one time expenditures (unemployment trust fund, budget stabilization fund, etc.). The fiscal gap, graphs,and CAGRs have been recalculated in the [Drop COVID Dollars] section below. 
+The Fiscal Futures model focuses on sustainable revenue sources. To understand our fiscal gap and outlook, we need to exclude these one time revenues. GOMB has emphasized that they have allocated COVID dollars to one time expenditures (unemployment trust fund, budget stabilization fund, etc.). The fiscal gap, graphs,and CAGRs have been recalculated in the \[Drop COVID Dollars\] section below.
 
 > NOTE: I have only dropped revenue with a source name = `Federal Stimulus Package`. Federal money went into other funds during the beginning of pandemic. All additional money for medicaid reimbursements and healthcare provider funds were not considered "Federal Stimulus Package" in the data and were not dropped.
 
@@ -2449,6 +2438,7 @@ aggregated_totals_long <- rbind(rev_long, exp_long)
 ```
 
 Change plots:
+
 ```{r}
 year_totals2 <- aggregated_totals_long %>% 
   group_by(type, Year) %>% 
@@ -2673,7 +2663,8 @@ expenditure_change <- exp_long %>%
           "FY2022 Expenditure Category" = Category_name )
 ```
 
-Creating the excel file with multiple tables and versions of the data: 
+Creating the excel file with multiple tables and versions of the data:
+
 ```{r}
 dataset_names <- list('rev_long' = rev_long, 'exp_long' = exp_long, 
                       'Table 1' = expenditure_change, 'Table 2' = revenue_change,
@@ -2685,7 +2676,7 @@ write.xlsx(dataset_names, file = 'summary_file_droppeCOVIDrevs_FY2022.xlsx')
 
 ## Forecasting attempt
 
-First images use revenue that includes all federal stimulus packages. Revenue projections are skewed heavily due to the large amount of covid money flowing in the past 2 years. 
+First images use revenue that includes all federal stimulus packages. Revenue projections are skewed heavily due to the large amount of covid money flowing in the past 2 years.
 
 ```{r }
 
@@ -2832,8 +2823,6 @@ autoplot(tsexp2019) +
 
 ```
 
-
-
 ```{r eval=FALSE, include=FALSE}
 ### Federal Revenue
 
@@ -2886,7 +2875,6 @@ fed59 <- forecast(forecast_fed,  h = 20) %>%
 fed59
 ```
 
-
 ```{r}
 
 fed_rev <- ff_rev %>% select(fy, rev_57, rev_58, rev_59) %>%
@@ -2935,8 +2923,7 @@ autoplot(tsexp2019) +
 
 ```
 
-Graphing the 3 federal revenue types together may be the most reliable since some COVID funding is still recorded in Federal Other and some are in other categories (like Disaster Response in FY2021). Need to look at more before using. 
-
+Graphing the 3 federal revenue types together may be the most reliable since some COVID funding is still recorded in Federal Other and some are in other categories (like Disaster Response in FY2021). Need to look at more before using.
 
 ## Tables with Totals
 

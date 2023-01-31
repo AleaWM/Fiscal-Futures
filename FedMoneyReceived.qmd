@@ -732,10 +732,12 @@ Sankeyattempt2022.csv file totals \$32 billion flowing into the state. \$3.5 cam
 
 These observations are based more on the IOC revenue data for revenue received instead of the covidmoneytracker.org data for revenue committed.
 
+![](images/image-1255499887.png)
+
 ```{r results='hold' }
 sankeydata <- read_csv("sankeyattempt2022.csv") %>% filter(StFund == "Total")
 
-sankeydata2 <- sankeydata %>% select(Federal, StateFunds, StFund, Expenditures, value, Notes) %>%
+sankeydata2 <- sankeydata %>% select(Federal, FF_Cat, StateFunds, StFund, Expenditures, value, Notes) %>%
   filter(StFund == "Total") %>%
   mutate(StateFunds = factor(StateFunds, levels = c("Total_received_fy20","Total_received_fy21", "Total_received_fy22")),
                   Federal = as.factor(Federal),
@@ -755,9 +757,35 @@ coord_flip()+
   theme(legend.position = "bottom") + 
       geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
   ggtitle("$32 billion recieved according to IOC Revenue data")
+
+ggplot(sankey4, 
+       aes(y = value, 
+           axis3 = Federal, axis2 = StateFunds, axis1=FF_Cat, label = "stratum")) +
+  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+  theme(legend.position = "bottom") + 
+      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
+  ggtitle("$32 billion recieved according to IOC Revenue data")
 ```
 
 ```{r include=FALSE}
+
+ggplot(sankey4, 
+       aes(y = value, 
+           axis3 = Federal, axis2 = StateFunds, axis1=FF_Cat, label = "stratum")) +
+  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+  theme(legend.position = "bottom") + 
+   #   geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
+  ggtitle("$32 billion recieved according to IOC Revenue data")
+
+
 ggplot(sankey4, 
        aes(y = value, axis3 = Federal, axis2 = StateFunds, axis1=Expenditures, label = "stratum")) +
   geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
@@ -770,6 +798,16 @@ coord_flip()+
   ggtitle("")
   
   
+  ggplot(sankey4, 
+       aes(y = value, axis3 = Federal,  axis2=FF_Cat, axis1 = StateFunds, label = "stratum")) +
+  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
+ # guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void()
+  #    geom_text_repel(stat = "stratum", aes(label = after_stat(stratum)), size = 4)
+  ggtitle("")
   
   
 # sankey4 <- sankeydata %>% select(Federal, StateFunds, StFund, Expenditures, value, Notes) %>%
@@ -783,6 +821,9 @@ coord_flip()+
 sankey4 %>% #group_by(StateFunds) %>% 
   summarize(sum=sum(value))
 
+sankey4 %>% group_by(Federal) %>% 
+  summarize(sum=sum(value))
+
 sankey4 %>% group_by(StateFunds) %>% 
   summarize(sum=sum(value))
 
@@ -793,6 +834,12 @@ sankey4 %>% group_by(Notes) %>%
   summarize(sum=sum(value))
 
 sankey4 %>% group_by(StateFunds, Expenditures) %>% 
+  summarize(sum=sum(value))
+
+sankey4 %>% group_by(FF_Cat) %>% 
+  summarize(sum=sum(value))
+
+sankey4 %>% group_by( Notes, Federal, StateFunds, FF_Cat) %>% 
   summarize(sum=sum(value))
 ```
 

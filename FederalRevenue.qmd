@@ -38,6 +38,8 @@ library(data.table)
 library(quantmod)
 library(geofacet)
 library(janitor)
+#devtools::install_github("CMAP-REPOS/cmapplot", build_vignettes=TRUE)
+library(cmapplot)
 
 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
@@ -66,7 +68,9 @@ rev_temp %>%
   filter(rev_type == "58" | rev_type == "59" | rev_type == "57") %>% 
   group_by(fy, rev_type, rev_type_name) %>% 
   summarise(receipts = sum(receipts, na.rm = TRUE)/1000000) %>% 
-  ggplot() +
+  ggplot(aes(x=fy, y=receipts,color=rev_type_name)) +
+    geom_recessions(xformay = "numeric",text = FALSE)+
+
   geom_line(aes(x=fy, y=receipts,color=rev_type_name)) +
       theme_bw() +
   scale_y_continuous(labels = comma)+
