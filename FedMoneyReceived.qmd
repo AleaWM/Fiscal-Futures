@@ -29,16 +29,32 @@ library(readxl)
 
 Dropping revenue source "Federal Stimulus Package" from the IOC revenue data is one way to start estimating how revenue will look after the COVID relief ends. The graphs below show Illinois revenue with and without Federal Stimulus Package revenue. It is important to note that only the \$8.127 ARPA State CURE and \$3.519 CARES CRF/State CURE revenue were labeled as "Federal Stimulus Package" in the IOC revenue data. There was still an additional \$12 billion dollars in other federal revenue that went to the state in FY22 compared to FY19. When trying to understand the states finances and the yearly fiscal gap, we also need to understand when and where the funds were considered revenue in the IOC data and consider the fiscal year that the funds were spent. Finally, allocations or expenditures may be grouped and labeled differently by the State compared to the Fiscal Futures project categorization. Some items that the federal relief funds are spent on are not included in Fiscal Gap calculations (e.g. the Unemployment Insurance Trust Fund repayments). The biggest challenge when determining the Fiscal Gap for Illinois centers around the timing of revenue and expenditures occurring in different fiscal years during the COVID response.
 
-```{r results='hold'}
+```{r}
 
-rev_temp <- read_csv("rev_temp.csv")
+
+rev_temp <- read_csv("rev_temp.csv") %>% 
+  filter(agency!= "799")
+
+drop_type <- c("32", "45", "51", 
+               "66", "72", "75", "79", "98")
+
+# drops Blank, Student Fees, Retirement contributions, proceeds/investments,
+# bond issue proceeds, interagency receipts, cook IGT, Prior year refunds.
+
+
+rev_temp <- rev_temp %>% filter(!rev_type %in% drop_type)
 
 fedrev<- rev_temp %>% 
+  # all federal revenue
   filter(rev_type == "58" | rev_type == "59" | rev_type == "57") 
 
-fedrev %>% filter(fy>2018) %>% group_by(fy) %>% summarize(Revenue = sum(receipts))
+fedrev %>% 
+  filter(fy>2018) %>% # all fed rev after 2018 summed by year
+  group_by(fy) %>% 
+  summarize(Revenue = sum(receipts))
 
 fedrev %>% 
+  #federal stimulus revenue sources after 2018
   filter(source_name_AWM == "FEDERAL STIMULUS PACKAGE" & fy>2018) %>%
   group_by(fy) %>% 
   summarise(receipts = sum(receipts, na.rm = TRUE)/1000000)
@@ -52,36 +68,292 @@ fedrev %>%
 
 fedrev %>% 
   group_by(fy) %>% 
-  summarise(receipts = sum(receipts, na.rm = TRUE)/1000000) %>% 
+  summarise(receipts = sum(receipts/1000, na.rm = TRUE)/1000000) %>% 
   ggplot() +
   geom_line(aes(x=fy, y=receipts)) +
       theme_bw() +
   scale_y_continuous(labels = comma)+
   labs(title = "All Federal Revenue", 
-       y = "Millions of Dollars", x = "") + 
+       y = "Billions of Dollars", x = "") + 
   theme(legend.position = "bottom", legend.title = element_blank()  )+
-    scale_y_continuous(limits = c(0,45000))
+    scale_y_continuous(limits = c(0,45))
 
 
 fedrev %>% 
-  filter(source_name_AWM != "FEDERAL STIMULUS PACKAGE" ) %>%
+  filter(source_name_AWM != "FEDERAL STIMULUS PACKAGE" & agency!="799") %>%
   group_by(fy) %>% 
-  summarise(receipts = sum(receipts, na.rm = TRUE)/1000000) %>% 
+  summarise(receipts = sum(receipts/1000, na.rm = TRUE)/1000000) %>% 
   ggplot() +
   geom_line(aes(x=fy, y=receipts)) +
       theme_bw() +
   scale_y_continuous(labels = comma)+
   labs(title = "All Federal EXCEPT Federal Stimulus Package", 
-       y = "Millions of Dollars", x = "",
-       caption = "Note: Dropping Federal Stimulus Package revenue only removes the $3.5 billion from FY20, 
-       $0.3 billion from FY21, and $8.5 billion from FY22. Also drops Great Recession Aid in 2009.
-       There is still over $12 billion more in Federal Revenue compared to FY19.") + 
+       y = "Billions of Dollars", x = "",
+       caption = "Note: Dropping Federal Stimulus Package revenue only removes the $3.519 billion from FY20, 
+       $0.23 billion from FY21, and $8.85 billion from FY22. Also drops Great Recession Aid in 2009.
+       There is still $11.4 billion more in FY22 Federal Revenue compared to FY19.") + 
   theme(legend.position = "bottom", legend.title = element_blank()  ) +
-  scale_y_continuous(limits = c(0,45000))
+  scale_y_continuous(limits = c(0,45))
 
 
 
 ```
+
+## Comptroller Revenue Data
+
+Sankeyattempt2022.csv file totals \$32 billion flowing into the state. \$3.5 came in FY20, \$12.6 billion came in FY21 and \$16.1 billion in FY22.
+
+These observations are based more on the IOC revenue data for revenue received instead of the covidmoneytracker.org data for revenue committed.
+
+![](images/image-1255499887.png)
+
+```{r results='hold' }
+sankeydata <- read_csv("sankeyattempt2022.csv") %>% filter(StFund == "Total")
+
+sankeydata2 <- sankeydata %>% select(Federal, FF_Cat, StateFunds, StFund, Expenditures, value, Notes) %>%
+  filter(StFund == "Total") %>%
+  mutate(StateFunds = factor(StateFunds, levels = c("Total_received_fy20","Total_received_fy21", "Total_received_fy22")),
+                  Federal = as.factor(Federal),
+                  Expenditures = factor(Expenditures, levels = c("Community Development", "Transit", "Public Health", "Medicaid", "K-12", "Federal Other")),
+         Notes = factor(Notes, levels = c("CARES", "CRRSA", "ARPA", "Other *")))
+
+sankey4 <- sankeydata2
+
+ggplot(sankey4, 
+       aes(y = value, 
+           axis3 = Federal, axis2 = StateFunds, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+  theme(legend.position = "bottom") + 
+      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
+  ggtitle("$32 billion recieved according to IOC Revenue data")
+
+ggplot(sankey4, 
+       aes(y = value, 
+           axis3 = Federal, axis2 = StateFunds, axis1=FF_Cat, label = "stratum")) +
+  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+  theme(legend.position = "bottom") + 
+      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
+  ggtitle("$32 billion recieved according to IOC Revenue data")
+```
+
+```{r include=FALSE}
+
+ggplot(sankey4, 
+       aes(y = value, 
+           axis3 = Federal, axis2 = StateFunds, axis1=FF_Cat, label = "stratum")) +
+  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+  theme(legend.position = "bottom") + 
+   #   geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
+  ggtitle("$32 billion recieved according to IOC Revenue data")
+
+
+ggplot(sankey4, 
+       aes(y = value, axis3 = Federal, axis2 = StateFunds, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
+ # guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void()
+  #    geom_text_repel(stat = "stratum", aes(label = after_stat(stratum)), size = 4)
+  ggtitle("")
+  
+  
+  ggplot(sankey4, 
+       aes(y = value, axis3 = Federal,  axis2=FF_Cat, axis1 = StateFunds, label = "stratum")) +
+  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
+ # guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void()
+  #    geom_text_repel(stat = "stratum", aes(label = after_stat(stratum)), size = 4)
+  ggtitle("")
+  
+  
+# sankey4 <- sankeydata %>% select(Federal, StateFunds, StFund, Expenditures, value, Notes) %>%
+#   filter(StFund == "Total") %>%
+#   mutate(StateFunds = factor(StateFunds, levels = c("Total_received_fy21", "Total_received_fy22")),
+#                   Federal = as.factor(Federal),
+#                   Expenditures = as.factor(Expenditures) )
+```
+
+```{r results='hold'}
+sankey4 %>% #group_by(StateFunds) %>% 
+  summarize(sum=sum(value))
+
+sankey4 %>% group_by(Federal) %>% 
+  summarize(sum=sum(value))
+
+sankey4 %>% group_by(StateFunds) %>% 
+  summarize(sum=sum(value))
+
+sankey4 %>% group_by(Expenditures) %>% 
+  summarize(sum=sum(value))
+
+sankey4 %>% group_by(Notes) %>% 
+  summarize(sum=sum(value))
+
+sankey4 %>% group_by(StateFunds, Expenditures) %>% 
+  summarize(sum=sum(value))
+
+sankey4 %>% group_by(FF_Cat) %>% 
+  summarize(sum=sum(value))
+
+sankey4 %>% group_by( Notes, Federal, StateFunds, FF_Cat) %>% 
+  summarize(sum=sum(value))
+```
+
+Graph below shows same amount in federal COVID dollars but here color indicates the fund that the money was received in
+
+```{r results='hold'}
+sankeydata <- read_csv("sankeyattempt2022.csv") %>% filter(StFund == "Total")
+
+sankey <- sankeydata %>% select(Federal, StateFunds, StFund, Expenditures, stfundname, value, Notes) %>%
+  mutate(StateFunds = factor(StateFunds, levels = c("Total_received_fy20", "Total_received_fy21", "Total_received_fy22")),
+         stfundname = as.factor(stfundname),
+         Federal = as.factor(Federal),
+         
+                   Expenditures = factor(Expenditures, levels = c("Transit", "Medicaid", "Public Health",  "K-12", "Federal Other", "Community Development")),
+         Notes = factor(Notes, levels = c( "Other *", "CARES","CRRSA", "ARPA")))
+
+
+ggplot(sankey, 
+       aes(y = value, axis3 = Federal, axis2 = stfundname, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black",reverse=FALSE) +
+  guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +  
+  theme(legend.position="bottom") +
+
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
+  ggtitle("Expenditures using Federal Relief Funds")
+
+```
+
+```{r include=FALSE}
+sankeydata <- read_csv("sankeyattempt2022.csv") %>% filter(StFund == "Total_spent")
+
+ggplot(sankey, 
+       aes(y = value, axis3 = StateFunds, axis2 = stfundname, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black", reverse=FALSE) +
+  # guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE)+
+  # geom_text(stat = "stratum", label.strata = TRUE) + 
+  coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+     scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") )+ 
+      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 4)+
+  ggtitle("")
+
+```
+
+Highlights legislation, fund money went into, and its purpose.
+
+```{r results='hold'}
+
+# ggplot(sankey, 
+#        aes(y = value, axis3 = Notes, axis2 = stfundname, axis1=Expenditures, label = "stratum")) +
+#   geom_flow(aes(fill = stfundname), color = "black",reverse=FALSE) +
+#   geom_stratum(reverse=FALSE)+
+# coord_flip()+
+#    scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+#   theme_void() +
+# theme(legend.position="bottom") +
+#   ggtitle("No labels")
+
+
+ggplot(sankey, 
+       aes(y = value, axis3 = Notes, axis2 = stfundname, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+  theme(legend.position="bottom") +
+
+      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2,reverse=FALSE)
+
+```
+
+```{r}
+sankeydata <- read_csv("sankeyattempt2022.csv")
+
+sankey <- sankeydata %>% select(Federal, StateFunds, StFund, Expenditures, stfundname, value, Notes) %>%
+    filter(StFund == "Total") %>%
+
+  mutate(StateFunds = factor(StateFunds, levels = c("Total_received_fy20", "Total_received_fy21", "Total_received_fy22")),
+         stfundname = as.factor(stfundname),
+         Federal = as.factor(Federal),
+         
+                   Expenditures = factor(Expenditures, levels = c("Community Development", "Public Health", "Medicaid", "K-12", "Federal Other", "Transit")),
+         Notes = factor(Notes, levels = c(  "CARES", "Other *","CRRSA", "ARPA")))
+
+
+ggplot(sankey, 
+       aes(y = value, 
+           axis3 = Notes, axis2 = StateFunds, axis1=Expenditures, label = "stratum")) +
+  geom_flow(aes(fill = stfundname), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() +
+  theme(legend.position="bottom") +
+
+      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse = FALSE)
+
+```
+
+> ::: callout-note
+> Note: CARES funds were originally received and spent in Disaster Response & Recovery Fund. In FY22, unspent aid was transferred to the State CURE and then transferred again to state agencies for COVID-related expenditures. Remaining CARES funds were transferred to State CURE fund for FY22. \$337 million was also transferred from the Illinois Department of Revenue into the Illinois Housing Development Authority (IHDA). ([LBOC June 2021 Report](https://budget.illinois.gov/content/dam/soi/en/web/budget/documents/lboc/lboc-report-june-2021-final.pdf)).
+> :::
+
+> ::: callout-note
+> Revenue from Local Cure is the Local Government Transfers. A small amount of the State CURE was also transferred to local governments (\$240 million in FY2021). There was also \$700 million ARPA State CURE funds transferred to local governments.
+> :::
+
+```{r results='hold'}
+sankey %>%
+  summarize(sum=sum(value))
+
+sankey %>% group_by(StateFunds) %>% 
+  summarize(sum=sum(value))
+
+sankey %>% group_by(Expenditures) %>% 
+  summarize(sum=sum(value))
+
+sankey %>% group_by(Notes) %>% 
+  summarize(sum=sum(value))
+
+sankey %>% group_by(StateFunds, Expenditures) %>% 
+  summarize(sum=sum(value))
+```
+
+[ggsankey info and example](https://cheatography.com/seleven/cheat-sheets/ggalluvial/)
+
+![](images/image-2109120559.png){width="346"}
+
+A little information on Sankey graphs is below:
+
+-   The axis is how the observations are grouped at each step. There are multiple axes.
+-   Strata are the options that exist for each level. (e.g. Year received can be 2021 or 2022)
+-   Alluvium correspond to the fixed value of each axis variable. Proportional to how the sum of however you are grouping your data.
+-   Flows are the segments of the alluvia between adjacent axes.
 
 ## COVID Money Tracker Data
 
@@ -725,262 +997,6 @@ ggplot(cure_exp,
 ```
 
 > Note: Increased Matching Grant and Medicare Continuous Coverage Requirement dollars all count as Federal Medicaid Revenue.
-
-## Other Revenue Graphs
-
-Sankeyattempt2022.csv file totals \$32 billion flowing into the state. \$3.5 came in FY20, \$12 billion came in FY21 and \$16.1 billion in FY22.
-
-These observations are based more on the IOC revenue data for revenue received instead of the covidmoneytracker.org data for revenue committed.
-
-![](images/image-1255499887.png)
-
-```{r results='hold' }
-sankeydata <- read_csv("sankeyattempt2022.csv") %>% filter(StFund == "Total")
-
-sankeydata2 <- sankeydata %>% select(Federal, FF_Cat, StateFunds, StFund, Expenditures, value, Notes) %>%
-  filter(StFund == "Total") %>%
-  mutate(StateFunds = factor(StateFunds, levels = c("Total_received_fy20","Total_received_fy21", "Total_received_fy22")),
-                  Federal = as.factor(Federal),
-                  Expenditures = factor(Expenditures, levels = c("Community Development", "Transit", "Public Health", "Medicaid", "K-12", "Federal Other")),
-         Notes = factor(Notes, levels = c("CARES", "CRRSA", "ARPA", "Other *")))
-
-sankey4 <- sankeydata2
-
-ggplot(sankey4, 
-       aes(y = value, 
-           axis3 = Federal, axis2 = StateFunds, axis1=Expenditures, label = "stratum")) +
-  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
-  geom_stratum(reverse=FALSE)+
-coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() +
-  theme(legend.position = "bottom") + 
-      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
-  ggtitle("$32 billion recieved according to IOC Revenue data")
-
-ggplot(sankey4, 
-       aes(y = value, 
-           axis3 = Federal, axis2 = StateFunds, axis1=FF_Cat, label = "stratum")) +
-  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
-  geom_stratum(reverse=FALSE)+
-coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() +
-  theme(legend.position = "bottom") + 
-      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
-  ggtitle("$32 billion recieved according to IOC Revenue data")
-```
-
-```{r include=FALSE}
-
-ggplot(sankey4, 
-       aes(y = value, 
-           axis3 = Federal, axis2 = StateFunds, axis1=FF_Cat, label = "stratum")) +
-  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
-  geom_stratum(reverse=FALSE)+
-coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() +
-  theme(legend.position = "bottom") + 
-   #   geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
-  ggtitle("$32 billion recieved according to IOC Revenue data")
-
-
-ggplot(sankey4, 
-       aes(y = value, axis3 = Federal, axis2 = StateFunds, axis1=Expenditures, label = "stratum")) +
-  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
- # guides(fill = FALSE) +   
-  geom_stratum(reverse=FALSE)+
-coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void()
-  #    geom_text_repel(stat = "stratum", aes(label = after_stat(stratum)), size = 4)
-  ggtitle("")
-  
-  
-  ggplot(sankey4, 
-       aes(y = value, axis3 = Federal,  axis2=FF_Cat, axis1 = StateFunds, label = "stratum")) +
-  geom_flow(aes(fill = Notes), color = "black", reverse=FALSE) +
- # guides(fill = FALSE) +   
-  geom_stratum(reverse=FALSE)+
-coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void()
-  #    geom_text_repel(stat = "stratum", aes(label = after_stat(stratum)), size = 4)
-  ggtitle("")
-  
-  
-# sankey4 <- sankeydata %>% select(Federal, StateFunds, StFund, Expenditures, value, Notes) %>%
-#   filter(StFund == "Total") %>%
-#   mutate(StateFunds = factor(StateFunds, levels = c("Total_received_fy21", "Total_received_fy22")),
-#                   Federal = as.factor(Federal),
-#                   Expenditures = as.factor(Expenditures) )
-```
-
-```{r results='hold'}
-sankey4 %>% #group_by(StateFunds) %>% 
-  summarize(sum=sum(value))
-
-sankey4 %>% group_by(Federal) %>% 
-  summarize(sum=sum(value))
-
-sankey4 %>% group_by(StateFunds) %>% 
-  summarize(sum=sum(value))
-
-sankey4 %>% group_by(Expenditures) %>% 
-  summarize(sum=sum(value))
-
-sankey4 %>% group_by(Notes) %>% 
-  summarize(sum=sum(value))
-
-sankey4 %>% group_by(StateFunds, Expenditures) %>% 
-  summarize(sum=sum(value))
-
-sankey4 %>% group_by(FF_Cat) %>% 
-  summarize(sum=sum(value))
-
-sankey4 %>% group_by( Notes, Federal, StateFunds, FF_Cat) %>% 
-  summarize(sum=sum(value))
-```
-
-Graph below shows same amount in federal COVID dollars but here color indicates the fund that the money was received in
-
-```{r results='hold'}
-sankeydata <- read_csv("sankeyattempt2022.csv") %>% filter(StFund == "Total")
-
-sankey <- sankeydata %>% select(Federal, StateFunds, StFund, Expenditures, stfundname, value, Notes) %>%
-  mutate(StateFunds = factor(StateFunds, levels = c("Total_received_fy20", "Total_received_fy21", "Total_received_fy22")),
-         stfundname = as.factor(stfundname),
-         Federal = as.factor(Federal),
-         
-                   Expenditures = factor(Expenditures, levels = c("Transit", "Medicaid", "Public Health",  "K-12", "Federal Other", "Community Development")),
-         Notes = factor(Notes, levels = c( "Other *", "CARES","CRRSA", "ARPA")))
-
-
-ggplot(sankey, 
-       aes(y = value, axis3 = Federal, axis2 = stfundname, axis1=Expenditures, label = "stratum")) +
-  geom_flow(aes(fill = stfundname), color = "black",reverse=FALSE) +
-  guides(fill = FALSE) +   
-  geom_stratum(reverse=FALSE)+
-coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() +  
-  theme(legend.position="bottom") +
-
-  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
-  ggtitle("Expenditures using Federal Relief Funds")
-
-```
-
-```{r include=FALSE}
-sankeydata <- read_csv("sankeyattempt2022.csv") %>% filter(StFund == "Total_spent")
-
-ggplot(sankey, 
-       aes(y = value, axis3 = StateFunds, axis2 = stfundname, axis1=Expenditures, label = "stratum")) +
-  geom_flow(aes(fill = stfundname), color = "black", reverse=FALSE) +
-  # guides(fill = FALSE) +   
-  geom_stratum(reverse=FALSE)+
-  # geom_text(stat = "stratum", label.strata = TRUE) + 
-  coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() +
-     scale_x_discrete( limits = c("Federal Funds", "State Funds", "Expenditure Categories") )+ 
-      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 4)+
-  ggtitle("")
-
-```
-
-Highlights legislation, fund money went into, and its purpose.
-
-```{r results='hold'}
-
-# ggplot(sankey, 
-#        aes(y = value, axis3 = Notes, axis2 = stfundname, axis1=Expenditures, label = "stratum")) +
-#   geom_flow(aes(fill = stfundname), color = "black",reverse=FALSE) +
-#   geom_stratum(reverse=FALSE)+
-# coord_flip()+
-#    scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-#   theme_void() +
-# theme(legend.position="bottom") +
-#   ggtitle("No labels")
-
-
-ggplot(sankey, 
-       aes(y = value, axis3 = Notes, axis2 = stfundname, axis1=Expenditures, label = "stratum")) +
-  geom_flow(aes(fill = stfundname), color = "black", reverse=FALSE) +
-  geom_stratum(reverse=FALSE)+
-coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() +
-  theme(legend.position="bottom") +
-
-      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2,reverse=FALSE)
-
-```
-
-```{r}
-sankeydata <- read_csv("sankeyattempt2022.csv")
-
-sankey <- sankeydata %>% select(Federal, StateFunds, StFund, Expenditures, stfundname, value, Notes) %>%
-    filter(StFund == "Total") %>%
-
-  mutate(StateFunds = factor(StateFunds, levels = c("Total_received_fy20", "Total_received_fy21", "Total_received_fy22")),
-         stfundname = as.factor(stfundname),
-         Federal = as.factor(Federal),
-         
-                   Expenditures = factor(Expenditures, levels = c("Community Development", "Public Health", "Medicaid", "K-12", "Federal Other", "Transit")),
-         Notes = factor(Notes, levels = c(  "CARES", "Other *","CRRSA", "ARPA")))
-
-
-ggplot(sankey, 
-       aes(y = value, 
-           axis3 = Notes, axis2 = StateFunds, axis1=Expenditures, label = "stratum")) +
-  geom_flow(aes(fill = stfundname), color = "black", reverse=FALSE) +
-  geom_stratum(reverse=FALSE)+
-coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() +
-  theme(legend.position="bottom") +
-
-      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse = FALSE)
-
-```
-
-> ::: callout-note
-> Note: CARES funds were originally received and spent in Disaster Response & Recovery Fund. In FY22, unspent aid was transferred to the State CURE and then transferred again to state agencies for COVID-related expenditures. Remaining CARES funds were transferred to State CURE fund for FY22. \$337 million was also transferred from the Illinois Department of Revenue into the Illinois Housing Development Authority (IHDA). ([LBOC June 2021 Report](https://budget.illinois.gov/content/dam/soi/en/web/budget/documents/lboc/lboc-report-june-2021-final.pdf)).
-> :::
-
-> ::: callout-caution
-> Revenue from Local Cure is the Local Government Transfers. A small amount of the State CURE was also transferred to local governments (\$240 million in FY2021). There was also \$700 million ARPA State CURE funds transferred to local governments.
-> :::
-
-```{r results='hold'}
-sankey %>%
-  summarize(sum=sum(value))
-
-sankey %>% group_by(StateFunds) %>% 
-  summarize(sum=sum(value))
-
-sankey %>% group_by(Expenditures) %>% 
-  summarize(sum=sum(value))
-
-sankey %>% group_by(Notes) %>% 
-  summarize(sum=sum(value))
-
-sankey %>% group_by(StateFunds, Expenditures) %>% 
-  summarize(sum=sum(value))
-```
-
-[ggsankey info and example](https://cheatography.com/seleven/cheat-sheets/ggalluvial/)
-
-![](images/image-2109120559.png){width="346"}
-
-A little information on Sankey graphs is below:
-
--   The axis is how the observations are grouped at each step. There are multiple axes.
--   Strata are the options that exist for each level. (e.g. Year received can be 2021 or 2022)
--   Alluvium correspond to the fixed value of each axis variable. Proportional to how the sum of however you are grouping your data.
--   Flows are the segments of the alluvia between adjacent axes.
 
 ## Revenue & Expenditures Before and During COVID Response
 
