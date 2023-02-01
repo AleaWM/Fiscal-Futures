@@ -12,9 +12,9 @@ book:
         href: https://github.com/AleaWM/Fiscal-Futures
         aria-label: GitHub
   site-url: https://aleawm.github.io/Fiscal-Futures/
-  repo-actions: [edit]
-  downloads: [pdf, epub]
-  sharing: [twitter, facebook]
+#  repo-actions: [edit]
+#  downloads: [pdf, epub]
+#  sharing: [twitter, facebook]
   sidebar:
     title: "On this page"
 
