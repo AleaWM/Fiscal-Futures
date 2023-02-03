@@ -354,79 +354,86 @@ Federal expenditures from CURE and other major funds . Uses the `fedCUREexpendit
 
 This data comes from Illinois Comptroller expenditure data, Legislative Budget Oversight Commission (LBOC) Reports, and the [ARPA Annual Recovery Plan](https://budget.illinois.gov/content/dam/soi/en/web/budget/documents/arpa/IL%20Recovery%20Plan%20Performance%20Report%202022.pdf) detailing the State's use of State and Local Fiscal Recovery Funds (SLFRF) which is prepared by the Governor's Office of Management and Budget (GOMB).
 
-The graphs below do not include FY23 allocations for federal funds. Dates on top are Fiscal Year received. Dates in the middle of the graph are Fiscal Year expenditures. Remember, federal funds for COVID recovery have been received and spent in different years.
+~~The graphs below do not include FY23 allocations for federal funds. Dates on top are Fiscal Year received. Dates in the middle of the graph are Fiscal Year expenditures.~~
 
-Between FY20 and FY22, 12.2 billion in State CURE and ESSER funds have been spent by the state.
+Remember, federal funds for COVID recovery have been received and spent in different years.
 
-So far, over \$7.6 billion of the State CURE funds (from CARES and ARP Act) have been spent. In FY22, \$4.9 billion ARPA dollars were spent
+### Fiscal Years 2020-2022
+
+Between FY20 and FY22, \$12.2 billion in State CURE and ESSER funds have been spent by the state. \$1.92
+
+So far, over \$7.629 billion of the State CURE funds (from CARES Act and ARP Act State Fiscal Recovery Fund) have been spent in FY2020-2022.
+
+In FY22, \$4.9 billion (of \$8.127 billion) ARPA-State CURE dollars were spent: \$2.7 billion on repaying unemployment insurance trust fund, \$1 billion transferred to the general revenue fund to make up for any lost revenue caused by the pandemic, and \$1.23 billion on other programs and services (e.g. hospital stability payments, operational expenses, back to business grants and economic development).
+
+Other federal aid came in the form of grants to state departments: ESSER III funds from ARPA paid for \$444 million in K-12 expenditures.
+
+Some CRRSA dollars were also spent in FY22: \$906 million ESSER II and \$332 million from a child care development block grant
+
+In FY21, \$1.82 billion from the CARES-State CURE went for operations and grants (business interruptions, child care grants, healthcare providers, rent/mortgage assistance, public health response, etc.), \$569 million CARES-ESSER II funds for K-12 education,
+
+Approximately \$1.92 billion of the ESSER funds have been spent so far (of the \$7.88 billion received from ESSER I, II, and III received). In FY 2022 alone, the Illinois School Board for Education received over \$5 billion from ARPA-ESSER III and spent only \$444 million so far. These unspent funds do roll over to the next fiscal year but must be used by 2024. According to the [ISBE Spending Dashboard](https://www.isbe.net/Pages/ESSER-Spending-Dashboard.aspx) as of February 2, 2023, \$1.6 billion of the ESSER III funds have been spent so far.
+
+![](images/image-1332903733.png)
+
+![](images/image-1245655912.png)
 
 ```{r}
-
+#| code-fold: false
 cure_exp <- read_xlsx("fedCUREexpenditures.xlsx")
 
-cure_exp1 <- cure_exp %>%
+cure_exp2022 <- cure_exp %>%
   # keeps data until FY22
   filter(FY_Spent <2023) %>%
   
   mutate(
-         FY_Spent = factor(FY_Spent, levels = c("2020", "2021", "2022", "2023+")),
+         FY_Spent = factor(FY_Spent, levels = c("2020", "2021", "2022")),
          FY_Received = factor(FY_Received, levels = c("2020", "2021", "2022")),
-         FF_Cat = factor(FF_Cat, levels = c("Econ Dev", "Human Services", "K-12", "Local Transfers", "Public Health", "Medicaid", "Public Safety",  "UI Fund", "Lost Revenue", "FY23+")))
+         FF_Cat = factor(FF_Cat, levels = c("Econ Dev", "Human Services", "K-12", "Local Transfers", "Public Health", "Medicaid", "Public Safety",  "UI Fund", "Lost Revenue")),
+         FF_Cat2 = factor(FF_Cat, levels = c("Econ Dev", "Human Services", "K-12", "Local Transfers", "Public Health & Safety", "Medicaid",  "UI Fund", "Lost Revenue", "FY23+")))
 
-cure_exp2 <- cure_exp %>%
-  # keeps data until FY22
-  filter(State_local == "State CURE") %>%
-  
-  mutate(
-         FY_Spent = factor(FY_Spent, levels = c("2020", "2021", "2022", "2023+")),
-         FY_Received = factor(FY_Received, levels = c("2020", "2021", "2022")))
-
-cure_exp
-
-cure_exp%>% 
-  summarize(Expenditures=sum(`FY Expenditures`))
-
-cure_exp %>% 
-  group_by(FY_Received)%>% 
-  summarize(Expenditures=sum(`FY Expenditures`))
-
-cure_exp %>% 
+cure_exp2022 %>% #expenditures per year
   group_by(`FY_Spent`)%>% 
   summarize(Expenditures=sum(`FY Expenditures`))
 
-cure_exp %>% 
-  group_by(`Federal Funds`)%>% 
-  summarize(Expenditures=sum(`FY Expenditures`))
-
-cure_exp %>% 
+cure_exp2022 %>% #expenditures for State government (with CURE $) and state departments
   group_by(State_local2)%>% 
   summarize(Expenditures=sum(`FY Expenditures`))
 
+cure_exp2022%>% # total expenditures 
+  summarize(Expenditures=sum(`FY Expenditures`)) 
 
-cure_exp %>% 
+
+cure_exp2022 %>% 
+  group_by(`Federal Funds`)%>% 
+  summarize(Expenditures=sum(`FY Expenditures`))
+
+
+cure_exp2022 %>% 
   group_by(`FF_Cat`)%>% 
   summarize(Expenditures=sum(`FY Expenditures`))
 
-cure_exp %>% 
+cure_exp2022 %>% 
   group_by(Law)%>% 
   summarize(Expenditures=sum(`FY Expenditures`))
 
 
-cure_exp %>% 
+cure_exp2022 %>% 
   group_by(Law, FY_Spent, FF_Cat)%>% 
   summarize(Expenditures=sum(`FY Expenditures`)) %>%
   pivot_wider(names_from = FY_Spent, values_from = Expenditures) 
 
 
-cure_exp %>% 
+cure_exp2022 %>% 
   group_by(Law, FY_Received)%>% 
   summarize(Expenditures=sum(`FY Expenditures`)) %>%
   pivot_wider(names_from = Law, values_from = Expenditures) %>% arrange(FY_Received)
 
-cure_exp %>% 
+cure_exp2022 %>% 
   group_by(Law, FY_Spent)%>% 
   summarize(Expenditures=sum(`FY Expenditures`)) %>%
-  pivot_wider(names_from = Law, values_from = Expenditures) %>% arrange(FY_Spent)
+  pivot_wider(names_from = Law, values_from = Expenditures) %>% 
+  arrange(FY_Spent)
 
 
 ```
@@ -434,14 +441,23 @@ cure_exp %>%
 Tried to add values to flows in graph below. Have not created nice graph that works yet.
 
 ```{r}
-cure_exp2 <- cure_exp2 %>% 
+#| code-fold: false
+cure_exp2023 <- cure_exp %>%
+  # keeps data until FY22
+  filter(State_local == "State CURE") %>%
+  
+  mutate(
+         FY_Spent = factor(FY_Spent, levels = c("2020", "2021", "2022", "2023+")),
+         FY_Received = factor(FY_Received, levels = c("2020", "2021", "2022")))
+
+cure_exp2023 <- cure_exp2023 %>% 
   group_by(State_local) %>% 
   mutate(pct = `FY Expenditures` / sum(`FY Expenditures`))
 
-cure_exp2 %>% 
+cure_exp2023 %>% 
   filter(State_local == "State CURE")%>% summarize(sum=sum(`FY Expenditures`))
 
-cure_exp2 %>% 
+cure_exp2023 %>% 
   filter(State_local == "State CURE") %>%
   ggplot(aes(y = pct, 
              axis4 = FY_Received, 
@@ -462,7 +478,7 @@ cure_exp2 %>%
   labs(title = "Expenditures using State CURE funds", subtitle = "Year Received by State Department, Year Spent, and how it was spent so far", caption = "Expenditures occured during FY21 and FY22. 
        Additional funds will continue to be spent in FY23-FY26.")
 
-cure_exp2 %>% 
+cure_exp2023 %>% 
   filter(State_local == "State CURE") %>%
   ggplot(aes(y = round(`FY Expenditures`, digits=2), 
              axis4 = FY_Received, 
@@ -483,7 +499,7 @@ cure_exp2 %>%
   labs(title = "Expenditures using State CURE funds", subtitle = "Year Received by State Department, Year Spent, and how it was spent so far", caption = "Expenditures occured during FY21 and FY22. 
        Additional funds will continue to be spent in FY23-FY26.")
 
-cure_exp1 %>% 
+cure_exp2022 %>% 
   filter(State_local == "State CURE") %>%
   ggplot(aes(y = `FY Expenditures`, axis4 = FY_Received, axis3 = `Agency`,  axis2 = FY_Spent, axis1=FF_Cat, label = "stratum")) +
   geom_flow(aes(fill = FF_Cat), color = "black", reverse=FALSE) +
@@ -504,7 +520,7 @@ Major uses of the State CURE funds include \$2.7 billion for repaying the unempl
 
 
 # Year Spent, Agency received, FF Spending Category 
-ggplot(cure_exp, 
+ggplot(cure_exp2022, 
        aes(y = `FY Expenditures`, axis3 = FY_Spent, axis2 = Agency, axis1=FF_Cat, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+
@@ -545,7 +561,7 @@ ggplot(cure_exp,
 # 
 #   ggtitle("Expenditures: Federal Fund, Year Spent, and State Fund")
 
-ggplot(cure_exp, 
+ggplot(cure_exp2022, 
        aes(y = `FY Expenditures`, axis3 = `State_local2`, axis2 = Agency, axis1=FF_Cat, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+
@@ -586,7 +602,7 @@ ggplot(cure_exp,
 #           Year Spent, and FF Expenditure Purpose")
 
 
-ggplot(cure_exp, 
+ggplot(cure_exp2022, 
        aes(y = `FY Expenditures`, axis3 = `State_local2`, axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+
@@ -617,7 +633,7 @@ The graph below shows the year the money was received, the federal fund that it 
 
 ```{r}
 #4 levels with labels
-ggplot(cure_exp, 
+ggplot(cure_exp2022, 
        aes(y = `FY Expenditures`, axis4 = `FY_Received`,  axis3 = `Federal Funds`, axis2 = FY_Spent, axis1=FF_Cat, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+
@@ -636,7 +652,7 @@ ggplot(cure_exp,
 ```{r include=FALSE}
 
 #4 levels, No labels
-ggplot(cure_exp, 
+ggplot(cure_exp2022, 
        aes(y = `FY Expenditures`, axis4 = `FY_Received`,  axis3 = `Federal Funds`, axis2 = FY_Spent, axis1=FF_Cat, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   # guides(fill = FALSE) +   
@@ -650,7 +666,7 @@ ggplot(cure_exp,
   
   
 # Bad reject graphs that I won't be using:
-ggplot(cure_exp, 
+ggplot(cure_exp2022, 
        aes(y = `FY Expenditures`,axis3 = `Federal Funds`,axis2 = Agency, axis1=FF_Cat, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+
@@ -677,21 +693,9 @@ This image focuses on only the funds that came through the State and Local Fisca
     -   The remaining \$2 Billion State CURE funds have been fully allocated and some have been spent already in FY23 (\$500 million transferred to General Revenue for "Lost Revenue" during COVID disruption, remaining dollars on programs and services).
 
 ```{r results='hold'}
-cure_exp <- read_xlsx("fedCUREexpenditures.xlsx")
-
-cure_exp <- cure_exp %>%
- #   filter(FY_Spent <2023) %>%
-
-  mutate(`Federal Funds` = factor(`Federal Funds`, levels = c("CRF", "SLFRF", "Other Fed Rev")),
-         FY_Spent = factor(FY_Spent, levels = c("2020", "2021", "2022", "2023+")),
-         FY_Received = factor(FY_Received, levels = c("2020", "2021", "2022")),
-         FF_Cat = factor(FF_Cat, levels = c("Econ Dev", "Human Services", "K-12", "Local Transfers", "Public Health", "Medicaid", "Public Safety", "UI Fund", "Lost Revenue", "FY23+"))
-        
-         )
-
 
 #5 levels with labels
-ggplot(cure_exp, 
+ggplot(cure_exp2023, 
        aes(y = `FY Expenditures`,  axis6 = `Federal Funds`, axis5=State_local2, axis4 = `FY_Received`, axis3 = Agency, axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+  coord_flip()+
@@ -704,7 +708,7 @@ ggplot(cure_exp,
 
 
 # State CURE funds only
-cure_exp %>% filter(State_local2 == "State") %>%
+cure_exp2023 %>% filter(State_local2 == "State") %>%
 ggplot(aes(y = `FY Expenditures`, axis4 = `FY_Received`,  axis3 = Agency, axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+  coord_flip()+
@@ -714,7 +718,7 @@ ggplot(aes(y = `FY Expenditures`, axis4 = `FY_Received`,  axis3 = Agency, axis2 
         geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) + ggtitle("State CURE Only: $10.8 Billion in Expenditures and Allocations")
 
 #4 levels with labels
-ggplot(cure_exp, 
+ggplot(cure_exp2023, 
        aes(y = `FY Expenditures`, axis4 = `FY_Received`,  axis3 = `Federal Funds`, axis2 = FY_Spent, axis1=FF_Cat, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+
@@ -725,7 +729,7 @@ ggplot(cure_exp,
         geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) + ggtitle("$15.3 Billion in Expenditures and Allocations")
 
 
-ggplot(cure_exp, 
+ggplot(cure_exp2023, 
        aes(y = `FY Expenditures`, axis4 = `FY_Received`,  axis3 = `State_local2`, axis2 = FY_Spent, axis1=FF_Cat, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+
@@ -735,7 +739,7 @@ ggplot(cure_exp,
         geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) 
 
 
-ggplot(cure_exp, 
+ggplot(cure_exp2023, 
        aes(y = `FY Expenditures`, axis3 = `State_local2`, axis2 = FY_Spent, axis1=FF_Cat, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+
@@ -744,7 +748,7 @@ ggplot(cure_exp,
   theme_void() + 
         geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)
 
-ggplot(cure_exp, 
+ggplot(cure_exp2023, 
        aes(y = `FY Expenditures`, axis3 = `State_local2`, axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+
@@ -761,41 +765,41 @@ ggplot(cure_exp,
 ```{r}
 #| code-fold: false
 
-cure_exp %>% group_by(FY_Received)%>% 
+cure_exp2023 %>% group_by(FY_Received)%>% 
   summarize(Expenditures=sum(`FY Expenditures`))
 
-cure_exp %>% group_by(`Federal Funds`)%>% 
+cure_exp2023 %>% group_by(`Federal Funds`)%>% 
   summarize(Expenditures=sum(`FY Expenditures`))
 
-cure_exp %>% group_by(`FY_Spent`)%>% 
+cure_exp2023 %>% group_by(`FY_Spent`)%>% 
   summarize(Expenditures=sum(`FY Expenditures`))
 
-cure_exp %>% group_by(`FF_Cat`)%>% 
+cure_exp2023 %>% group_by(`FF_Cat`)%>% 
   summarize(Expenditures=sum(`FY Expenditures`))
 
-cure_exp %>% group_by(Law)%>% 
+cure_exp2023 %>% group_by(Law)%>% 
   summarize(Expenditures=sum(`FY Expenditures`))
 
 
 
-cure_exp %>% 
+cure_exp2023 %>% 
   group_by(Law, FY_Received)%>% 
   summarize(Expenditures=sum(`FY Expenditures`)) %>%
   pivot_wider(names_from = Law, values_from = Expenditures) %>% 
   arrange(FY_Received)
 
-cure_exp %>% 
+cure_exp2023 %>% 
   group_by(Law, FY_Spent)%>% 
   summarize(Expenditures=sum(`FY Expenditures`)) %>%
   pivot_wider(names_from = Law, values_from = Expenditures) %>% 
   arrange(FY_Spent)
 
-cure_exp %>% summarize(Sum=sum(`FY Expenditures`))
+cure_exp2023 %>% summarize(Sum=sum(`FY Expenditures`))
 ```
 
 ```{r include=FALSE}
 #4 levels, No labels
-ggplot(cure_exp, 
+ggplot(cure_exp2023, 
        aes(y = `FY Expenditures`, axis4 = `FY_Received`,  axis3 = `Federal Funds`, axis2 = FY_Spent, axis1=FF_Cat, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   # guides(fill = FALSE) +   
