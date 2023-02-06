@@ -415,9 +415,9 @@ Note
 </div>
 </div>
 <p>According to <a href="covidmoneytracker.org">federal data publicly available</a>, $52 billion has been committed to Illinois (including local governments) but $32 billion has been received by the state at the end of Fiscal Year 2022 (as of June 30, 2022, excluding local governments). An additional $8.86 billion was committed straight to local governments. More money has been received in FY23 but is not focused on in this analysis. To see a graph of federal funds committed to the State, jump to <a href="#sec-covid-money-tracker"><span>Section&nbsp;2.4</span></a>.</p>
-<p><img src="docs/images/revenues_ioc_32bil.png" id="fedrev-iocdata" class="img-fluid"></p>
+<p><img src="images/revenues_ioc_32bil_byyear-02.png" class="img-fluid"></p>
 <p>Same graph but Switched Fiscal Year and Revenue Category axes:</p>
-<p><img src="docs/images/revenues_ioc_revsources32.png" class="img-fluid"></p>
+<p><img src="images/revenues_ioc_32bil_byrevsource.png" class="img-fluid"></p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -1505,7 +1505,7 @@ Note
 <p>The graphs below focus on when the money from each Federal Act arrived and where it was received (local governments, the State government, or directly to a state department) and the spending category that it would be considered using the Fiscal Futures categorization. The State government received $11.7 billion, state departments received $31.4 billion, and local governments received $8.9 billion between FY 2020 and FY 2022. Not all funds have been distributed by the federal government, but they have been committed on the federal level and allocated on the state level.</p>
 <p>The $52 billion total includes Illinois state and local governments (counties, cities, universities, and transit districts) and healthcare providers in the state. Other forms of federal assistance are <strong>not</strong> included in the totals or graphs (i.e.&nbsp;stimulus checks, unemployment insurance assistance for individuals, and the Paycheck Protection Program are excluded from these totals). Summed values from COVIDmoneytracker.org and LBOC December 2022 report match.</p>
 <p>Legislation total funds (when including local government aid) were: ARPA = $25.6 Billion; CARES = $15.7 Billion; Families First = $4.5 Billion; PPP &amp; Health Care = $2.8 Billion; Response &amp; Relief = $3.4 Billion.</p>
-<p><img src="docs/docs/images/revenue_CMT_52bil.png" class="img-fluid"></p>
+<p><img src="images/rev_CMT_52bil-01.png" class="img-fluid"></p>
 <p>Local Governments within Illinois received $8.9 billion for economic recovery but we do not include funds given straight to localities in our State COVID recovery fund calculations or Fiscal Gap analysis.</p>
 <p>Additional labels were added using Publisher to create the image above. Preliminary graphs and summed values for the image are calculated in the code chunk below:</p>
 <div class="cell">
@@ -2208,11 +2208,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb85-118"><a href="#cb85-118" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb85-119"><a href="#cb85-119" aria-hidden="true" tabindex="-1"></a>According to <span class="co">[</span><span class="ot">federal data publicly available</span><span class="co">](covidmoneytracker.org)</span>, \$52 billion has been committed to Illinois (including local governments) but \$32 billion has been received by the state at the end of Fiscal Year 2022 (as of June 30, 2022, excluding local governments). An additional \$8.86 billion was committed straight to local governments. More money has been received in FY23 but is not focused on in this analysis. To see a graph of federal funds committed to the State, jump to @sec-covid-money-tracker.</span>
 <span id="cb85-120"><a href="#cb85-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-121"><a href="#cb85-121" aria-hidden="true" tabindex="-1"></a><span class="al">![](docs/images/revenues_ioc_32bil.png)</span>{#fedrev-iocdata}</span>
+<span id="cb85-121"><a href="#cb85-121" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/revenues_ioc_32bil_byyear-02.png)</span></span>
 <span id="cb85-122"><a href="#cb85-122" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb85-123"><a href="#cb85-123" aria-hidden="true" tabindex="-1"></a>Same graph but Switched Fiscal Year and Revenue Category axes:</span>
 <span id="cb85-124"><a href="#cb85-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-125"><a href="#cb85-125" aria-hidden="true" tabindex="-1"></a><span class="al">![](docs/images/revenues_ioc_revsources32.png)</span></span>
+<span id="cb85-125"><a href="#cb85-125" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/revenues_ioc_32bil_byrevsource.png)</span></span>
 <span id="cb85-126"><a href="#cb85-126" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb85-129"><a href="#cb85-129" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb85-130"><a href="#cb85-130" aria-hidden="true" tabindex="-1"></a>sankey_rev_ioc <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"sankeyattempt2022.csv"</span>) <span class="sc">%&gt;%</span> </span>
@@ -3032,7 +3032,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb85-970"><a href="#cb85-970" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb85-971"><a href="#cb85-971" aria-hidden="true" tabindex="-1"></a>Legislation total funds (when including local government aid) were: ARPA = \$25.6 Billion; CARES = \$15.7 Billion; Families First = \$4.5 Billion; PPP &amp; Health Care = \$2.8 Billion; Response &amp; Relief = \$3.4 Billion.</span>
 <span id="cb85-972"><a href="#cb85-972" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-973"><a href="#cb85-973" aria-hidden="true" tabindex="-1"></a><span class="al">![](docs/docs/images/revenue_CMT_52bil.png)</span></span>
+<span id="cb85-973"><a href="#cb85-973" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/rev_CMT_52bil-01.png)</span></span>
 <span id="cb85-974"><a href="#cb85-974" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb85-975"><a href="#cb85-975" aria-hidden="true" tabindex="-1"></a>Local Governments within Illinois received \$8.9 billion for economic recovery but we do not include funds given straight to localities in our State COVID recovery fund calculations or Fiscal Gap analysis.</span>
 <span id="cb85-976"><a href="#cb85-976" aria-hidden="true" tabindex="-1"></a></span>
