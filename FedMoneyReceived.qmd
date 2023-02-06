@@ -748,6 +748,22 @@ cure_exp2023 %>%
   caption = "Public Health & Public Safety combined due to overlap with IEMA's involvemnt in pandemic response.")
 
 
+cure_exp2023 %>% 
+  filter(State_local == "State CURE") %>% # for only state CURE funds
+  ggplot(aes(y = `FY Expenditures`, axis4 = FY_Received,  
+             axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
+  geom_flow(aes(fill = FF_Cat2), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+  coord_flip()+
+  scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() + 
+  theme(legend.position="bottom", legend.title = element_blank())+
+  
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) +
+  labs(title = "Expenditures using State CURE funds: $8.4 of $11.6 Billion spent FY20-FY22", 
+  subtitle = "Year Received by State Department, Year Spent, and how it was spent so far", 
+  caption = "Public Health & Public Safety combined due to overlap with IEMA's involvemnt in pandemic response.")
+
 ```
 
 ```{r}

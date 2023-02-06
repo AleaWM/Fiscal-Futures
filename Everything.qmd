@@ -63,6 +63,7 @@ tax_refund <- tax_refund_long %>%
 tax_refund %>% 
   pivot_longer( ref_02:ref_35, names_to = "Refund Type", values_to = "Amount") %>%
   ggplot()+
+  theme_bw()+
   geom_line(aes(x=fy,y=Amount, group = `Refund Type`, color = `Refund Type`))+
   labs(title = "Refund Types", 
        caption = "Refunds are excluded from Expenditure totals and instead subtracted from Revenue totals") + 
@@ -120,6 +121,7 @@ exp_temp %>%
   group_by(fy, pension) %>% 
   summarize(expenditure = sum(expenditure, na.rm = TRUE)) %>%
   ggplot(aes(x=fy, y = expenditure, group=pension)) + 
+  theme_bw()+
   geom_col(aes(fill = pension)) + 
 
   labs (title = "Pension expenditures", 
@@ -157,6 +159,7 @@ exp_temp %>%
   summarize(expenditure = sum(expenditure, na.rm=TRUE)) %>%
   ggplot(aes(x=fy, y=expenditure, color = pension)) +
   geom_line() + 
+  theme_bw()+
   labs (title = "Pension Expenditures", 
   caption = "")
 
@@ -166,6 +169,7 @@ exp_temp %>%
   summarize(expenditure = sum(expenditure, na.rm=TRUE)) %>%
   ggplot(aes(x=fy, y=expenditure)) +
   geom_line() + 
+  theme_bw()+
   labs (title = "Pension Expenditures")
 ```
 
@@ -245,9 +249,14 @@ healthcare_costs <- exp_temp %>% filter(group == "904")
 
 healthcare_costs
 
-exp_temp %>% filter(group == "904") %>% group_by(fy) %>% 
+exp_temp %>% 
+  filter(group == "904") %>% 
+  group_by(fy) %>% 
   summarise(healthcare_cost = sum(expenditure, na.rm = TRUE)) %>% 
-  ggplot() +geom_line(aes(x=fy, y=healthcare_cost)) + labs(title="State Employee Healthcare Costs - Included in Fiscal Futures Model", caption = "Fund 0907 for agencies responsible for health insurance reserve (DHFS & CMS)")
+  ggplot() +
+  geom_line(aes(x=fy, y=healthcare_cost)) + 
+  labs(title="State Employee Healthcare Costs - Included in Fiscal Futures Model", 
+       caption = "Fund 0907 for agencies responsible for health insurance reserve (DHFS & CMS)")
 
 
 #exp_temp <- anti_join(exp_temp, healthcare_costs) %>% mutate(expenditure = ifelse(object == "1180", 0, expenditure))
@@ -309,7 +318,12 @@ transfers_long <- exp_temp %>%
 transfers_long %>% 
   group_by(agency_name, group, fy) %>% 
   summarize(expenditure = sum(expenditure, na.rm=TRUE) )%>% 
-  ggplot() + geom_line(aes(x=fy, y = expenditure, color=agency_name)) + labs(title = "Transfers to Local Governments", caption = "Data Source: Illinois Office of the Comptroller")
+  ggplot() + 
+  geom_line(aes(x=fy, y = expenditure, color=agency_name)) + 
+  theme_bw()+
+  theme(legend.position = "bottom", legend.title=element_blank())+
+  labs(title = "Transfers to Local Governments", 
+       caption = "Data Source: Illinois Office of the Comptroller")
 
 transfers <- transfers_long %>%
   group_by(fy, group ) %>%
@@ -1125,10 +1139,11 @@ annotation <- data.frame(
 
 
 ## Dashed line versions for expenditures: 
+library(cmapplot)
+fiscal_gap <-   
+  ggplot(data = year_totals, aes(x=Year, y = Revenue/1000)) +
+  geom_recessions(text = FALSE)+
 
-fiscal_gap <- year_totals %>%  
-  ggplot() +
-  geom_hline(yintercept = 0) +
   # geom_smooth adds regression line, graphed first so it appears behind line graph
   geom_smooth(aes(x = Year, y = Revenue/1000), color = "gray", alpha = 0.7, method = "lm", se = FALSE) + 
   #  scale_linetype_manual(values="dashed")+
@@ -1137,11 +1152,12 @@ fiscal_gap <- year_totals %>%
   # line graph of revenue and expenditures
   geom_line(aes(x = Year, y = Revenue/1000), color = "Black", size=1) +
   geom_line(aes(x = Year, y = Expenditures/1000, linetype = "dashed"), color = "red", lwd=1) +
-  geom_line(aes(x = Year, y = (`Fiscal Gap`/1000)), color = "gray") +
-  
+  geom_line(aes(x = Year, y = (`Fiscal Gap`/1000)), color = "darkgray", lwd = 1) +
+    geom_hline(yintercept = 0) +
+
   geom_text(data = annotation, aes(x=x, y=y, label=label))+
   # labels
-    theme_bw() +
+    theme_classic() +
     theme(legend.position = "none")+
 
     scale_linetype_manual(values = c("dashed", "dashed")) +
@@ -1161,22 +1177,23 @@ fiscal_gap
 #   label = c("Expenditures","Revenue", "Fiscal Gap"))
 
 
-fiscal_gap2 <- year_totals %>%  
-  ggplot() +
-  geom_hline(yintercept = 0) +
+fiscal_gap2 <-ggplot(data = year_totals, aes(x=Year, y = Revenue/1000)) +
+  geom_recessions(text = FALSE)+
   geom_line(aes(x = Year, y = Revenue/1000), color = "Black", lwd=1) +
   geom_line(aes(x = Year, y = Expenditures/1000, linetype = "dashed"), color = "red", lwd=1) +
-  geom_line(aes(x = Year, y = (`Fiscal Gap`/1000)), color = "gray") +
+  geom_line(aes(x = Year, y = (`Fiscal Gap`/1000)), color = "darkgray", lwd=1) +
   
   geom_text(data = annotation, aes(x=x, y=y, label=label))+
-    theme_bw() +
+    theme_classic() +
   theme(legend.position = "none")+
     scale_linetype_manual(values = c("dashed", "dashed")) +
+  geom_hline(yintercept = 0) +
 
   scale_y_continuous(labels = comma)+
   xlab("Year") + 
   ylab("Billions of Dollars")  +
   ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
+
 
 fiscal_gap2
 
@@ -1216,7 +1233,7 @@ exp_long %>%
   ggplot() + 
   geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = (`Dollars`/1000), fill = "red"))+ 
   coord_flip() +
-      theme_bw()+
+      theme_classic()+
   theme(legend.position = "none") +
   labs(title = "Expenditures for FY2022") +
     xlab("Expenditure Categories") +
@@ -1230,7 +1247,7 @@ rev_long %>%
   ggplot() + 
   geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = (`Dollars`/1000)))+ 
   coord_flip() +
-    theme_bw() +
+    theme_classic() +
     theme(legend.position = "none") +
       labs(title = "Revenues for FY2022")+
     xlab("Revenue Categories") +
@@ -1252,7 +1269,7 @@ exp_long %>%
     labs(title = "Expenditures for FY2022") +
     xlab("Expenditure Categories") +
   ylab("Millions of Dollars") +
-    theme_bw()
+    theme_classic()
 
 rev_long %>%
   filter(Year == 2022) %>%
@@ -1264,7 +1281,7 @@ rev_long %>%
   coord_flip() +
     xlab("Revenue Categories") +
   ylab("Millions of Dollars") +
-    theme_bw()
+    theme_classic()
 ```
 
 **Expenditure and revenues when focusing on largest categories and combining others into "All Other Expenditures(Revenues)":**
@@ -1279,7 +1296,7 @@ exp_long %>%
   ggplot() + 
   geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`), fill = "rosybrown2")+ 
   coord_flip() +
-      theme_bw() +
+      theme_classic() +
     labs(title = "Expenditures for FY2022") +
     xlab("") +
   ylab("Millions of Dollars")
@@ -1292,7 +1309,7 @@ rev_long %>%
   ggplot() + 
   geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`), fill = "dark gray")+ 
   coord_flip() +
-      theme_bw() +
+      theme_classic() +
     labs(title = "Revenues for FY2022") +
     xlab("") +
   ylab("Millions of Dollars")
@@ -1415,7 +1432,7 @@ top3 <- ggplot(data = top3, aes(x=Year, y=Dollars/1000))+
       geom_recessions(text = FALSE)+
   geom_line(aes(x=Year, y=Dollars/1000, color = Category_name)) + 
   geom_text(data = annotation, aes(x=x, y=y, label=label))+
-    theme_bw() +
+    theme_classic() +
   
   scale_y_continuous(labels = comma)+
   scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
@@ -1428,6 +1445,130 @@ top3 <- ggplot(data = top3, aes(x=Year, y=Dollars/1000))+
 
 top3
 ```
+
+**Sales Tax - online retailers**
+
+> Not edited or double checked. Just general notes pulled together while looking into online sales tax.
+
+Law was passed in 2018 that required out of state retailers to pay the 6.25% **state** sales tax. The Rebuild Illinois law expanded the law to require remote retailers to charge all state and local retailers occupation taxes beginning in July 1, 2020. Before Jan. 1 2021, only state sales taxes were required to be collected (related to South Dakota v Wayfair court decision).
+Now required to pay state **and local** tax based on where product is delivered.
+
+"On June 28, 2019, Public Act 101-0031, the \"Leveling the Playing Field for Illinois Retail Act,\" was signed into Illinois law and on December 13, 2019 an amendment to the Act was signed into law in Public Act 101-0604. In an effort to create more equity between remote sellers and local brick-and-mortar retailers, the new law requires remote sellers without a physical presence in the state and marketplace facilitators (e.g., Amazon and Walmart) to collect both state and local sales taxes effective January 1, 2021." [CivicFed.org](https://www.civicfed.org/civic-federation/blog/consumer-taxes-chicago-increases-and-updates-2021)
+
+Requires remote sellers and marketplace facilitators to collect and remit the state and locally-imposed Retailers\' Occupation Tax (ROT) for the jurisdictions where the product is delivered (destination sourcing) rather than collecting and remitting solely the state use tax. 
+
+-   random note: Illinois\' State sales tax rate is 6.25%, of which 5.0% of the sales tax revenue goes to the State, 1.0% goes to all municipalities, including Chicago, and the remaining 0.25% goes to the counties. However, Cook County\'s 0.25% share of the State sales tax is distributed to the Regional Transportation Authority.
+
+"The amended \"Leveling the Playing Field for Illinois Retail Act\" was passed by the General Assembly on November 14, 2019, to require both Remote Retailers and Marketplace Facilitators to collect and remit the state and locally-imposed Retailers\' Occupation Tax (ROT, aka sales tax) for the jurisdictions where the product is delivered (its destination) starting January 1, 2021."- [Illinois Municipal League](https://www.iml.org/file.cfm?key=16124)
+
+-   Marketplace Facilitators, like Amazon, were required to collect Use Tax on sales starting January 1, 2020
+
+-   Other sellers required to collect state and local sales tax on sales on January 2021.
+
+-   There is a **state** tax rate of 6.25% and Illinois municipalities may impose an additional **local** sales tax called the Retailer's Occupation Tax.
+
+    -   For remote sellers, the state tax rate is referred to as "use tax" and for intrastate sellers, "ROT" simply means *sales tax*.  
+
+    -   The ROT is measured upon the seller\'s gross receipts and the seller is statutorily [required]{.underline} to collect the use tax from their customers.
+
+-   source 0482 is State ROT-2.2%
+
+[ILGA info](https://www.ilga.gov/legislation/ilcs/ilcs5.asp?ActID=3993&ChapterID=8) - leveling the playing field went into effect on July 1 2020 which is the beginning of FY21
+
+```{r}
+## State Retailers Occupation Tax. 
+rev_temp %>% filter(source == "0481") %>%
+  group_by(fy, source_name_AWM) %>% summarize(revenue=sum(receipts))
+
+rev_temp %>% 
+  filter(source == "0481") %>%
+  group_by(fy, source_name_AWM, fund_name_ab) %>% 
+  summarize(revenue=sum(receipts))%>%
+  arrange(-fy, -revenue)%>%
+  pivot_wider(names_from = "fy", values_from="revenue")
+
+rev_temp %>% 
+  filter(source == "0481") %>%
+  #group_by(fy, source_name_AWM, fund_name_ab) %>% 
+#  summarize(revenue=sum(receipts))  %>% 
+  ggplot(aes(x=fy, y=receipts))+
+  geom_recessions()+
+  geom_line(aes(color=fund_name_ab))+
+    geom_vline(xintercept = 2018)+
+
+  geom_vline(xintercept = 2021)+
+  theme_classic()+
+  labs(title="State Retailers' Occupation Tax, Source 0481",
+       caption = "Leveling the Playing Field went into effect for Amazon on January 1, 2020(mid-FY21) 
+       and for other remote retailers starting January 1, 2021 (mid-FY22)")
+
+
+### Remote Occupation Tax
+# STATE ROT-2.2%
+rev_temp %>% 
+  filter(source == "0482") %>%
+  group_by(fy, source_name_AWM) %>% 
+  summarize(revenue=sum(receipts))
+
+
+rev_temp %>% 
+  filter(source == "0482") %>%
+  group_by(fy, source_name_AWM, fund_name_ab) %>% 
+  summarize(revenue=sum(receipts))%>%
+  arrange(-fy, -revenue)%>%
+  pivot_wider(names_from = "fy", values_from="revenue")
+
+
+
+rev_temp %>% 
+  filter(source == "0482") %>%
+  #group_by(source_name_AWM) %>% 
+  #summarize(revenue=sum(receipts))  %>% 
+  ggplot(aes(x=fy, y=receipts))+
+  geom_line(aes(color=fund_name_ab))+
+  geom_recessions()+
+  geom_vline(xintercept = 2018)+
+
+  geom_vline(xintercept = 2020)+
+  theme_classic()+
+  labs(title="State Retailers' Occupation Tax",
+       subtitle = "Large increases due to Leveling the Playing Field Act & Online shopping during pandemic")
+
+rev_temp %>% 
+  filter(source == "0482") %>%
+  group_by(fy, source_name_AWM, fund_name_ab) %>% 
+  summarize(revenue=sum(receipts))  %>% 
+  ggplot()+
+  geom_line(aes(x=fy, y=revenue, color=fund_name_ab))+
+    geom_vline(xintercept = 2018)+
+
+  geom_vline(xintercept = 2021)+
+  #geom_recessions(aes(x=fy, y=receipts)+
+  theme_classic()+
+  labs(title="State ROT - 2.2%",
+       subtitle = "Large increases due to Leveling the Playing Field Act & Online shopping during pandemic??",
+       caption = "State tax began being collected for remote retailers based on 
+       destination beginning in Leveling the Playing Field went into effect for Amazon on January 1, 2020(mid-FY21) and for other 
+       remote retailers starting January 1, 2021 (mid-FY22)")
+
+rev_temp %>% 
+  filter(source == "0482" | source == "0481") %>%
+  group_by(fy, source_name_AWM) %>% 
+  summarize(revenue=sum(receipts))  %>% 
+  ggplot()+
+  geom_line(aes(x=fy, y=revenue, color=source_name_AWM))+
+  geom_vline(xintercept = 2018)+
+
+  geom_vline(xintercept = 2021)+
+  #geom_recessions(aes(x=fy, y=receipts)+
+  theme_classic()+
+  labs(title="State ROT - 2.2% & ",
+       subtitle = "Large increases due to Leveling the Playing Field Act & Online shopping during pandemic??",
+       caption = "Leveling the Playing Field went into effect for Amazon on January 1, 2020(mid-FY21) 
+       and for other remote retailers starting January 1, 2021 (mid-FY22)")
+```
+
+As of Feb. 6 2023, Source 481 Retailers Occupation Tax has collected \$9.3 billion already. FY22 had \$14.7 million. Around half goes to the General Revenue Fund.
 
 ### Own Source and Fed Transfers {#sec-own-source-and-fed-transfers}
 
@@ -1447,7 +1588,7 @@ fed_rev <- ff_rev %>% select(fy, rev_57, rev_58, rev_59) %>%
 
 
 annotation <- data.frame(
-  x = c(2010, 2010),
+  x = c(2014, 2015),
   y = c(50, 25),  
   label = c("Own Source Revenue", "Federal Revenue")
 )
@@ -1461,7 +1602,7 @@ ggplot(ownsource_rev, aes(x=Year, y=Dollars/1000)) +
     scale_y_continuous(labels = comma)+
   theme(legend.position = "none")+
 
-  theme_bw()+
+  theme_classic()+
   labs(title = "Own Source Revenue and Federal Revenue", 
   y = "Billions of Nominal Dollars")
 
