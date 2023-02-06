@@ -351,16 +351,6 @@ So far, over \$8.4 billion of the State CURE funds (includes both CARES Act and 
 
     -   \$2.7 billion for repaying unemployment insurance trust fund, \$1 billion transferred to the general revenue fund to make up for any lost revenue caused by the pandemic, and \$1.23 billion on other programs and services (e.g. hospital stability payments, operational expenses, back to business grants and economic development).
 
-Other federal aid came in the form of grants to state departments: ESSER III funds from ARPA paid for \$838 million in K-12 expenditures.
-
-Some CRRSA dollars were also spent in FY22: \$1.1 billion ESSER II and another \$1.5 billion from other federal grants. (e.g. \$332 million from a child care development block grant, 349 million for housing stability, and \$664 million for other public health services like testing and contact tracing).
-
-In FY21, \$1.8 billion from the CARES-State CURE went to operations and grants for programs and services (e.g. business interruptions, child care grants, healthcare providers, rent/mortgage assistance, public health response, etc.), \$1 billion was transferred to other Agencies for reimbursing pandemic related costs, and \$569 million CARES-ESSER I funds for K-12 education.
-
-Approximately \$3.08 billion of the ESSER funds had been spent through FY 2022 (of the \$7.88 billion received from ESSER I, II, and III received) and in FY 2022 alone, the Illinois School Board for Education received over \$5 billion from ARPA-ESSER III and spent under \$1 billion of it that fiscal year. These unspent funds do roll over to the next fiscal year but must be used by 2024. Around \$4 billion remain.
-
-According to the [ISBE Spending Dashboard](https://www.isbe.net/Pages/ESSER-Spending-Dashboard.aspx) as of February 2, 2023, \$1.6 billion of ESSER II and \$1.6 billion of ESSER III funds have been spent so far. ESSER I has been nearly completely spent, ISBE has spent 79% of its ESSER II allocations and has spent 33% of its ESSER III allocations.
-
 Values presented in LBOC documents for the end of FY22 are slightly different than the values calculated using IOC expenditure data. IOC expenditure data includes all lag period expenditures through October so values are slightly higher than end of June calculations.
 
 ```{r}
@@ -377,14 +367,78 @@ cure_exp2022 <- cure_exp %>%
      #    FF_Cat2 = factor(FF_Cat, levels = c("Econ Dev", "Human Services", "K-12", "Local Transfers", "Public Health & Safety", "Medicare",  "UI Fund", "Lost Revenue", "FY23+"))
      )
 
-cure_exp2022 %>% #expenditures per year
-  group_by(`FY_Spent`)%>% 
-  summarize(Expenditures=sum(`FY Expenditures`))
+
 
 cure_exp2022 %>% #expenditures per year
   filter(State_local == "State CURE") %>%
   group_by(`FY_Spent`)%>% 
   summarize(Expenditures=sum(`FY Expenditures`))
+
+
+
+
+# State CURE expenditures only
+cure_exp2022%>%  
+    filter(State_local == "State CURE") %>%
+  summarize(Expenditures=sum(`FY Expenditures`)) 
+
+
+
+
+
+cure_exp2022 %>% 
+  filter(State_local == "State CURE") %>%
+  group_by(Law, FF_Cat2)%>% 
+  summarize(Expenditures=sum(`FY Expenditures`)) %>%
+  pivot_wider(names_from = Law, values_from = Expenditures)
+
+
+```
+
+Code chunk below is for State CURE funds spent through FY 2022.
+
+```{r}
+
+# State CURE only, 
+# without 2023 allocations
+
+cure_exp2022 %>% 
+  filter(State_local == "State CURE") %>% # for only state CURE funds
+  ggplot(aes(y = `FY Expenditures`, axis4 = FY_Received, axis3 = `Agency`,  
+             axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
+  geom_flow(aes(fill = FF_Cat2), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+  coord_flip()+
+  scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() + 
+  theme(legend.position="bottom")+
+  
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) +
+  labs(title = "Expenditures using State CURE funds: $8.4 spent FY20-FY22", 
+  subtitle = "Year Received by State Department, Year Spent, and how it was spent so far", 
+  caption = "Expenditures occured during FY20, FY21 and FY22. 
+       Additional funds have been allocated for FY23 and can be spent until FY26.
+  Public Health & Public Safety combined due to overlap with IEMA's involvemnt in pandemic response.")
+
+
+
+## State CURE only
+# through FY22
+cure_exp2022 %>% 
+  filter(State_local == "State CURE") %>% 
+  ggplot(aes(y = `FY Expenditures`, axis3 = `State_local2`, axis2 = Agency_grouped, axis1=FF_Cat2, label = "stratum"))+
+  geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+ coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() + 
+  theme(legend.position="bottom")+
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) +
+  theme(legend.position="bottom")+
+
+  labs(title = "State CURE Expenditures: Department that Received Revenue
+       & Purpose of Expenditure",
+       subtitle = "$8.4 billion spent by end of FY22")
 
 cure_exp2022 %>% #expenditures for State government (with CURE $) and state departments
   group_by(State_local2)%>% 
@@ -393,12 +447,15 @@ cure_exp2022 %>% #expenditures for State government (with CURE $) and state depa
 # State CURE & ESSER grants
 cure_exp2022%>% # total expenditures 
   summarize(Expenditures=sum(`FY Expenditures`)) 
+```
 
+Major uses of the State CURE funds include \$2.7 billion for repaying the unemployment insurance trust fund deficit, \$1 billion was transferred to general revenue to make up for lost revenue during the pandemic, \$1.2 billion was transferred to multiple funds for reimbursements of pandemic response related expenses, \$705 million for Public Healthcare Providers (within Medicare), and over \$1.5 billion has gone toward various forms of economic recovery and development.
 
-# State CURE expenditures only
-cure_exp2022%>%  
-    filter(State_local == "State CURE") %>%
-  summarize(Expenditures=sum(`FY Expenditures`)) 
+Multiple billions of dollars of spending were funded with other federal grants. For example, some CRRSA dollars were spent in FY22: \$1.1 billion ESSER II, \$332 million from a child care development block grant, \$349 million for housing stability, and \$664 million for other public health services like testing and contact tracing.
+
+```{r}
+#| code-fold: false
+
 
 # ESSER Expenditures per year
 cure_exp2022 %>% 
@@ -406,10 +463,69 @@ cure_exp2022 %>%
   group_by(`FY_Spent`)%>% 
   summarize(Expenditures=sum(`FY Expenditures`))
 
+
+
+#4 levels with labels
+# all federal funds in cure_exp file through 2022
+ggplot(cure_exp2022, 
+       aes(y = `FY Expenditures`, 
+           axis4 = `FY_Received`,  axis3 = `Federal Funds`, 
+           axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
+  geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+  coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() + 
+        geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) +
+    theme(legend.position="bottom")+
+
+  labs( title = "Expenditures through FY2022: Year Received, Federal Fund Revenue Source, 
+        Year Spent, & How Money was Used",
+        subtitle = "$15.3 of federal aid spent",
+        caption = "CRF & SLFRF make up the Federal Stimulus Packages, aka State CURE funds.")
+```
+
+In FY21, \$1.8 billion from the CARES-State CURE went to operations and grants for programs and services (e.g. business interruptions, child care grants, healthcare providers, rent/mortgage assistance, public health response, etc.), \$1 billion was transferred to other Agencies for reimbursing pandemic related costs, and \$569 million CARES-ESSER I funds for K-12 education.
+
+Approximately \$3.08 billion of the ESSER funds had been spent through FY 2022 (of the \$7.88 billion received from ESSER I, II, and III received) and in FY 2022 alone, the Illinois School Board for Education received over \$5 billion from ARPA-ESSER III and spent under \$1 billion of it that fiscal year. These unspent funds do roll over to the next fiscal year but must be used by 2024. Around \$4 billion remain.
+
+According to the [ISBE Spending Dashboard](https://www.isbe.net/Pages/ESSER-Spending-Dashboard.aspx) as of February 2, 2023, \$1.6 billion of ESSER II and \$1.6 billion of ESSER III funds have been spent so far. ESSER I has been nearly completely spent, ISBE has spent 79% of its ESSER II allocations and has spent 33% of its ESSER III allocations.
+
+```{r}
+
+
+# all funds through FY22 spent
+# Year Spent, Agency received, FF Spending Category 
+ggplot(cure_exp2022, 
+       aes(y = `FY Expenditures`, axis3 = FY_Spent, axis2 = Agency, axis1=FF_Cat2, label = "stratum")) +
+  geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+ #geom_text(stat = "stratum", label.strata = TRUE, reverse=FALSE) + 
+  coord_flip()+
+   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+        geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
+  theme_void() + 
+  theme(legend.position="bottom")+
+  labs( title = "CURE, ESSER, and other Federal Grants = $15.3 Billion Spent FY20-FY22", 
+        subtitle = "Year Spent, Agency that Spent it & FF Spending Category")
+
+
+
+```
+
+-   \$500 million spent in FY2020 (CARES State CURE & CARES-ESSER I)
+-   \$3.82 billion spent in FY2021 (CARES State CURE, CRRSA-ESSER II,... )
+-   \$11.03 billion spent in FY 2022 (remaining \$0.5 billion CARES-State CURE, \$5.2 billion from ARPA-State CURE, \$2 billion from ESSER II & III, plus other funds from federal grants to state agencies).
+
+```{r}
 cure_exp2022 %>% 
   group_by(`Federal Funds`)%>% 
   summarize(Expenditures=sum(`FY Expenditures`))
 
+
+cure_exp2022 %>% #expenditures per year
+  group_by(`FY_Spent`)%>% 
+  summarize(Expenditures=sum(`FY Expenditures`))
 
 cure_exp2022 %>% 
   group_by(`FF_Cat`)%>% 
@@ -434,182 +550,9 @@ cure_exp2022 %>%
 cure_exp2022 %>% 
   group_by(Law, FY_Spent)%>% 
   summarize(Expenditures=sum(`FY Expenditures`)) %>%
-  pivot_wider(names_from = Law, values_from = Expenditures) %>% 
+  pivot_wider(names_from = Law, values_from = Expenditures) %>%
   arrange(FY_Spent)
-
-cure_exp2022 %>% 
-  filter(State_local == "State CURE") %>%
-  group_by(Law, FF_Cat2)%>% 
-  summarize(Expenditures=sum(`FY Expenditures`)) %>%
-  pivot_wider(names_from = Law, values_from = Expenditures)
-
-
 ```
-
-Code chunk below is for State CURE funds spent through FY 2022.
-
-```{r}
-# State CURE only, 
-# without 2023 allocations
-
-cure_exp2022 %>% 
-  filter(State_local == "State CURE") %>% # for only state CURE funds
-  ggplot(aes(y = `FY Expenditures`, axis4 = FY_Received, axis3 = `Agency`,  
-             axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
-  geom_flow(aes(fill = FF_Cat2), color = "black", reverse=FALSE) +
-  geom_stratum(reverse=FALSE)+
-  coord_flip()+
-  scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() + 
-  theme(legend.position="bottom")+
-  
-  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) +
-  labs(title = "Expenditures using State CURE funds: $8.4 spent FY20-FY22", 
-  subtitle = "Year Received by State Department, Year Spent, and how it was spent so far", 
-  caption = "Expenditures occured during FY20, FY21 and FY22. 
-       Additional funds have been allocated for FY23 and can be spent until FY26.
-  Public Health & Public Safety combined due to overlap with IEMA's involvemnt in pandemic response.")
-```
-
-Major uses of the State CURE funds include \$2.7 billion for repaying the unemployment insurance trust fund deficit, \$1 billion was transferred to general revenue to make up for lost revenue during the pandemic, \$1.2 billion was transferred to multiple funds for reimbursements of pandemic response related expenses, \$705 million for Public Healthcare Providers (within Medicare), and over \$1.5 billion has gone toward various forms of economic recovery and development.
-
-```{r}
-
-
-# Year Spent, Agency received, FF Spending Category 
-ggplot(cure_exp2022, 
-       aes(y = `FY Expenditures`, axis3 = FY_Spent, axis2 = Agency, axis1=FF_Cat2, label = "stratum")) +
-  geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
-  geom_stratum(reverse=FALSE)+
- #geom_text(stat = "stratum", label.strata = TRUE, reverse=FALSE) + 
-  coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-        geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
-  theme_void() + 
-  theme(legend.position="bottom")+
-  labs( title = "CURE, ESSER, and other Federal Grants = $15.3 Billion Spent as of end of FY22", subtitle = "Year Spent, Agency that Spent it & FF Spending Category")
-
-
-# Switch Year Spent & Agency received, FF Spending Category 
-# ggplot(cure_exp, 
-#        aes(y = `FY Expenditures`, axis3 = Agency, axis2 = FY_Spent , axis1=FF_Cat, label = "stratum")) +
-#   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
-#   geom_stratum(reverse=FALSE)+
-#  geom_text(stat = "stratum", label.strata = TRUE, reverse=FALSE) + 
-#   coord_flip()+
-#    scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-#         geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
-#   theme_void() + 
-#     theme(legend.position="bottom")+
-# 
-#   ggtitle("Same as above but Switched Axis 3 and 2: 
-#           Agency received, Year Spent, FF Spending Category ")
-
-# ggplot(cure_exp, 
-#        aes(y = `FY Expenditures`, axis3 = `Federal Funds`, axis2 = FY_Spent, axis1=Fund, label = "stratum")) +
-#   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
-#   geom_stratum(reverse=FALSE)+
-#  coord_flip()+
-#    scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-#   theme_void() + 
-#         geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) +
-#   theme(legend.position="bottom")+
-# 
-#   ggtitle("Expenditures: Federal Fund, Year Spent, and State Fund")
-
-cure_exp2022 %>% 
-  filter(State_local == "State CURE") %>% 
-  ggplot(aes(y = `FY Expenditures`, axis3 = `State_local2`, axis2 = Agency, axis1=FF_Cat2, label = "stratum"))+
-#ggplot(cure_exp2022, aes(y = `FY Expenditures`, axis3 = `State_local2`, axis2 = Agency, axis1=FF_Cat, label = "stratum")) +
-  geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
-  geom_stratum(reverse=FALSE)+
- coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() + 
-  theme(legend.position="bottom")+
-  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) +
-  theme(legend.position="bottom")+
-
-  labs(title = "State CURE Expenditures: Department that Received Revenue
-       & Purpose of Expenditure",
-       subtitle = "$8.4 billion spent by end of FY22")
-
-# ggplot(cure_exp, 
-#        aes(y = `Agency_grouped`, axis3 = `State_local2`, axis2 = Agency, axis1=FF_Cat, label = "stratum")) +
-#   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
-#   geom_stratum(reverse=FALSE)+
-#  coord_flip()+
-#    scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-#   theme_void() + 
-#   theme(legend.position="bottom")+
-#         geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) +
-#   theme(legend.position="bottom")+
-# 
-#   ggtitle("Same as above but y = Agency Grouped?
-#           Expenditures: Department that Received Revenue & How money was used")
-
-# 
-# ggplot(cure_exp, 
-#        aes(y = `FY Expenditures`, axis3 = `State_local2`, axis2 = FY_Spent, axis1=FF_Cat, label = "stratum")) +
-#   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
-#   geom_stratum(reverse=FALSE)+
-#   coord_flip()+
-#    scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-#   theme_void() + 
-#         geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) +
-#   theme(legend.position = "bottom")+
-#   ggtitle("Expenditures: Funds from the State of Illinois or State Departments, 
-#           Year Spent, and FF Expenditure Purpose")
-
-
-ggplot(cure_exp2022, 
-       aes(y = `FY Expenditures`, axis3 = `State_local2`, axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
-  geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
-  geom_stratum(reverse=FALSE)+
-  coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() + 
-        geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) +
-  theme(legend.position = "bottom")+
-  labs(title = "Expenditures: Funds from the State of Illinois or State Departments, 
-  Year Spent, & FF Expenditure Purpose", 
-       caption = "Using FF_Cat2 variable with Public Health and Safety Combined")
-
-
-# ggplot(cure_exp, 
-#        aes(y = `FY Expenditures`, axis3 = `State_local2`, axis2 = Fund, axis1=FF_Cat, label = "stratum")) +
-#   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
-#   geom_stratum(reverse=FALSE)+
-#   coord_flip()+
-#    scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-#   theme_void() + 
-#         geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) +
-#   theme(legend.position = "bottom")+
-#   ggtitle("Expenditures: Funds from the State of Illinois or State Departments, 
-#           State Fund Name, and FF Expenditure Category")
-
-```
-
-The graph below shows the year the money was received, the federal fund that it came from, the year that it was spent, and then how the money was used.
-
-```{r}
-#4 levels with labels
-ggplot(cure_exp2022, 
-       aes(y = `FY Expenditures`, axis4 = `FY_Received`,  axis3 = `Federal Funds`, axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
-  geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
-  geom_stratum(reverse=FALSE)+
-  coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() + 
-        geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) +
-    theme(legend.position="bottom")+
-
-  labs( title = "Expenditures So far: Year Received, Federal Fund, Year Spent,
-          & How Money was Used",
-        caption = "CRF & SLFRF make up the Federal Stimulus Packages, aka State CURE funds.")
-```
-
--   \$500 million spent in FY2020 (CARES State CURE & CARES-ESSER I), \$3.82 billion spent in FY2021 (CARES State CURE, CRRSA-ESSER II,... ) and 11.03 billion spent in FY 2022 (remaining \$0.5 billion CARES-State CURE, \$5.2 billion from ARPA-State CURE, \$2 billion from ESSER II & III, plus other funds from federal grants to state agencies).
 
 ```{r include=FALSE}
 
@@ -657,7 +600,7 @@ Graphs below include how money has been spent through FY22 with unspent funds la
 # cure_exp2023 keeps State CURE only!
 cure_exp2023 <- cure_exp %>%
   filter(State_local == "State CURE") %>%
-  mutate(
+  mutate(Law = factor(Law, levels = c("CARES", "ARPA")),
          FY_Spent = factor(FY_Spent, levels = c("2020", "2021", "2022", "2023")),
          FY_Received = factor(FY_Received, levels = c("2020", "2021", "2022")),
         FF_Cat = factor(FF_Cat, levels = c("Econ Dev", "Human Services", "K-12", "Local Transfers", "Public Health", "Medicare", "Public Safety", "Transportation", "Reimbursements", "UI Fund", "Lost Revenue", "FY23+")),
@@ -701,9 +644,9 @@ cure_exp2023 %>%
   filter(State_local == "State CURE") %>%
   ggplot(aes(y = round(`FY Expenditures`, digits=2), 
              axis4 = FY_Received, 
-             axis3 = Agency,  
+             axis3 = Agency_grouped,  
              axis2 = FY_Spent, 
-             axis1 = FF_Cat)) +
+             axis1 = FF_Cat2)) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+
   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
@@ -721,11 +664,12 @@ cure_exp2023 %>%
 
 
 
-#6 levels with labels
+#5 levels with labels
 ggplot(cure_exp2023, 
        aes(y = `FY Expenditures`,  
            axis6 = `Federal Funds`, axis5=State_local2, 
-           axis4 = `FY_Received`, axis3 = Agency, 
+      #     axis4 = `FY_Received`,
+           axis3 = Agency_grouped, 
            axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+  coord_flip()+
@@ -736,6 +680,22 @@ ggplot(cure_exp2023,
   labs(title = "$11.6 Billion in Expenditures and Allocations from Federal Stimulus Packages",
        subtitle = "Only State CURE funds are included in image")
 
+#5 levels with labels
+ggplot(cure_exp2023, 
+       aes(y = `FY Expenditures`,  
+           axis6 = `Federal Funds`, axis5=State_local2, 
+         axis3 = Agency_grouped, 
+           axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
+  geom_flow(aes(fill = FY_Spent), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+  coord_flip()+
+  scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() + 
+  theme(legend.position = "bottom")+
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) + 
+  labs(title = "$11.6 Billion in Expenditures and Allocations from Federal Stimulus Packages",
+       subtitle = "Only State CURE funds are included in image")
+
+
 #4 levels with labels
 
 
@@ -743,7 +703,7 @@ ggplot(cure_exp2023,
 cure_exp2023 %>% 
   filter(State_local2 == "State") %>%
 ggplot(aes(y = `FY Expenditures`, 
-           axis4 = `Federal Funds`,  axis3 = Agency, 
+           axis4 = `Federal Funds`,  axis3 = Agency_grouped, 
            axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   geom_stratum(reverse=FALSE)+  coord_flip()+
@@ -771,6 +731,21 @@ ggplot(cure_exp2023,
   labs(title = "ARPA & CARES State CURE funds, Year Spent/Allocated, and Purpose of Expendtire",
        subtitle = "Purpose of Expenditures using Fiscal Futures Categorization")
 
+cure_exp2023 %>% 
+  filter(State_local == "State CURE") %>% # for only state CURE funds
+  ggplot(aes(y = `FY Expenditures`, axis4 = FY_Received, axis3 = `Agency`,  
+             axis2 = FY_Spent, axis1=FF_Cat2, label = "stratum")) +
+  geom_flow(aes(fill = FF_Cat2), color = "black", reverse=FALSE) +
+  geom_stratum(reverse=FALSE)+
+  coord_flip()+
+  scale_fill_brewer(palette = "YlOrRd", direction = -1)+
+  theme_void() + 
+  theme(legend.position="bottom", legend.title = element_blank())+
+  
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE) +
+  labs(title = "Expenditures using State CURE funds: $8.4 of $11.6 Billion spent FY20-FY22", 
+  subtitle = "Year Received by State Department, Year Spent, and how it was spent so far", 
+  caption = "Public Health & Public Safety combined due to overlap with IEMA's involvemnt in pandemic response.")
 
 
 ```
@@ -807,7 +782,7 @@ cure_exp2023 %>% summarize(Sum=sum(`FY Expenditures`))
 ```{r include=FALSE}
 #4 levels, No labels
 ggplot(cure_exp2023, 
-       aes(y = `FY Expenditures`, axis4 = `FY_Received`,  axis3 = `Federal Funds`, axis2 = FY_Spent, axis1=FF_Cat, label = "stratum")) +
+       aes(y = `FY Expenditures`,  axis3 = `Federal Funds`, axis2 = FY_Spent, axis1=FF_Cat, label = "stratum")) +
   geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
   # guides(fill = FALSE) +   
   geom_stratum(reverse=FALSE)+
@@ -822,6 +797,7 @@ cure_exp2023_allfunds <- cure_exp %>%
   mutate(
          FY_Spent = factor(FY_Spent, levels = c("2020", "2021", "2022", "2023")),
          FY_Received = factor(FY_Received, levels = c("2020", "2021", "2022")),
+
         FF_Cat = factor(FF_Cat, levels = c("Econ Dev", "Human Services", "K-12", "Local Transfers", "Public Health", "Medicare", "Public Safety", "Transportation", "Reimbursements", "UI Fund", "Lost Revenue", "FY23+")),
         FF_Cat2 = factor(FF_Cat2, levels = c("Econ Dev", "Human Services", "K-12", "Local Transfers", "Public Health & Safety", "Medicaid", "Medicare", "Transportation", "Reimbursements", "UI Fund", "Lost Revenue", "FY23+"))
       )
@@ -856,6 +832,7 @@ All revenue sources within "Federal - Other" source.
 Note: Increased Matching Grant and Medicaid Continuous Coverage Requirement dollars all count as Federal Medicare Revenue.
 
 ```{r}
+# all Federal revenue source observations after 2018
 rev_temp %>% 
   filter(rev_type == "57" & fy >2018) %>% 
   group_by(fund_name, source_name_AWM,  fy) %>% 
@@ -863,19 +840,35 @@ rev_temp %>%
   arrange(fy, -receipts) %>% 
   pivot_wider(names_from = fy, values_from = receipts)
 
-fed_rev_compare <- rev_temp %>% filter((rev_type == "57" | rev_type == "58" | rev_type == "59") & (fy == 2022 | fy==2021 | fy==2020 | fy == 2019)) %>%  arrange(-receipts)
-
-fed_rev_compare
-
+# brought all federal revenue into a separate dataframe to look at it more closely
+fed_rev_compare <- 
+  rev_temp %>% filter((rev_type == "57" | rev_type == "58" | rev_type == "59") & (fy == 2022 | fy==2021 | fy==2020 | fy == 2019)) %>%  arrange(-receipts)
 
 # write_csv(fed_rev_compare, "comparefedrev.csv")
 
 
-rev_temp %>% filter(source_name_AWM == "FEDERAL STIMULUS PACKAGE") %>% group_by(fy, fund_name) %>% summarize(receipts =sum(receipts)) %>% arrange(-fy)
+# all Federal Stimulus Package revenue sources
+# State CURE items from CARES and ARPA & Great Recession federal aid
+rev_temp %>% 
+  filter(source_name_AWM == "FEDERAL STIMULUS PACKAGE") %>% 
+  group_by(fy, fund_name) %>% 
+  summarize(receipts =sum(receipts)) %>% 
+  arrange(-fy)
 
-rev_temp %>% filter(fy > 2018 & source_name_AWM == "FEDERAL STIMULUS PACKAGE") %>% group_by(fund_name, fy) %>% summarize(receipts =sum(receipts)) %>% arrange(-receipts)
+rev_temp %>% # State CURE items
+  filter(fy > 2018 & source_name_AWM == "FEDERAL STIMULUS PACKAGE") %>% 
+  group_by(fund_name, fy) %>% 
+  summarize(receipts =sum(receipts)) %>% 
+  arrange(-receipts)
 
-rev_temp %>% filter(rev_type == "57" & fy > 2018 & fund_name == "SBE FEDERAL DEPT OF EDUCATION") %>% group_by(source_name_AWM , fund_name, fy) %>% summarize(receipts =sum(receipts)) %>% arrange(-receipts)
+# looks at ISBE federal funding after 2018
+# gives a sort of base comparison of funding before pandemic
+# ESSER revenue sources had multiple source names so lots of scrolling and CTRL-F searching was done
+rev_temp %>% 
+  filter(rev_type == "57" & fy > 2018 & fund_name == "SBE FEDERAL DEPT OF EDUCATION") %>%
+  group_by(source_name_AWM , fund_name, fy) %>% 
+  summarize(receipts =sum(receipts)) %>% 
+  arrange(-receipts)
 
 
 
@@ -883,25 +876,28 @@ rev_temp %>% filter(rev_type == "57" & fy > 2018 & fund_name == "SBE FEDERAL DEP
 ```
 
 ```{r}
+#| code-fold: false
+
+
 exp_temp <- read_csv("exp_temp.csv") %>% 
   filter(agency!= "799")
 
-exp_temp %>% filter(fy >2019 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE" | fund_name == "SBE FEDERAL DEPT OF EDUCATION" | fund_name == "DISASTER RESPONSE AND RECOVERY" | fund_name == "ESSENTIAL GOVT SERV SUPPORT" )) %>% group_by(fy, agency_name, wh_approp_name, fund_name) %>% 
+exp_temp %>% 
+  filter(fy >2019 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE" | fund_name == "SBE FEDERAL DEPT OF EDUCATION" | fund_name == "DISASTER RESPONSE AND RECOVERY" | fund_name == "ESSENTIAL GOVT SERV SUPPORT" )) %>% 
+  group_by(fy, agency_name, wh_approp_name, fund_name) %>% 
   summarize(sum=sum(expenditure),
             appropriated = sum(appn_net_xfer)) %>% 
   arrange(-appropriated)
 
-exp_temp %>% filter(fy >2019 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE" | fund_name == "SBE FEDERAL DEPT OF EDUCATION" | fund_name == "DISASTER RESPONSE AND RECOVERY" | fund_name == "ESSENTIAL GOVT SERV SUPPORT" )) %>% group_by(fy, wh_approp_name, fund_name) %>% 
-  summarize(sum=sum(expenditure),
-            appropriated = sum(appn_net_xfer)) %>% 
-  arrange(-appropriated)
 
-exp_temp %>% filter(fy >2018 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE" | fund_name == "SBE FEDERAL DEPT OF EDUCATION" | fund_name == "DISASTER RESPONSE AND RECOVERY" | fund_name == "ESSENTIAL GOVT SERV SUPPORT" )) %>% group_by(fy, wh_approp_name, fund_name) %>% 
+exp_temp %>% filter(fy >2018 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE" | fund_name == "SBE FEDERAL DEPT OF EDUCATION" | fund_name == "DISASTER RESPONSE AND RECOVERY" | fund_name == "ESSENTIAL GOVT SERV SUPPORT" )) %>% 
+  group_by(fy, wh_approp_name, fund_name) %>% 
   summarize(sum=sum(expenditure),
             appropriated = sum(appn_net_xfer)) %>% 
   arrange(-sum)
 
-exp_temp %>% filter(fy >2019 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE" | fund_name == "SBE FEDERAL DEPT OF EDUCATION" | fund_name == "DISASTER RESPONSE AND RECOVERY" | fund_name == "ESSENTIAL GOVT SERV SUPPORT" )) %>% group_by(fund_name, fy, agency_name) %>% 
+exp_temp %>% filter(fy >2019 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE" | fund_name == "SBE FEDERAL DEPT OF EDUCATION" | fund_name == "DISASTER RESPONSE AND RECOVERY" | fund_name == "ESSENTIAL GOVT SERV SUPPORT" )) %>% 
+  group_by(fund_name, fy, agency_name) %>% 
   summarize(sum=sum(expenditure),
             appropriated = sum(appn_net_xfer)) %>% 
   arrange(-appropriated)
@@ -936,7 +932,7 @@ The \$52 billion total includes Illinois state and local governments (counties, 
 
 Legislation total funds (when including local government aid) were: ARPA = \$25.6 Billion; CARES = \$15.7 Billion; Families First = \$4.5 Billion; PPP & Health Care = \$2.8 Billion; Response & Relief = \$3.4 Billion.
 
-![](images/image-105349095.png)
+![](docs/docs/images/revenue_CMT_52bil.png)
 
 Local Governments within Illinois received \$8.9 billion for economic recovery but we do not include funds given straight to localities in our State COVID recovery fund calculations or Fiscal Gap analysis.
 
@@ -953,7 +949,7 @@ sankey <- sankeydata %>%
 
   mutate(StateFunds = factor(FY, levels = c( "FY20", "FY21", "FY22")),
         Legislation2 = factor(Legislation2, levels = c( "Other", "CARES", "CRRSA", "ARPA")),
-                              Legislation1 = factor(Legislation, levels = c( "Families First", "CARES", "PPP & Health Care", "Response & Relief", "ARPA"))
+                              Legislation = factor(Legislation, levels = c( "CARES", "FFCRA","PPP", "CRRSA", "ARPA"))
 )
          
                  #  Expenditures = factor(Expenditures, levels = c("Community Development", "Public Health", "Medicaid", "K-12", "Federal Other", "Transit")),
@@ -971,21 +967,6 @@ coord_flip() +
      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
     theme(legend.position = "bottom") +
   labs(title = "$52 Billion in Federal Aid has been Committed to Illinois", subtitle = "State Fiscal Years 2020-2022")
-
-
-#switches fiscal Year and Broad Category. Not as helpful. 
-
-# ggplot(sankey, 
-#        aes(y = `Dollars Received`, axis2 = FY, axis3 = `Broad Category`, axis1=FF_Cat2, label = "stratum")) +
-#   geom_flow(aes(fill = Legislation), color = "black", reverse=FALSE) +
-#  # guides(fill = FALSE) +   
-#   geom_stratum(reverse=FALSE)+
-# coord_flip()+
-#    scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-#   theme_void() +
-#      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
-#     theme(legend.position = "bottom")+
-#   ggtitle("$52 Million Federal COVID Relief to Illinois over 3 years")
 
 
 sankey %>% 
@@ -1101,6 +1082,13 @@ sankey %>% filter(FF_Cat2!= "Excluded") %>%
   theme(legend.position = "bottom")+
   ggtitle("Without Local government relief:
           $12.7 Billion in FY20, $7 Billion in FY21, and $23 Billion in FY22 Committed to Illinois")
+
+
+# without local government CURE funds
+sankey %>% 
+  filter(FF_Cat2 != "Excluded") %>% 
+  group_by(FY)%>%
+  summarize(TotalReceived=sum(`Dollars Received`))
 ```
 
 ```{r}
@@ -1121,68 +1109,11 @@ sankey %>% group_by(Legislation, FF_Cat)%>%summarize(TotalReceived=sum(`Dollars 
 
 sankey %>% group_by(FY, FF_Cat)%>%summarize(TotalReceived=sum(`Dollars Received`)) %>% pivot_wider(names_from = FY, values_from = TotalReceived)
 
-sankey %>% filter(FF_Cat2 != "Excluded") %>% group_by(FY)%>%summarize(TotalReceived=sum(`Dollars Received`))
 
 sankey %>% group_by(Legislation, FF_Cat2)%>%summarize(TotalReceived=sum(`Dollars Received`)) %>% pivot_wider(names_from = Legislation, values_from = TotalReceived)
 
 sankey %>% group_by(FY, FF_Cat2)%>%summarize(TotalReceived=sum(`Dollars Received`)) %>% pivot_wider(names_from = FY, values_from = TotalReceived)
 
-```
-
-```{r results='hold', include=FALSE}
-# More graph variations.
-
-data <- read_excel("attemptJan15.xlsx") %>% filter(FF_Cat2 != "Exclude")
-
-ggplot(data, 
-       aes(y = Committed, axis4 = FY_Received, axis3 = State_Local, axis2 = StateOrDepartments, axis1=FF_Cat2, label = "stratum")) +
-  geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
- # guides(fill = FALSE) +   
-  geom_stratum(reverse=FALSE)+
- # geom_text(stat = "stratum", label.strata = TRUE) + 
-coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() +
-      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 4, reverse=FALSE)+
-  theme(legend.position = "bottom")+
-  ggtitle("$43 Billion for Illinois (Excluding Local CURE funds for Local Governments)")
-
-
-
-data %>% filter(FF_Cat2 != "Exclude") %>%
-ggplot(aes(y = Committed, axis3 = StateOrDepartments, axis2=FundPurpose2, axis1=FF_Cat, label = "stratum")) +
-  geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
-  geom_stratum(reverse=FALSE)+
-coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() +
-      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+theme(legend.position = "bottom") + 
-  ggtitle("Received: $16 Billion for Illinois + $23.3 for State Departments ($39.7 Billion total)")
-
-data %>% filter(FF_Cat2 != "Exclude") %>%
-ggplot(aes(y = Committed, axis3 = StateOrDepartments, axis2=`Government Program`, label = "stratum")) +
-  geom_flow(aes(fill = Law), color = "black", reverse=FALSE) +
-  geom_stratum(reverse=FALSE)+
-coord_flip()+
-   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
-  theme_void() +
-      geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+theme(legend.position = "bottom") + 
-  ggtitle("Received: $16 Billion for Illinois + $23.3 for State Departments ($39.7 Billion total)")
-
-
-data %>% group_by(State_Local) %>% summarize(sum=sum(Committed))
-
-data %>% group_by(StateOrDepartments) %>% summarize(sum=sum(Committed))
-
-data %>% group_by(StateOrDepartments, FF_Cat) %>% summarize(sum=sum(Committed))
-
-data %>% group_by(StateOrDepartments, FF_Cat, FY_Received) %>% summarize(sum=sum(Committed)) %>% pivot_wider(names_from = FY_Received, values_from = sum)
-
-data %>% filter(State_Local !="Local") %>% group_by(Law, FF_Cat, FY_Received) %>% summarize(sum=sum(Committed)) %>% pivot_wider(names_from = FY_Received, values_from = sum)
-
-data %>% group_by(StateOrDepartments, FY_Received) %>% summarize(sum=sum(Committed)) %>% pivot_wider(names_from = FY_Received, values_from = sum)
-
-data %>% filter(State_Local !="Local") %>% group_by(Law, FF_Cat) %>% summarize(sum=sum(Committed)) %>% pivot_wider(names_from = Law, values_from = sum)
 ```
 
 #### Notes on Sankey Graphs
