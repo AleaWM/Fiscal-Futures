@@ -1,4 +1,4 @@
-# All Code together
+# Calculating the Fiscal Gap
 
 ```{r warning = FALSE, message=FALSE}
 
@@ -1450,16 +1450,15 @@ top3
 
 > Not edited or double checked. Just general notes pulled together while looking into online sales tax.
 
-Law was passed in 2018 that required out of state retailers to pay the 6.25% **state** sales tax. The Rebuild Illinois law expanded the law to require remote retailers to charge all state and local retailers occupation taxes beginning in July 1, 2020. Before Jan. 1 2021, only state sales taxes were required to be collected (related to South Dakota v Wayfair court decision).
-Now required to pay state **and local** tax based on where product is delivered.
+Law was passed in 2018 that required out of state retailers to pay the 6.25% **state** sales tax. The Rebuild Illinois law expanded the law to require remote retailers to charge all state and local retailers occupation taxes beginning in July 1, 2020. Before Jan. 1 2021, only state sales taxes were required to be collected (related to South Dakota v Wayfair court decision). Now required to pay state **and local** tax based on where product is delivered.
 
-"On June 28, 2019, Public Act 101-0031, the \"Leveling the Playing Field for Illinois Retail Act,\" was signed into Illinois law and on December 13, 2019 an amendment to the Act was signed into law in Public Act 101-0604. In an effort to create more equity between remote sellers and local brick-and-mortar retailers, the new law requires remote sellers without a physical presence in the state and marketplace facilitators (e.g., Amazon and Walmart) to collect both state and local sales taxes effective January 1, 2021." [CivicFed.org](https://www.civicfed.org/civic-federation/blog/consumer-taxes-chicago-increases-and-updates-2021)
+"On June 28, 2019, Public Act 101-0031, the"Leveling the Playing Field for Illinois Retail Act," was signed into Illinois law and on December 13, 2019 an amendment to the Act was signed into law in Public Act 101-0604. In an effort to create more equity between remote sellers and local brick-and-mortar retailers, the new law requires remote sellers without a physical presence in the state and marketplace facilitators (e.g., Amazon and Walmart) to collect both state and local sales taxes effective January 1, 2021." [CivicFed.org](https://www.civicfed.org/civic-federation/blog/consumer-taxes-chicago-increases-and-updates-2021)
 
-Requires remote sellers and marketplace facilitators to collect and remit the state and locally-imposed Retailers\' Occupation Tax (ROT) for the jurisdictions where the product is delivered (destination sourcing) rather than collecting and remitting solely the state use tax. 
+Requires remote sellers and marketplace facilitators to collect and remit the state and locally-imposed Retailers' Occupation Tax (ROT) for the jurisdictions where the product is delivered (destination sourcing) rather than collecting and remitting solely the state use tax. 
 
--   random note: Illinois\' State sales tax rate is 6.25%, of which 5.0% of the sales tax revenue goes to the State, 1.0% goes to all municipalities, including Chicago, and the remaining 0.25% goes to the counties. However, Cook County\'s 0.25% share of the State sales tax is distributed to the Regional Transportation Authority.
+-   random note: Illinois' State sales tax rate is 6.25%, of which 5.0% of the sales tax revenue goes to the State, 1.0% goes to all municipalities, including Chicago, and the remaining 0.25% goes to the counties. However, Cook County's 0.25% share of the State sales tax is distributed to the Regional Transportation Authority.
 
-"The amended \"Leveling the Playing Field for Illinois Retail Act\" was passed by the General Assembly on November 14, 2019, to require both Remote Retailers and Marketplace Facilitators to collect and remit the state and locally-imposed Retailers\' Occupation Tax (ROT, aka sales tax) for the jurisdictions where the product is delivered (its destination) starting January 1, 2021."- [Illinois Municipal League](https://www.iml.org/file.cfm?key=16124)
+"The amended"Leveling the Playing Field for Illinois Retail Act" was passed by the General Assembly on November 14, 2019, to require both Remote Retailers and Marketplace Facilitators to collect and remit the state and locally-imposed Retailers' Occupation Tax (ROT, aka sales tax) for the jurisdictions where the product is delivered (its destination) starting January 1, 2021."- [Illinois Municipal League](https://www.iml.org/file.cfm?key=16124)
 
 -   Marketplace Facilitators, like Amazon, were required to collect Use Tax on sales starting January 1, 2020
 
@@ -1469,7 +1468,7 @@ Requires remote sellers and marketplace facilitators to collect and remit the st
 
     -   For remote sellers, the state tax rate is referred to as "use tax" and for intrastate sellers, "ROT" simply means *sales tax*.  
 
-    -   The ROT is measured upon the seller\'s gross receipts and the seller is statutorily [required]{.underline} to collect the use tax from their customers.
+    -   The ROT is measured upon the seller's gross receipts and the seller is statutorily [required]{.underline} to collect the use tax from their customers.
 
 -   source 0482 is State ROT-2.2%
 
