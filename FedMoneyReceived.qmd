@@ -31,7 +31,6 @@ Dropping revenue source "Federal Stimulus Package" from the IOC revenue data is 
 
 ```{r}
 
-
 rev_temp <- read_csv("rev_temp.csv") %>% 
   filter(agency!= "799")
 
@@ -82,38 +81,79 @@ fedrev %>%
        y = "Billions of Dollars", x = "",
        caption = "Note: Dropping Federal Stimulus Package revenue only removes the $3.519 billion from FY20, 
        $0.23 billion from FY21, and $8.85 billion from FY22. Also drops Great Recession Aid in 2009.
-       There is still $11.4 billion more in FY22 Federal Revenue compared to FY19.") + 
+       There is still $11 billion more in FY22 Federal Revenue compared to FY19.") + 
   theme(legend.position = "bottom", legend.title = element_blank()  ) +
   scale_y_continuous(limits = c(0,45))
 
+
+```
+
+![With and Without State CURE Funds from Federal Stimulus Packages](images/image-1706772717.png){#fig-with-without-cure}
+
+```{r}
+#| code-fold: false
 
 fedrev %>% 
   filter(fy>2018) %>% # all fed rev after 2018 summed by year
   group_by(fy) %>% 
   summarize(Revenue = sum(receipts))
 
+
+fedrev %>% 
+  filter(fy>2017) %>% # all fed rev after 2017 summed by year, #gives precovid comparison for reference
+  group_by(fy, rev_type_name) %>% 
+  summarize(Revenue = sum(receipts))%>%
+  pivot_wider(names_from = fy, values_from = Revenue)
+
+
+
 fedrev %>% 
   #federal stimulus revenue sources after 2018
+  # this is ONLY the State CURE funds from CARES and ARPA
   filter(source_name_AWM == "FEDERAL STIMULUS PACKAGE" & fy>2018) %>%
   group_by(fy) %>% 
   summarise(receipts = sum(receipts, na.rm = TRUE)/1000000)
 
 fedrev %>% 
   filter(fy>2018) %>%
-  group_by(fy, fund_name) %>% 
+  group_by(fy, fund_name) %>%  # all funds that received money
   summarise(receipts = sum(receipts, na.rm = TRUE)/1000000) %>%
   arrange(-receipts) %>%
   pivot_wider(names_from = fy, values_from = receipts)
 
+fedrev %>% 
+  filter(fy>2018) %>%
+  group_by(fy, source_name_AWM) %>%  # all revenue sources
+  summarise(receipts = sum(receipts, na.rm = TRUE)/1000000) %>%
+  arrange(-receipts) %>%
+  pivot_wider(names_from = fy, values_from = receipts)
+
+# federal transportation revenue sources
 fedrev %>% 
   filter(fy>2018, rev_type=="59") %>%
   group_by(fy, source_name_AWM) %>% 
   summarise(receipts = sum(receipts, na.rm = TRUE)/1000000) %>%
   arrange(-receipts) %>%
   pivot_wider(names_from = fy, values_from = receipts)
-```
 
-![With and Without State CURE Funds from Federal Stimulus Packages](images/image-1706772717.png){#fig-with-without-cure}
+
+
+fedrev %>% 
+  filter(fy>2018, rev_type=="58") %>% # Fed Med only
+  group_by(fy, source_name_AWM) %>% 
+  summarise(receipts = sum(receipts, na.rm = TRUE)/1000000) %>%
+  arrange(-receipts) %>%
+  pivot_wider(names_from = fy, values_from = receipts)
+
+
+
+#yearly totals for Fed Med sources above
+fedrev %>% # Medicaid reimbursements and healthcare provider funds
+  filter(fy>2018, rev_type=="58") %>%
+  group_by(fy) %>% 
+  summarise(receipts = sum(receipts, na.rm = TRUE)/1000000) %>%
+  pivot_wider(names_from = fy, values_from = receipts)
+```
 
 ## Comptroller Revenue Data
 
@@ -613,6 +653,7 @@ Multiple billions of dollars of spending were funded with other federal grants. 
 
 
 # ESSER Expenditures per year
+# from simplified file, not the IOC expenditure file
 cure_exp2022 %>% 
   filter(Fund == "ESSER") %>%
   group_by(`FY_Spent`)%>% 
@@ -1114,11 +1155,89 @@ exp_temp %>% filter(fy == 2022 & (fund_name == "STATE CURE" | fund_name == "LOCA
 exp_temp %>% filter(fy == 2022 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE")) %>% group_by(agency_name) %>% summarize(sum=sum(expenditure)) %>% arrange(-sum)
 
 exp_temp %>% filter(fy == 2021 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE")) %>% group_by(wh_approp_name, fund_name) %>% summarize(sum=sum(expenditure)) %>% arrange(-sum)
+
+
+## Looking at ESSER funds spent per year## 
+
+exp_temp %>% filter(fy >2018 & fund_name == "SBE FEDERAL DEPT OF EDUCATION" & agency_name == "STATE BOARD OF EDUCATION") %>% group_by(wh_approp_name) %>% summarize(expenditures = sum(expenditure))
+
+K12_ESSER_words <- c("CRRSA","ESSER","EMER R")
+
+K12 <- exp_temp %>% 
+  filter(agency_name == "STATE BOARD OF EDUCATION") %>%
+  mutate(ESSERfunds = case_when(
+    str_detect(wh_approp_name, "CRRSA") ~ "ESSER",
+    str_detect(wh_approp_name, "ESSER") ~ "ESSER",
+    str_detect(wh_approp_name, "EMER R") ~ "ESSER",
+        str_detect(wh_approp_name, "EMR R") ~ "ESSER",
+
+        str_detect(wh_approp_name, "CARES") ~ "ESSER",
+            str_detect(wh_approp_name, "AMER R") ~ "ESSER",
+
+        str_detect(wh_approp_name, "EMER ED") ~ "ESSER",
+
+                                 TRUE ~ 'notesser')) %>%
+  filter(ESSERfunds == "ESSER")
+
+K12 %>% summarize(esser_spent = sum(expenditure))
+
+K12 %>% group_by(fy) %>% summarize(esser_spent = sum(expenditure))
+
+K12 %>% group_by(fy, wh_approp_name) %>% summarize(esser_spent = sum(expenditure))
 ```
 
 ## COVID Money Tracker Data - Dollars Committed To Illinois {#sec-covid-money-tracker}
 
 Data was downloaded from COVIDMoneyTracker.org for the State of Illinois. Values reflect the amount committed and not all funds have been disbursed yet. It does not include aid for households or loans to businesses. Data file is named federalcoviddollars.xlsx in Github page used to create this website.
+
+Pivot tables were made in Excel first and then code was written to make the process easier to replicate.
+
+If the only filter applied is State == Illinois, total Committed is over \$152 billion.
+
+Level 2 != Direct Payments (the stimulus checks)
+
+Disbursement type != Loan or Aid to Individual
+
+```{r eval=FALSE}
+CMT_data <- read_excel(covidmoneytracker_20221209.xlsx, sheet = "Illinois_data")
+
+recipienttype_remove <- ("Financial Sector", "Large Business", "Pharmaceutical & Biotech")
+
+programs_keep <- c("Capital Investment Grants Program",
+"Child Care & Development Block Grant",
+"Child Care Stabilization Grant Program", 
+"Coronavirus State and Local Fiscal Recovery Funds",
+"Economic Injury Disaster Loan Advance",
+"Education Stabilization Fund",
+"Emergency Assistance for Non-Public Schools",
+"Federal Transit Administration",
+"Payroll Support Program",
+"Restaurant Revitalization Fund",
+"State Small Business Credit Initiative",
+"Supplemental Nutrition Assistance Program",
+"Temporary Assistance for Needy Families",
+"Community Services Block Grant",
+ "Coronavirus Relief Fund",
+"Governor's Emergency Education Relief Fund (part of Education Stabilization Fund)",
+"Payroll Support Program",
+"Supplemental Nutrition Assistance Program", "Unemployment Insurance", "Medicaid"
+)
+
+
+CMT_data %>% 
+  filter(`Recipient State` == "Illinois" & 
+      !`Recipient Type` %in% recipienttype_remove &
+        !`Level 3` %in% programs_keep &
+    (`Disbursement Type` != "Aid to Individual" | `Disbursement Type` != "Loan")
+  )
+
+# Coded local governments and state governments in  State_local variable
+
+# Code State Departments vs State Government & Local
+
+
+# Gets  close but not a perfect match.
+```
 
 ------------------------------------------------------------------------
 
@@ -1167,6 +1286,18 @@ coord_flip() +
   labs(title = "$52 Billion in Federal Aid has been Committed to Illinois", subtitle = "State Fiscal Years 2020-2022")
 
 
+ggplot(sankey, 
+       aes(y = `Dollars Received`, axis3 = FY, axis1 = `Broad Category`, axis2=FF_Cat2, label = "stratum")) +
+  geom_flow(aes(fill = Legislation), color = "black", reverse=FALSE) +
+ # guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE) +
+coord_flip() +
+   scale_fill_brewer(palette = "YlOrRd", direction = -1) +
+  theme_void() +
+     geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
+    theme(legend.position = "bottom") +
+  labs(title = "$52 Billion in Federal Aid has been Committed to Illinois", subtitle = "State Fiscal Years 2020-2022")
+
 sankey %>% 
   group_by(FY) %>% 
   summarize(sum=sum(`Dollars Received`))
@@ -1201,7 +1332,7 @@ sankey %>%
 
 ```
 
-Illinois received \$11.7 billion dollars from State Fiscal Recovery Funds and \$31.4 billion in other federal revenue to state departments. This other federal revenue frequently came in the form of increased or new grants to many State Departments that normally receive federal funding.
+Illinois received \$11.6 billion dollars from State Fiscal Recovery Funds into its State CURE fund and also received \$31.4 billion in other federal revenue to Illinois State departments. This other federal revenue frequently came in the form of increased or new grants to many State Departments that normally receive federal funding.
 
 ```{r include=FALSE}
 ## Same graph but without labels for Publisher ##
@@ -1217,6 +1348,18 @@ coord_flip()+
    #  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 2, reverse=FALSE)+
     theme(legend.position = "bottom")+
   ggtitle("$52 Million Federal COVID Relief Committed to Illinois over 3 years")
+
+ggplot(sankey, 
+       aes(y = `Dollars Received`, axis3 = FY, axis1 = `Broad Category`, axis2=FF_Cat2, label = "stratum")) +
+  geom_flow(aes(fill = Legislation), color = "black", reverse=FALSE) +
+ # guides(fill = FALSE) +   
+  geom_stratum(reverse=FALSE) +
+coord_flip() +
+   scale_fill_brewer(palette = "YlOrRd", direction = -1) +
+  theme_void() +
+    theme(legend.position = "bottom", legend.title=element_blank()) +
+  labs(title = "$52 Billion in Federal Aid has been Committed to Illinois", 
+       subtitle = "State Fiscal Years 2020-2022")
 ```
 
 ```{r include=FALSE}
@@ -1224,7 +1367,9 @@ coord_flip()+
 # another attempt at showing more parts of the data but it is not as useful.
 sankey %>% filter(FF_Cat != "Excluded") %>%
 ggplot(
-       aes(y = `Dollars Received`, axis4 = `Broad Category`, axis3 = Category, axis2 = Recipient, axis1=FF_Cat, label = "stratum")) +
+       aes(y = `Dollars Received`, axis4 = `Broad Category`, 
+           axis3 = Category, #axis2 = Recipient, 
+           axis1=FF_Cat, label = "stratum")) +
   geom_flow(aes(fill = Legislation), color = "black", reverse=FALSE) +
  # guides(fill = FALSE) +
   geom_stratum(reverse=FALSE)+
@@ -1273,13 +1418,13 @@ sankey %>% filter(FF_Cat2!= "Excluded") %>%
  # guides(fill = FALSE) +   
   geom_stratum(reverse=FALSE)+
      geom_text(stat = "stratum", aes(label = after_stat(stratum)), 
-               size = 2, reverse=FALSE)+
+               size = 3, reverse=FALSE)+
   coord_flip()+
   scale_fill_brewer(palette = "YlOrRd", direction = -1)+
   theme_void() +
-  theme(legend.position = "bottom")+
+  theme(legend.position = "bottom", legend.title=element_blank())+
   ggtitle("Without Local government relief:
-          $12.7 Billion in FY20, $7 Billion in FY21, and $23 Billion in FY22 Committed to Illinois")
+          $12.7 Billion in FY20, $7.3 Billion in FY21, and $21.5 Billion in FY22 Committed to Illinois")
 
 
 # without local government CURE funds

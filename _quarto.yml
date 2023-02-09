@@ -6,20 +6,6 @@ book:
   title: "Fiscal Futures Project"
   author: "Alea Wilbur-Mujtaba"
   date: last-modified
-  navbar: 
-    right: 
-      - icon: github
-        href: https://github.com/AleaWM/Fiscal-Futures
-        aria-label: GitHub
-  site-url: https://aleawm.github.io/Fiscal-Futures/
-#  repo-actions: [edit]
-#  downloads: [pdf, epub]
-#  sharing: [twitter, facebook]
-  sidebar:
-    title: "On this page"
-
-  reader-mode: true
-  
   chapters:
     - index.qmd
     - code-cleaning.qmd
@@ -30,7 +16,38 @@ book:
     - Healthcare.qmd
     - FederalRevenue.qmd
     - Medicaid.qmd
-    - Everything.qmd
+    - Everything.qmd 
+  navbar: 
+    right: 
+      - icon: github
+        href: https://github.com/AleaWM/Fiscal-Futures
+    left:
+      - text: "About"
+        file: index.qmd
+      - text: "The FY22 Fiscal Gap"
+        file: Everything.qmd
+      - text: "COVID-related Federal Revenue"
+        file: FedMoneyReceived.qmd
+      - text: "Methodology"
+        menu:
+          - index.qmd
+          - code-cleaning.qmd
+          - FedMoneyReceived.qmd
+          - LocalTransfers.qmd
+          - Debt.qmd
+          - Pensions.qmd
+          - Healthcare.qmd
+          - FederalRevenue.qmd
+          - Medicaid.qmd
+         # - Everything.qmd
+
+site-url: https://aleawm.github.io/Fiscal-Futures/
+#  repo-actions: [edit]
+#  downloads: [pdf, epub]
+#  sharing: [twitter, facebook]
+   # sidebar:
+      #title: "On this page"
+
 
 #execute: 
 #  freeze: auto
@@ -44,8 +61,17 @@ format:
     theme: 
       light: lightly
       dark: darkly
-
-#bibliography: references.bib
+  # pdf:
+  #   documentclass: scrreport
+  #   include-in-header: 
+  #     text: |
+  #       \usepackage{makeidx}
+  #       \makeindex
+  #   include-after-body: 
+  #     text: |
+  #       \printindex
+  #   
+bibliography: references.bib
 
 
 
