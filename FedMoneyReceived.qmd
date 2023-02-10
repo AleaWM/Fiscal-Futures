@@ -17,7 +17,7 @@ library(data.table)
 library(quantmod)
 library(geofacet)
 library(fredr)
-library(sf)
+library(sf) 
 library(usmap)
 library(janitor)
 
@@ -29,7 +29,7 @@ library(readxl)
 
 Dropping revenue source "Federal Stimulus Package" from the IOC revenue data is one way to start estimating how revenue will look after the COVID relief ends. The graphs below show Illinois revenue with and without Federal Stimulus Package revenue. It is important to note that only the \$8.127 ARPA State CURE and \$3.519 CARES CRF/State CURE revenue were labeled as "Federal Stimulus Package" in the IOC revenue data. There was still an additional \$12 billion dollars in other federal revenue that went to the state in FY22 compared to FY19. When trying to understand the states finances and the yearly fiscal gap, we also need to understand when and where the funds were considered revenue in the IOC data and consider the fiscal year that the funds were spent. Finally, allocations or expenditures may be grouped and labeled differently by the State compared to the Fiscal Futures project categorization. Some items that the federal relief funds are spent on are not included in Fiscal Gap calculations (e.g. the Unemployment Insurance Trust Fund repayments). The biggest challenge when determining the Fiscal Gap for Illinois centers around the timing of revenue and expenditures occurring in different fiscal years during the COVID response.
 
-![State CURE expenditures and allocations](images/bothgraphs.png){#fig-revandCUREexp}
+![State CURE expenditures and allocations in the larger context of COVID-related federal revenue.](images/bothgraphs.png){#fig-revandCUREexp}
 
 ```{r}
 
@@ -181,18 +181,11 @@ According to [federal data publicly available](covidmoneytracker.org), \$52 bill
 
 ![Illinois Expenditures and Allocations for \$11.6 Billion in State CURE funds](images/cure-expenditures.png){#fig-stateCURE-expenditures}
 
-> Images below are wrong (Transportation is wrong and should be essentially dropped, FFCRA received year is wrong. \$30 billion in federal funds.)
-
-![The image above shows the federal revenue type, the year it was received, and type of federal revenue source that the funds fall within using the Fiscal Futures methodology.](images/revenues_ioc_32bil_byyear.png){#fig-ioc_received_32bil_byyear}
-
-![The image above shows the federal revenue type (State CURE or other), the year it was received, and the revenue source category it falls under using the Fiscal Futures methodology. It contains the same information as the chart above but the Year and Source type are flipped.](images/revenues_ioc_32bil_byrevsource.png){#fig-received-ioc32bil-byrevsource}
-
 ```{r}
 sankey_rev_ioc <- read_csv("sankeyattempt2022.csv") %>% 
   filter(StFund == "Total")
 
 
-brewer.pal(n = 8, name = 'YlOrRd')
 
 sankey_rev_ioc <- sankey_rev_ioc %>% select(Federal, FF_Cat, StateFunds, StFund, Expenditures, value, Notes, Notes2, stfundname) %>%
   filter(StFund == "Total") %>%

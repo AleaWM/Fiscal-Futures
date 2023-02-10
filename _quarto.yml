@@ -8,6 +8,7 @@ book:
   date: last-modified
   chapters:
     - index.qmd
+    - FundsIncluded.qmd
     - code-cleaning.qmd
     - FedMoneyReceived.qmd
     - LocalTransfers.qmd
@@ -30,7 +31,7 @@ book:
         file: FedMoneyReceived.qmd
       - text: "Methodology"
         menu:
-          - index.qmd
+          - FundsIncluded.qmd
           - code-cleaning.qmd
           - FedMoneyReceived.qmd
           - LocalTransfers.qmd
