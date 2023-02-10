@@ -136,9 +136,9 @@ In 2019 lawmakers offered a pension buyout plan where members could opt-out of t
 -   State pension contributions are largely captured with object=4431. **(These are the State expenditures included in analysis)**
     -   includes 8 billion payment in 2004 that creates large peak in expenditure graph
     -   Object 4431 does not capture recent pension stabilization fund which is fund = 0319, object = 1900 and has \$300 million investment in FY2022.
--   Fund=0475 is the Municipal Retirement Fund - Not included because state just helps collect and disperse local pension funds. IMRF is most funded pension fund in Illinois. Fund ends in 2015. All were considered purchase of investments.
+-   Fund=0475 is the Municipal Retirement Fund - Not included because state just helps collect and disperse local pension funds. Fund ends in 2015. All were considered purchase of investments.
 -   IOC objects 1160-1165 are for all retirement expenditures for employers. These are not included in the analysis as pension costs.
-    -   object = 1167 and 1168 is for Employer pension contributions but is not used by IOC yet as of FY2022
+    -   object = 1167 and 1168 is also for Employer pension contributions but is not used by IOC yet as of FY2022
 -   Some expenditures with object=4430 (benefits paid to retirees) were paid for with Pension obligation bond funds (fund == 0825).
 -   In past years, some POB funded expenditures were moved to revenue side. Code logic was unclear. We are no longer doing this as of FY2021.
 -   Other types of pension expenditures to consider when looking at pension funds: Pension obligation acceleration bond, state pension obligation bond reimbursements, pension pickup, accelerated pension buy-out (bond financed funds)
@@ -146,3 +146,8 @@ In 2019 lawmakers offered a pension buyout plan where members could opt-out of t
     -   Purchase of Investments captures the pension obligation bonds issued in 2010-2011.
 -   object = 1900 for pension stabilization is under lump sums
 -   object = 4900 is awards and grants lump sum
+
+### **About Pension System Funding**
+
+\
+"Each year, the state is required to make contributions to its statutory pension systems: State Employees' Retirement System (SERS), State Universities Retirement System (SURS), Judges' Retirement System (JRS), General Assembly Retirement System (GARS) and Teachers' Retirement System (TRS). The state's contributions to SERS come from payment requests directly from SERS and from state agency payrolls. Contributions to GARS, JRS, SURS and TRS are vouchered directly by those pension systems. Additionally, the Chicago Teachers' Pension Fund (CTPF) receives some state appropriations, though the system is primarily funded by Chicago residents." - [Illinois Comptrolle](https://illinoiscomptroller.gov/financial-reports-data/expenditures-state-spending/pension-system)r's Office

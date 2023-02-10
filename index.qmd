@@ -42,6 +42,21 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 While it is called an "All Funds" Budget, that is a slight exaggeration. Illinois has over 700 funds. Whereas the overwhelming majority are included in our "All Funds" measure, some are not.  The starting point for our list of all funds is all appropriated funds, but, for the reasons listed below, we exclude a handful of appropriated funds and include a number of non-appropriated funds. 
 
+Preliminary expenditure and revenue data is requested after the Fiscal Year ends, and the requested again at the end of the lapse period.[^index-1] Calculations are based off the values received from the data received after October 31st when Illinois' lapse period ends.
+
+[^index-1]: "Closed" year:  accounts have been reconciled and reported as final.
+
+    "Lapse period:"  June 30 fiscal year end date has passed, but books remain open 3-6 months to settle obligations.
+
+    "Open" year:  accounts are still subject to revision and reconciliation (includes lapse period).
+
+    "Current" year: fiscal year has begun (July 1) but not yet ended (June 30).
+
+    "Upcoming" year: next fiscal year for which have actual or proposed appropriations and official revenue estimates.
+
+    "Projection" year: future years for which model is used to project expenditure and revenue by category. 
+
+
 **Criterion 1: INCLUDE IF the fund collects a state-levied tax.**
 
 The state collects both state-levied taxes and locally levied taxes (typically local-option sales and utility taxes).  The state collects and returns local taxes to the local governments.  Upon receipt, local tax revenues are deposited into specifically-designated, non-appropriated state trust funds.  In cases where the state is solely acting as a collection agent for a local taxing body, this receiving trust fund, its revenue and distribution (expenditure) is NOT counted in our analytical frame.  If the tax is collected for the state, the fund and its revenue IS counted in our analytical frame. 
