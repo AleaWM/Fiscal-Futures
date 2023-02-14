@@ -35,9 +35,7 @@ comma <- function(x) format(x, digits = 2, big.mark = ",")
 
 Dropping revenue source "Federal Stimulus Package" from the IOC revenue data is one way to start estimating how revenue will look after the COVID relief ends. The graphs below show Illinois revenue with and without Federal Stimulus Package revenue. It is important to note that only the \$8.127 ARPA State CURE and \$3.519 CARES CRF/State CURE revenue were labeled as "Federal Stimulus Package" in the IOC revenue data. There was still an additional \$12 billion dollars in other federal revenue that went to the state in FY22 compared to FY19. When trying to understand the states finances and the yearly fiscal gap, we also need to understand when and where the funds were considered revenue in the IOC data and consider the fiscal year that the funds were spent. Finally, allocations or expenditures may be grouped and labeled differently by the State compared to the Fiscal Futures project categorization. Some items that the federal relief funds are spent on are not included in Fiscal Gap calculations (e.g. the Unemployment Insurance Trust Fund repayments). The biggest challenge when determining the Fiscal Gap for Illinois centers around the timing of revenue and expenditures occurring in different fiscal years during the COVID response.
 
-![State CURE expenditures and allocations in the larger context of COVID-related federal revenue.](docs/images/bothgraphs.png){#fig-revandCUREexp}
-
-
+![State CURE expenditures and allocations in the larger context of COVID-related federal revenue.](images/bothgraphs.png){#fig-revandCUREexp}
 
 ```{r}
 
@@ -188,8 +186,6 @@ According to [federal data publicly available](covidmoneytracker.org), \$52 bill
 ![COVID-related legislation and federal revenue into Illinois](images/federal-covid-revenues.png){#fig-rev-to-illinois}
 
 ![Illinois Expenditures and Allocations for \$11.6 Billion in State CURE funds](images/cure-expenditures.png){#fig-stateCURE-expenditures}
-
-
 
 ```{r}
 sankey_rev_ioc <- read_csv("sankeyattempt2022.csv") %>% 
@@ -1254,7 +1250,7 @@ The \$52 billion total includes Illinois state and local governments (counties, 
 
 Legislation total funds (when including local government aid) were: ARPA = \$25.6 Billion; CARES = \$15.7 Billion; Families First = \$4.5 Billion; PPP & Health Care = \$2.8 Billion; Response & Relief = \$3.4 Billion.
 
-![](images/rev_CMT_52bil-01.png)
+![Old image - Federal Transportation amount is incorrect and should be part of Local Transfers.](images/rev_CMT_52bil-01.png)
 
 Local Governments within Illinois received \$8.9 billion for economic recovery but we do not include funds given straight to localities in our State COVID recovery fund calculations or Fiscal Gap analysis.
 
