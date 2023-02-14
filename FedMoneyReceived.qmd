@@ -1,6 +1,10 @@
 # Federal COVID Money Received {#sec-covid-federal-funds}
 
-```{r warning=FALSE, message=FALSE, echo=FALSE}
+```{r setup}
+#| warning: false
+#| message: false
+#| echo: false
+
 knitr::opts_chunk$set(warning=FALSE, message = FALSE)
 library(tidyverse)
 library(haven)
@@ -25,11 +29,15 @@ library(RColorBrewer)
 library(ggsankey)
 library(ggalluvial)
 library(readxl)
+
+comma <- function(x) format(x, digits = 2, big.mark = ",")
 ```
 
 Dropping revenue source "Federal Stimulus Package" from the IOC revenue data is one way to start estimating how revenue will look after the COVID relief ends. The graphs below show Illinois revenue with and without Federal Stimulus Package revenue. It is important to note that only the \$8.127 ARPA State CURE and \$3.519 CARES CRF/State CURE revenue were labeled as "Federal Stimulus Package" in the IOC revenue data. There was still an additional \$12 billion dollars in other federal revenue that went to the state in FY22 compared to FY19. When trying to understand the states finances and the yearly fiscal gap, we also need to understand when and where the funds were considered revenue in the IOC data and consider the fiscal year that the funds were spent. Finally, allocations or expenditures may be grouped and labeled differently by the State compared to the Fiscal Futures project categorization. Some items that the federal relief funds are spent on are not included in Fiscal Gap calculations (e.g. the Unemployment Insurance Trust Fund repayments). The biggest challenge when determining the Fiscal Gap for Illinois centers around the timing of revenue and expenditures occurring in different fiscal years during the COVID response.
 
-![State CURE expenditures and allocations in the larger context of COVID-related federal revenue.](images/bothgraphs.png){#fig-revandCUREexp}
+![State CURE expenditures and allocations in the larger context of COVID-related federal revenue.](docs/images/bothgraphs.png){#fig-revandCUREexp}
+
+
 
 ```{r}
 
@@ -90,7 +98,7 @@ fedrev %>%
 
 ```
 
-![With and Without State CURE Funds from Federal Stimulus Packages](images/image-1706772717.png){#fig-with-without-cure}
+![With and Without State CURE Funds from Federal Stimulus Packages](docs/images/image-1706772717.png){#fig-with-without-cure}
 
 ```{r}
 #| code-fold: false
@@ -177,9 +185,11 @@ CARES & ESSER impacts: Revenue from source "Department of Education-Fed" and dep
 
 According to [federal data publicly available](covidmoneytracker.org), \$52 billion has been committed to Illinois (including local governments) but \$32 billion has been received by the state at the end of Fiscal Year 2022 (as of June 30, 2022, excluding local governments). An additional \$8.86 billion was committed straight to local governments. More money has been received in FY23 but is not focused on in this analysis. To see a graph of federal funds committed to the State, jump to @sec-covid-money-tracker.
 
-![COVID-related legislation and federal revenue into Illinois](images/federal-covid-revenues.png){#fig-rev-to-illinois}
+![COVID-related legislation and federal revenue into Illinois](docs/images/federal-covid-revenues.png){#fig-rev-to-illinois}
 
-![Illinois Expenditures and Allocations for \$11.6 Billion in State CURE funds](images/cure-expenditures.png){#fig-stateCURE-expenditures}
+![Illinois Expenditures and Allocations for \$11.6 Billion in State CURE funds](docs/images/cure-expenditures.png){#fig-stateCURE-expenditures}
+
+
 
 ```{r}
 sankey_rev_ioc <- read_csv("sankeyattempt2022.csv") %>% 
