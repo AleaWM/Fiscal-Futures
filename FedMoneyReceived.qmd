@@ -98,7 +98,7 @@ fedrev %>%
 
 ```
 
-![With and Without State CURE Funds from Federal Stimulus Packages](docs/images/image-1706772717.png){#fig-with-without-cure}
+![With and Without State CURE Funds from Federal Stimulus Packages](images/image-1706772717.png){#fig-with-without-cure}
 
 ```{r}
 #| code-fold: false
@@ -185,9 +185,9 @@ CARES & ESSER impacts: Revenue from source "Department of Education-Fed" and dep
 
 According to [federal data publicly available](covidmoneytracker.org), \$52 billion has been committed to Illinois (including local governments) but \$32 billion has been received by the state at the end of Fiscal Year 2022 (as of June 30, 2022, excluding local governments). An additional \$8.86 billion was committed straight to local governments. More money has been received in FY23 but is not focused on in this analysis. To see a graph of federal funds committed to the State, jump to @sec-covid-money-tracker.
 
-![COVID-related legislation and federal revenue into Illinois](docs/images/federal-covid-revenues.png){#fig-rev-to-illinois}
+![COVID-related legislation and federal revenue into Illinois](images/federal-covid-revenues.png){#fig-rev-to-illinois}
 
-![Illinois Expenditures and Allocations for \$11.6 Billion in State CURE funds](docs/images/cure-expenditures.png){#fig-stateCURE-expenditures}
+![Illinois Expenditures and Allocations for \$11.6 Billion in State CURE funds](images/cure-expenditures.png){#fig-stateCURE-expenditures}
 
 
 
