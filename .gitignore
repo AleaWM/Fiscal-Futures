@@ -5,7 +5,9 @@
 .gitignore
 .tex
 .log
+.json
 
 /.quarto/
 /old-files/
 /docs/
+.quarto/

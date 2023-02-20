@@ -1,6 +1,6 @@
-# Yearly Fiscal Gap {#sec-Yearly-Fiscal-Gap}
+# The FY22 Fiscal Gap {#sec-the-fy22-fiscal-gap}
 
-For details on how tables and graphs were created, please see @sec-all-code.
+For details on how tables and graphs were created, please see the Methodology tab.
 
 ```{r setup, warning=FALSE, message=FALSE}
 
