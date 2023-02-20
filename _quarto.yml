@@ -18,7 +18,6 @@ book:
     - FederalRevenue.qmd
     - Medicaid.qmd
     - Everything.qmd 
-    - FiscalGap.qmd
   navbar: 
     right: 
       - icon: github
