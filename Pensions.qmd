@@ -1,4 +1,4 @@
-# Pensions
+# Pensions {#sec-pensions}
 
 ```{r warning = FALSE, message=FALSE}
 
@@ -151,3 +151,10 @@ In 2019 lawmakers offered a pension buyout plan where members could opt-out of t
 
 \
 "Each year, the state is required to make contributions to its statutory pension systems: State Employees' Retirement System (SERS), State Universities Retirement System (SURS), Judges' Retirement System (JRS), General Assembly Retirement System (GARS) and Teachers' Retirement System (TRS). The state's contributions to SERS come from payment requests directly from SERS and from state agency payrolls. Contributions to GARS, JRS, SURS and TRS are vouchered directly by those pension systems. Additionally, the Chicago Teachers' Pension Fund (CTPF) receives some state appropriations, though the system is primarily funded by Chicago residents." - [Illinois Comptrolle](https://illinoiscomptroller.gov/financial-reports-data/expenditures-state-spending/pension-system)r's Office
+
+### Difference in Pension Totals
+
+"Fiscal Futures is designed to track government spending by **function**.  In our view, pensions are a form of compensation and therefore are part of the cost of the functions to which the worker is assigned.  Thus, the employer cost for the pension contribution for workers in the department of Labor is a cost of the function of providing government services for labor (e.g administering regulations related to safe workplaces, training for workers, etc.)  The pension expenditures for these workers should be (and are in Fiscal Futures accounting) assigned to the \"labor\" function.
+
+Ideally, we would not have a \"pension\" category of expenditures at all.  In fact, when we first set up Fiscal Futures we discussed trying to allocate state pension contributions that were not attributable to any specific service across state functions.  After spending a considerable amount of time looking into this we decided it was not feasible to do this and compromised by including state pension payments as a category although it cannot be clearly linked to any function,  This is similar to debt service which also cannot be directly linked to a function" -
+

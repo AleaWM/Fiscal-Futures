@@ -3,6 +3,8 @@
 .RData
 .Ruserdata
 .gitignore
+.tex
+.log
 
 /.quarto/
 /old-files/

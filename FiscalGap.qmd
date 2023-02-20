@@ -1,5 +1,7 @@
 # Yearly Fiscal Gap
 
+For details on how tables and graphs were created, please see @sec-all-code.
+
 ```{r warning = FALSE, message=FALSE}
 
 library(tidyverse)
@@ -27,101 +29,7 @@ rev_temp <- read_csv("rev_temp.csv")
 
 Graphs made from `aggregated_totals_long` dataframe.
 
-```{r}
-
-annotation <- data.frame(
-  x = c(2004, 2017, 2019),
-  y = c(60000, 50000, 5000),  
-  label = c("Expenditures","Revenue", "Fiscal Gap")
-)
-
-# with trend lines:
-year_totals %>%  
-  ggplot() +
-  # geom_smooth adds regression line, graphed first so it appears behind line graph
-  geom_smooth(aes(x = Year, y = Revenue), color = "rosybrown2", alpha = 0.7, method = "lm", se = FALSE) + 
-  geom_smooth(aes(x = Year, y = Expenditures), color = "gray", method = "lm", se = FALSE) +
-  
-  # line graph of revenue and expenditures
-  geom_line(aes(x = Year, y = Revenue), color = "Black", size=1) +
-  geom_line(aes(x = Year, y = Expenditures), color = "red", size=1) +
-  
-  # labels
-    theme_bw() +
-  scale_y_continuous(labels = comma)+
-  xlab("Year") + 
-  ylab("Millions of Dollars")  +
-  ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
-
-
-# without trend lines:
-year_totals %>%  
-  ggplot() +
-  # line graph of revenue and expenditures
-  geom_line(aes(x = Year, y = Revenue), color = "Black", size=1) +
-  geom_line(aes(x = Year, y = Expenditures), color = "red", size=1) +
-      theme_bw() +
-  scale_y_continuous(labels = comma)+
-  xlab("Year") + 
-  ylab("Millions of Dollars")  +
-  ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
-
-
-
-fiscal_gap <- year_totals %>%  
-  ggplot() +
-  geom_hline(yintercept = 0) +
-  # geom_smooth adds regression line, graphed first so it appears behind line graph
-  geom_smooth(aes(x = Year, y = Revenue), color = "gray", alpha = 0.7, method = "lm", se = FALSE) + 
-  #  scale_linetype_manual(values="dashed")+
-  geom_smooth(aes(x = Year, y = Expenditures), color ="rosybrown2", linetype = "dashed", method = "lm", se = FALSE, alpha = 0.7) +
-
-  # line graph of revenue and expenditures
-  geom_line(aes(x = Year, y = Revenue), color = "Black", size=1) +
-  geom_line(aes(x = Year, y = Expenditures, linetype = "dashed"), color = "red", lwd=1) +
-  geom_line(aes(x = Year, y = `Fiscal Gap`), color = "gray") +
-  
-  geom_text(data = annotation, aes(x=x, y=y, label=label))+
-  # labels
-    theme_bw() +
-    theme(legend.position = "none")+
-
-    scale_linetype_manual(values = c("dashed", "dashed")) +
-
-  scale_y_continuous(labels = comma)+
-  xlab("Year") + 
-  ylab("Millions of Dollars")  +
-  ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
-
-fiscal_gap
-
-
-
-annotation_billions <- data.frame(
-  x = c(2004, 2017, 2019),
-  y = c(60, 50, 5),  
-  label = c("Expenditures","Revenue", "Fiscal Gap")
-)
-fiscal_gap2 <- year_totals %>%  
-  ggplot() +
-  geom_hline(yintercept = 0) +
-  geom_line(aes(x = Year, y = Revenue/1000), color = "Black", lwd=1) +
-  geom_line(aes(x = Year, y = Expenditures/1000, linetype = "dashed"), color = "red", lwd=1) +
-  geom_line(aes(x = Year, y = `Fiscal Gap`/1000), color = "gray") +
-  
-  geom_text(data = annotation, aes(x=x, y=y/1000, label=label))+
-    theme_bw() +
-  theme(legend.position = "none")+
-    scale_linetype_manual(values = c("dashed", "dashed")) +
-
-  scale_y_continuous(labels = comma)+
-  xlab("Year") + 
-  ylab("Billions of Dollars")  +
-  ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
-
-fiscal_gap2
-
-
+```{}
 ```
 
 ```{r}

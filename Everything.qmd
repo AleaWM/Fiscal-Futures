@@ -1,4 +1,4 @@
-# Calculating the Fiscal Gap
+# Calculating the Fiscal Gap {#sec-all-code}
 
 ```{r warning = FALSE, message=FALSE}
 
@@ -90,7 +90,7 @@ State pension contributions are largely captured with object=4431. **(State paym
 -   Judges Retirement System (JRS)
 -   General Assembly Retirement System (GARS)
 
-Modify exp_temp and move all state pension contributions to their own group (901). For more information on the variables included or excluded, please see the @Pensions chapter.
+Modify exp_temp and move all state pension contributions to their own group (901). For more information on the variables included or excluded, please see @sec-pensions.
 
 ```{r pensions}
 exp_temp <-  exp_temp %>% 
@@ -713,6 +713,7 @@ rm(exp_1998_2022)
 I chose to drop rev_76 for Transfers in and Out because I do not understand why that step occurs in the previously used Stata code. Rev_76 was created and included in rev_78 for All Other Revenues in old Stata code for years before FY21 but that method has been discontinued for FY22. Including vs excluding rev_76 does not change the overall interpretation of the fiscal gap.
 
 ```{r final-ffrev-table}
+
 ff_rev <- rev_temp %>% 
   group_by(rev_type_new, fy) %>% 
   summarize(sum_receipts = sum(receipts, na.rm=TRUE)/1000000 ) %>%
@@ -749,6 +750,9 @@ ff_rev
 Since I already pivot_wider()ed the table in the previous code chunk, I now change each column's name by using rename() to set new variable names. Ideally the final dataframe would have both the variable name and the variable label but I have not done that yet.
 
 ```{r}
+#| label: labeled-final-ffrev-table
+#| tbl-cap: Aggregated Revenue Categories
+#| 
 aggregate_rev_labels <- ff_rev %>%
   rename("INDIVIDUAL INCOME TAXES, gross of local, net of refunds" = rev_02,
          "CORPORATE INCOME TAXES, gross of PPRT, net of refunds" = rev_03,
@@ -823,7 +827,7 @@ ff_exp <- exp_temp %>%
 ff_exp<- ff_exp %>% 
   select(-c(debt_cost, exp_971:exp_976)) # drop unwanted columns
 
-ff_exp
+ff_exp # not labeled
 ```
 
 ```{r final-table-with-labels, include = FALSE, eval=FALSE}
@@ -964,6 +968,9 @@ year_totals
 ```
 
 ```{r rev-exp-totals-long}
+#| label: rev-and-exp-totals-long
+#| tbl-cap: Long Version of Data that has Revenue and Expenditures in One Dataframe.
+
 rev_long <- pivot_longer(ff_rev, rev_02:rev_78, names_to = c("type","Category"), values_to = "Dollars", names_sep = "_") %>% 
   rename(Year = fy) %>%
   mutate(Category_name = case_when(
@@ -1058,7 +1065,11 @@ exp_long <- pivot_longer(ff_exp, exp_402:exp_970 , names_to = c("type", "Categor
 aggregated_totals_long <- rbind(rev_long, exp_long)
 aggregated_totals_long
 
+```
 
+```{r}
+#| label: year-totals-table-withgap
+#| tbl-cap:  Year Totals for Expenditures, Revenues, and Fiscal Gap
 
 year_totals <- aggregated_totals_long %>% 
   group_by(type, Year) %>% 
@@ -1075,7 +1086,7 @@ year_totals <- aggregated_totals_long %>%
 year_totals  %>%  
   kbl(caption = "Fiscal Gap for each Fiscal Year") %>% 
   kable_styling(bootstrap_options = c("striped"))  %>%
-kable_classic() %>%   add_footnote(c("Methodology has changed since past publications","Values include State CURE dollars"))
+kable_classic() %>%   add_footnote(c("Methodology has changed slightly since FY21 so totals may differ from past publications", "All changes documented in ___ document.","Values include State CURE dollars"))
 ```
 
 ```{r include = FALSE}
@@ -1096,7 +1107,12 @@ kable_classic() %>%   add_footnote(c("Methodology has changed since past publica
 
 Graphs made from `aggregated_totals_long` dataframe.
 
-```{r fiscal-gap}
+```{r}
+#| label: fiscal-gap
+#| fig-cap: 
+#| - "Fiscal Gap With Trend Lines"
+#| - "Fiscal Gap Without Trend Lines"
+#| fig-cap-location: top
 
 annotation <- data.frame(
   x = c(2004, 2017, 2019),
@@ -1169,6 +1185,41 @@ fiscal_gap <-
 
 fiscal_gap
 
+# annotation_billions <- data.frame(
+#   x = c(2004, 2017, 2019),
+#   y = c(60, 50, 5),  
+#   label = c("Expenditures","Revenue", "Fiscal Gap"))
+
+
+fiscal_gap2 <-ggplot(data = year_totals, aes(x=Year, y = Revenue/1000)) +
+  geom_recessions(text = FALSE)+
+  geom_line(aes(x = Year, y = Revenue/1000), color = "Black", lwd=1) +
+  geom_line(aes(x = Year, y = Expenditures/1000, linetype = "dashed"), color = "red", lwd=1) +
+  geom_line(aes(x = Year, y = (`Fiscal Gap`/1000)), color = "darkgray", lwd=1) +
+  
+  geom_text(data = annotation, aes(x=x, y=y, label=label))+
+    theme_classic() +
+  theme(legend.position = "none")+
+    scale_linetype_manual(values = c("dashed", "dashed")) +
+  geom_hline(yintercept = 0) +
+
+  scale_y_continuous(labels = comma)+
+  xlab("Year") + 
+  ylab("Billions of Dollars")  +
+  ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
+
+
+fiscal_gap2
+
+
+```
+
+```{r include=FALSE, eval=FALSE}
+#| label: fiscalgap2
+#| fig-cap: Fiscal Gap Image 2 without Trend Lines
+
+# already included in above chunk 
+
 
 
 # annotation_billions <- data.frame(
@@ -1196,7 +1247,6 @@ fiscal_gap2 <-ggplot(data = year_totals, aes(x=Year, y = Revenue/1000)) +
 
 
 fiscal_gap2
-
 ```
 
 ```{r include=FALSE, eval=FALSE}
@@ -1225,6 +1275,13 @@ aggregated_totals_long %>%
 **Expenditure and revenue amounts in billions of dollars:**
 
 ```{r}
+#| label: bar-graphs-fy22
+#| fig-cap: FY22 Totals
+#| fig-subcap: 
+#| - "FY22 Expenditures"
+#| - "FY22 Revenue Sources"
+#| fig-cap-location: top
+
 exp_long %>%
   filter(Year == 2022) %>%
   #mutate(`Total Expenditures`= sum(Dollars, na.rm = TRUE)) %>%
@@ -1287,6 +1344,9 @@ rev_long %>%
 **Expenditure and revenues when focusing on largest categories and combining others into "All Other Expenditures(Revenues)":**
 
 ```{r}
+#| label: bargraphs-largest-expandrev-cats
+#| fig-cap: Largest Expenditures and Revenue Sources for FY2022
+
 exp_long %>%
   filter( Year == 2022) %>%
   mutate(rank = rank(Dollars),
@@ -1317,7 +1377,12 @@ rev_long %>%
 
 **Changes in Categories - 2021 to 2022**
 
-```{r dotplots}
+```{r}
+#| label: dotplots
+#| fig-cap: Change in Revenue Sources and Expenditure Categories, FY21 to FY22
+#| fig-subcap: 
+#| - "Change in Revenue Sources, FY21 to FY22"
+#| - "Change in Expenditure Categories, FY21 to FY22"
 rev_long %>%
     filter(Year == "2022" | Year == "2021") %>%
   mutate(Year = as.character(Year)) %>%
@@ -1418,6 +1483,8 @@ exp_long %>%
 ### Top 3 Revenues {#sec-top-3-revenues}
 
 ```{r}
+#| label: top3-revenues
+#| fig-cap: Top 3 Revenue Sources (Own-Source Revenues only)
 
 annotation <- data.frame(
   x = c(2012, 2019, 2012),
@@ -1448,7 +1515,7 @@ top3
 
 **Sales Tax - online retailers**
 
-> Not edited or double checked. Just general notes pulled together while looking into online sales tax.
+> Not edited or double checked. Randomly looked into online retailers recently and didn't finish thoughts on it. Just general notes pulled together while looking into online sales tax.
 
 Law was passed in 2018 that required out of state retailers to pay the 6.25% **state** sales tax. The Rebuild Illinois law expanded the law to require remote retailers to charge all state and local retailers occupation taxes beginning in July 1, 2020. Before Jan. 1 2021, only state sales taxes were required to be collected (related to South Dakota v Wayfair court decision). Now required to pay state **and local** tax based on where product is delivered.
 
@@ -1475,6 +1542,8 @@ Requires remote sellers and marketplace facilitators to collect and remit the st
 [ILGA info](https://www.ilga.gov/legislation/ilcs/ilcs5.asp?ActID=3993&ChapterID=8) - leveling the playing field went into effect on July 1 2020 which is the beginning of FY21
 
 ```{r}
+#| label: online-retailers
+
 ## State Retailers Occupation Tax. 
 rev_temp %>% filter(source == "0481") %>%
   group_by(fy, source_name_AWM) %>% summarize(revenue=sum(receipts))
@@ -1572,6 +1641,8 @@ As of Feb. 6 2023, Source 481 Retailers Occupation Tax has collected \$9.3 billi
 ### Own Source and Fed Transfers {#sec-own-source-and-fed-transfers}
 
 ```{r}
+#| label: ownsource-and-fed-revenue
+#| fig-cap: Comparison of Own Source and Federal Revenue. Historicaly, federal revenue tends to increase when state revenue decreases from some sort of economic shock (e.g. Housing Bubble in 2008). 
 
 ownsource_rev <- rev_long %>%
   filter(!Category %in% c("57", "58", "59")) %>%
@@ -1799,7 +1870,10 @@ revenue_wide2 <- rev_long %>% pivot_wider(names_from = Category_name,
 
 ```
 
-```{r }
+```{r}
+#| label: good-exp-CAGR-withTotals
+#| tbl-cap: Expenditure Category CAGRs with Total CAGR
+
 exp_long <- pivot_longer(exp_totals, exp_402:exp_TOTALS , names_to = c("type", "Category"), values_to = "Dollars", names_sep = "_") %>% 
   rename(Year = fy ) %>% 
   mutate(Category_name = 
@@ -1912,8 +1986,9 @@ CAGR_expenditures_summary_tot%>%
      kable_classic() 
 ```
 
-```{r }
-  
+```{r}
+#| label: good-rev-CAGR-withTotals
+#| tbl-cap: Revenue Category CAGRs with Total CAGR 
 calc_cagr <- function(df, n) {
   df <- rev_long %>%
     arrange(Category_name, Year) %>%
@@ -1962,7 +2037,9 @@ CAGR_revenue_summary_tot %>%
 rm(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_24)
 ```
 
-```{r }
+```{r}
+#| label: yearlychange-table-expenditures
+#| tbl-cap: Yearly Change in Expenditures
 
 revenue_change2 <- rev_long %>%
   #select(-c(Category)) %>%
@@ -1992,6 +2069,14 @@ revenue_change2 %>%
 
 
 
+
+
+           
+```
+
+```{r}
+#| label: yearlychange-table-revenues
+#| tbl-cap: Yearly Change in Revenues
 expenditure_change2 <- exp_long %>%
   #select(-c(type,Category)) %>%
   filter(Year > 2020) %>%
@@ -2014,8 +2099,6 @@ expenditure_change2 %>%
   kbl(caption = "Table 2. Yearly Change in Expenditures", row.names = FALSE) %>% 
   kable_classic() %>%
     row_spec(31, bold = T, color = "black", background = "gray")
-
-           
 ```
 
 ## Summary Tables - Largest Categories
@@ -2025,6 +2108,8 @@ The 10 largest revenue sources and 13 largest expenditure sources remain separat
 -   take ff_rev and ff_exp data frames, which were in wide format, pivot them longer and mutate the Category_name variable to nicer labels. Keep largest categories separate and aggregate the rest.
 
 ```{r }
+#| label: top10-exp-CAGRs
+#| tbl-cap: Top 13 Expenditures
 exp_totals <- ff_exp %>% rowwise() %>% mutate(exp_TOTALS = sum(across(exp_402:exp_970))) # creates total column too
 
 rev_totals <- ff_rev %>% rowwise() %>%  mutate(rev_TOTALS = sum(across(rev_02:rev_78)))
@@ -2199,6 +2284,11 @@ CAGR_expenditures_majorcats_tot%>%
   kbl(caption = "CAGR Calculations for Largest Expenditure Categories" , row.names=FALSE) %>% 
      kable_classic() 
 
+```
+
+```{r}
+#| label: top13-exp-yearlychange
+#| tbl-cap: Top 13 Expenditures and their Yearly Change
 
 # Yearly change for Top 13 largest expenditure categories
 expenditure_change_majorcats <- exp_long_majorcats %>%
@@ -2227,7 +2317,9 @@ expenditure_change_majorcats %>%
 
 Top 10 revenue sources CAGRs and Yearly Change Tables:
 
-```{r }
+```{r}
+#| label: top10-rev-CAGRs
+#| tbl-cap: Top 10 Revenue Sources with CAGRs
 
 ##### Top 10 revenue CAGRs: ####
 
@@ -2276,6 +2368,13 @@ CAGR_revenue_majorcats_tot <- move_to_last(CAGR_revenue_majorcats_tot,11)
 CAGR_revenue_majorcats_tot %>% 
   kbl(caption = "CAGR Calculations for Largest Revenue Sources", row.names = FALSE) %>% 
      kable_classic() 
+
+
+```
+
+```{r}
+#| label: top10-rev-yearlychange
+#| tbl-cap: Top 10 Revenue Sources with CAGRs
 
 
 ###### Yearly change summary table for Top 10 Revenues #####
@@ -2397,7 +2496,7 @@ write.xlsx(dataset_names, file = 'summary_file_FY22_wTotals_Jan11.xlsx')
 
 Saves main items in one excel file named `summary_file.xlsx`. Delete `eval=FALSE` to run on local computer.
 
-```{r }
+```{r}
 # #install.packages("openxlsx")
 # library(openxlsx)
 # 
@@ -2419,7 +2518,7 @@ The Fiscal Futures model focuses on sustainable revenue sources. To understand o
 
 -   fund 0628 is essential government support services. Money in the fund is appropriated to cover COVID-19 related expenses. It should be included in our frame based on criteria 2 and6 --- the fund supports an important state function about public safety, which would have to be performed even the fund structure were not existed. Public safety is supported by a combination of departments and boards, including IL Emergency Management Agency, which is the administering agency of the fund.
 
--   Education Stabilization Fund\
+-   Education Stabilization Fund
 
 -   ESSER
 
@@ -2431,7 +2530,7 @@ The Fiscal Futures model focuses on sustainable revenue sources. To understand o
 
 -   Consolidated Appropriations Act
 
--   Families First Cornovirus Response Act
+-   Families First Cornavirus Response Act
 
 -   Paycheck Protection Program and Health Care Enhancement Act
 
@@ -2580,6 +2679,8 @@ aggregated_totals_long <- rbind(rev_long, exp_long)
 Change plots:
 
 ```{r}
+#| label: totals-without-FederalStimulus
+
 year_totals2 <- aggregated_totals_long %>% 
   group_by(type, Year) %>% 
   summarize(Dollars = sum(Dollars, na.rm = TRUE)) %>% 
@@ -2594,21 +2695,34 @@ year_totals2 <- aggregated_totals_long %>%
 year_totals2 # gap for FY22 changed to 2.3 billion
 
 
+```
+
+```{r}
+#| label: withandwithout-stateCURE
+#| fig-cap: Illinois Revenue Trend
+#| fig-subcap: 
+#| - "With State CURE"
+#| - "Without State CURE"
+#| layout-ncol: 2
+#| fig-cap-location: top
+
+
 annotation_billions <- data.frame(
   x = c(2004, 2017, 2019),
-  y = c(60, 50, 10),  
+  y = c(60, 50, 10),
   label = c("Expenditures","Revenue", "Fiscal Gap"))
 
-fiscal_gap1 <- year_totals %>%
-  ggplot() +
+fiscal_gap1 <- ggplot(data = year_totals, aes(x=Year, y = Revenue/1000)) +
+  geom_recessions(text = FALSE)+
+
   geom_hline(yintercept = 0) +
   geom_line(aes(x = Year, y = Revenue/1000), color = "Black", lwd=1) +
   geom_line(aes(x = Year, y = Expenditures/1000, linetype = "dashed"), color = "red", lwd=1) +
   geom_line(aes(x = Year, y = `Fiscal Gap`/1000), color = "gray") +
 
   geom_text(data = annotation_billions, aes(x=x, y=y, label=label))+
-    theme_bw() +
-  theme(legend.position = "none", #axis.text.y = element_blank(),  
+    theme_classic() +
+  theme(legend.position = "none", #axis.text.y = element_blank(),
         #axis.ticks.y = element_blank(),
                                     axis.title.y = element_blank())+
     scale_linetype_manual(values = c("dashed", "dashed")) +
@@ -2618,23 +2732,26 @@ fiscal_gap1 <- year_totals %>%
 fiscal_gap1
 
 
-fiscal_gap_droppedCURE <- year_totals2 %>%  
-  ggplot() +
+fiscal_gap_droppedCURE <- ggplot(data = year_totals2, aes(x=Year, y = Revenue/1000)) +
+  geom_recessions(text = FALSE)+
   geom_hline(yintercept=0)+
-  
+
     geom_hline(yintercept = 0) +
   geom_line(aes(x = Year, y = Revenue/1000), color = "Black", lwd=1) +
   geom_line(aes(x = Year, y = Expenditures/1000, linetype = "dashed"), color = "red", lwd=1) +
   geom_line(aes(x = Year, y = `Fiscal Gap`/1000), color = "gray") +
-  
+
   geom_text(data = annotation_billions, aes(x=x, y=y, label=label))+
-    theme_bw() +
+    theme_classic() +
   theme(legend.position = "none",# axis.text.y = element_blank(),
                                     #axis.ticks.y = element_blank(),
                                     axis.title.y = element_blank() )+
     scale_linetype_manual(values = c("dashed", "dashed")) +
   scale_y_continuous(limits=c(-20,120), labels = comma)+
     scale_x_continuous(limits=c(1998,2022))
+
+
+
   # # geom_smooth adds regression line, graphed first so it appears behind line graph
   # geom_smooth(aes(x = Year, y = Revenue), color = "gray", method = "lm", se = FALSE) + 
   # geom_smooth(aes(x = Year, y = Expenditures), color = "rosybrown2", method = "lm", se = FALSE) +
@@ -2653,12 +2770,14 @@ fiscal_gap_droppedCURE <- year_totals2 %>%
   # ylab("Millions of Dollars")  +
   # ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
 
-fiscal_gap_droppedCURE
+  fiscal_gap_droppedCURE
 ```
 
 Compare with and without federal COVID dollars:
 
-```{r}
+```{r include=FALSE}
+#| label: both-graphs-comparison
+#| fig-cap: Comparison of revenue with and without federal State CURE funds.
 library(gridExtra)
 
 cowplot::plot_grid(fiscal_gap1,
@@ -2818,8 +2937,8 @@ write.xlsx(dataset_names, file = 'summary_file_droppeCOVIDrevs_FY2022.xlsx')
 
 First images use revenue that includes all federal stimulus packages. Revenue projections are skewed heavily due to the large amount of covid money flowing in the past 2 years.
 
-```{r }
-
+```{r}
+#| label: forecasting-attempt
 
 ## Revenues
 year_totals2 <- year_totals2 %>% 
@@ -2923,6 +3042,8 @@ autoplot(tsexp) +
 Revenue forecasting using precovid trends:
 
 ```{r}
+#| label: precovid-trends-forecasting
+
 # revenue using precovid trends
 tsrev <- ts(year_totals$Revenue, start ="1998", end = "2020", frequency = 1) # yearly data
 
@@ -3016,7 +3137,7 @@ fed59
 ```
 
 ```{r}
-
+#| label: forecasting-trend-comparison
 fed_rev <- ff_rev %>% select(fy, rev_57, rev_58, rev_59) %>%
   mutate(fed_total = rev_57+rev_58+rev_59)
 
@@ -3068,6 +3189,8 @@ Graphing the 3 federal revenue types together may be the most reliable since som
 ## Tables with Totals
 
 ```{r}
+#| label: rev-tables-droppedCURE
+#| tbl-cap: Revenue without State CURE 
 exp_totals <- ff_exp %>% rowwise() %>% mutate(exp_TOTALS = sum(across(exp_402:exp_970)))
 rev_totals <- ff_rev %>%    rowwise() %>% 
   mutate(rev_TOTALS = sum(across(rev_02:rev_78)))
@@ -3390,6 +3513,8 @@ The 10 largest revenue sources and 13 largest expenditure sources remain separat
 -   take ff_rev and ff_exp data frames, which were in wide format, pivot them longer and mutate the Category_name variable to nicer labels. Keep largest categories separate and aggregate the rest.
 
 ```{r }
+#| label: large-cat-CAGRs-withoutCURE
+
 exp_totals <- ff_exp %>% rowwise() %>% mutate(exp_TOTALS = sum(across(exp_402:exp_970))) # creates total column too
 
 rev_totals <- ff_rev %>% rowwise() %>% 
@@ -3593,7 +3718,9 @@ expenditure_change2 %>%
 
 Top 10 revenue sources CAGRs and Yearly Change Tables:
 
-```{r }
+```{r}
+#| label: top10-rev-droppedCURE-yearlychange
+#| tbl-cap: Top 10 Revenue Sources without State CURE funds
 
 ##### Top 10 revenue CAGRs: ####
 
