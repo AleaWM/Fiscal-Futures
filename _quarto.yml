@@ -17,6 +17,7 @@ book:
     - Healthcare.qmd
     - FederalRevenue.qmd
     - Medicaid.qmd
+    - FiscalGap.qmd
     - Everything.qmd 
   navbar: 
     right: 
