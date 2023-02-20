@@ -2,6 +2,10 @@
 
 For details on how tables and graphs were created, please see the Methodology tab.
 
+> This page is supposed to be a simplified version of the @sec-all-code page.
+
+> Add final summary tables and link to the paper.
+
 ```{r setup, warning=FALSE, message=FALSE}
 
 library(tidyverse)
@@ -25,42 +29,9 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = TRUE)
 
 ```
 
-Graphs made from `aggregated_totals_long` dataframe.
-
-![](docs/Everything_files/figure-html/fig-withandwithout-stateCURE-1.png)
-
-```{r eval=FALSE}
-aggregated_totals_long %>%  
-  filter(type == "exp") %>% # uses only expenditures
-  ggplot(aes(x = Year, y = Dollars, group = Category, color = Category)) +
-  geom_line()+
-    xlab("Year") + 
-    ylab("Millions of Dollars")  +
-    ggtitle("Illinois Expenditures by Category")
-
-aggregated_totals_long %>%  
-  filter(type == "rev") %>% #uses only revenues
-  ggplot(aes(x = Year, y = Dollars, group = Category, color = Category)) +
-  geom_line()+
-    xlab("Year") + 
-    ylab("Millions of Dollars")  +
-    ggtitle("Illinois Revenues by Category")
-  
-
-
-```
-
-**Expenditure and revenue amounts in millions of dollars:**
-
-![](docs/Everything_files/figure-html/fig-bargraphs-largest-expandrev-cats-2.png)
-
-![](docs/Everything_files/figure-html/fig-bargraphs-largest-expandrev-cats-1.png)
+![Fiscal gap with and without State Cure Funds](docs/Everything_files/figure-html/both-graphs-comparison-1.png)
 
 **Changes in Categories - 2021 to 2022** Dot Plots:
-
-![](docs/Everything_files/figure-html/fig-dotplots-1.png)
-
-![](docs/Everything_files/figure-html/fig-dotplots-2.png)
 
 ```{r, eval=FALSE}
 rev_long %>%
@@ -118,6 +89,10 @@ exp_long %>%
   scale_x_continuous(limits = c(0, 31000), labels = comma)
 ```
 
+![Change in Revenue Sources from FY21 to FY22](docs/Everything_files/figure-html/fig-dotplots-1.png)
+
+![Change in Expenditures from FY21 to FY22](docs/Everything_files/figure-html/dotplots-2.png)
+
 ### Top 3 Revenues
 
 ```{r eval=FALSE}
@@ -147,44 +122,8 @@ top3 <- rev_long  %>%
 top3
 ```
 
-![](docs/Everything_files/figure-html/fig-top3-revenues-1.png)
+![Top 3 Own Source Revenue Sources: Individual Income, Sales, and Corporate Income Taxes](docs/Everything_files/figure-html/top3-revenues-1.png)
 
 ### Own Source and Fed Transfers
 
-```{r eval=FALSE}
-
-ownsource_rev <- rev_long %>%
-  filter(!Category %in% c("57", "58", "59")) %>%
-  group_by(Year) %>% 
-  summarize(Dollars = sum(Dollars))
-
-# ownsource_rev %>% 
-#   ggplot()+geom_line(aes(x=Year, y=Dollars)) + 
-#   labs(title = "Own Source Revenues", subtitle = "Total own source revenue", y = "Millions of Dollars")
-
-fed_rev <- ff_rev %>% select(fy, rev_57, rev_58, rev_59) %>%
-  mutate(fed_total = rev_57+rev_58+rev_59)
-
-
-annotation <- data.frame(
-  x = c(2010, 2010),
-  y = c(50000, 25000),  
-  label = c("Own Source Revenue", "Federal Transfers")
-)
-
-
-ggplot() + 
-  geom_line(data = ownsource_rev, aes(x=Year, y=Dollars), color = "Red") + 
-  geom_line(data = fed_rev, aes(x=fy, y=fed_total), color = "Black") + 
-    geom_text(data = annotation, aes(x=x, y=y, label=label))+
-    scale_y_continuous(labels = comma)+
-  theme(legend.position = "none")+
-
-  theme_classic()+
-  labs(title = "Own Source Revenue and Federal Transfers", 
-  y = "Nominal Dollars (in Millions)")
-
-
-```
-
-![](docs/Everything_files/figure-html/fig-ownsource-and-fed-revenue-1.png)
+![Own source revenue compared to federal revenue, Fiscal Years 1998-2022](docs/Everything_files/figure-html/ownsource-and-fed-revenue-1.png)
