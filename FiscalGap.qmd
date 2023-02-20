@@ -29,9 +29,6 @@ rev_temp <- read_csv("rev_temp.csv")
 
 Graphs made from `aggregated_totals_long` dataframe.
 
-```{}
-```
-
 ```{r}
 aggregated_totals_long %>%  
   filter(type == "exp") %>% # uses only expenditures

@@ -967,9 +967,10 @@ year_totals
 
 ```
 
-```{r rev-exp-totals-long}
-#| label: rev-and-exp-totals-long
-#| tbl-cap: Long Version of Data that has Revenue and Expenditures in One Dataframe.
+```{r}
+#| label: tbl-rev-and-exp-totals-long
+#| tbl-cap: Long Version of Data that has Revenue and Expenditures in One Dataframe
+#| tbl-cap-location: top
 
 rev_long <- pivot_longer(ff_rev, rev_02:rev_78, names_to = c("type","Category"), values_to = "Dollars", names_sep = "_") %>% 
   rename(Year = fy) %>%
@@ -1068,8 +1069,9 @@ aggregated_totals_long
 ```
 
 ```{r}
-#| label: year-totals-table-withgap
+#| label: tbl-year-totals-table-withgap
 #| tbl-cap:  Year Totals for Expenditures, Revenues, and Fiscal Gap
+#| tbl-cap-location: top
 
 year_totals <- aggregated_totals_long %>% 
   group_by(type, Year) %>% 
@@ -1086,7 +1088,8 @@ year_totals <- aggregated_totals_long %>%
 year_totals  %>%  
   kbl(caption = "Fiscal Gap for each Fiscal Year") %>% 
   kable_styling(bootstrap_options = c("striped"))  %>%
-kable_classic() %>%   add_footnote(c("Methodology has changed slightly since FY21 so totals may differ from past publications", "All changes documented in ___ document.","Values include State CURE dollars"))
+  kable_classic() %>%   
+  add_footnote(c("Methodology has changed slightly since FY21 so totals may differ from past publications", "All changes documented in ___ document.","Values include State CURE dollars"))
 ```
 
 ```{r include = FALSE}
@@ -1108,7 +1111,7 @@ kable_classic() %>%   add_footnote(c("Methodology has changed slightly since FY2
 Graphs made from `aggregated_totals_long` dataframe.
 
 ```{r}
-#| label: fiscal-gap
+#| label: fig-fiscal-gap
 #| fig-cap: 
 #| - "Fiscal Gap With Trend Lines"
 #| - "Fiscal Gap Without Trend Lines"
@@ -1215,7 +1218,7 @@ fiscal_gap2
 ```
 
 ```{r include=FALSE, eval=FALSE}
-#| label: fiscalgap2
+#| label: fig-fiscalgap2
 #| fig-cap: Fiscal Gap Image 2 without Trend Lines
 
 # already included in above chunk 
@@ -1275,7 +1278,7 @@ aggregated_totals_long %>%
 **Expenditure and revenue amounts in billions of dollars:**
 
 ```{r}
-#| label: bar-graphs-fy22
+#| label: fig-bar-graphs-fy22
 #| fig-cap: FY22 Totals
 #| fig-subcap: 
 #| - "FY22 Expenditures"
@@ -1344,8 +1347,10 @@ rev_long %>%
 **Expenditure and revenues when focusing on largest categories and combining others into "All Other Expenditures(Revenues)":**
 
 ```{r}
-#| label: bargraphs-largest-expandrev-cats
-#| fig-cap: Largest Expenditures and Revenue Sources for FY2022
+#| label: fig-bargraphs-largest-expandrev-cats
+#| fig-cap: 
+#| - "Largest Expenditures for FY2022"
+#| - "Largest Revenue Sources for FY2022"
 
 exp_long %>%
   filter( Year == 2022) %>%
@@ -1378,11 +1383,12 @@ rev_long %>%
 **Changes in Categories - 2021 to 2022**
 
 ```{r}
-#| label: dotplots
-#| fig-cap: Change in Revenue Sources and Expenditure Categories, FY21 to FY22
+#| label: fig-dotplots
+#| fig-cap:  Change from FY21 to FY22
 #| fig-subcap: 
 #| - "Change in Revenue Sources, FY21 to FY22"
 #| - "Change in Expenditure Categories, FY21 to FY22"
+#| fig-cap-location: top
 rev_long %>%
     filter(Year == "2022" | Year == "2021") %>%
   mutate(Year = as.character(Year)) %>%
@@ -1483,8 +1489,9 @@ exp_long %>%
 ### Top 3 Revenues {#sec-top-3-revenues}
 
 ```{r}
-#| label: top3-revenues
+#| label: fig-top3-revenues
 #| fig-cap: Top 3 Revenue Sources (Own-Source Revenues only)
+#| fig-cap-location: top
 
 annotation <- data.frame(
   x = c(2012, 2019, 2012),
@@ -1641,7 +1648,7 @@ As of Feb. 6 2023, Source 481 Retailers Occupation Tax has collected \$9.3 billi
 ### Own Source and Fed Transfers {#sec-own-source-and-fed-transfers}
 
 ```{r}
-#| label: ownsource-and-fed-revenue
+#| label: fig-ownsource-and-fed-revenue
 #| fig-cap: Comparison of Own Source and Federal Revenue. Historicaly, federal revenue tends to increase when state revenue decreases from some sort of economic shock (e.g. Housing Bubble in 2008). 
 
 ownsource_rev <- rev_long %>%
@@ -1871,8 +1878,9 @@ revenue_wide2 <- rev_long %>% pivot_wider(names_from = Category_name,
 ```
 
 ```{r}
-#| label: good-exp-CAGR-withTotals
+#| label: tbl-good-exp-CAGR-withTotals
 #| tbl-cap: Expenditure Category CAGRs with Total CAGR
+#| tbl-cap-location: top
 
 exp_long <- pivot_longer(exp_totals, exp_402:exp_TOTALS , names_to = c("type", "Category"), values_to = "Dollars", names_sep = "_") %>% 
   rename(Year = fy ) %>% 
@@ -1987,8 +1995,9 @@ CAGR_expenditures_summary_tot%>%
 ```
 
 ```{r}
-#| label: good-rev-CAGR-withTotals
+#| label: tbl-good-rev-CAGR-withTotals
 #| tbl-cap: Revenue Category CAGRs with Total CAGR 
+#| tbl-cap-location: top
 calc_cagr <- function(df, n) {
   df <- rev_long %>%
     arrange(Category_name, Year) %>%
@@ -2038,7 +2047,7 @@ rm(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_24)
 ```
 
 ```{r}
-#| label: yearlychange-table-expenditures
+#| label: tbl-yearlychange-table-expenditures
 #| tbl-cap: Yearly Change in Expenditures
 
 revenue_change2 <- rev_long %>%
@@ -2075,8 +2084,8 @@ revenue_change2 %>%
 ```
 
 ```{r}
-#| label: yearlychange-table-revenues
-#| tbl-cap: Yearly Change in Revenues
+#| label: tbl-yearlychange-table-revenues
+
 expenditure_change2 <- exp_long %>%
   #select(-c(type,Category)) %>%
   filter(Year > 2020) %>%
@@ -2108,8 +2117,8 @@ The 10 largest revenue sources and 13 largest expenditure sources remain separat
 -   take ff_rev and ff_exp data frames, which were in wide format, pivot them longer and mutate the Category_name variable to nicer labels. Keep largest categories separate and aggregate the rest.
 
 ```{r }
-#| label: top10-exp-CAGRs
-#| tbl-cap: Top 13 Expenditures
+#| label: tbl-top10-exp-CAGRs
+#| tbl-cap: Top 10 Expenditure Categories with CAGRs
 exp_totals <- ff_exp %>% rowwise() %>% mutate(exp_TOTALS = sum(across(exp_402:exp_970))) # creates total column too
 
 rev_totals <- ff_rev %>% rowwise() %>%  mutate(rev_TOTALS = sum(across(rev_02:rev_78)))
@@ -2287,8 +2296,9 @@ CAGR_expenditures_majorcats_tot%>%
 ```
 
 ```{r}
-#| label: top13-exp-yearlychange
+#| label: tbl-top13-exp-yearlychange
 #| tbl-cap: Top 13 Expenditures and their Yearly Change
+#| tbl-cap-location: top
 
 # Yearly change for Top 13 largest expenditure categories
 expenditure_change_majorcats <- exp_long_majorcats %>%
@@ -2318,8 +2328,9 @@ expenditure_change_majorcats %>%
 Top 10 revenue sources CAGRs and Yearly Change Tables:
 
 ```{r}
-#| label: top10-rev-CAGRs
+#| label: tbl-top10-rev-CAGRs
 #| tbl-cap: Top 10 Revenue Sources with CAGRs
+#| tbl-cap-location: top
 
 ##### Top 10 revenue CAGRs: ####
 
@@ -2373,8 +2384,9 @@ CAGR_revenue_majorcats_tot %>%
 ```
 
 ```{r}
-#| label: top10-rev-yearlychange
+#| label: tbl-top10-rev-yearlychange
 #| tbl-cap: Top 10 Revenue Sources with CAGRs
+#| tbl-cap-location: top
 
 
 ###### Yearly change summary table for Top 10 Revenues #####
@@ -2530,7 +2542,7 @@ The Fiscal Futures model focuses on sustainable revenue sources. To understand o
 
 -   Consolidated Appropriations Act
 
--   Families First Cornavirus Response Act
+-   Families First Coronavirus Response Act
 
 -   Paycheck Protection Program and Health Care Enhancement Act
 
@@ -2679,7 +2691,7 @@ aggregated_totals_long <- rbind(rev_long, exp_long)
 Change plots:
 
 ```{r}
-#| label: totals-without-FederalStimulus
+#| label: tbl-totals-without-FederalStimulus
 
 year_totals2 <- aggregated_totals_long %>% 
   group_by(type, Year) %>% 
@@ -2698,7 +2710,7 @@ year_totals2 # gap for FY22 changed to 2.3 billion
 ```
 
 ```{r}
-#| label: withandwithout-stateCURE
+#| label: fig-withandwithout-stateCURE
 #| fig-cap: Illinois Revenue Trend
 #| fig-subcap: 
 #| - "With State CURE"
@@ -2776,7 +2788,7 @@ fiscal_gap_droppedCURE <- ggplot(data = year_totals2, aes(x=Year, y = Revenue/10
 Compare with and without federal COVID dollars:
 
 ```{r include=FALSE}
-#| label: both-graphs-comparison
+#| label: fig-both-graphs-comparison
 #| fig-cap: Comparison of revenue with and without federal State CURE funds.
 library(gridExtra)
 
@@ -2787,7 +2799,8 @@ cowplot::plot_grid(fiscal_gap1,
 **Revenue amounts in millions of dollars:**
 
 ```{r}
-
+#| label: fig-revlong-bargraphs
+#| fig-cap: Comparison of revenue with and without federal State CURE funds.
 rev_long %>%
   filter(Year == 2022) %>%
   #mutate(`Total Expenditures`= sum(Dollars, na.rm = TRUE)) %>%
@@ -3189,7 +3202,7 @@ Graphing the 3 federal revenue types together may be the most reliable since som
 ## Tables with Totals
 
 ```{r}
-#| label: rev-tables-droppedCURE
+#| label: tbl-rev-tables-droppedCURE
 #| tbl-cap: Revenue without State CURE 
 exp_totals <- ff_exp %>% rowwise() %>% mutate(exp_TOTALS = sum(across(exp_402:exp_970)))
 rev_totals <- ff_rev %>%    rowwise() %>% 
@@ -3513,7 +3526,8 @@ The 10 largest revenue sources and 13 largest expenditure sources remain separat
 -   take ff_rev and ff_exp data frames, which were in wide format, pivot them longer and mutate the Category_name variable to nicer labels. Keep largest categories separate and aggregate the rest.
 
 ```{r }
-#| label: large-cat-CAGRs-withoutCURE
+#| label: tbl-large-cat-CAGRs-withoutCURE
+#| tbl-cap: Largest Revenue Sources - State CURE Federal revenue
 
 exp_totals <- ff_exp %>% rowwise() %>% mutate(exp_TOTALS = sum(across(exp_402:exp_970))) # creates total column too
 
@@ -3719,7 +3733,7 @@ expenditure_change2 %>%
 Top 10 revenue sources CAGRs and Yearly Change Tables:
 
 ```{r}
-#| label: top10-rev-droppedCURE-yearlychange
+#| label: tbl-top10-rev-droppedCURE-yearlychange
 #| tbl-cap: Top 10 Revenue Sources without State CURE funds
 
 ##### Top 10 revenue CAGRs: ####
