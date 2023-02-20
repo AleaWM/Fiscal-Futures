@@ -1,6 +1,6 @@
 # Calculating the Fiscal Gap {#sec-all-code}
 
-```{r warning = FALSE, message=FALSE}
+```{r setup, warning=FALSE, message=FALSE}
 
 library(tidyverse)
 library(haven)
@@ -32,7 +32,8 @@ rev_temp <- read_csv("rev_temp.csv")
 
 Aggregate expenditures: Save tax refunds as negative revenue. Code refunds to match the rev_type codes (02=income taxes, 03 = corporate income taxes, 06=sales tax, 09=motor fuel tax, 24=insurance taxes and fees, 35 = all other tax refunds).
 
-```{r tax-refunds}
+```{r}
+#| label: fig-tax-refunds
 ## negative revenue becomes tax refunds
 
 tax_refund_long <- exp_temp %>%           # fund != "0401" # removes State Trust Funds
@@ -63,7 +64,7 @@ tax_refund <- tax_refund_long %>%
 tax_refund %>% 
   pivot_longer( ref_02:ref_35, names_to = "Refund Type", values_to = "Amount") %>%
   ggplot()+
-  theme_bw()+
+  theme_classic()+
   geom_line(aes(x=fy,y=Amount, group = `Refund Type`, color = `Refund Type`))+
   labs(title = "Refund Types", 
        caption = "Refunds are excluded from Expenditure totals and instead subtracted from Revenue totals") + 
@@ -92,7 +93,8 @@ State pension contributions are largely captured with object=4431. **(State paym
 
 Modify exp_temp and move all state pension contributions to their own group (901). For more information on the variables included or excluded, please see @sec-pensions.
 
-```{r pensions}
+```{r fig-pensions}
+
 exp_temp <-  exp_temp %>% 
   arrange(fund) %>%
   mutate(pension = case_when( 
@@ -121,7 +123,7 @@ exp_temp %>%
   group_by(fy, pension) %>% 
   summarize(expenditure = sum(expenditure, na.rm = TRUE)) %>%
   ggplot(aes(x=fy, y = expenditure, group=pension)) + 
-  theme_bw()+
+  theme_classic()+
   geom_col(aes(fill = pension)) + 
 
   labs (title = "Pension expenditures", 
@@ -133,7 +135,7 @@ exp_temp %>%
 
 ```
 
-```{r pensions-POB}
+```{r fig-pensions-POB}
 
 # special accounting of pension obligation bond (POB)-funded contributions to JRS, SERS, GARS, TRS 
 
@@ -159,7 +161,7 @@ exp_temp %>%
   summarize(expenditure = sum(expenditure, na.rm=TRUE)) %>%
   ggplot(aes(x=fy, y=expenditure, color = pension)) +
   geom_line() + 
-  theme_bw()+
+  theme_classic()+
   labs (title = "Pension Expenditures", 
   caption = "")
 
@@ -169,7 +171,7 @@ exp_temp %>%
   summarize(expenditure = sum(expenditure, na.rm=TRUE)) %>%
   ggplot(aes(x=fy, y=expenditure)) +
   geom_line() + 
-  theme_bw()+
+  theme_classic()+
   labs (title = "Pension Expenditures")
 ```
 
@@ -182,7 +184,7 @@ Drop all cash transfers between funds, statutory transfers, and purchases of inv
 -   object == 1298 is for purchase of investments and is not spending EXCEPT for costs in 2010 and 2011 (and were recoded already to object == "4431"). Over 168,000 observations remain.
     -   153,889 observations on 1/23/2022?
 
-```{r drop-transfers}
+```{r tbl-drop-transfers}
 
 transfers_drop <- exp_temp %>% filter(
   agency == "799" | # statutory transfers
@@ -207,7 +209,7 @@ Agency 416 had group insurance contributions for 1998-2005 and 2013-present. Age
 
 FY2021 and FY2022 contributions coded with object = 1900 (lump sum) for some reason??
 
-```{r eehc1}
+```{r fig-eehc1}
 #if observation is a group insurance contribution, then the expenditure amount is set to $0 (essentially dropped from analysis)
 
 # pretend eehc is named group_insurance_contribution or something like that
@@ -311,7 +313,7 @@ exp_temp <- exp_temp %>% mutate(
 
 ```
 
-```{r drop-local-transfers}
+```{r fig-drop-local-transfers}
 transfers_long <- exp_temp %>% 
   filter(group == "971" |group == "972" | group == "975" | group == "976")
 
@@ -320,7 +322,7 @@ transfers_long %>%
   summarize(expenditure = sum(expenditure, na.rm=TRUE) )%>% 
   ggplot() + 
   geom_line(aes(x=fy, y = expenditure, color=agency_name)) + 
-  theme_bw()+
+  theme_classic()+
   theme(legend.position = "bottom", legend.title=element_blank())+
   labs(title = "Transfers to Local Governments", 
        caption = "Data Source: Illinois Office of the Comptroller")
@@ -523,7 +525,7 @@ Expanded to include the following smaller sources:\
 
 For aggregating revenue, use the rev_1998_2022 dataframe, join the funds_ab_in_2022 file to it, and then join the ioc_source_type file to the dataset. Remember: You need to update the funds_ab_in and ioc_source_type file every year!
 
-```{r, warning = FALSE, message=FALSE}
+```{r rev-recode-agencies, warning = FALSE, message=FALSE}
 
 # recodes old agency numbers to consistent agency number
 rev_temp <- rev_temp %>% 
@@ -543,7 +545,7 @@ rev_temp <- rev_temp %>%
 
 For an deeper look at federal revenue to Illinois, [Chapter -@sec-covid-federal-funds].
 
-```{r create-rev-federal-transfers}
+```{r fig-create-rev-federal-transfers}
 #rev_temp <- rev_temp %>% filter(in_ff==1)
 
 rev_temp <- rev_temp %>% 
@@ -596,7 +598,7 @@ Insurance premiums for employees is coded below but it is NOT used in the fiscal
 -   0354 = optional health - retirement hmo
 -   2199-2209 = various HMOs, dental, health plans from Health Insurance Reserve (fund)
 
-```{r step-3.6-insurance-premiums}
+```{r insurance-premiums}
 
 #collect optional insurance premiums to fund 0907 for use in eehc expenditure  
 rev_temp <- rev_temp %>% 
@@ -644,7 +646,7 @@ Funds that hold and disperse local taxes or fees are dropped from the analysis. 
 
 Drops Blank, Student Fees, Retirement contributions, proceeds/investments, bond issue proceeds, interagency receipts, cook IGT, Prior year refunds:
 
-```{r step-3.8}
+```{r}
 rev_temp <- rev_temp %>% 
   filter(in_ff == 1) %>% 
   mutate(local = ifelse(is.na(local), 0, local)) %>% # drops all revenue observations that were coded as "local == 1"
@@ -712,7 +714,7 @@ rm(exp_1998_2022)
 
 I chose to drop rev_76 for Transfers in and Out because I do not understand why that step occurs in the previously used Stata code. Rev_76 was created and included in rev_78 for All Other Revenues in old Stata code for years before FY21 but that method has been discontinued for FY22. Including vs excluding rev_76 does not change the overall interpretation of the fiscal gap.
 
-```{r final-ffrev-table}
+```{r tbl-final-ffrev-table}
 
 ff_rev <- rev_temp %>% 
   group_by(rev_type_new, fy) %>% 
@@ -750,7 +752,7 @@ ff_rev
 Since I already pivot_wider()ed the table in the previous code chunk, I now change each column's name by using rename() to set new variable names. Ideally the final dataframe would have both the variable name and the variable label but I have not done that yet.
 
 ```{r}
-#| label: labeled-final-ffrev-table
+#| label: tbl-labeled-final-ffrev-table
 #| tbl-cap: Aggregated Revenue Categories
 #| 
 aggregate_rev_labels <- ff_rev %>%
@@ -800,7 +802,7 @@ Create exp_970 for all local government transfers (exp_971 + exp_972 + exp_975 +
 
 ~~Create state employee healthcare costs that reflects the health costs minus the optional insurance premiums that came in (904_new=904−med_option_amt_recent).~~ Do not do this. This was done for FY21 only and will not be done again. Small differences in overall Fiscal Gap from methodology change.
 
-```{r}
+```{r tbl-ffexp-notlabeled}
 
 ff_exp <- exp_temp %>% 
   group_by(fy, group) %>% 
@@ -830,7 +832,7 @@ ff_exp<- ff_exp %>%
 ff_exp # not labeled
 ```
 
-```{r final-table-with-labels, include = FALSE, eval=FALSE}
+```{r tbl-final-table-with-labels, include = FALSE, eval=FALSE}
 
 exp_temp %>%
   group_by(year, group) %>%
@@ -1123,39 +1125,6 @@ annotation <- data.frame(
   label = c("Expenditures","Revenue", "Fiscal Gap")
 )
 
-# with trend lines:
-# year_totals %>%  
-#   ggplot() +
-#   # geom_smooth adds regression line, graphed first so it appears behind line graph
-#   geom_smooth(aes(x = Year, y = Revenue/1000), color = "rosybrown2", alpha = 0.7, method = "lm", se = FALSE) + 
-#   geom_smooth(aes(x = Year, y = Expenditures/1000), color = "gray", method = "lm", se = FALSE) +
-#   
-#   # line graph of revenue and expenditures
-#   geom_line(aes(x = Year, y = Revenue/1000), color = "Black", size=1) +
-#   geom_line(aes(x = Year, y = Expenditures/1000), color = "red", size=1) +
-#   
-#   # labels
-#     theme_bw() +
-#   scale_y_continuous(labels = comma)+
-#   xlab("Year") + 
-#   ylab("Billions of Dollars")  +
-#   ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
-
-
-
-
-# # without trend lines:
-# year_totals %>%  
-#   ggplot() +
-#   # line graph of revenue and expenditures
-#   geom_line(aes(x = Year, y = Revenue), color = "Black", size=1) +
-#   geom_line(aes(x = Year, y = Expenditures), color = "red", size=1) +
-#       theme_bw() +
-#   scale_y_continuous(labels = comma)+
-#   xlab("Year") + 
-#   ylab("Millions of Dollars")  +
-#   ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
-
 
 ## Dashed line versions for expenditures: 
 library(cmapplot)
@@ -1315,7 +1284,7 @@ rev_long %>%
 
 ```
 
-```{r eval = FALSE, include = FALSE}
+```{r, eval=FALSE, include = FALSE}
 # Both graphs include Total revenue and expenditures as a bar on the top. 
 
 exp_long %>%
@@ -1442,7 +1411,7 @@ exp_long %>%
   scale_x_continuous(limits = c(0, 31000), labels = comma)
 ```
 
-```{r eval = FALSE, include = FALSE}
+```{r, eval=FALSE, include=FALSE}
 
 # **Keeping the top 13 categories and grouping the rest to All Other Expenditures(Revenues). 
 # Shown as a percentage of total expenditures(revenues)**
@@ -2047,8 +2016,8 @@ rm(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_24)
 ```
 
 ```{r}
-#| label: tbl-yearlychange-table-expenditures
-#| tbl-cap: Yearly Change in Expenditures
+#| label: tbl-yearlychange-table-revenue
+#| tbl-cap: Yearly Change in Revenue Sources
 
 revenue_change2 <- rev_long %>%
   #select(-c(Category)) %>%
@@ -2084,7 +2053,8 @@ revenue_change2 %>%
 ```
 
 ```{r}
-#| label: tbl-yearlychange-table-revenues
+#| label: tbl-yearlychange-table-expenditures
+#| tbl-cap: Yearly Change in Expenditures
 
 expenditure_change2 <- exp_long %>%
   #select(-c(type,Category)) %>%
@@ -2324,8 +2294,6 @@ expenditure_change_majorcats %>%
     row_spec(15, bold = T, color = "black", background = "gray")
 
 ```
-
-Top 10 revenue sources CAGRs and Yearly Change Tables:
 
 ```{r}
 #| label: tbl-top10-rev-CAGRs
@@ -2692,6 +2660,7 @@ Change plots:
 
 ```{r}
 #| label: tbl-totals-without-FederalStimulus
+#| tbl-cap: Fiscal Gap without State CURE Federal Revenue
 
 year_totals2 <- aggregated_totals_long %>% 
   group_by(type, Year) %>% 
@@ -2704,7 +2673,7 @@ year_totals2 <- aggregated_totals_long %>%
   arrange(desc(Year))
 # creates variable for the Gap each year
 
-year_totals2 # gap for FY22 changed to 2.3 billion
+year_totals2 # gap for FY22 changed to ~2 or 3 billion
 
 
 ```
@@ -2715,7 +2684,6 @@ year_totals2 # gap for FY22 changed to 2.3 billion
 #| fig-subcap: 
 #| - "With State CURE"
 #| - "Without State CURE"
-#| layout-ncol: 2
 #| fig-cap-location: top
 
 
@@ -2815,7 +2783,9 @@ rev_long %>%
   ylab("Millions of Dollars")
 ```
 
-```{r include = FALSE}
+Function & code for calculating CAGR and making summary table:
+
+```{r}
 # function for calculating the CAGR
 calc_cagr <- function(df, n) {
   df <- exp_long %>%
@@ -2937,7 +2907,7 @@ expenditure_change <- exp_long %>%
 
 Creating the excel file with multiple tables and versions of the data:
 
-```{r}
+```{r eval=FALSE}
 dataset_names <- list('rev_long' = rev_long, 'exp_long' = exp_long, 
                       'Table 1' = expenditure_change, 'Table 2' = revenue_change,
                       'Revenue CAGR' = CAGR_revenue_summary, 'Expenditure CAGR' = CAGR_expenditures_summary, 
@@ -3372,7 +3342,7 @@ CAGR_expenditures_summary_tot <- move_to_last(CAGR_expenditures_summary_tot, 29)
 
 #CAGR_expenditures_summary_tot <-   select(CAGR_expenditures_summary_tot, -1) 
 
-CAGR_expenditures_summary_tot%>%   
+CAGR_expenditures_summary_tot %>%   
   kbl(caption = "CAGR Calculations for Expenditure Categories" , row.names=FALSE) %>% 
      kable_classic() %>%
     row_spec(31, bold = T, color = "black", background = "gray")
@@ -3421,15 +3391,22 @@ CAGR_revenue_summary_tot <- data.frame(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, 
 CAGR_revenue_summary_tot <- move_to_last(CAGR_revenue_summary_tot,1)
 CAGR_revenue_summary_tot <- move_to_last(CAGR_revenue_summary_tot,22)
 
+rm(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_24)
+
 CAGR_revenue_summary_tot %>% 
   kbl(caption = "CAGR Calculations for Revenue Sources", row.names = FALSE) %>% 
      kable_classic() %>%
     row_spec(23, bold = T, color = "black", background = "gray")
 
-rm(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_24)
+
 ```
 
-```{r }
+```{r}
+#| label: tbl-yearly-change
+#| fig-cap: 
+#| fig-subcap: 
+#| - "Revenue Yearly Change"
+#| - "Expenditure Yearly Change"
 
 revenue_change2 <- rev_long %>%
   #select(-c(Category)) %>%
@@ -3480,7 +3457,7 @@ expenditure_change2 %>%
            
 ```
 
-```{r}
+```{r eval=FALSE}
 #install.packages("openxlsx")
 library(openxlsx)
 
@@ -3817,7 +3794,7 @@ revenue_change2%>%
 
 Saves main items in one excel file named `summary_file.xlsx`. Delete `eval=FALSE` to run on local computer.
 
-```{r eval = FALSE}
+```{r, eval=FALSE}
 #install.packages("openxlsx")
 library(openxlsx)
 

@@ -1,8 +1,8 @@
-# Yearly Fiscal Gap
+# Yearly Fiscal Gap {#sec-Yearly-Fiscal-Gap}
 
 For details on how tables and graphs were created, please see @sec-all-code.
 
-```{r warning = FALSE, message=FALSE}
+```{r setup, warning=FALSE, message=FALSE}
 
 library(tidyverse)
 library(haven)
@@ -23,13 +23,13 @@ library(janitor)
 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = TRUE)
 
-exp_temp <- read_csv("exp_temp.csv") 
-rev_temp <- read_csv("rev_temp.csv")
 ```
 
 Graphs made from `aggregated_totals_long` dataframe.
 
-```{r}
+![](docs/Everything_files/figure-html/fig-withandwithout-stateCURE-1.png)
+
+```{r eval=FALSE}
 aggregated_totals_long %>%  
   filter(type == "exp") %>% # uses only expenditures
   ggplot(aes(x = Year, y = Dollars, group = Category, color = Category)) +
@@ -52,100 +52,17 @@ aggregated_totals_long %>%
 
 **Expenditure and revenue amounts in millions of dollars:**
 
-```{r}
-exp_long %>%
-  filter(Year == 2022) %>%
-  #mutate(`Total Expenditures`= sum(Dollars, na.rm = TRUE)) %>%
- # select(-c(Year, `Total Expenditures`)) %>%
-  arrange(desc(`Dollars`)) %>%
-  ggplot() + 
-  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`, fill = "red"))+ 
-  coord_flip() +
-      theme_bw()+
-  theme(legend.position = "none") +
-  labs(title = "Expenditures for FY2022") +
-    xlab("Expenditure Categories") +
-  ylab("Millions of Dollars") 
+![](docs/Everything_files/figure-html/fig-bargraphs-largest-expandrev-cats-2.png)
 
-rev_long %>%
-  filter(Year == 2022) %>%
-  #mutate(`Total Expenditures`= sum(Dollars, na.rm = TRUE)) %>%
- # select(-c(Year, `Total Expenditures`)) %>%
-  arrange(desc(`Dollars`)) %>%
-  ggplot() + 
-  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`))+ 
-  coord_flip() +
-    theme_bw() +
-    theme(legend.position = "none") +
-      labs(title = "Revenues for FY2022")+
-    xlab("Revenue Categories") +
-  ylab("Millions of Dollars") 
+![](docs/Everything_files/figure-html/fig-bargraphs-largest-expandrev-cats-1.png)
 
-```
+**Changes in Categories - 2021 to 2022** Dot Plots:
 
-```{r eval = FALSE, include = FALSE}
-# Both graphs include Total revenue and expenditures as a bar on the top. 
+![](docs/Everything_files/figure-html/fig-dotplots-1.png)
 
-exp_long %>%
-  filter(Year == 2022) %>%
-  #mutate(`Total Expenditures`= sum(Dollars, na.rm = TRUE)) %>%
- # select(-c(Year, `Total Expenditures`)) %>%
-  arrange(desc(`Dollars`)) %>%
-  ggplot() + 
-  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`))+ 
-  coord_flip() +
-    labs(title = "Expenditures for FY2022") +
-    xlab("Expenditure Categories") +
-  ylab("Millions of Dollars") +
-    theme_bw()
+![](docs/Everything_files/figure-html/fig-dotplots-2.png)
 
-rev_long %>%
-  filter(Year == 2022) %>%
-  #mutate(`Total Expenditures`= sum(Dollars, na.rm = TRUE)) %>%
- # select(-c(Year, `Total Expenditures`)) %>%
-  arrange(desc(`Dollars`)) %>%
-  ggplot() + 
-  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`))+ 
-  coord_flip() +
-    xlab("Revenue Categories") +
-  ylab("Millions of Dollars") +
-    theme_bw()
-```
-
-**Expenditure and revenues when focusing on largest categories and combining others into "All Other Expenditures(Revenues)":**
-
-```{r}
-exp_long %>%
-  filter( Year == 2022) %>%
-  mutate(rank = rank(Dollars),
-        Category_name = ifelse(rank > 13, Category_name, 'All Other Expenditures')) %>%
- # select(-c(Year, Dollars, rank)) %>%
-  arrange(desc(Dollars)) %>%
-  ggplot() + 
-  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`), fill = "rosybrown2")+ 
-  coord_flip() +
-      theme_bw() +
-    labs(title = "Expenditures for FY2022") +
-    xlab("") +
-  ylab("Millions of Dollars")
-
-rev_long %>%
-  filter( Year == 2022) %>%
-  mutate(rank = rank(Dollars),
-        Category_name = ifelse(rank > 10, Category_name, 'All Other Sources')) %>%
-  arrange(desc(Dollars)) %>%
-  ggplot() + 
-  geom_col(aes(x = fct_reorder(Category_name, `Dollars`), y = `Dollars`), fill = "dark gray")+ 
-  coord_flip() +
-      theme_bw() +
-    labs(title = "Revenues for FY2022") +
-    xlab("") +
-  ylab("Millions of Dollars")
-```
-
-**Changes in Categories - 2021 to 2022** Dot Plot Attempt:
-
-```{r}
+```{r, eval=FALSE}
 rev_long %>%
     filter(Year == "2022" | Year == "2021") %>%
   mutate(Year = as.character(Year)) %>%
@@ -201,53 +118,9 @@ exp_long %>%
   scale_x_continuous(limits = c(0, 31000), labels = comma)
 ```
 
-```{r eval = FALSE, include = FALSE}
-
-# **Keeping the top 13 categories and grouping the rest to All Other Expenditures(Revenues). 
-# Shown as a percentage of total expenditures(revenues)**
-
-
-exp_long %>%
-  filter( Year == 2022) %>%
-  mutate(`Total Expenditures` = sum(Dollars, na.rm = TRUE),
-        `Percent of Total Expenditures` = round((Dollars / `Total Expenditures`*100), 2),
-        rank = rank(-Dollars),
-        Category = ifelse(rank <= 13, Category, 'All Other Expenditures')) %>%
-  select(-c(Year, `Total Expenditures`, rank)) %>%
-  arrange(desc(`Percent of Total Expenditures`)) %>%
-
-  ggplot() + 
-  geom_col(aes(x = fct_reorder(Category, `Percent of Total Expenditures`), y = `Percent of Total Expenditures`), fill = "light green")+ 
-  coord_flip() +
-    xlab("") +
-      ylab("Percent of Total Expenditure") +
-    theme_bw()
-
-
-exp_long %>%
-  filter( Year == 2022) %>%
-  mutate(`Total Expenditures` = sum(Dollars, na.rm = TRUE),
-        `Percent of Total Expenditures` = round((Dollars / `Total Expenditures`*100), 2),
-        rank = rank(-Dollars),
-        Category_name = ifelse(rank <= 13, Category_name, 'All Other Expendiures')) %>%
-  select(-c(Year, `Total Expenditures`, rank)) %>%
-  arrange(desc(`Percent of Total Expenditures`)) %>%
-
-  ggplot() + 
-  geom_col(aes(x = fct_reorder(Category_name, `Percent of Total Expenditures`), y = `Percent of Total Expenditures`), fill = "light green")+ 
-  coord_flip() +
-  xlab("")+
-    ylab("Percent of Total Expenditure") +
-    theme_bw()
-
-
-
-
-```
-
 ### Top 3 Revenues
 
-```{r}
+```{r eval=FALSE}
 
 annotation <- data.frame(
   x = c(2012, 2019, 2012),
@@ -274,9 +147,11 @@ top3 <- rev_long  %>%
 top3
 ```
 
+![](docs/Everything_files/figure-html/fig-top3-revenues-1.png)
+
 ### Own Source and Fed Transfers
 
-```{r}
+```{r eval=FALSE}
 
 ownsource_rev <- rev_long %>%
   filter(!Category %in% c("57", "58", "59")) %>%
@@ -305,9 +180,11 @@ ggplot() +
     scale_y_continuous(labels = comma)+
   theme(legend.position = "none")+
 
-  theme_bw()+
+  theme_classic()+
   labs(title = "Own Source Revenue and Federal Transfers", 
   y = "Nominal Dollars (in Millions)")
 
 
 ```
+
+![](docs/Everything_files/figure-html/fig-ownsource-and-fed-revenue-1.png)
