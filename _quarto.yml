@@ -18,7 +18,6 @@ book:
     - FederalRevenue.qmd
     - Medicaid.qmd
     - Everything.qmd 
-    - FiscalGap.qmd
   navbar: 
     right: 
       - icon: github
@@ -78,8 +77,8 @@ format:
   #       \printindex
   #   
 bibliography: references.bib
-reference-location: margin
-citation-location: margin
+#reference-location: margin
+#citation-location: margin
 
 
 

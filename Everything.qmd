@@ -34,6 +34,7 @@ Aggregate expenditures: Save tax refunds as negative revenue. Code refunds to ma
 
 ```{r}
 #| label: fig-tax-refunds
+#| fig-cap:  Tax Refunds
 ## negative revenue becomes tax refunds
 
 tax_refund_long <- exp_temp %>%           # fund != "0401" # removes State Trust Funds
@@ -93,7 +94,8 @@ State pension contributions are largely captured with object=4431. **(State paym
 
 Modify exp_temp and move all state pension contributions to their own group (901). For more information on the variables included or excluded, please see @sec-pensions.
 
-```{r fig-pensions}
+```{r fig-pensions, fig.cap="Pensions"}
+
 
 exp_temp <-  exp_temp %>% 
   arrange(fund) %>%
@@ -135,7 +137,7 @@ exp_temp %>%
 
 ```
 
-```{r fig-pensions-POB}
+```{r fig-pensions-POB, fig.cap="Pension Expenditures"}
 
 # special accounting of pension obligation bond (POB)-funded contributions to JRS, SERS, GARS, TRS 
 
@@ -184,7 +186,7 @@ Drop all cash transfers between funds, statutory transfers, and purchases of inv
 -   object == 1298 is for purchase of investments and is not spending EXCEPT for costs in 2010 and 2011 (and were recoded already to object == "4431"). Over 168,000 observations remain.
     -   153,889 observations on 1/23/2022?
 
-```{r tbl-drop-transfers}
+```{r drop-transfers}
 
 transfers_drop <- exp_temp %>% filter(
   agency == "799" | # statutory transfers
@@ -209,7 +211,7 @@ Agency 416 had group insurance contributions for 1998-2005 and 2013-present. Age
 
 FY2021 and FY2022 contributions coded with object = 1900 (lump sum) for some reason??
 
-```{r fig-eehc1}
+```{r eehc1}
 #if observation is a group insurance contribution, then the expenditure amount is set to $0 (essentially dropped from analysis)
 
 # pretend eehc is named group_insurance_contribution or something like that
@@ -313,7 +315,7 @@ exp_temp <- exp_temp %>% mutate(
 
 ```
 
-```{r fig-drop-local-transfers}
+```{r fig-drop-local-transfers, fig.cap="Drop Transfers from State to Local Governments"}
 transfers_long <- exp_temp %>% 
   filter(group == "971" |group == "972" | group == "975" | group == "976")
 
@@ -1115,6 +1117,7 @@ Graphs made from `aggregated_totals_long` dataframe.
 ```{r}
 #| label: fig-fiscal-gap
 #| fig-cap: 
+#| fig-subcap: 
 #| - "Fiscal Gap With Trend Lines"
 #| - "Fiscal Gap Without Trend Lines"
 #| fig-cap-location: top
@@ -1252,7 +1255,6 @@ aggregated_totals_long %>%
 #| fig-subcap: 
 #| - "FY22 Expenditures"
 #| - "FY22 Revenue Sources"
-#| fig-cap-location: top
 
 exp_long %>%
   filter(Year == 2022) %>%
@@ -1318,6 +1320,7 @@ rev_long %>%
 ```{r}
 #| label: fig-bargraphs-largest-expandrev-cats
 #| fig-cap: 
+#| fig-subcap: 
 #| - "Largest Expenditures for FY2022"
 #| - "Largest Revenue Sources for FY2022"
 
