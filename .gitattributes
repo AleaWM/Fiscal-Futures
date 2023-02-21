@@ -1,2 +1,4 @@
-/docs/* linguist-vendored
+docs/* linguist-vendored
+
+*.qmd linguist-language=R
 
