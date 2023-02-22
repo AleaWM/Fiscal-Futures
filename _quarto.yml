@@ -17,7 +17,7 @@ book:
     - Healthcare.qmd
     - FederalRevenue.qmd
     - Medicaid.qmd
-    - FiscalGap.qmd
+#    - FiscalGap.qmd
     - Everything.qmd 
   navbar: 
     right: 
@@ -38,10 +38,10 @@ book:
           - FederalRevenue.qmd
           - Medicaid.qmd
           - Everything.qmd
-      - text: "The FY22 Fiscal Gap"
-        file: FiscalGap.qmd
-      - text: "COVID-related Federal Revenue"
-        file: FedMoneyReceived.qmd
+ #     - text: "The FY22 Fiscal Gap"
+ #       file: FiscalGap.qmd
+ #     - text: "COVID-related Federal Revenue"
+ #       file: FedMoneyReceived.qmd
 
           
 
