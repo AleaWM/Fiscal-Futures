@@ -2044,7 +2044,7 @@ revenue_change2 <- move_to_last(revenue_change2,8)
 revenue_change2 <- move_to_last(revenue_change2,1)
 
 revenue_change2 %>% 
-  kbl(caption = "Table 1. Yearly Change in Revenue", row.names = FALSE) %>% 
+  kbl(caption = "Yearly Change in Revenue - All Sources", row.names = FALSE) %>% 
    kable_classic() %>%
     row_spec(23, bold = T, color = "black", background = "gray")
 
@@ -2078,9 +2078,19 @@ expenditure_change2 <- exp_long %>%
 expenditure_change2 <- move_to_last(expenditure_change2, 1)
 
 expenditure_change2 %>% 
-  kbl(caption = "Table 2. Yearly Change in Expenditures", row.names = FALSE) %>% 
+  kbl(caption = "Yearly Change in Expenditures - All Categories", row.names = FALSE) %>% 
   kable_classic() %>%
     row_spec(31, bold = T, color = "black", background = "gray")
+```
+
+```{r summary-file-allcategories, eval=FALSE}
+library(openxlsx)
+dataset_names <- list('rev_long' = rev_long, 'exp_long' = exp_long,
+                      'Table 1' = expenditure_change2, 'Table 2' = revenue_change2,
+                      'Table 4.a' = CAGR_revenue_summary_tot, 'Table 4.b' = CAGR_expenditures_summary_tot,
+                      'year_totals' = year_totals)
+
+write.xlsx(dataset_names, file = 'summary_file_FY2022_allcats.xlsx')
 ```
 
 ## Summary Tables - Largest Categories
@@ -2388,21 +2398,9 @@ revenue_change_majorcats%>%
 
 ```
 
-```{r}
-# #install.packages("openxlsx")
-# library(openxlsx)
-# 
-# dataset_names <- list('rev_long' = rev_long, 'exp_long' = exp_long, 
-#                       `Table 1` = expenditure_change2, `Table 2` = revenue_change2,
-#                       'Table 4.a' = CAGR_revenue_summary_tot, 'Table 4.b' = CAGR_expenditures_summary_tot, 
-#                       'year_totals' = year_totals)
-# 
-# write.xlsx(dataset_names, file = 'summary_file_FY2022_withTotals_Jan11.xlsx')
-```
+Export summary file with Totals. Saves multiple summary tables in one excel file named `summary_file_FY22_wTotals.xlsx`.
 
-Export summary file with Totals
-
-```{r}
+```{r export-summary-file, eval=FALSE}
 library(openxlsx)
 
 dataset_names <- list('Aggregate Revenues' = revenue_wide2, 
@@ -2430,10 +2428,10 @@ dataset_names <- list('Aggregate Revenues' = revenue_wide2,
                       'aggregated_totals_long' = aggregated_totals_long # all data in long format. Good for creating pivot tables in Excel
                       )
 
-write.xlsx(dataset_names, file = 'summary_file_FY22_wTotals_Jan11.xlsx')
+write.xlsx(dataset_names, file = 'summary_file_FY22_wTotals.xlsx')
 ```
 
-```{r include= FALSE}
+```{r include=FALSE}
 ## creates tables without totals as bottom row
 
 # revenue_change <- rev_long %>%
@@ -2477,18 +2475,17 @@ write.xlsx(dataset_names, file = 'summary_file_FY22_wTotals_Jan11.xlsx')
            
 ```
 
-Saves main items in one excel file named `summary_file.xlsx`. Delete `eval=FALSE` to run on local computer.
+```{r summary-file-nototalrow, eval=FALSE}
+## Does not have totals in tables!
 
-```{r}
-# #install.packages("openxlsx")
-# library(openxlsx)
-# 
-# dataset_names <- list('rev_long' = rev_long, 'exp_long' = exp_long, 
-#                       `Table 1` = expenditure_change, `Table 2` = revenue_change,
-#                       'Table 4.a' = CAGR_revenue_summary, 'Table 4.b' = CAGR_expenditures_summary, 
-#                       'year_totals' = year_totals)
-# 
-# write.xlsx(dataset_names, file = 'summary_file_FY2022.xlsx')
+library(openxlsx)
+
+dataset_names <- list('rev_long' = rev_long, 'exp_long' = exp_long,
+                      `Table 1` = expenditure_change, `Table 2` = revenue_change,
+                      'Table 4.a' = CAGR_revenue_summary, 'Table 4.b' = CAGR_expenditures_summary,
+                      'year_totals' = year_totals)
+
+write.xlsx(dataset_names, file = 'summary_file_FY2022_nototals.xlsx')
 ```
 
 # Dropping COVID State CURE Dollars
@@ -2500,21 +2497,13 @@ The Fiscal Futures model focuses on sustainable revenue sources. To understand o
 > NOTE: I have only dropped revenue with a source name = `Federal Stimulus Package`. Federal money went into other funds during the beginning of pandemic. All additional money for medicaid reimbursements and healthcare provider funds were not considered "Federal Stimulus Package" in the data and were not dropped.
 
 -   fund 0628 is essential government support services. Money in the fund is appropriated to cover COVID-19 related expenses. It should be included in our frame based on criteria 2 and6 --- the fund supports an important state function about public safety, which would have to be performed even the fund structure were not existed. Public safety is supported by a combination of departments and boards, including IL Emergency Management Agency, which is the administering agency of the fund.
-
 -   Education Stabilization Fund
-
 -   ESSER
-
 -   CSLFRF
-
 -   Provider Relief Fund
-
 -   Coronavirus Relief Fund (CRF)
-
 -   Consolidated Appropriations Act
-
 -   Families First Coronavirus Response Act
-
 -   Paycheck Protection Program and Health Care Enhancement Act
 
 ```{r drop-coviddollars}
@@ -2908,7 +2897,7 @@ expenditure_change <- exp_long %>%
           "FY2022 Expenditure Category" = Category_name )
 ```
 
-Creating the excel file with multiple tables and versions of the data:
+Creating the excel file for all categories with summary tables plus wide and long formats of the aggregated data:
 
 ```{r eval=FALSE}
 dataset_names <- list('rev_long' = rev_long, 'exp_long' = exp_long, 
@@ -2916,263 +2905,10 @@ dataset_names <- list('rev_long' = rev_long, 'exp_long' = exp_long,
                       'Revenue CAGR' = CAGR_revenue_summary, 'Expenditure CAGR' = CAGR_expenditures_summary, 
                       'year_totals' = year_totals2)
 
-write.xlsx(dataset_names, file = 'summary_file_droppeCOVIDrevs_FY2022.xlsx')
+write.xlsx(dataset_names, file = 'summary_file_FY2022_allcats_droppedStateCURE.xlsx')
 ```
 
-## Forecasting attempt
-
-First images use revenue that includes all federal stimulus packages. Revenue projections are skewed heavily due to the large amount of covid money flowing in the past 2 years.
-
-```{r}
-#| label: forecasting-attempt
-
-## Revenues
-year_totals2 <- year_totals2 %>% 
-  arrange(Year)
-
-#ts_rev <- year_totals %>% select(Year, Revenue ) %>% arrange(Year)
-
-tsrev <- ts(year_totals2$Revenue, start ="1998", frequency = 1) # yearly data
-
-# start(tsrev) # 1998, January
-# end(tsrev)  ## 2022 
-# summary(tsrev)
-# plot(tsrev)
-# abline(reg=lm(tsrev~time(tsrev)))
-
-
-#### ARIMAs
-mymodel <- auto.arima(tsrev, seasonal = FALSE)
-# mymodel          # ARIMA (0, 1, 0) with drift
-myforecastrev <- forecast(mymodel, h = 20)
-#plot(myforecastrev,  xlab ="", ylab ="Total Revenue", main ="Chicago Revenue")
-
-
-
-
-#### revenue chart
-model_rev <- auto.arima(tsrev, seasonal = FALSE)
-forecast_rev <- forecast(model_rev, h = 20)
-
-q <- forecast(forecast_rev,  h = 20) %>% 
-  autoplot() +
-    ylab("Dollars (Millions)") +
-  xlab("Year") +
-  ggtitle("Forecasted Revenue") +
-  theme_classic() +
-  scale_y_continuous(labels = dollar )
-
-summary(forecast_rev)
-
-# annotation <- data.frame(
-#   x = c(2027, 2032),
-#   y = c(200000, 300000),  
-#   label = c("$120 billion in 2027","$135 billion in 2032")
-# )
-
-annotation <- data.frame(
-  x = c(2020, 2032),
-  y = c(150000, 200000),  
-  label = c("$120 billion in 2027","$135 billion in 2032")
-)
-
-q+ geom_label(data = annotation, aes(x=x, y=y, label=label), size = 3) +
-  labs(caption = "after dropping federal covid dollars")
-
-
-## Expenditures
-tsexp <- ts(year_totals2$Expenditures, start = "1998", frequency = 1)
-model_exp<- auto.arima(tsexp, seasonal = FALSE)
-# model_exp            # ARIMA (0,1,1) with drift
-
-forecast_exp <- forecast(model_exp, h = 20) 
-#plot(forecast_exp, xlab ="",  ylab ="Total Expenditures", main ="Chicago Expenditures")
-
-p <- forecast(model_exp,  h = 20) %>% 
-  autoplot() +
-    ylab("Dollars (Millions)") +
-  xlab("Year") +
-  ggtitle("Forecasted Expenditures") +
-  theme_classic() +
-  scale_y_continuous(labels = dollar )
-
-summary(forecast_exp)
-
-annotation <- data.frame(
-  x = c(2027, 2032),
-  y = c(130000, 100000),  label = c("$117 ± 20 Billion in 2027","$132 ± 26 Billion in 2032 ")
-)
-
-p + 
-  geom_label(data = annotation, aes(x=x, y=y, label=label), size = 3) + 
-  labs(title = "Forecasted Expenditures", 
-  caption = "Projected values at 95% confidence interval. 
-  Dark blue represents 80% liklihood of falling with that range, 
-  light blue represents 95% liklihood of being in projected range.")
-
-
-
-## Exp and Rev together
-
-autoplot(tsexp) +
-  #geom_line(tsexp)+
-  #geom_line(aes(model_rev))+
-  autolayer(forecast_rev, series = "Revenue") +
-  autolayer(forecast_exp, series = "Expenditure)", alpha = 0.5) +
-  geom_line(year_totals, mapping= aes(x = Year, y = Revenue))  + guides(colour = guide_legend("Forecast")) + 
-  labs(title = "Forecasted Revenue and Expenditures", caption = "Revenue includes State and Local CURE Dollars")
-
-
-```
-
-Revenue forecasting using precovid trends:
-
-```{r}
-#| label: precovid-trends-forecasting
-
-# revenue using precovid trends
-tsrev <- ts(year_totals$Revenue, start ="1998", end = "2020", frequency = 1) # yearly data
-
-tsexp2019 <- ts(year_totals$Expenditures, start ="1998", end = "2020", frequency = 1) # yearly data
-
-#### revenue chart
-model_rev <- auto.arima(tsrev, seasonal = FALSE)
-forecast_rev <- forecast(model_rev, h = 23)
-
-c <- forecast(forecast_rev,  h = 22) %>% 
-  autoplot() +
-    ylab("Dollars (Millions)") +
-  xlab("Year") +
-  ggtitle("Forecasted Revenue") +
-  theme_classic() +
-  scale_y_continuous(labels = dollar )
-
-summary(forecast_rev)
-
-annotation <- data.frame(
-  x = c(2020, 2032),
-  y = c(90000, 100000),  
-  label = c("$93 Billion in 2027","$104 Billion in 2032")
-)
-
-c+ geom_label(data = annotation, aes(x=x, y=y, label=label), size = 3) + 
-  labs(title= "Revenue Forecasted using Pre-Covid Data", 
-       subtitle = "Own Source and Federal Revenues Combined")
-
-autoplot(tsexp2019) +
-  #geom_line(tsexp)+
-  #geom_line(aes(model_rev))+
-  autolayer(forecast_rev, series = "Revenue") +
-  autolayer(forecast_exp, series = "Expenditure)", alpha = 0.5) +
-  geom_line(year_totals, mapping= aes(x = Year, y = Revenue))  + guides(colour = guide_legend("Forecast")) + 
-  labs(title = "Forecasted Revenue and Expenditures", subtitle = "Using Pre-Covid revenue data (ending in FY2020) with Actual 2022 expenditures")
-
-
-```
-
-```{r eval=FALSE, include=FALSE}
-### Federal Revenue
-
-fed_rev <- ff_rev %>% select(fy, rev_57, rev_58, rev_59) %>%
-  mutate(fed_total = rev_57+rev_58+rev_59)
-
-fed_ts57 <- ts(fed_rev$rev_57, start ="1998", frequency = 1) # yearly data
-
-model_fed <- auto.arima(fed_ts57, seasonal = FALSE)
-forecast_fed <- forecast(model_fed, h = 23)
-
-fed57 <- forecast(forecast_fed,  h = 20) %>% 
-  autoplot() +
-    ylab("Nominal Dollars (Millions)") +
-  xlab("Year") +
-  ggtitle("Forecasted Federal Other Revenue") +
-  theme_classic() +
-  scale_y_continuous(labels = dollar )
-
-fed57
-
-fed_ts58 <- ts(fed_rev$rev_58, start ="1998", frequency = 1) # yearly data
-
-model_fed <- auto.arima(fed_ts58, seasonal = FALSE)
-forecast_fed <- forecast(model_fed, h = 23)
-
-fed58 <- forecast(forecast_fed,  h = 20) %>% 
-  autoplot() +
-    ylab("Nominal Dollars (Millions)") +
-  xlab("Year") +
-  ggtitle("Forecasted Federal Transfers for Transportation") +
-  theme_classic() +
-  scale_y_continuous(labels = dollar )
-
-fed58
-
-fed_ts59 <- ts(fed_rev$rev_59, start ="1998", frequency = 1) # yearly data
-
-model_fed <- auto.arima(fed_ts59, seasonal = FALSE)
-forecast_fed <- forecast(model_fed, h = 23)
-
-fed59 <- forecast(forecast_fed,  h = 20) %>% 
-  autoplot() +
-    ylab("Nominal Dollars (Millions)") +
-  xlab("Year") +
-  ggtitle("Forecasted Federal Medicaid Reimbursements") +
-  theme_classic() +
-  scale_y_continuous(labels = dollar )
-
-fed59
-```
-
-```{r}
-#| label: forecasting-trend-comparison
-fed_rev <- ff_rev %>% select(fy, rev_57, rev_58, rev_59) %>%
-  mutate(fed_total = rev_57+rev_58+rev_59)
-
-fed_tstotal <- ts(fed_rev$fed_total, start ="1998", frequency = 1) # yearly data
-
-model_fed <- auto.arima(fed_tstotal, seasonal = FALSE)
-forecast_fed <- forecast(model_fed, h = 23)
-
-fedtotal <- forecast(forecast_fed,  h = 20) %>% 
-  autoplot() +
-    ylab("Nominal Dollars (Millions)") +
-  xlab("Year") +
-  ggtitle("Forecasted Federal Revenue WITHOUT Federal COVID Dollars", subtitle = "Sum of Transportation, Medicaid, and Other Federal Revenue") +
-  theme_classic() +
-  scale_y_continuous(labels = dollar ) 
-
-fedtotal
-
-fed_tstotal <- ts(fed_rev$fed_total, start ="1998", end = "2020", frequency = 1) # yearly data
-
-model_fed2 <- auto.arima(fed_tstotal, seasonal = FALSE)
-forecast_fed2 <- forecast(model_fed2, h = 23)
-
-fedtotal2 <- forecast(forecast_fed2,  h = 20) %>% 
-  autoplot() +
-    ylab("Nominal Dollars (Millions)") +
-  xlab("Year") +
-  ggtitle("Forecasted Federal Revenue -- pre-COVID trends", subtitle = "Sum of Transportation, Medicaid, and Other Federal Revenue") +
-  theme_classic() +
-  scale_y_continuous(labels = dollar ) 
-
-fedtotal2
-
-
-autoplot(tsexp2019) +
-  #geom_line(tsexp)+
-  #geom_line(aes(model_rev))+
-  autolayer(forecast_fed, series = "No Fed Stim Packages") +
-  autolayer(forecast_fed2, series = "Pre-Covid Fed Rev)", alpha = 0.5) +
-  geom_line(year_totals2, mapping= aes(x = Year, y = Revenue))  + 
-  guides(colour = guide_legend("Forecast")) + 
-  labs(title = "Comparison of Combined Federal Revenue without Stimulus Packages and Pre-COVID revenue trend" , 
-       subtitle = "Using Pre-Covid revenue data (ending in FY2020)")
-
-```
-
-Graphing the 3 federal revenue types together may be the most reliable since some COVID funding is still recorded in Federal Other and some are in other categories (like Disaster Response in FY2021). Need to look at more before using.
-
-## Tables with Totals
+## All Categories with Totals
 
 ```{r}
 #| label: tbl-rev-tables-droppedCURE
@@ -3499,13 +3235,13 @@ dataset_names <- list('Aggregate Revenues' = revenue_wide2,
 write.xlsx(dataset_names, file = 'summary_file_FY22_wTotals.xlsx')
 ```
 
-## Summary Tables - Largest Categories
+## Largest Categories Summary Tables
 
 The 10 largest revenue sources and 13 largest expenditure sources remain separate categories and all other smaller sources/expenditures are combined into "All Other \_\_\_\_\_". These condensed tables are typically used in the Fiscal Futures articles. They were manually created in past years but this hopefully automates the process a bit until final formatting stages.
 
 -   take ff_rev and ff_exp data frames, which were in wide format, pivot them longer and mutate the Category_name variable to nicer labels. Keep largest categories separate and aggregate the rest.
 
-```{r }
+```{r}
 #| label: tbl-large-cat-CAGRs-withoutCURE
 #| tbl-cap: Largest Revenue Sources - State CURE Federal revenue
 
@@ -3793,11 +3529,7 @@ revenue_change2%>%
 
 ```
 
-## Export Summary Files
-
-Saves main items in one excel file named `summary_file.xlsx`. Delete `eval=FALSE` to run on local computer.
-
-```{r, eval=FALSE}
+```{r summary-file-droppedCURE, eval=FALSE}
 #install.packages("openxlsx")
 library(openxlsx)
 
@@ -3822,5 +3554,5 @@ dataset_names <- list('Aggregate Revenues' = revenue_wide2, # Top Categories agg
                       'aggregated_totals_long' = aggregated_totals_long # all data in long format. Good for creating pivot tables in Excel
                       )
 
-write.xlsx(dataset_names, file = 'summary_file_FY22_MajorCats_WithTotals.xlsx')
+write.xlsx(dataset_names, file = 'summary_file_FY22_MajorCats_WithTotals_droppedCURE.xlsx')
 ```

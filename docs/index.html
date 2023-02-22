@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Alea Wilbur-Mujtaba">
-<meta name="dcterms.date" content="2023-02-20">
+<meta name="dcterms.date" content="2023-02-21">
 
 <title>Fiscal Futures Project</title>
 <style>
@@ -150,14 +150,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link active" href="./index.html" aria-current="page">
  <span class="menu-text">About</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./FiscalGap.html">
- <span class="menu-text">The FY22 Fiscal Gap</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./FedMoneyReceived.html">
- <span class="menu-text">COVID-related Federal Revenue</span></a>
-  </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-methodology" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Methodology</span>
@@ -205,6 +197,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>  
     </ul>
   </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./FiscalGap.html">
+ <span class="menu-text">The FY22 Fiscal Gap</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./FedMoneyReceived.html">
+ <span class="menu-text">COVID-related Federal Revenue</span></a>
+  </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
@@ -310,7 +310,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#sec-background-info" id="toc-sec-background-info" class="nav-link active" data-scroll-target="#sec-background-info">Background Information</a></li>
-  <li><a href="#structure" id="toc-structure" class="nav-link" data-scroll-target="#structure">Structure</a></li>
+  <li><a href="#github-data-structure" id="toc-github-data-structure" class="nav-link" data-scroll-target="#github-data-structure">Github Data Structure</a></li>
   </ul>
 </nav>
     </div>
@@ -336,7 +336,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 20, 2023</p>
+      <p class="date">February 21, 2023</p>
     </div>
   </div>
   
@@ -348,30 +348,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="sec-background-info" class="level1 unnumbered">
 <h1 class="unnumbered">Background Information</h1>
+<p>This site documents the methodology used to calculate Illinois’ Fiscal Gap between yearly expenditures and revenue sources for the Fiscal Futures Annual Report. To learn more about the history of the Fiscal Futures Project and read past reports, please visit <a href="https://igpa.uillinois.edu/fiscal-futures-project/">The Fiscal Futures webpage.</a> The Fiscal Future Project is one of many research projects within the University of Illinois’ <a href="https://igpa.uillinois.edu/">Institute of Government and Public Affairs (IGPA)</a>.</p>
+<p>This website was originally created by Alea Wilbur-Mujtaba as an internal document for Fiscal Futures researchers to increase reproducibility and update the methodology documentation used for the Fiscal Futures Annual Report. Until August 2022, The FF Annual Report was calculated in Stata with code and documentation that had been passed on for years and modified in a piece-meal fashion. Alea translated the Stata files into an R file before transitioning into a Github Page with downloadable public data.</p>
+<p>While the main purpose of the document is for documenting Fiscal Futures methodology, it also contains useful information on variables used by the Illinois Office of the Comptroller (IOC) that may be of use to other researchers. Frequently discussed topics (e.g.&nbsp;Pensions, Debt, Federal Revenue Sources, Medicaid, etc.) each have their own section dedicated to looking at the many relevant variables for that topic, even if the budget variables re not directly included while calculating the Fiscal Gap.</p>
+<p>This is a novel dataset containing all revenue items and all expenditure items from fiscal year (FY) 1998 to FY 2022 received through yearly FOIA requests to the Illinois Comptroller. It can be downloaded in the website’s <a href="https://github.com/AleaWM/Fiscal-Futures/tree/main/data">data folder</a>. To the authors’ knowledge, the revenue and expenditure data used in the analysis does not exist elsewhere and cannot be downloaded from the Comptroller’s website or the Illinois Data Portal in this format.</p>
+<p>This document is a good faith effort to increase reproducibility and transparency. It is a living document in which we aim to describe things as clearly as possible in the time we have, share it with others, and improve each time we come back to it.</p>
+<p>Read FY22 Fiscal Futures Annual Report <a href="https://igpa.uillinois.edu/">here.</a> (forthcoming, will update link once published - AWM 2/14/2023)</p>
+<ul>
+<li>Alea Wilbur-Mujtaba, Francis Choi, and David Merriman. (2023). “Recovering from a COVID (Spending) Fever.” Institute of Government and Public Affairs. <em>Forthcoming</em>.</li>
+</ul>
+<p>If you use code associated with this repository please cite the following work:</p>
 <blockquote class="blockquote">
-<p>Every section is a work in progress and will continue to be updated. - AWM 2/20/2023</p>
-</blockquote>
-<p>This is a living document in which we aim to describe things as clearly as possible in the time we have, share it with others, and improve each time we come back to it. If we wait till we have time to write flawless documents, it’ll never happen.</p>
-<p>The Fiscal Futures Project is associated with the University of Illinois’ Institute of Government and Policy Affairs, but creating the R code, publicly sharing the code, and creating a website for methodology was done by Alea Wilbur-Mujtaba. Any errors with code or findings are the fault of the author, not the research institute. Data is originally from annual FOIA requests to the Illinois Office of the Comptroller.</p>
-<p>Read the paper <a href="https://igpa.uillinois.edu/">here.</a> (forthcoming, will update link once published - AWM 2/14/2023)</p>
-<p>Data processing and scripts associated with the manuscript <em>Recovering from a COVID (Spending) Fever</em>. If you use code associated with this repository please cite the following work:</p>
-<p>Alea Wilbur-Mujtaba, Francis Choi, and David Merriman. (2023). “Recovering from a COVID (Spending) Fever.” Institute of Government and Public Affairs. <em>Forthcoming</em>.</p>
-<blockquote class="blockquote">
-<p><strong>Figure out citation</strong></p>
-</blockquote>
-<blockquote class="blockquote">
-<p>For general use of the data or code provided, please use this citation: Alea Wilbur-Mujtaba. (2022). Institute of Government and Public Affairs. ______________</p>
+<p>For general use of the data or code provided, please use this citation: Alea Wilbur-Mujtaba. (2022). Institute of Government and Public Affairs. _____________</p>
 </blockquote>
 <p><img src="images/DataWarehouseB.jpg" class="img-fluid"></p>
-<p>This site calculates Illinois’ Fiscal Gap between yearly expenditure and revenue. It was originally created as an internal document by Alea Wilbur-Mujtaba to increase reproducibility and document the methodology for the Fiscal Futures Project within the <a href="https://igpa.uillinois.edu/">Institute of Government and Public Affairs (IGPA)</a>.</p>
-<p>While the main purpose of the document is for documenting Fiscal Futures methodology, it also contains useful information on variables used by the Illinois Office of the Comptroller (IOC) that may be of use to other researchers. Frequently discussed topics (e.g.&nbsp;Pensions, Debt, Federal Revenue, Medicaid, etc.) each have their own section dedicated to looking at the many relevant variables for that topic, even if the items are not directly included while calculating the Fiscal Gap.</p>
-<p>This document is a good faith effort to increase reproducibility and transparency. To the authors’ knowledge, the revenue and expenditure data used in the analysis does not exist elsewhere.</p>
 </section>
-<section id="structure" class="level1">
-<h1>Structure</h1>
+<section id="github-data-structure" class="level1">
+<h1>Github Data Structure</h1>
 <p>The authors and IGPA believe that these novel datasets will be valuable to other researchers interested in Illinois’ finances.</p>
 <p>Yearly files from the Illinois Comptroller are in the <code>data</code> –&gt; <code>revenue</code> and <code>expenditures</code> folders. These were acquired through a Freedom of Information Act (FOIA) request. The files within these folders are <strong>before</strong> cleaning or recoding the data. Most of the files for individual years are saved as .dta files due to using Stata before FY21. These individual yearly files are combined into larger files containing all revenues (<code>allrev22.csv</code>) and expenditures (<code>allexp22.csv</code>) for all fiscal years.</p>
 <p>Partially cleaned and recoded data can be found in the <code>exp_temp</code> and <code>rev_temp</code> files. Old or renamed agencies and new or reused funds have been recoded in these files but observations that are dropped in the analysis remain in these files. A summary file containing aggregated yearly expenditure and revenue values for categories used in the Fiscal Futures model can be found in the <code>summary_file_FY2022.xlsx</code> excel file. This excel file also contains additional tabs for all CAGR values calculated as well as the yearly change between the most recent fiscal year and the previous fiscal year.</p>
+<p><em>The Fiscal Futures Project is associated with the University of Illinois System Institute of Government and Policy Affairs (IGPA). Creating the R code, Github folder, and website for methodology was done by Alea Wilbur-Mujtaba. Any errors with code or findings are the fault of the author, not the research institute. Data is originally from annual FOIA requests to the Illinois Office of the Comptroller.</em></p>
 
 
 <!-- -->
@@ -697,37 +694,35 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    code-overflow: wrap</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Every section is a work in progress and will continue to be updated. - AWM 2/20/2023</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>This site documents the methodology used to calculate Illinois' Fiscal Gap between yearly expenditures and revenue sources for the Fiscal Futures Annual Report. To learn more about the history of the Fiscal Futures Project and read past reports, please visit <span class="co">[</span><span class="ot">The Fiscal Futures webpage.</span><span class="co">](https://igpa.uillinois.edu/fiscal-futures-project/)</span> The Fiscal Future Project is one of many research projects within the University of Illinois' <span class="co">[</span><span class="ot">Institute of Government and Public Affairs (IGPA)</span><span class="co">](https://igpa.uillinois.edu/)</span>.</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>This is a living document in which we aim to describe things as clearly as possible in the time we have, share it with others, and improve each time we come back to it. If we wait till we have time to write flawless documents, it'll never happen.</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>This website was originally created by Alea Wilbur-Mujtaba as an internal document for Fiscal Futures researchers to increase reproducibility and update the methodology documentation used for the Fiscal Futures Annual Report. Until August 2022, The FF Annual Report was calculated in Stata with code and documentation that had been passed on for years and modified in a piece-meal fashion. Alea translated the Stata files into an R file before transitioning into a Github Page with downloadable public data.</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>The Fiscal Futures Project is associated with the University of Illinois' Institute of Government and Policy Affairs, but creating the R code, publicly sharing the code, and creating a website for methodology was done by Alea Wilbur-Mujtaba. Any errors with code or findings are the fault of the author, not the research institute. Data is originally from annual FOIA requests to the Illinois Office of the Comptroller.</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>While the main purpose of the document is for documenting Fiscal Futures methodology, it also contains useful information on variables used by the Illinois Office of the Comptroller (IOC) that may be of use to other researchers. Frequently discussed topics (e.g. Pensions, Debt, Federal Revenue Sources, Medicaid, etc.) each have their own section dedicated to looking at the many relevant variables for that topic, even if the budget variables re not directly included while calculating the Fiscal Gap.</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>Read the paper <span class="co">[</span><span class="ot">here.</span><span class="co">](https://igpa.uillinois.edu/)</span> (forthcoming, will update link once published - AWM 2/14/2023)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>This is a novel dataset containing all revenue items and all expenditure items from fiscal year (FY) 1998 to FY 2022 received through yearly FOIA requests to the Illinois Comptroller. It can be downloaded in the website's <span class="co">[</span><span class="ot">data folder</span><span class="co">](https://github.com/AleaWM/Fiscal-Futures/tree/main/data)</span>. To the authors' knowledge, the revenue and expenditure data used in the analysis does not exist elsewhere and cannot be downloaded from the Comptroller's website or the Illinois Data Portal in this format.</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>Data processing and scripts associated with the manuscript *Recovering from a COVID (Spending) Fever*. If you use code associated with this repository please cite the following work:</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>This document is a good faith effort to increase reproducibility and transparency. It is a living document in which we aim to describe things as clearly as possible in the time we have, share it with others, and improve each time we come back to it.</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>Alea Wilbur-Mujtaba, Francis Choi, and David Merriman. (2023). "Recovering from a COVID (Spending) Fever." Institute of Government and Public Affairs. *Forthcoming*.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>Read FY22 Fiscal Futures Annual Report <span class="co">[</span><span class="ot">here.</span><span class="co">](https://igpa.uillinois.edu/)</span> (forthcoming, will update link once published - AWM 2/14/2023)</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Figure out citation**</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Alea Wilbur-Mujtaba, Francis Choi, and David Merriman. (2023). "Recovering from a COVID (Spending) Fever." Institute of Government and Public Affairs. *Forthcoming*.</span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; For general use of the data or code provided, please use this citation: Alea Wilbur-Mujtaba. (2022). Institute of Government and Public Affairs. </span><span class="sc">\_\_\_\_\_\_\_\_\_\_\_\_\_\_</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>If you use code associated with this repository please cite the following work:</span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/DataWarehouseB.jpg)</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; For general use of the data or code provided, please use this citation: Alea Wilbur-Mujtaba. (2022). Institute of Government and Public Affairs. </span><span class="sc">\_\_\_\_\_\_\_\_\_\_\_\_\_</span></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>This site calculates Illinois' Fiscal Gap between yearly expenditure and revenue. It was originally created as an internal document by Alea Wilbur-Mujtaba to increase reproducibility and document the methodology for the Fiscal Futures Project within the <span class="co">[</span><span class="ot">Institute of Government and Public Affairs (IGPA)</span><span class="co">](https://igpa.uillinois.edu/)</span>.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/DataWarehouseB.jpg)</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>While the main purpose of the document is for documenting Fiscal Futures methodology, it also contains useful information on variables used by the Illinois Office of the Comptroller (IOC) that may be of use to other researchers. Frequently discussed topics (e.g. Pensions, Debt, Federal Revenue, Medicaid, etc.) each have their own section dedicated to looking at the many relevant variables for that topic, even if the items are not directly included while calculating the Fiscal Gap.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu"># Github Data Structure</span></span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>This document is a good faith effort to increase reproducibility and transparency. To the authors' knowledge, the revenue and expenditure data used in the analysis does not exist elsewhere.</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>The authors and IGPA believe that these novel datasets will be valuable to other researchers interested in Illinois' finances.</span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu"># Structure</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>Yearly files from the Illinois Comptroller are in the <span class="in">`data`</span> --<span class="sc">\&gt;</span> <span class="in">`revenue`</span> and <span class="in">`expenditures`</span> folders. These were acquired through a Freedom of Information Act (FOIA) request. The files within these folders are **before** cleaning or recoding the data. Most of the files for individual years are saved as .dta files due to using Stata before FY21. These individual yearly files are combined into larger files containing all revenues (<span class="in">`allrev22.csv`</span>) and expenditures (<span class="in">`allexp22.csv`</span>) for all fiscal years.</span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>The authors and IGPA believe that these novel datasets will be valuable to other researchers interested in Illinois' finances.</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>Partially cleaned and recoded data can be found in the <span class="in">`exp_temp`</span> and <span class="in">`rev_temp`</span> files. Old or renamed agencies and new or reused funds have been recoded in these files but observations that are dropped in the analysis remain in these files. A summary file containing aggregated yearly expenditure and revenue values for categories used in the Fiscal Futures model can be found in the <span class="in">`summary_file_FY2022.xlsx`</span> excel file. This excel file also contains additional tabs for all CAGR values calculated as well as the yearly change between the most recent fiscal year and the previous fiscal year.</span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>Yearly files from the Illinois Comptroller are in the <span class="in">`data`</span> --<span class="sc">\&gt;</span> <span class="in">`revenue`</span> and <span class="in">`expenditures`</span> folders. These were acquired through a Freedom of Information Act (FOIA) request. The files within these folders are **before** cleaning or recoding the data. Most of the files for individual years are saved as .dta files due to using Stata before FY21. These individual yearly files are combined into larger files containing all revenues (<span class="in">`allrev22.csv`</span>) and expenditures (<span class="in">`allexp22.csv`</span>) for all fiscal years.</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>Partially cleaned and recoded data can be found in the <span class="in">`exp_temp`</span> and <span class="in">`rev_temp`</span> files. Old or renamed agencies and new or reused funds have been recoded in these files but observations that are dropped in the analysis remain in these files. A summary file containing aggregated yearly expenditure and revenue values for categories used in the Fiscal Futures model can be found in the <span class="in">`summary_file_FY2022.xlsx`</span> excel file. This excel file also contains additional tabs for all CAGR values calculated as well as the yearly change between the most recent fiscal year and the previous fiscal year.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>*The Fiscal Futures Project is associated with the University of Illinois System Institute of Government and Policy Affairs (IGPA). Creating the R code, Github folder, and website for methodology was done by Alea Wilbur-Mujtaba. Any errors with code or findings are the fault of the author, not the research institute. Data is originally from annual FOIA requests to the Illinois Office of the Comptroller.*</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

@@ -1,10 +1,12 @@
 # The FY22 Fiscal Gap {#sec-the-fy22-fiscal-gap}
 
-For details on how tables and graphs were created, please see the Methodology tab.
+For details on how tables and graphs were created, please see @sec-all-code. This page contains images and tables used in the FY22 Fiscal Futures Annual Report. Please read the report for the full context of the images and tables below.
 
-> This page is supposed to be a simplified version of the @sec-all-code page.
+> Add link to the paper once released.
 
-> Add final summary tables and link to the paper.
+![](images/image-1784712262.png)
+
+![](images/image-1371195195.png)
 
 ```{r setup, warning=FALSE, message=FALSE}
 
