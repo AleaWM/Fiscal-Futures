@@ -81,7 +81,11 @@ exp_fy22 <- read_xlsx("Fis_Fut_Exp_2022_Final.xlsx") %>%
 
 The code chunk below takes the .dta files for all fiscal years before FY 2022 and binds them together. Variable names were manually changed by past researchers so that they were consistent across years.
 
-For FY 2023 and after, .dta files can be avoided entirely and .csv or excel files will be used. All files before this year had been saved and passed on as .dta files for Stata code before the transition to R in Fall 2022. For years after fy22: add line of code to bind csv files after binding the dta files together. Variable names must identical to merge files together.
+For FY 2023 and after, .dta files can be avoided entirely and .csv or excel files will be used. All files before this year had been saved and passed on as .dta files for Stata code before the transition to R in Fall 2022.
+
+<!--- Dug deep in the box files and found old Excel files for each year of reqeuested data. Tried to make a new Database folder that has the excel files before manipulating but didn't finish.  --->
+
+For years after fy22: add line of code to bind csv files after binding the dta files together. Variable names must be identical to merge files together.
 
 ```{r create-rev-csv-FY22, include=FALSE, eval=FALSE}
 # years after fy22: add line of code to bind csv files after binding the dta files.
@@ -107,7 +111,7 @@ allexpfiles22 = list.files(path = "C:/Users/aleaw/OneDrive/Documents/PhD Fall 20
 write_csv(allexpfiles22, "allexpfiles22.csv")
 ```
 
-Code below reads in the csv files created in chunks above (allrevfiles.csv and allrexpfiles.csv). These files contain all years of data combined into one file BEFORE any recoding is done. Do not use this file for summing categories because it is just an inbetween step before recoding revenue and expenditure categories.
+Code below reads in the csv files created in chunks above (allrevfiles.csv and allrexpfiles.csv). These files contain all years of data combined into one file BEFORE any recoding is done. Do not use this file for summing categories because it is just an inbetween step before recoding revenue and expenditure categories. It also does not contain changes in funds or agencies.
 
 ```{r readCSVs}
 
@@ -304,7 +308,11 @@ Sources 2737 through 2756 were not found in the IOC_source file so I added them 
 
 ### Recoding New and Reused Funds
 
-New funds will need to be manually added to the funds_ab_in excel file and determined if they should or should not be included in Fiscal Future calculations.
+::: {.callout-warning icon="false"}
+Remember: `allrevfiles` and `allexpfiles` contain the data received from the comptroller without recoding agencies or funds that have changed between fiscal years. Variables were renamed when needed to have consistent names but funds and agencies have NOT been recoded for consistency in these files.
+:::
+
+New or reused funds were manually added to the `funds_ab_in.xlsx` file and determined if they should or should not be included in Fiscal Future calculations.
 
 For funds that were reused once, a 9 replaces the 0 as the first digit. If reused twice, then the first two values are 10.
 
@@ -354,7 +362,7 @@ rev_1998_2022 <- allrevfiles22 %>%
 
 ```
 
-For 2022, new funds included The Essential Government Services fund, Electric Vehicle Rebate, Budget Stabilization fund, and more. New funds were added to the funds_ab_in.xlsx file and recoded funds were addressed in the code chunks below and updated in the same excel file.
+For 2022, new funds included The Essential Government Services fund, Electric Vehicle Rebate, Budget Stabilization fund, and more. New funds were added to the `funds_ab_in.xlsx` file and recoded funds were also updated.
 
 Expenditure recoding:
 
@@ -393,7 +401,9 @@ exp_1998_2022 <- allexpfiles22 %>%
   )
 ```
 
-The `funds_ab_in.xlsx` file contains all funds that have existed since 1998, if they still exist, indicates if fund numbers have been reused for varying purposes, and is updated yearly with new fund numbers used by the IOC.
+::: {.callout-tip icon="false"}
+The `funds_ab_in.xlsx` file contains the following information: all funds that have existed since 1998, if they still exist, indicates if fund numbers have been reused for varying purposes, and is updated yearly with new fund numbers used by the IOC.
+:::
 
 ```{r create-exp_temp, warning = FALSE, message = FALSE}
 
@@ -401,7 +411,7 @@ funds_ab_in_2022 = readxl::read_excel("C:/Users/aleaw/OneDrive/Documents/PhD Fal
 
 exp_temp <- exp_1998_2022 %>% 
   arrange(fund, fy) %>%
-  filter(expenditure != 0) %>%             # keeps everything that is not zero
+#  filter(expenditure != 0) %>%             # keeps everything that is not zero
 # join  funds_ab_in_2021  to exp_temp
  left_join(funds_ab_in_2022, by = "fund")  # matches most recent fund number 
 
@@ -417,7 +427,7 @@ exp_temp <- exp_temp %>%
 
 ```
 
--   the initial combined years of data are saved as dataframes named `exp_1998_2022` and `rev_1998_2022`. These are then saved as exp_temp and rev_temp while recoding variables. This is BEFORE category groups are created and cleaned below. `exp_temp` and `rev_temp` are only temporary files; do not use for aggregating totals yet!
+-   the initial combined and years of data are saved as dataframes named `exp_1998_2022` and `rev_1998_2022`. These are then saved as exp_temp and rev_temp while recoding variables. This is BEFORE creating Fiscal Future category groups and further data cleaning done in the Calculating the Fiscal Gap page.
 
 ```{r remove-all_obs_df, include=FALSE}
 
@@ -496,3 +506,7 @@ write_csv(rev_temp, file = "rev_temp.csv")
 
 write_csv(exp_temp, file = "exp_temp.csv")
 ```
+
+::: {.callout-tip icon="false"}
+The `exp_temp.csv` file and `rev_temp.csv` file are most likely the data that non-Fiscal Future researchers would want to use for their own analyses. These files should have consistent agencies and funds tracked from 1998 to the present.
+:::

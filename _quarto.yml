@@ -38,10 +38,13 @@ book:
           - FederalRevenue.qmd
           - Medicaid.qmd
           - Everything.qmd
- #     - text: "The FY22 Fiscal Gap"
+      - text: "Data"
+        href: https://github.com/AleaWM/Fiscal-Futures/tree/main/data
+ #     - text: "Reports"
  #       file: FiscalGap.qmd
  #     - text: "COVID-related Federal Revenue"
  #       file: FedMoneyReceived.qmd
+
 
           
 

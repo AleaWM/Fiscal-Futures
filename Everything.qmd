@@ -283,7 +283,8 @@ The six corresponding revenue items are:
 -   Local share of General Sales Tax
 -   Personal Property Replacement Tax on Business Income
 -   Personal Property Replacement Tax on Public Utilities
--   Local share of Motor Fuel Tax - Transportation Renewal Fund 0952
+-   Local share of Motor Fuel Tax
+-   Transportation Renewal Fund 0952
 
 Until Dec 18. 2022, Local CURE was being aggregated into Revenue totals since the agency was the Department of Revenue. However the \$371 million expenditure is for "LOC GOVT ARPA" and the revenue source that is Local CURE is also \$371 million. Since it cancels out and is just passed through the state government, I am changing changing the fund_ab_in file so that in_ff=0 for the Local CURE fund. It also inflates the department of revenue expenditures in a misleading way when the expense is actually a transfer to local governments.
 
@@ -742,7 +743,7 @@ ff_rev <- ff_rev %>%
 
       #   rev_78new = rev_78 #+ pension_amt #+ eehc
          ) %>% 
-  select(-c(ref_02:ref_35, rev_99, rev_NA, rev_76#, pension_amt , rev_76,
+  select(-c(ref_02:ref_35, rev_99, rev_NA, rev_76, ref_CHECK#, pension_amt , rev_76,
           #  , eehc
             ))
 
@@ -1185,6 +1186,7 @@ fiscal_gap2 <-ggplot(data = year_totals, aes(x=Year, y = Revenue/1000)) +
 
 
 fiscal_gap2
+#ggsave(plot = fiscal_gap2, filename= "Figure1.eps")
 
 
 ```
@@ -1361,7 +1363,7 @@ rev_long %>%
 #| - "Change in Revenue Sources, FY21 to FY22"
 #| - "Change in Expenditure Categories, FY21 to FY22"
 #| fig-cap-location: top
-rev_long %>%
+rev_dotplot <- rev_long %>%
     filter(Year == "2022" | Year == "2021") %>%
   mutate(Year = as.character(Year)) %>%
   ggplot(aes(x = Dollars, y = reorder(Category, Dollars))) +
@@ -1384,7 +1386,9 @@ rev_long %>%
  # axis.ticks.x = element_blank()
  )+
   scale_x_continuous(limits = c(0, 31000), labels = comma)
+rev_dotplot
 
+ggsave(plot = rev_dotplot, file = "Figure3.eps")
 
 exp_long %>%
     filter(Year == "2022" | Year == "2021") %>%
@@ -1490,6 +1494,7 @@ top3 <- ggplot(data = top3, aes(x=Year, y=Dollars/1000))+
   
 
 top3
+#ggsave(plot = top3, file = "Figure5.eps")
 ```
 
 **Sales Tax - online retailers**
@@ -1643,7 +1648,7 @@ annotation <- data.frame(
 )
 
 
-ggplot(ownsource_rev, aes(x=Year, y=Dollars/1000)) + 
+ownsource_graph<-ggplot(ownsource_rev, aes(x=Year, y=Dollars/1000)) + 
   geom_recessions( text = FALSE)+
   geom_line(data = ownsource_rev, aes(x=Year, y=Dollars/1000), color = "Red") + 
   geom_line(data = fed_rev, aes(x=fy, y=fed_total/1000), color = "Black") + 
@@ -1654,7 +1659,8 @@ ggplot(ownsource_rev, aes(x=Year, y=Dollars/1000)) +
   theme_classic()+
   labs(title = "Own Source Revenue and Federal Revenue", 
   y = "Billions of Nominal Dollars")
-
+ownsource_graph
+#ggsave(plot = ownsource_graph, file = "Figure4.eps")
 
 ```
 
@@ -2537,7 +2543,7 @@ ff_rev <- ff_rev %>%
          rev_35 = rev_35 - ref_35
 
          ) %>% 
-  select(-c(ref_02:ref_35, rev_99, rev_76
+  select(-c(ref_02:ref_35, rev_99, rev_76,ref_CHECK
             ))
 
 rev_long <- pivot_longer(ff_rev, rev_02:rev_78, names_to = c("type","Category"), values_to = "Dollars", names_sep = "_") %>% 
@@ -2702,6 +2708,7 @@ fiscal_gap1 <- ggplot(data = year_totals, aes(x=Year, y = Revenue/1000)) +
     scale_x_continuous(limits=c(1998,2022))
 
 fiscal_gap1
+#ggsave(fiscal_gap1, file = "Figure7a-WithCURE.eps")
 
 
 fiscal_gap_droppedCURE <- ggplot(data = year_totals2, aes(x=Year, y = Revenue/1000)) +
@@ -2743,6 +2750,8 @@ fiscal_gap_droppedCURE <- ggplot(data = year_totals2, aes(x=Year, y = Revenue/10
   # ggtitle("Illinois Expenditures and Revenue Totals, 1998-2022")
 
   fiscal_gap_droppedCURE
+  
+#ggsave(fiscal_gap_droppedCURE, file = "Figure7b-WithoutCURE.eps")
 ```
 
 Compare with and without federal COVID dollars:
@@ -2752,8 +2761,13 @@ Compare with and without federal COVID dollars:
 #| fig-cap: Comparison of revenue with and without federal State CURE funds.
 library(gridExtra)
 
-cowplot::plot_grid(fiscal_gap1,
-                   fiscal_gap_droppedCURE, nrow=1, labels = c("With State CURE Funds", "Without State Cure Funds"))
+with_without_CURE<- cowplot::plot_grid(fiscal_gap1,
+                   fiscal_gap_droppedCURE, ncol=2, labels = c("With State CURE", "Without State Cure"))
+with_without_CURE
+
+#ggsave(plot = with_without_CURE, file = "Figure7.eps")
+
+
 ```
 
 **Revenue amounts in millions of dollars:**

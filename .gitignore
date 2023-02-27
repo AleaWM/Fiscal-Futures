@@ -6,7 +6,6 @@
 .tex
 .log
 .json
-
 /.quarto/
 /old-files/
-
+Rplots.pdf
