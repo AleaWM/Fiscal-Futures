@@ -6,7 +6,7 @@
 .tex
 .log
 .json
-.qmd
+*.qmd
 /.quarto/
 /old-files/
 Rplots.pdf
