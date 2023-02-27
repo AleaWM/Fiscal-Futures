@@ -6,6 +6,12 @@
 .tex
 .log
 .json
+.qmd
 /.quarto/
 /old-files/
 Rplots.pdf
+/data/Ignore/
+rev_temp.csv
+exp_temp.csv
+allexpfiles22.csv
+allrevfiles.csv

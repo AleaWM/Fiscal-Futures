@@ -28,7 +28,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 While it is called an "All Funds" Budget, that is a slight exaggeration. Illinois has over 700 funds. Whereas the overwhelming majority are included in our "All Funds" measure, some are not.  The starting point for our list of all funds is all appropriated funds, but, for the reasons listed below, we exclude a handful of appropriated funds and include a number of non-appropriated funds.[^fundsincluded-1] 
 
-[^fundsincluded-1]: Fiscal Futures Project Documentation. (2016). Institute of Government and Public Affairs, University of Illinois System. <https://igpa.uillinois.edu/fiscal-futures-project-documentation/.>Last document posted online. Updated by Richard Dye.
+[^fundsincluded-1]: Fiscal Futures Project Documentation. (2016). Institute of Government and Public Affairs, University of Illinois System. <https://igpa.uillinois.edu/fiscal-futures-project-documentation/.> Last document posted online. Updated by Richard Dye.
 
 Preliminary expenditure and revenue data is requested after the Fiscal Year ends, and the requested again at the end of the lapse period.[^fundsincluded-2] Calculations are based off the values received from the data received after October 31st when Illinois' lapse period ends.
 

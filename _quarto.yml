@@ -3,9 +3,11 @@ project:
   output-dir: docs
 
 book:
-  title: "Fiscal Futures Project"
+  title: "Methodology for the Fiscal Futures FY 2022 Annual Report"
+  subtitle: "Part of IGPA's Fiscal Futures Project"
   author: "Alea Wilbur-Mujtaba"
   date: last-modified
+ # - part: "Methodology"
   chapters:
     - index.qmd
     - FundsIncluded.qmd
@@ -40,8 +42,8 @@ book:
           - Everything.qmd
       - text: "Data"
         href: https://github.com/AleaWM/Fiscal-Futures/tree/main/data
- #     - text: "Reports"
- #       file: FiscalGap.qmd
+      - text: "Reports"
+        file: FiscalGap.qmd
  #     - text: "COVID-related Federal Revenue"
  #       file: FedMoneyReceived.qmd
 

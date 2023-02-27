@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Fiscal Futures Project - 1&nbsp; An All Funds Approach</title>
+<title>Methodology for the Fiscal Futures FY 2022 Annual Report - 1&nbsp; An All Funds Approach</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -140,7 +140,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Fiscal Futures Project</span>
+    <span class="navbar-title">Methodology for the Fiscal Futures FY 2022 Annual Report</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -202,6 +202,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li class="nav-item">
     <a class="nav-link" href="https://github.com/AleaWM/Fiscal-Futures/tree/main/data">
  <span class="menu-text">Data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./FiscalGap.qmd">
+ <span class="menu-text">Reports</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -328,8 +332,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="including-or-excluding-funds-in-the-fiscal-futures-all-funds-budget" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="including-or-excluding-funds-in-the-fiscal-futures-all-funds-budget"><span class="header-section-number">1.1</span> Including or Excluding funds in the Fiscal Futures All Funds Budget</h2>
-<p>While it is called an “All Funds” Budget, that is a slight exaggeration. Illinois has over 700 funds. Whereas the overwhelming majority are included in our “All Funds” measure, some are not.&nbsp; The starting point for our list of all funds is all appropriated funds, but, for the reasons listed below, we exclude a handful of appropriated funds and include a number of non-appropriated funds.&nbsp;</p>
-<p>Preliminary expenditure and revenue data is requested after the Fiscal Year ends, and the requested again at the end of the lapse period.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Calculations are based off the values received from the data received after October 31st when Illinois’ lapse period ends.</p>
+<p>While it is called an “All Funds” Budget, that is a slight exaggeration. Illinois has over 700 funds. Whereas the overwhelming majority are included in our “All Funds” measure, some are not.&nbsp; The starting point for our list of all funds is all appropriated funds, but, for the reasons listed below, we exclude a handful of appropriated funds and include a number of non-appropriated funds.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>&nbsp;</p>
+<p>Preliminary expenditure and revenue data is requested after the Fiscal Year ends, and the requested again at the end of the lapse period.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Calculations are based off the values received from the data received after October 31st when Illinois’ lapse period ends.</p>
 <p><strong>Criterion 1:&nbsp;INCLUDE IF the fund collects a state-levied tax.</strong></p>
 <p>The state collects both state-levied taxes and locally levied taxes (typically local-option sales and utility taxes).&nbsp; The state collects and returns local taxes to the local governments.&nbsp; Upon receipt, local tax revenues are deposited into specifically-designated, non-appropriated state trust funds.&nbsp; In cases where the state is solely acting as a collection agent for a local taxing body, this receiving trust fund, its revenue and distribution (expenditure) is NOT counted in our analytical frame.&nbsp; If the tax is collected for the state, the fund and its revenue IS counted in our analytical frame.&nbsp;</p>
 <p><strong>Criterion 2:&nbsp; INCLUDE IF the fund supports a state function.</strong></p>
@@ -351,12 +355,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>“Closed” year:&nbsp; accounts have been reconciled and reported as final.</p>
+<li id="fn1"><p>Fiscal Futures Project Documentation. (2016). Institute of Government and Public Affairs, University of Illinois System. <a href="https://igpa.uillinois.edu/fiscal-futures-project-documentation/." class="uri">https://igpa.uillinois.edu/fiscal-futures-project-documentation/.</a> Last document posted online. Updated by Richard Dye.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>“Closed” year:&nbsp; accounts have been reconciled and reported as final.</p>
 <p>“Lapse period:” &nbsp;June 30 fiscal year end date has passed, but books remain open 3-6 months to settle obligations.</p>
 <p>“Open” year:&nbsp; accounts are still subject to revision and reconciliation (includes lapse period).</p>
 <p>“Current” year: fiscal year has begun (July 1) but not yet ended (June 30).</p>
 <p>“Upcoming” year: next fiscal year for which have actual or proposed appropriations and official revenue estimates.</p>
-<p>“Projection” year: future years for which model is used to project expenditure and revenue by category.&nbsp;<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<p>“Projection” year: future years for which model is used to project expenditure and revenue by category.&nbsp;<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -700,47 +705,49 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Including or Excluding funds in the Fiscal Futures All Funds Budget</span></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>While it is called an "All Funds" Budget, that is a slight exaggeration. Illinois has over 700 funds. Whereas the overwhelming majority are included in our "All Funds" measure, some are not.&nbsp; The starting point for our list of all funds is all appropriated funds, but, for the reasons listed below, we exclude a handful of appropriated funds and include a number of non-appropriated funds.&nbsp;</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>While it is called an "All Funds" Budget, that is a slight exaggeration. Illinois has over 700 funds. Whereas the overwhelming majority are included in our "All Funds" measure, some are not.&nbsp; The starting point for our list of all funds is all appropriated funds, but, for the reasons listed below, we exclude a handful of appropriated funds and include a number of non-appropriated funds.<span class="ot">[^fundsincluded-1]</span>&nbsp;</span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>Preliminary expenditure and revenue data is requested after the Fiscal Year ends, and the requested again at the end of the lapse period.<span class="ot">[^index-1]</span> Calculations are based off the values received from the data received after October 31st when Illinois' lapse period ends.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ot">[^fundsincluded-1]: </span>Fiscal Futures Project Documentation. (2016). Institute of Government and Public Affairs, University of Illinois System. <span class="ot">&lt;https://igpa.uillinois.edu/fiscal-futures-project-documentation/.&gt;</span> Last document posted online. Updated by Richard Dye.</span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ot">[^index-1]: </span>"Closed" year:&nbsp; accounts have been reconciled and reported as final.</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>Preliminary expenditure and revenue data is requested after the Fiscal Year ends, and the requested again at the end of the lapse period.<span class="ot">[^fundsincluded-2]</span> Calculations are based off the values received from the data received after October 31st when Illinois' lapse period ends.</span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="in">    "Lapse period:" &nbsp;June 30 fiscal year end date has passed, but books remain open 3-6 months to settle obligations.</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ot">[^fundsincluded-2]: </span>"Closed" year:&nbsp; accounts have been reconciled and reported as final.</span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="in">    "Open" year:&nbsp; accounts are still subject to revision and reconciliation (includes lapse period).</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="in">    "Lapse period:" &nbsp;June 30 fiscal year end date has passed, but books remain open 3-6 months to settle obligations.</span></span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="in">    "Current" year: fiscal year has begun (July 1) but not yet ended (June 30).</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="in">    "Open" year:&nbsp; accounts are still subject to revision and reconciliation (includes lapse period).</span></span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="in">    "Upcoming" year: next fiscal year for which have actual or proposed appropriations and official revenue estimates.</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="in">    "Current" year: fiscal year has begun (July 1) but not yet ended (June 30).</span></span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="in">    "Projection" year: future years for which model is used to project expenditure and revenue by category.&nbsp;</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="in">    "Upcoming" year: next fiscal year for which have actual or proposed appropriations and official revenue estimates.</span></span>
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>**Criterion 1:&nbsp;INCLUDE IF the fund collects a state-levied tax.**</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="in">    "Projection" year: future years for which model is used to project expenditure and revenue by category.&nbsp;</span></span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>The state collects both state-levied taxes and locally levied taxes (typically local-option sales and utility taxes).&nbsp; The state collects and returns local taxes to the local governments.&nbsp; Upon receipt, local tax revenues are deposited into specifically-designated, non-appropriated state trust funds.&nbsp; In cases where the state is solely acting as a collection agent for a local taxing body, this receiving trust fund, its revenue and distribution (expenditure) is NOT counted in our analytical frame.&nbsp; If the tax is collected for the state, the fund and its revenue IS counted in our analytical frame.&nbsp;</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>**Criterion 1:&nbsp;INCLUDE IF the fund collects a state-levied tax.**</span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>**Criterion 2:&nbsp; INCLUDE IF the fund supports a state function.**</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>The state collects both state-levied taxes and locally levied taxes (typically local-option sales and utility taxes).&nbsp; The state collects and returns local taxes to the local governments.&nbsp; Upon receipt, local tax revenues are deposited into specifically-designated, non-appropriated state trust funds.&nbsp; In cases where the state is solely acting as a collection agent for a local taxing body, this receiving trust fund, its revenue and distribution (expenditure) is NOT counted in our analytical frame.&nbsp; If the tax is collected for the state, the fund and its revenue IS counted in our analytical frame.&nbsp;</span>
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>Non-appropriated funds may support state functions such as education, social services, transportation, public facilities, regulation, natural resources, and law enforcement.&nbsp; Generally these are trust funds that hold federal dollars for a specified state project or purpose.&nbsp; This category of *non-appropriated* funds is essentially the same as a large group of *appropriated* state and federal trust funds.&nbsp; Because we are counting federal dollars as revenue, it would be inconsistent to count the appropriated funds, but not the non-appropriated funds that do essentially the same thing.&nbsp;</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>**Criterion 2:&nbsp; INCLUDE IF the fund supports a state function.**</span>
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>**Criterion 3:&nbsp; EXCLUDE IF the fund is a holding fund for individuals.**</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>Non-appropriated funds may support state functions such as education, social services, transportation, public facilities, regulation, natural resources, and law enforcement.&nbsp; Generally these are trust funds that hold federal dollars for a specified state project or purpose.&nbsp; This category of *non-appropriated* funds is essentially the same as a large group of *appropriated* state and federal trust funds.&nbsp; Because we are counting federal dollars as revenue, it would be inconsistent to count the appropriated funds, but not the non-appropriated funds that do essentially the same thing.&nbsp;</span>
 <span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>Many funds are used to hold monies that belong to individuals, not the state.&nbsp; Most of these funds are non-appropriated, but some are appropriated.&nbsp; Examples of appropriated funds that we exclude from the frame are child support collection funds or employee pension own-contribution funds.&nbsp; These funds are holding money that belongs to an individual and will be returned to the person, or used for a payment on behalf of that person, at a later date.&nbsp;</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>**Criterion 3:&nbsp; EXCLUDE IF the fund is a holding fund for individuals.**</span>
 <span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>**Criterion 4:&nbsp; EXCLUDE IF the fund's expenditures or revenues have been counted elsewhere (i.e., avoid double-counting).**</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>Many funds are used to hold monies that belong to individuals, not the state.&nbsp; Most of these funds are non-appropriated, but some are appropriated.&nbsp; Examples of appropriated funds that we exclude from the frame are child support collection funds or employee pension own-contribution funds.&nbsp; These funds are holding money that belongs to an individual and will be returned to the person, or used for a payment on behalf of that person, at a later date.&nbsp;</span>
 <span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>In some cases, funds receive and disburse money that was already counted as revenues to or expenditures from other funds.&nbsp; For example, the Commercial Consolidation Fund is a huge fund that distributes state benefit payments to individuals, service providers, and local governments by direct deposit.&nbsp; Payments into this fund are counted, distributions from this fund are not.&nbsp;</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>**Criterion 4:&nbsp; EXCLUDE IF the fund's expenditures or revenues have been counted elsewhere (i.e., avoid double-counting).**</span>
 <span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>**Criterion 5:&nbsp; EXCLUDE IF the fund holds designated user fees targeted for a specific purpose that is not a public function (conduit).**</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>In some cases, funds receive and disburse money that was already counted as revenues to or expenditures from other funds.&nbsp; For example, the Commercial Consolidation Fund is a huge fund that distributes state benefit payments to individuals, service providers, and local governments by direct deposit.&nbsp; Payments into this fund are counted, distributions from this fund are not.&nbsp;</span>
 <span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>Typically we have excluded non-appropriated funds that hold designated user fees that are directed to a specific purpose that is not a necessary public function.&nbsp; These funds can be considered a conduit and we did not add these to the frame. &nbsp;For example, we exclude Fund 0098, which collects fees from harness race entrants at the state fair and then pays them out to race winners.</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>**Criterion 5:&nbsp; EXCLUDE IF the fund holds designated user fees targeted for a specific purpose that is not a public function (conduit).**</span>
 <span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>**Criterion 6:&nbsp; INCLUDE IF the fund collects a user fee that supports a large, important state function (state function trumps user fee).**</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>Typically we have excluded non-appropriated funds that hold designated user fees that are directed to a specific purpose that is not a necessary public function.&nbsp; These funds can be considered a conduit and we did not add these to the frame. &nbsp;For example, we exclude Fund 0098, which collects fees from harness race entrants at the state fair and then pays them out to race winners.</span>
 <span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>Non-appropriated funds that are supported by user fees AND perform a state function (e.g., transportation) ARE counted in the frame.&nbsp; The rationale for this is that the state function would have to be performed even if the user fee and the fund structure did not exist.&nbsp; The biggest example is the Illinois State Toll Highway Revenue Fund, which collects tolls and supports the expansion and maintenance of Illinois toll roads.&nbsp;</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>**Criterion 6:&nbsp; INCLUDE IF the fund collects a user fee that supports a large, important state function (state function trumps user fee).**</span>
 <span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>**Criterion 7:&nbsp; EXCLUDE IF unclear information, dead fund, small amounts.** Some funds are defunct, and our historical information on fund descriptions does not include pre-2005 designations. Fund numbers are re-used, making it impossible to determine the original purpose of some older, defunct funds.&nbsp; These funds generally appear to be very small.&nbsp; Because we are projecting forward from the most recently completed fiscal year, we assumed that these funds would not be in the frame.&nbsp;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>Non-appropriated funds that are supported by user fees AND perform a state function (e.g., transportation) ARE counted in the frame.&nbsp; The rationale for this is that the state function would have to be performed even if the user fee and the fund structure did not exist.&nbsp; The biggest example is the Illinois State Toll Highway Revenue Fund, which collects tolls and supports the expansion and maintenance of Illinois toll roads.&nbsp;</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>**Criterion 7:&nbsp; EXCLUDE IF unclear information, dead fund, small amounts.** Some funds are defunct, and our historical information on fund descriptions does not include pre-2005 designations. Fund numbers are re-used, making it impossible to determine the original purpose of some older, defunct funds.&nbsp; These funds generally appear to be very small.&nbsp; Because we are projecting forward from the most recently completed fiscal year, we assumed that these funds would not be in the frame.&nbsp;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
