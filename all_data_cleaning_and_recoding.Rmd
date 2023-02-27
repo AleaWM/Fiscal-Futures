@@ -1,6 +1,4 @@
-
-
-```{r setup, warning = FALSE, message=FALSE}
+```{r setup, warning = FALSE, message=FALSE, echo=FALSE}
 
 library(tidyverse)
 library(haven)
@@ -19,13 +17,13 @@ library(geofacet)
 library(janitor)
 
 
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 ```
 
+Files were given consistent variable names. Each year the variable names in the raw data from the comptroller's office were slightly different. An example of recoding the variable names is below. Names and order of columns must be the same for binding different years of data together in later steps.
+
 # Data Creation and Cleaning
-
-
 
 ```{r rename-variables, eval=FALSE}
 
@@ -68,10 +66,9 @@ exp_fy22 <- read_xlsx("Fis_Fut_Exp_2022_Final.xlsx") %>%
 
 ```
 
- 
-The code chunk below takes the .dta files for all fiscal years before FY 2022 and binds them together.  Variable names were manually changed by past researchers so that they were consistent across years. If joining all files as excel documents, then use .xlsx extension instead.
+The code chunk below takes the .dta files for all fiscal years before FY 2022 and binds them together. Variable names were manually changed by past researchers so that they were consistent across years. If joining all files as excel documents, then use .xlsx extension instead.
 
-For FY 2023 and after, .dta files can be avoided entirely and .csv or excel files will be used. All files before this year had been saved and passed on as .dta files for Stata code before the transition to R in Fall 2022.  For years after fy22: add line of code to bind csv files after binding the dta files together. Variable names must identical to merge files together.
+For FY 2023 and after, .dta files can be avoided entirely and .csv or excel files will be used. All files before this year had been saved and passed on as .dta files for Stata code before the transition to R in Fall 2022. For years after fy22: add line of code to bind csv files after binding the dta files together. Variable names must identical to merge files together.
 
 ```{r create-rev-csv-FY22, eval=FALSE}
 # years after fy22: add line of code to bind csv files after binding the dta files.
@@ -98,10 +95,7 @@ allexpfiles22 = list.files(path = "C:/Users/aleaw/OneDrive/Documents/PhD Fall 20
 
 ```
 
-
-Code below reads in the csv files created in chunks above (allrevfiles.csv and allrexpfiles.csv). These files contain all years of data combined into one file BEFORE any recoding is done. Do not use this file for summing categories because it is just an inbetween step before recoding revenue and expenditure categories. It also does not have funds or agencies tracked consistently over time. Essentially just the raw data for all years combined.
-
-Once confident in the joined file, I saved it as allrevfiles and allexpfiles so that I didn't have to create the file every time I ran the code. 
+Code below reads in the csv files created in chunks above (`allrevfiles.csv` and `allrexpfiles.csv`). These files contain all years of data combined into one file BEFORE any recoding is done. Do not use this file for summing categories because it is just an inbetween step before recoding revenue and expenditure categories. **It also does not have funds or agencies tracked consistently over time.** Essentially it is just the raw data for all years combined but we are including the file in the github folder just in case anybody can use it somehow.
 
 ```{r readCSVs}
 # combined in past chunks called create-rev-csv and create-exp-csv
@@ -111,38 +105,23 @@ allexpfiles22 <- read_csv("allexpfiles22.csv") #combined but not recoded
 
 ```
 
-
 ## Inspecting new FY22 data files
 
-Data files for closed years have been obtained from IOC. The numbers of funds, agencies, organizations, and revenue sources below were found by using pivot tables in the codebook files in the FY2022 Box folder. This could also be done using R and grouping new files by fund, agency, source number, source names, etc..
+The numbers of funds, agencies, organizations, and revenue sources below were found by using pivot tables in the codebook files in Fiscal_Futures/data folder.
 
-Revenue File:  
-- 684 Fund Numbers   
-- 80 Agencies  
-- 1184 Revenue source numbers
-- 1156 revenue source names
+This can also be done using R and grouping new files by fund, agency, source number, source names, etc.. as is done in the code below.
 
-Expenditure File:  
-- 708 Fund Numbers   
-- 107 Agencies   
-- 98 Organization Numbers   
-- 313 Organization names  
+Comparing all known agencies and funds from past years to the most recent year od data tells us if any new funds, agencies, sources, etc. began to be used or if an old fund number was reused for a new function. Tracking changes over time is a crucial step in the Fiscal Futures project methodology.
 
-### Finding new agencies and funds
+**General steps for finding new/reused funds:**
 
-General steps:  
+1.  Identify new and reused funds for newest fiscal year.\
+2.  Recode funds to take into account different fund numbers/names over the years. See [Recoding New and Reused Funds] for code chunk that does this.\
+3.  Update fund_ab_in_2022.xlsx with any changes.
 
-1. Identify new and reused funds for newest fiscal year.    
-2. Recode funds to take into account different fund numbers/names over the years. See [Recoding New and Reused Funds] for code chunk that does this.  
-3. Update fund_ab_in_2022.xlsx with any changes from previous fiscal year.     
+**1. New Agencies, Funds, and Organizations from Expenditure files:**
 
-
-
-
-**New Agencies, Funds, and Organizations from Expenditure files:**
-
-- Using the code below, I found 2 agencies, multiple funds, and a couple organizations that had not been specifically mentioned in the funds_ab_in file - AWM, FY2022.
-  - Note: One new org name and org number combo has an expenditure of $600 million for pensions payment. Investigate later.  
+Change the year in the filter command to the current fiscal year you are working with.
 
 ```{r}
 
@@ -222,6 +201,7 @@ anti_join(orgs22, orgs_past,
   arrange(appr_org)
 ```
 
+Some new items were found using this coding method. Past methodology was not as thorough for identifying changes in organizations or sources however all differences were minor.
 
 **New Revenue Funds, Sources, and New Agencies:**
 
@@ -294,22 +274,22 @@ anti_join(sources22, sources_past, by = c("source", "source_name")) %>%
 
 ```
 
-Sources 2737 through 2756 were not found in the IOC_source file so I added them to `ioc_source_updated22_AWM.xlsx`. They do NOT have a rev_type in the file so each source must be searched on the Comptrollers website. We could ask for a variable key from the comptroller for a list of all revenue sources and their revenue type in the future to make our lives easier. I had to look at the sources within each revenue type to find the ones missing and then manually update our ioc_source file. Most of these were considered type 39, "Licenses, Fees, & Registrations". These were finally updated on January 20th 2023 after totals were created for the FY22 paper. 
+Sources 2737 through 2756 were not found in the IOC_source file so I added them to `ioc_source_updated22_AWM.xlsx`. They do NOT have a rev_type in the file so each source must be searched on the Comptrollers website. We could ask for a variable key from the comptroller for a list of all revenue sources and their revenue type in the future to make our lives easier. I had to look at the sources within each revenue type to find the ones missing and then manually update our ioc_source file. Most of these were considered type 39, "Licenses, Fees, & Registrations". These were finally updated on January 20th 2023 after totals were created for the FY22 paper.
 
-> To do: Double check ioc_source file "local" variable. Make sure it is still accurate and that it isn't missing any local sources.  
-
+> To do: Double check ioc_source file "local" variable. Make sure it is still accurate and that it isn't missing any local sources.
 
 ### Recoding New and Reused Funds
 
-New funds will need to be manually added to the funds_ab_in excel file and determined if they should or should not be included in Fiscal Future calculations.
+New funds will need to be added to the funds_ab_in excel file (either manually in Excel or ideally with code in future years) and determined if they should or should not be included in Fiscal Future calculations for expenditure categories.
 
-For funds that were reused once, a 9 replaces the 0 as the first digit. If reused twice, then the first two values are 10.    
+For funds that were reused once, a 9 replaces the 0 as the first digit. If reused twice, then the first two values are 10.
 
-- Ex. 0350 --> 9350 because its use changed.   
-- Ex. 0367 becomes 10367 because its use has changed twice now. There was fund 0367 originally, then its use changed and it was recoded as 9367, and now it changed again so it is a 10367.  
-- Excel file also has alternative ways to name funds (e.g. 0397-A and 0397-B) and variables for the year that the fund stopped being used. These have not been updated consistently over the years but it is useful information when trying to find any coding mistakes from the past.     
+-   Ex. 0350 --\> 9350 because its use changed.\
+-   Ex. 0367 becomes 10367 because its use has changed twice now. There was fund 0367 originally, then its use changed and it was recoded as 9367, and now it changed again so it is a 10367.\
+-   Excel file also has alternative ways to name funds (e.g. 0397-A and 0397-B) and variables for the year that the fund stopped being used. These have not been updated consistently over the years but it is useful information when trying to find any coding mistakes from the past.
 
 New or reused funds revenue file recoding:
+
 ```{r recode-rev-funds}
 # if first character is a 0, replace with a 9 if its purpose has changed
 
@@ -339,10 +319,9 @@ rev_1998_2022 <- allrevfiles22 %>%
 )
 ```
 
-For 2022, new funds included The Essential Government Services fund, Electric Vehicle Rebate, Budget Stabilization fund, and more. New funds were added to the funds_ab_in.xlsx file and recoded funds were addressed in the code chunks below and updated in the same excel file. 
+For 2022, new funds included The Essential Government Services fund, Electric Vehicle Rebate, Budget Stabilization fund, and more. New funds were added to the funds_ab_in.xlsx file and recoded funds were addressed in the code chunks below and updated in the same excel file.
 
-
-Expenditure recoding: 
+Expenditure recoding:
 
 ```{r recode-exp-funds}
 # if first character is a 0, replace with a 9
@@ -373,8 +352,7 @@ exp_1998_2022 <- allexpfiles22 %>%
 
 ```
 
-> The `funds_ab_in.xlsx` file contains all funds that have existed since 1998, if they still exist, indicates if fund numbers have been reused for varying purposes, and is updated yearly with new fund numbers used by the IOC.
-
+> The `funds_ab_in.xlsx` file contains all funds that have existed since 1998, if they still exist, indicates if fund numbers have been reused for different purposes, and is updated yearly with changes in fund numbers.
 
 ```{r create-exp_temp, warning = FALSE, message = FALSE}
 funds_ab_in_2022 = readxl::read_excel("C:/Users/aleaw/OneDrive/Documents/PhD Fall 2021 - Spring 2022/Merriman RA/Fiscal Futures FY2022/Replication-Files/funds_ab_in_2022.xlsx")
@@ -396,9 +374,7 @@ exp_temp <- exp_temp %>%
          )
 ```
 
-
-- the initial combined years of data are saved as dataframes named `exp_1998_2022` and `rev_1998_2022`. These are then saved as exp_temp and rev_temp while recoding variables. This is BEFORE category groups are created and cleaned below. `exp_temp` and `rev_temp` are only temporary files; do not use for aggregating totals yet! 
-
+-   the initial combined years of data are saved as dataframes named `exp_1998_2022` and `rev_1998_2022`. These are then saved as exp_temp and rev_temp while recoding variables. This is BEFORE category groups are created and cleaned below. `exp_temp` and `rev_temp` are only temporary files; do not use for aggregating totals yet!
 
 ```{r remove-all_obs_df, include=FALSE}
 #include = FALSE in the chunk settings run the code but do not include the chunk in the html output
@@ -411,6 +387,7 @@ rm(revenue_fy22)
 ```
 
 Update Agencies: Some agencies have merged with others or changed names over time.
+
 ```{r agencies-exp}
 # recodes old agency numbers to consistent agency number
 exp_temp <- exp_temp %>% 
@@ -426,9 +403,7 @@ exp_temp <- exp_temp %>%
     TRUE ~ (as.character(agency)))) 
 ```
 
-
-
-For aggregating revenue, use the rev_1998_2022 dataframe, join the funds_ab_in_2022 file to it, and then join the ioc_source_type file to the dataset. Remember: You need to update the funds_ab_in and ioc_source_type file every year! 
+For aggregating revenue, use the rev_1998_2022 dataframe, join the funds_ab_in_2022 file to it, and then join the ioc_source_type file to the dataset. Remember: You need to update the funds_ab_in and ioc_source_type file every year!
 
 ```{r create-rev-temp, warning = FALSE, message=FALSE}
 # fund info to revenue for all years
@@ -460,10 +435,9 @@ rev_temp <- rev_temp %>%
 
 ## Modify Expenditure File
 
-__Tax refunds__ 
+**Tax refunds**
 
 Aggregate expenditures: Save tax refunds as negative revenue. Code refunds to match the rev_type codes (02=income taxes, 03 = corporate income taxes, 06=sales tax, 09=motor fuel tax, 24=insurance taxes and fees, 35 = all other tax refunds).
-
 
 ```{r tax-refunds}
 ## negative revenue becomes tax refunds
@@ -509,27 +483,27 @@ exp_temp <- exp_temp %>% filter(refund == "not refund")
 
 `tax_refund` amounts are removed from expenditure totals and subtracted from revenue totals (since they were tax refunds).
 
+**Pension Expenditures**
 
-__Pension Expenditures__
+**For yearly expenditure calculations, the state contributions to the pension funds (object = 4431) should be the expenditure included for pensions. If trying to look at the bigger fiscal health picture and include unfunded liabilities and in/out flows, then items like purchase of investments and large spikes that occurred from policy changes should be included. Again, State contributions TO the pension funds are the expenditures BUT an additional graph/discussion on the employer contributions, employee contributions (revenue source), and benefits paid out to employees (object = 4430) should be included and considered for additional context on Illinois' situation.**
 
-__For yearly expenditure calculations, the state contributions to the pension funds (object = 4431) should be the expenditure included for pensions. If trying to look at the bigger fiscal health picture and include unfunded liabilities and in/out flows, then items like purchase of investments and large spikes that occurred from policy changes should be included. Again, State contributions TO the pension funds are the expenditures BUT an additional graph/discussion on the employer contributions, employee contributions (revenue source), and benefits paid out to employees (object = 4430) should be included and considered for additional context on Illinois' situation.__
+State payments to the following pension systems:
 
-State payments to the following pension systems:  
+• Teachers Retirement System (TRS)\
+- New POB bond in 2019: Accelerated Bond Fund paid benefits in advance as lump sum\
+• State Employee Retirement System (SERS)\
+• State University Retirement System (SURS)\
+• Judges Retirement System (JRS)\
+• General Assembly Retirement System (GARS)
 
-• Teachers Retirement System (TRS)  
-- New POB bond in 2019: Accelerated Bond Fund paid benefits in advance as lump sum   
-• State Employee Retirement System (SERS)  
-• State University Retirement System (SURS)  
-• Judges Retirement System (JRS)  
-• General Assembly Retirement System (GARS)  
-
-- Includes pension stabilization fund = 0319, object = 1900 and the $300 million investment in FY2022.    
-- State pension contributions are largely captured with object=4431. **(State payments into pension fund)**    
-  - includes 8 billion payment in 2004 that creates large peak in expenditure graphs   
-  - does not capture recent pension stabilization payments   
-- Some expenditures with object=4430 are paid for with Pension obligation bond funds (fund == 0825). In past years, some POB funded expenditures were moved to revenue side in the Stata code. We are no longer doing this as of FY2021.    
+-   Includes pension stabilization fund = 0319, object = 1900 and the \$300 million investment in FY2022.\
+-   State pension contributions are largely captured with object=4431. **(State payments into pension fund)**
+    -   includes 8 billion payment in 2004 that creates large peak in expenditure graphs\
+    -   does not capture recent pension stabilization payments\
+-   Some expenditures with object=4430 are paid for with Pension obligation bond funds (fund == 0825). In past years, some POB funded expenditures were moved to revenue side in the Stata code. We are no longer doing this as of FY2021.
 
 Modify exp_temp and move all state pension contributions to their own group (901):
+
 ```{r pensions}
 exp_temp <-  exp_temp %>% 
   arrange(fund) %>%
@@ -567,8 +541,6 @@ exp_temp %>% filter(pension != 0) %>%
 
 
 ```
-
-
 
 ```{r pensions-POB}
 
@@ -608,13 +580,11 @@ exp_temp %>%
   labs (title = "Pension Expenditures")
 ```
 
+**Drop Interfund transfers**
 
-
-__Drop Interfund transfers__
-
-- object == 1993 is for interfund cash transfers  
-- agency == 799 is for statutory transfers  
-- object == 1298 is for purchase of investments and is not spending EXCEPT for costs in 2010 and 2011 (and were recoded already to object == "4431"). Over 168,000 observations remain.  
+-   object == 1993 is for interfund cash transfers\
+-   agency == 799 is for statutory transfers\
+-   object == 1298 is for purchase of investments and is not spending EXCEPT for costs in 2010 and 2011 (and were recoded already to object == "4431"). Over 168,000 observations remain.
 
 ```{r drop-transfers}
 
@@ -629,36 +599,30 @@ exp_temp
 transfers_drop %>% filter(fy>2019 & object == 1993) %>% group_by(obj_seq_type) %>% summarize(sum = sum(expenditure)) %>% arrange(-sum)
 ```
 
-
-__State employee healthcare costs__
-
+**State employee healthcare costs**
 
 State Employee Health Care = Sum of expenditures for "health care coverage as elected by members per state employees group insurance act." The payments are made from the Health Insurance Reserve Fund. We subtract the share that came from employee contributions. Employee contributions are not considered a revenue source or an expenditure in our analysis.
 
 In FY2013, the Local Government Health Insurance fund was transferred to the department of Central Management Services (agency changes from 478 to 416 in data.)
 
-Employer group insurance contributions for health insurance are excluded to avoid double counting the cost of healthcare. All employer group insurance contributions are coded as object = 1180. BUT the last two fiscal years were coded as 1900 instead of 1180 for lump sums instead of employer contributions    
+Employer group insurance contributions for health insurance are excluded to avoid double counting the cost of healthcare. All employer group insurance contributions are coded as object = 1180. BUT the last two fiscal years were coded as 1900 instead of 1180 for lump sums instead of employer contributions
 
-- anything to do with pandemic federal money categorization? Was a lump sum or transfer used to pay the group contribution and coded differently?   
+-   anything to do with pandemic federal money categorization? Was a lump sum or transfer used to pay the group contribution and coded differently?
 
-- This group insurance expenditure coded as 1900 instead of 1180 caused one of the major problems when calculating the fiscal gap for FY21. Stata code originally failed to drop group insurance expenditure in FY21 (since object was = 1900 instead of 1180) and resulted in expenditures being around $2 billion higher than they should have been for Central Management expenditures. This was noticed by GOMB (Alexis Sturm) and resulted in looking deeper into what items are going in and out of health care funds (See [State Employee Healthcare Discussion]).   
+-   This group insurance expenditure coded as 1900 instead of 1180 caused one of the major problems when calculating the fiscal gap for FY21. Stata code originally failed to drop group insurance expenditure in FY21 (since object was = 1900 instead of 1180) and resulted in expenditures being around \$2 billion higher than they should have been for Central Management expenditures. This was noticed by GOMB (Alexis Sturm) and resulted in looking deeper into what items are going in and out of health care funds (See \[State Employee Healthcare Discussion\]).
 
+Relevant funds:\
+Fund = 0457 is "Group insurance premium", in_ff = 1\
+Fund = 0193 is "Local govt health insurance reserve", in=ff = 0\
+fund = 0477 is "Community College Health Insurance", in=ff = 0.\
+- had large amount in early years\
+Fund = 0907 = health insurance reserve, in_ff = 1\
+Fund = 9939 is "group self-insurers' insolv", in_ff = 1\
+Fund = 0940 is Self-Insurers security, in_ff = 0\
+Fund = 0739 is Group Workers Comp Pool Insol, in_ff = 1
 
-
-Relevant funds:   
-Fund = 0457 is "Group insurance premium", in_ff = 1  
-Fund = 0193 is "Local govt health insurance reserve", in=ff = 0  
-fund = 0477 is "Community College Health Insurance", in=ff = 0.     
-- had large amount in early years    
-Fund = 0907 = health insurance reserve, in_ff = 1  
-Fund = 9939 is "group self-insurers' insolv", in_ff = 1  
-Fund = 0940 is Self-Insurers security, in_ff = 0  
-Fund = 0739 is Group Workers Comp Pool Insol, in_ff = 1   
-
-
-- eehc = 0 means it is NOT a state healthcare cost but it is an employer contribution of some type to some fund   
-- eehc = 1 means it is a state employee healthcare cost and it is an employer contribution to health insurance   
-
+-   eehc = 0 means it is NOT a state healthcare cost but it is an employer contribution of some type to some fund\
+-   eehc = 1 means it is a state employee healthcare cost and it is an employer contribution to health insurance
 
 Of the many different ways I have coded the healthcare costs, most do not have expenditures during 2010, 2011, 2016, 2017.
 
@@ -684,7 +648,7 @@ exp_temp_check
 # Looks good, Sept 28 AWM
 ```
 
-If observation is a group insurance contribution, then the expenditure amount is set to $0 (essentially dropped from analysis).
+If observation is a group insurance contribution, then the expenditure amount is set to \$0 (essentially dropped from analysis).
 
 ```{r eehc1}
 #if observation is a group insurance contribution, then the expenditure amount is set to $0 (essentially dropped from analysis)
@@ -734,33 +698,25 @@ exp_temp %>% filter(group == "904") %>% group_by(fy) %>%
 
 ```
 
-~~This code chunk above for dealing with group insurance means that healthcare costs need to be added to expenditures after other group names are assigned. Then employee contributions/insurance premiums from the revenue side need to be subtracted from the total cost of employee healthcare for the net cost.~~ Do not do this. 
-
-
-__Local Transfers__
+**Local Transfers**
 
 Separate transfers to local from parent agencies that come from DOR(492) or Transportation (494). Treats muni revenue transfers as expenditures, not negative revenue.
 
 The share of certain taxes levied state-wide at a common rate and then transferred to local governments. (Purely local-option taxes levied by specific local governments with the state acting as collection agent are NOT included.)
 
-The six corresponding revenue items are:  
+The six corresponding revenue items are:
 
-• Local share of Personal Income Tax
-  - Individual Income Tax Pass-Through New 2021 (source 2582).
-• Local share of General Sales Tax   
-• Personal Property Replacement Tax on Business Income  
-• Personal Property Replacement Tax on Public Utilities  
+-   Local share of Personal Income Tax
+    -   Individual Income Tax Pass-Through New 2021 (source 2582).
+-   Local share of General Sales Tax
+-   Personal Property Replacement Tax on Business Income
+-   Personal Property Replacement Tax on Public Utilities
+-   Local share of Motor Fuel Tax - Transportation Renewal Fund 0952
 
-• Local share of Motor Fuel Tax 
-  - Transportation Renewal Fund 0952  
-  
+Until Aug. 2022 to Dec 18. 2022, Local CURE was being aggregated into Revenue totals since the agency was the Department of Revenue. However the \$371 million expenditure is for "LOC GOVT ARPA" and the revenue source that is Local CURE is also \$371 million. Since it cancels out and is just passed through the state government, I am changing changing the fund_ab_in file so that in_ff=0 for the Local CURE fund. It also inflates the department of revenue expenditures in a misleading way when the expense is actually a transfer to local governments.
 
-Until Dec 18. 2022, Local CURE was being aggregated into Revenue totals since the agency was the Department of Revenue. However the \$371 million expenditure is for "LOC GOVT ARPA" and the revenue source that is Local CURE is also $371 million. Since it cancels out and is just passed through the state government, I am changing changing the fund_ab_in file so that in_ff=0 for the Local CURE fund. It also inflates the department of revenue expenditures in a misleading way when the expense is actually a transfer to local governments. 
-
-
-- Dropping Local CURE fund from analysis results in a \$371 million decrease in the department of Revenue (where the Local Government ARPA transfer money). The appropriation for it was over $740 million so some will probably be rolled over to FY23 too.   
-- In the FY21 New and Reused Funds word document, 0325 Local CURE is described as _"Created as a federal trust fund. The fund is established to receive transfers from either the disaster response and recovery fund or the state cure fund of federal funds received by the state. These transfers, subject to appropriation, will provide for the administration and payment of grants and expense reimbursements to units of local government. Revenues should be under Federal Other and expenditures under Commerce and Economic Opportunity."_ - I propose changing it to exclude for both (in_ff=0). 
-
+-   Dropping Local CURE fund from analysis results in a \$371 million decrease in the department of Revenue (where the Local Government ARPA transfer money). The appropriation for it was over \$740 million so some will probably be rolled over to FY23 too.\
+-   In the FY21 New and Reused Funds word document, 0325 Local CURE is described as *"Created as a federal trust fund. The fund is established to receive transfers from either the disaster response and recovery fund or the state cure fund of federal funds received by the state. These transfers, subject to appropriation, will provide for the administration and payment of grants and expense reimbursements to units of local government. Revenues should be under Federal Other and expenditures under Commerce and Economic Opportunity."* - I propose changing it to exclude for both (in_ff=0).
 
 ```{r transfers-to-local}
 exp_temp <- exp_temp %>% mutate(
@@ -787,9 +743,6 @@ exp_temp <- exp_temp %>% mutate(
 
 ```
 
-
-
-
 ```{r drop-local-transfers}
 transfers_long <- exp_temp %>% 
   filter((group == "971" |group == "972" | group == "975" | group == "976"))# | fund == "0325")
@@ -813,16 +766,13 @@ exp_temp <- exp_temp %>% filter(in_ff == 1) # drops in_ff = 0 funds AFTER dealin
 
 ```
 
+The Local Transfers from the Personal Property Replacement Tax (fund 802) increased over \$2 billion from corporate income taxes alone. Personal property replacement taxes (PPRT) are revenues collected by the state of Illinois and paid to local governments to replace money that was lost by local governments when their powers to impose personal property taxes on corporations, partnerships, and other business entities were taken away.
 
-The Local Transfers from the Personal Property Replacement Tax (fund 802) increased over $2 billion from corporate income taxes alone. Personal property replacement taxes (PPRT) are revenues collected by the state of Illinois and paid to local governments to replace money that was lost by local governments when their powers to impose personal property taxes on corporations, partnerships, and other business entities were taken away.
+**Debt Service**
 
+Debt Service expenditures include interest payment on both short-term and long-term debt. We do not include escrow or principal payments.
 
-__Debt Service__
-
-
-Debt Service expenditures include interest payment on both short-term and long-term debt. We do not include escrow or principal payments. 
-
-**Decision from Sept 30 2022:** We are no longer including short term principal payments as a cost; only interest on borrowing is a cost. Pre FY22 and the FY21 correction, we did include an escrow payment and principle payments as costs but not bond proceeds as revenues. This caused expenditures to be inflated because we were essentially counting debt twice - the principle payment and whatever the money was spent on in other expenditure categories, which was incorrect. 
+*Pre FY22 and the FY21 correction, we did include an escrow payment and principle payments as costs but not bond proceeds as revenues. This caused expenditures to be inflated because we were essentially counting debt twice - the principle payment and whatever the money was spent on in other expenditure categories, which was incorrect.*
 
 ```{r debt-service}
 debt_drop <- exp_temp %>% 
@@ -852,27 +802,19 @@ debt_keep_yearly <- debt_keep %>% group_by(fy, group) %>% summarize(debt_cost = 
 
 ```
 
+**Medicaid**
 
-__Medicaid__ 
+That portion of the Healthcare and Family Services (or Public Aid in earlier years, agency code 478) budget for Medical (appr_organization code 65) for awards and grants (object codes 4400 and 4900).
 
-That portion of the Healthcare and Family Services (or Public Aid in earlier years, agency code 478) budget for Medical (appr_organization code 65) for awards and grants (object codes 4400 and 4900).  
+Jan 2015 FF Documentation - "Typically, presentations of the Illinois budget---for example, the Illinois Office of the Comptroller's Fiscal Focus reports---use"medical assistance payments" made by the Department of Healthcare and Family Services (DHFS) as a proxy for Medicaid expenditures but these numbers include both Medicaid and non-Medicaid expenditures such as state-funded medical programs (e.g. AllKids). Medicaid expenditures are not limited to medical assistance in DHFS - the program also covers clients of home and community-based care programs that are administered by the Department of Human Services and Department of Aging. Because Medicaid is an entitlement, it is a reimbursement for medical care for qualifying individuals. Medical bills may be paid from designated funds by any of several agencies that have spending authority from those funds, as they provide health care services to individuals who qualify for Medicaid or another form of assistance. So, the numbers for medical assistance payments from DHFS may both over-state and underestimate the costs (and growth rate) of the actual Medicaid program. This is a legitimate concern, because the expenditure numbers for Illinois' medical assistance payments do not correspond to the numbers disseminated by national Medicaid data sources"
 
-Jan 2015 FF Documentation - "Typically, presentations of the Illinois budget—for example, the Illinois Office of the Comptroller’s Fiscal Focus reports—use "medical assistance payments" made by the Department of Healthcare and Family Services (DHFS) as a proxy for Medicaid expenditures but these numbers include both Medicaid and non-Medicaid expenditures such as state-funded medical programs (e.g. AllKids). Medicaid expenditures are not limited to medical assistance in DHFS - the program also covers clients of home and community-based care programs that are administered by the Department of Human Services and Department of Aging. Because Medicaid is an entitlement,
-it is a reimbursement for medical care for qualifying individuals. Medical bills may be paid from designated funds by any of several agencies that have spending authority from those funds, as they provide health care services to individuals who qualify for Medicaid or another form of assistance. So, the numbers for medical assistance payments from DHFS may both over-state and underestimate the costs (and growth rate) of the actual Medicaid program. This is a legitimate concern, because the expenditure numbers for Illinois’ medical assistance payments do not correspond to the numbers disseminated by national Medicaid data sources"
+-   2015 Documentation notes that federal cash receipts for Medicaid are used to estimate Medicaid expenditures from the General Revenue Fund (GRF) by dividing the cash receipts by the match rate. Medicaid expenditures from specially-designated funds are assumed to be the warrants issued from those funds. Then the two components---GRF and special funds---are added together for a total number. (Note that the number for FF Medicaid expenditures includes the state portion and the federal portion combined. Past code uses sequence variable also to identify CHIP and GRF (sequence = 20, 54, 61, 62, or 65).
 
-- 2015 Documentation notes that federal cash receipts for Medicaid are used to estimate Medicaid expenditures from the General Revenue Fund (GRF) by dividing the cash receipts by the match rate. Medicaid expenditures from specially-designated funds are assumed to be the warrants issued from those funds. Then the two components—GRF and special funds—are added together for a total number. (Note that the number for FF Medicaid expenditures includes the state portion and the federal portion combined. Past code uses sequence variable also to identify CHIP and GRF (sequence = 20, 54, 61, 62, or 65).
- 
-
-
-- Department of Healthcare and Family Services administers medical assistance programs (e.g. Medicaid, CHIP, All Kids). The Fiscal Futures model moves Medicaid and CHIP expenditures to their own expenditure category. State funded programs remain in DHFS.
-
+-   Department of Healthcare and Family Services administers medical assistance programs (e.g. Medicaid, CHIP, All Kids). The Fiscal Futures model moves Medicaid and CHIP expenditures to their own expenditure category. State funded programs remain in DHFS.
 
 > Side note: State CURE healthcare provider relief will remain in the Medicaid expenditure category due to the nature of it being federal funds providing public health services and funding to locations that provide public services.
 
-- Uses same appropriation name of "HEALTHCARE PROVIDER RELIEF" and fund == 0793 and obj_seq_type == 49000000. So can defend including healthcare provider relief as Medicaid expenditure. 
-
-
-
+-   Uses same appropriation name of "HEALTHCARE PROVIDER RELIEF" and fund == 0793 and obj_seq_type == 49000000. So can defend including healthcare provider relief as Medicaid expenditure.
 
 ```{r Medicaid-check, include = FALSE, eval=FALSE}
 medicaid_check <- exp_temp %>% filter(agency=="478" & (appr_org=="01" | appr_org == "65" | appr_org=="88") & (object=="4900" | object=="4400"))
@@ -886,9 +828,7 @@ medicaid_check %>% group_by(fy) %>% summarize(sum = sum(expenditure)) %>% arrang
 medicaid_check %>% filter(fy>2020) %>% group_by(wh_approp_name,fy) %>% summarize(sum=sum(expenditure)) %>% arrange(wh_approp_name)
 ```
 
-Federal Medical Assistance Program (FMAP): in 1965. The FMAP formula compares the state per-capita income to the national per-capita income. There is no cap on the dollar amount that the federal government pays, so the more that a state spends the more that it receives. a maximum of 83%. States with a higher per-capita income receive lower FMAP funding but no less than 50%, and the states that have a lower per-capita income receive higher FMAP funding. Those that need more, get more. 
-
-
+Federal Medical Assistance Program (FMAP): in 1965. The FMAP formula compares the state per-capita income to the national per-capita income. There is no cap on the dollar amount that the federal government pays, so the more that a state spends the more that it receives. a maximum of 83%. States with a higher per-capita income receive lower FMAP funding but no less than 50%, and the states that have a lower per-capita income receive higher FMAP funding. Those that need more, get more.
 
 ### Add Other Fiscal Future group codes
 
@@ -988,12 +928,11 @@ exp_temp %>% filter(group_name == "Check name")
 
 ```
 
+All expenditures recoded but not aggregated: Allows for inspection of individual expenditures within larger categories. This stage of the data is extremely useful for investigating almost all questions we have about the data.
 
-All expenditures recoded but not aggregated: Allows for inspection of individual expenditures within larger categories. This stage of the data is extremely useful for investigating almost all questions we have about the data. 
+Note that these are the raw figures BEFORE we take the additional steps:
 
-Note that these are the raw figures BEFORE we take the additional steps:   
-
-- Subtract tax refunds from tax revenues by revenue type.  
+-   Subtract tax refunds from tax revenues by revenue type.
 
 ```{r}
 exp_temp %>% filter(fy>2020 & fund == "0561") %>% group_by(wh_approp_name, fy) %>% summarize(sum=sum(expenditure)) %>% arrange(-sum)
@@ -1001,31 +940,29 @@ exp_temp %>% filter(fy>2020 & fund == "0561") %>% group_by(wh_approp_name, fy) %
 
 ```
 
-SBE Federal Department of Education is fund 0561. Fund 0579 is the State Board of Education. 
+SBE Federal Department of Education is fund 0561. Fund 0579 is the State Board of Education.
 
-## Modify  Revenue data
+## Modify Revenue data
 
+Revenue Categories NOT included in Fiscal Futures:\
+- 32. Garnishment-Levies. (State is fiduciary, not beneficiary.)\
+- 45. Student Fees-Universities. (Excluded from state-level budget.)\
+- 51. Retirement Contributions (of individuals and non-state entities).\
+- 66. Proceeds, Investment Maturities. (Not sustainable flow.)\
+- 72. Bond Issue Proceeds. (Not sustainable flow.)\
+- 75. Inter-Agency Receipts.\
+- 79. Cook County Intergovernmental Transfers. (State is not beneficiary.)\
+- 98. Prior Year Refunds.\
+- 99. Statutory Transfers.
 
-Revenue Categories NOT included in Fiscal Futures:   
-- 32.  Garnishment-Levies.  (State is fiduciary, not beneficiary.)  
-- 45.  Student Fees-Universities.  (Excluded from state-level budget.)  
-- 51.  Retirement Contributions (of individuals and non-state entities).    
-- 66.  Proceeds, Investment Maturities.  (Not sustainable flow.)  
-- 72.  Bond Issue Proceeds.  (Not sustainable flow.)     
-- 75.  Inter-Agency Receipts.  
-- 79.  Cook County Intergovernmental Transfers.  (State is not beneficiary.)  
-- 98.  Prior Year Refunds.   
-- 99.  Statutory Transfers.   
+**All Other Sources**
 
-**All Other Sources** 
+Expanded to include the following smaller sources:\
+- 30. Horse Racing Taxes & Fees.\
+- 60. Other Grants and Contracts.\
+- 63. Investment Income.
 
-Expanded to include the following smaller sources:  
-- 30.  Horse Racing Taxes & Fees.  
-- 60.  Other Grants and Contracts.  
-- 63.  Investment Income.    
-
-
-For aggregating revenue, use the rev_1998_2022 dataframe, join the funds_ab_in_2022 file to it, and then join the ioc_source_type file to the dataset. Remember: You need to update the funds_ab_in and ioc_source_type file every year! 
+For aggregating revenue, use the rev_1998_2022 dataframe, join the funds_ab_in_2022 file to it, and then join the ioc_source_type file to the dataset. Remember: You need to update the funds_ab_in and ioc_source_type file every year!
 
 ```{r, warning = FALSE, message=FALSE}
 # fund info to revenue for all years
@@ -1053,29 +990,27 @@ rev_temp <- rev_temp %>%
     TRUE ~ (as.character(agency)))) 
 ```
 
-
 #### Federal Revenue
 
 The Fiscal Futures Model divides federal funds (IOC revenue type = 57) into Medicaid, Transportation, and All Other Federal Funds. These can include: Health and Human Services Grants, Federal Stimulus Package, Department of Education Grants, Department of Transportation Grants, Department of Agriculture Grants, TANF Grants, and Department of Labor Grants.
 
-Federal Medicaid: DHFS receives money for Medicaid that is deposited into the General Revenue Fund. There are also Special State Funds used for Medicaid that receive specific revenues (e.g. Healthcare Provider Taxes) which are matched with Federal Funds. The federal receipts in these special funds are aggregated and added to the federal receipts in the GRF that are received by DHFS. 
+**Federal Medicaid:** DHFS receives money for Medicaid that is deposited into the General Revenue Fund. There are also Special State Funds used for Medicaid that receive specific revenues (e.g. Healthcare Provider Taxes) which are matched with Federal Funds. The federal receipts in these special funds are aggregated and added to the federal receipts in the GRF that are received by DHFS.
 
 Sources:
 
-- 618 = Health and Human Services (not used)  
-- 660 = HHS/Hospital Participation   
-- 676 = Medical Assistance  
-- 692 = Medical Assistance  
-- 1552 = DHHS/ FFP-Medicaid Rehab Option
-- 2306 = Enhanced Fed Fin PART-ARRA 
-- 2076 = IDPH-HHS/CMS   
-- 2364 = Department of Insurance (not used)
+-   618 = Health and Human Services (not used)
+-   660 = HHS/Hospital Participation
+-   676 = Medical Assistance
+-   692 = Medical Assistance
+-   1552 = DHHS/ FFP-Medicaid Rehab Option
+-   2306 = Enhanced Fed Fin PART-ARRA
+-   2076 = IDPH-HHS/CMS
+-   2364 = Department of Insurance (not used)
 
-Other potential medicaid sources from CTRL-Fing "med" in revenue sources:   
+Other potential medicaid sources from CTRL-Fing "med" in revenue sources:\
 Sources: 2104 = Medicare Part D & 675 = Medical Administration
 
-
-Transportation: If Agency is 494 and considered Federal Revenue, then it is recoded to its own category of "Federal Transportation".
+**Federal Transportation:** If Agency is 494 and considered Federal Revenue, then it is recoded to its own category of "Federal Transportation".
 
 ```{r create-rev-federal-transfers}
 #rev_temp <- rev_temp %>% filter(in_ff==1)
@@ -1103,8 +1038,8 @@ rev_temp %>%
   theme(legend.position = "bottom", legend.title = element_blank()  )
 ```
 
-
 Looking at Total Federal Revenue over the years:
+
 ```{r}
 fedrev<- rev_temp %>% 
   filter(rev_type == "58" | rev_type == "59" | rev_type == "57") 
@@ -1121,60 +1056,34 @@ fedrev %>%
   theme(legend.position = "bottom", legend.title = element_blank()  )+
     scale_y_continuous(limits = c(0,45000))
 
-
-fedrev %>% 
-  filter(source_name_AWM != "FEDERAL STIMULUS PACKAGE") %>%
-  group_by(fy) %>% 
-  summarise(receipts = sum(receipts, na.rm = TRUE)/1000000) %>% 
-  ggplot() +
-  geom_line(aes(x=fy, y=receipts)) +
-      theme_bw() +
-  scale_y_continuous(labels = comma)+
-  labs(title = "All Federal EXCEPT Federal Stimulus Package", 
-       y = "Millions of Dollars", x = "",
-       caption = "Note: Dropping Federal Stimulus Package revenue only removes the $3.5 billion from FY20, $0.3 billion from FY21, and 
-       $8.5 billion from FY22. There is still over $12 billion more in Federal Revenue compared to FY19.") + 
-  theme(legend.position = "bottom", legend.title = element_blank()  ) +
-  scale_y_continuous(limits = c(0,45000))
 ```
 
-Dropping Federal Stimulus Package from the revenue sources removes 3.5 billion in revenue from FY20 and nearly 8.5 billion from FY22. It also changes the revenue following the Great Recession in FY2009.
-
-**Dropping State CURE Revenue**
-
-The Fiscal Futures model focuses on sustainable revenue sources. To understand our fiscal gap and outlook, we need to exclude these one time revenues. GOMB has emphasized that they have allocated COVID dollars to one time expenditures (unemployment trust fund, budget stabilization fund, etc.). The fiscal gap, graphs,and CAGRs have been recalculated in the [Drop COVID Dollars] section below. In addition, an attempt at forecasting revenue and expenditures is also made after dropping the federal COVID dollars.
-
-> NOTE: I have only dropped State and Local CURE revenue so far. Federal money went into other funds during the beginning of pandemic.
-
-```{r}
+```{r, code-fed-stimulus-source}
 # only labels observations where the source was specifically named "federal stimulous package"
 # does not code other COVID legislative funds that went under other names and had more specific purposes.
 rev_temp <- rev_temp %>% 
   mutate(covid_dollars = ifelse(source_name_AWM == "FEDERAL STIMULUS PACKAGE",1,0))
 ```
 
-
 #### Health Insurance Premiums from Employees
 
+Insurance premiums for employees is coded below but it is NOT used in the fiscal futures model. Employee and employer premiums are considered rev_51 and dropped from analysis in later step.
 
-Insurance premiums for employees is coded below but it is NOT used in the fiscal futures model. Employee and employer premiums are considered rev_51 and dropped from analysis in later step. 
+0120 = ins prem-option life\
+0120 = ins prem-optional life/univ
 
-
-0120 = ins prem-option life   
-0120 = ins prem-optional life/univ   
-
-0347 = optional health - HMO  
-0348 = optional health - dental   
-0349 = optional health - univ/local SI  
-0350 = optional health - univ/local  
-0351 = optional health - retirement  
-0352 = optional health - retirement SI  
-0353 = optional health - retire/dental   
-0354 = optional health - retirement hmo    
+0347 = optional health - HMO\
+0348 = optional health - dental\
+0349 = optional health - univ/local SI\
+0350 = optional health - univ/local\
+0351 = optional health - retirement\
+0352 = optional health - retirement SI\
+0353 = optional health - retire/dental\
+0354 = optional health - retirement hmo
 
 2199-2209 = various HMOs, dental, health plans from Health Insurance Reserve (fund)
 
-```{r step-3.6-insurance-premiums}
+```{r insurance-premiums}
 
 #collect optional insurance premiums to fund 0907 for use in eehc expenditure  
 rev_temp <- rev_temp %>% 
@@ -1214,10 +1123,9 @@ emp_premium_long <- rev_temp %>%  filter(employee_premiums == 1)
 
 ```
 
-Employee premiums are dropped in the following steps. In FY21, employee premiums were subtracted from state healthcare costs on the expenditure side to calculate a "Net Healthcare Cost" but that methodology has been discontinued. Totals were practically unchanged: revenue from employee premiums is also very small. 
+Employee premiums are dropped in the following steps. In FY21, employee premiums were subtracted from state healthcare costs on the expenditure side to calculate a "Net Healthcare Cost" but that methodology has been discontinued. Totals were practically unchanged: revenue from employee premiums is also very small.
 
-
-### Transfers in and Out: 
+### Transfers in and Out:
 
 Funds that hold and disperse local taxes or fees are dropped from the analysis. Then other excluded revenue types are also dropped.
 
@@ -1227,11 +1135,9 @@ Drops Blank, Student Fees, Retirement contributions, proceeds/investments, bond 
 
 I am currently choosing to exclude the totals from this step. Overall, this decreases the total revenues in "All Other Revenues" by a few million dollars.
 
-- in_from_out <- c("0847", "0867", "1175", "1176", "1177", "1178", "1181", "1182", "1582", "1592", "1745", "1982", "2174", "2264")   
-- See the methodology document for the list of what these sources/funds are.   
+-   in_from_out \<- c("0847", "0867", "1175", "1176", "1177", "1178", "1181", "1182", "1582", "1592", "1745", "1982", "2174", "2264")\
 
-
-```{r step-3.8}
+```{r}
 rev_temp <- rev_temp %>% 
   filter(in_ff == 1) %>% 
   mutate(local = ifelse(is.na(local), 0, local)) %>% # drops all revenue observations that were coded as "local == 1"
@@ -1251,8 +1157,6 @@ rev_temp <- rev_temp %>%
 # if source contains any of the codes in in_from_out, code them as 76 (all other rev).
 # I end up excluding rev_76 in later steps
 ```
-
-
 
 ```{r droprevtypes}
 # revenue types to drop
@@ -1293,22 +1197,13 @@ write.csv(rev_temp, "rev_fy22_recoded_02242023.csv")
 
 ```
 
-
-
 ## Pivoting and Merging
 
-- Local Government Transfers (exp_970) should be on the expenditure side  
-
-- ~~State employer group insurance contributions should be dropped to avoid double counting both the state.~~   Do not do this. This was done for FY21 only and will not be done again.   
-- ~~Subtract employee insurance premiums from State Employee Healthcare Expenditures (group == 904) - Employee Premiums = Actual state healthcare costs.~~   
-- ~~ff_exp$exp904 − emp_premium$employee_premiums_sum = statehealthcarecosts~~
-
-  - Did in FY21, but not doing again. Minor difference in fiscal gap overall from change in methodology.   
-
+-   Local Government Transfers (exp_970) should be on the expenditure side
 
 ### Revenues
 
-I chose to drop rev_76 for Transfers in and Out because I do not understand why that step occurs in the previously used Stata code. Rev_76 was created and included in rev_78 for All Other Revenues in old Stata code for years before FY21 but that method has been discontinued for FY22.      
+I chose to drop rev_76 for Transfers in and Out because I do not understand why that step occurs in the previously used Stata code. Rev_76 was created and included in rev_78 for All Other Revenues in old Stata code for years before FY21 but that method has been discontinued for FY22.
 
 ```{r final-ffrev-table}
 ff_rev <- rev_temp %>% 
@@ -1344,8 +1239,7 @@ ff_rev
 
 ```
 
-
-Since I already pivot_wider()ed the table in the previous code chunk, I now change each column's name by using rename() to set new variable names. Ideally the final dataframe would have both the variable name and the variable label but I have not done that yet. 
+Since I already pivot_wider()ed the table in the previous code chunk, I now change each column's name by using rename() to set new variable names. Ideally the final dataframe would have both the variable name and the variable label but I have not done that yet.
 
 ```{r}
 aggregate_rev_labels <- ff_rev %>%
@@ -1389,13 +1283,9 @@ aggregate_rev_labels
 
 ```
 
-
-
 ### Expenditures
 
-Create exp_970 for all local government transfers (exp_971 + exp_972  + exp_975 + exp_976).
-
-~~Create state employee healthcare costs that reflects the health costs minus the optional insurance premiums that came in (904_new=904−med_option_amt_recent).~~ Do not do this. This was done for FY21 only and will not be done again. Small differences in overall Fiscal Gap from methodology change.  
+Create exp_970 for all local government transfers (exp_971 + exp_972 + exp_975 + exp_976).
 
 ```{r}
 
@@ -1425,15 +1315,11 @@ ff_exp<- ff_exp %>% select(-c(debt_cost, exp_971:exp_976)) # drop unwanted colum
 ff_exp
 ```
 
-
-
-# Clean Table Outputs 
+# Clean Table Outputs
 
 Create total revenues and total expenditures only:
 
-- after aggregating expenditures and revenues, pivoting wider, then I want to drop the columns that I no longer want and then pivot_longer(). After pivoting_longer() and creating `rev_long` and `exp_long`, expenditures and revenues are in the same format and can be combined together for the totals and gap each year.   
-
-
+-   after aggregating expenditures and revenues, pivoting wider, then I want to drop the columns that I no longer want and then pivot_longer(). After pivoting_longer() and creating `rev_long` and `exp_long`, expenditures and revenues are in the same format and can be combined together for the totals and gap each year.
 
 ```{r rev-exp-totals-long}
 rev_long <- pivot_longer(ff_rev, rev_02:rev_78, names_to = c("type","Category"), values_to = "Dollars", names_sep = "_") %>% 
@@ -1547,14 +1433,9 @@ year_totals <- aggregated_totals_long %>%
 year_totals
 ```
 
-
-
-
-
 # Graphs
 
-
-Graphs made from `aggregated_totals_long` dataframe. 
+Graphs made from `aggregated_totals_long` dataframe.
 
 ```{r}
 
@@ -1643,7 +1524,6 @@ fiscal_gap2
 
 ```
 
-
 **Expenditure and revenues when focusing on largest categories and combining others into "All Other Expenditures(Revenues)":**
 
 ```{r}
@@ -1674,4 +1554,3 @@ rev_long %>%
     xlab("") +
   ylab("Millions of Dollars")
 ```
-
