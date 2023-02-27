@@ -26,11 +26,13 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 ## Including or Excluding funds in the Fiscal Futures All Funds Budget
 
-While it is called an "All Funds" Budget, that is a slight exaggeration. Illinois has over 700 funds. Whereas the overwhelming majority are included in our "All Funds" measure, some are not.  The starting point for our list of all funds is all appropriated funds, but, for the reasons listed below, we exclude a handful of appropriated funds and include a number of non-appropriated funds. 
+While it is called an "All Funds" Budget, that is a slight exaggeration. Illinois has over 700 funds. Whereas the overwhelming majority are included in our "All Funds" measure, some are not.  The starting point for our list of all funds is all appropriated funds, but, for the reasons listed below, we exclude a handful of appropriated funds and include a number of non-appropriated funds.[^fundsincluded-1] 
 
-Preliminary expenditure and revenue data is requested after the Fiscal Year ends, and the requested again at the end of the lapse period.[^index-1] Calculations are based off the values received from the data received after October 31st when Illinois' lapse period ends.
+[^fundsincluded-1]: Fiscal Futures Project Documentation. (2016). Institute of Government and Public Affairs, University of Illinois System. <https://igpa.uillinois.edu/fiscal-futures-project-documentation/.>Last document posted online. Updated by Richard Dye.
 
-[^index-1]: "Closed" year:  accounts have been reconciled and reported as final.
+Preliminary expenditure and revenue data is requested after the Fiscal Year ends, and the requested again at the end of the lapse period.[^fundsincluded-2] Calculations are based off the values received from the data received after October 31st when Illinois' lapse period ends.
+
+[^fundsincluded-2]: "Closed" year:  accounts have been reconciled and reported as final.
 
     "Lapse period:"  June 30 fiscal year end date has passed, but books remain open 3-6 months to settle obligations.
 
@@ -67,4 +69,3 @@ Typically we have excluded non-appropriated funds that hold designated user fees
 Non-appropriated funds that are supported by user fees AND perform a state function (e.g., transportation) ARE counted in the frame.  The rationale for this is that the state function would have to be performed even if the user fee and the fund structure did not exist.  The biggest example is the Illinois State Toll Highway Revenue Fund, which collects tolls and supports the expansion and maintenance of Illinois toll roads. 
 
 **Criterion 7:  EXCLUDE IF unclear information, dead fund, small amounts.** Some funds are defunct, and our historical information on fund descriptions does not include pre-2005 designations. Fund numbers are re-used, making it impossible to determine the original purpose of some older, defunct funds.  These funds generally appear to be very small.  Because we are projecting forward from the most recently completed fiscal year, we assumed that these funds would not be in the frame. 
-
