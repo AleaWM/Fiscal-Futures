@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Alea Wilbur-Mujtaba">
-<meta name="dcterms.date" content="2023-02-27">
+<meta name="dcterms.date" content="2023-02-28">
 
-<title>Methodology for the Fiscal Futures FY 2022 Annual Report</title>
+<title>Methodology for the Fiscal Futures Annual Report</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -138,7 +138,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Methodology for the Fiscal Futures FY 2022 Annual Report</span>
+    <span class="navbar-title">Methodology for the Fiscal Futures Annual Report</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -218,7 +218,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Methodology for the Fiscal Futures FY 2022 Annual Report</h1>
+      <h1 class="quarto-secondary-nav-title">Methodology for the Fiscal Futures Annual Report</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -302,7 +302,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#sec-background-info" id="toc-sec-background-info" class="nav-link active" data-scroll-target="#sec-background-info">Background Information</a>
   <ul class="collapse">
-  <li><a href="#github-data-structure" id="toc-github-data-structure" class="nav-link" data-scroll-target="#github-data-structure">Github Data Structure</a></li>
+  <li><a href="#github-data-organization" id="toc-github-data-organization" class="nav-link" data-scroll-target="#github-data-organization">Github Data Organization</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -312,7 +312,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block">Methodology for the Fiscal Futures FY 2022 Annual Report</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block">Methodology for the Fiscal Futures Annual Report</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 <p class="subtitle lead">Part of IGPA’s Fiscal Futures Project</p>
 </div>
 
@@ -330,7 +330,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 27, 2023</p>
+      <p class="date">February 28, 2023</p>
     </div>
   </div>
   
@@ -353,15 +353,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>If you use code associated with this repository please cite the following work:</p>
 <blockquote class="blockquote">
-<p>For general use of the data or code provided, please use this citation: Alea Wilbur-Mujtaba. (2022). Institute of Government and Public Affairs. _____________</p>
+<p>For general use of the code or examples provided, please use this citation: Alea Wilbur-Mujtaba. (2022). Institute of Government and Public Affairs. _____________</p>
 </blockquote>
-<p><img src="images/DataWarehouseB.jpg" class="img-fluid"></p>
-<section id="github-data-structure" class="level2">
-<h2 class="anchored" data-anchor-id="github-data-structure">Github Data Structure</h2>
+<section id="github-data-organization" class="level2">
+<h2 class="anchored" data-anchor-id="github-data-organization">Github Data Organization</h2>
 <p>The authors and IGPA believe that these novel datasets will be valuable to other researchers interested in Illinois’ finances.</p>
 <p>Yearly files from the Illinois Comptroller are in the <code>data</code> –&gt; <code>revenue</code> and <code>expenditures</code> folders. These were acquired through a Freedom of Information Act (FOIA) request. The files within these folders are <strong>before</strong> cleaning or recoding the data. Most of the files for individual years are saved as .dta files due to using Stata before FY21. Please read the DATA_README for additional details.</p>
 <p>Partially cleaned and recoded data can be found in the <code>exp_temp</code> and <code>rev_temp</code> files. Old or renamed agencies and new or reused funds have been recoded in these files but observations that are dropped in the analysis remain in these files. A summary file containing aggregated yearly expenditure and revenue values for categories used in the Fiscal Futures model can be found in the <code>summary_file_FY2022.xlsx</code> excel file. This excel file also contains additional tabs for all CAGR values calculated as well as the yearly change between the most recent fiscal year and the previous fiscal year.</p>
 <p><em>The Annual Report is part of Fiscal Futures project associated with the University of Illinois System Institute of Government and Policy Affairs (IGPA). Creating the R code, Github folder, and website for methodology was done by Alea Wilbur-Mujtaba. Any errors with code or findings are the fault of the author, not the research institute. Data is originally from annual FOIA requests to the Illinois Office of the Comptroller.</em></p>
+<p><img src="images/DataWarehouseB.jpg" class="img-fluid"></p>
 
 
 <!-- -->
@@ -704,19 +704,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>If you use code associated with this repository please cite the following work:</span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; For general use of the data or code provided, please use this citation: Alea Wilbur-Mujtaba. (2022). Institute of Government and Public Affairs. </span><span class="sc">\_\_\_\_\_\_\_\_\_\_\_\_\_</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; For general use of the code or examples provided, please use this citation: Alea Wilbur-Mujtaba. (2022). Institute of Government and Public Affairs. </span><span class="sc">\_\_\_\_\_\_\_\_\_\_\_\_\_</span></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/DataWarehouseB.jpg)</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Github Data Organization</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## Github Data Structure</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>The authors and IGPA believe that these novel datasets will be valuable to other researchers interested in Illinois' finances.</span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>The authors and IGPA believe that these novel datasets will be valuable to other researchers interested in Illinois' finances.</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>Yearly files from the Illinois Comptroller are in the <span class="in">`data`</span> --<span class="sc">\&gt;</span> <span class="in">`revenue`</span> and <span class="in">`expenditures`</span> folders. These were acquired through a Freedom of Information Act (FOIA) request. The files within these folders are **before** cleaning or recoding the data. Most of the files for individual years are saved as .dta files due to using Stata before FY21. Please read the DATA_README for additional details.</span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>Yearly files from the Illinois Comptroller are in the <span class="in">`data`</span> --<span class="sc">\&gt;</span> <span class="in">`revenue`</span> and <span class="in">`expenditures`</span> folders. These were acquired through a Freedom of Information Act (FOIA) request. The files within these folders are **before** cleaning or recoding the data. Most of the files for individual years are saved as .dta files due to using Stata before FY21. Please read the DATA_README for additional details.</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>Partially cleaned and recoded data can be found in the <span class="in">`exp_temp`</span> and <span class="in">`rev_temp`</span> files. Old or renamed agencies and new or reused funds have been recoded in these files but observations that are dropped in the analysis remain in these files. A summary file containing aggregated yearly expenditure and revenue values for categories used in the Fiscal Futures model can be found in the <span class="in">`summary_file_FY2022.xlsx`</span> excel file. This excel file also contains additional tabs for all CAGR values calculated as well as the yearly change between the most recent fiscal year and the previous fiscal year.</span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>Partially cleaned and recoded data can be found in the <span class="in">`exp_temp`</span> and <span class="in">`rev_temp`</span> files. Old or renamed agencies and new or reused funds have been recoded in these files but observations that are dropped in the analysis remain in these files. A summary file containing aggregated yearly expenditure and revenue values for categories used in the Fiscal Futures model can be found in the <span class="in">`summary_file_FY2022.xlsx`</span> excel file. This excel file also contains additional tabs for all CAGR values calculated as well as the yearly change between the most recent fiscal year and the previous fiscal year.</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>*The Annual Report is part of Fiscal Futures project associated with the University of Illinois System Institute of Government and Policy Affairs (IGPA). Creating the R code, Github folder, and website for methodology was done by Alea Wilbur-Mujtaba. Any errors with code or findings are the fault of the author, not the research institute. Data is originally from annual FOIA requests to the Illinois Office of the Comptroller.*</span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>*The Annual Report is part of Fiscal Futures project associated with the University of Illinois System Institute of Government and Policy Affairs (IGPA). Creating the R code, Github folder, and website for methodology was done by Alea Wilbur-Mujtaba. Any errors with code or findings are the fault of the author, not the research institute. Data is originally from annual FOIA requests to the Illinois Office of the Comptroller.*</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/DataWarehouseB.jpg)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

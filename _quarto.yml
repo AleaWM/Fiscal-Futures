@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 book:
-  title: "Methodology for the Fiscal Futures FY 2022 Annual Report"
+  title: "Methodology for the Fiscal Futures Annual Report"
   subtitle: "Part of IGPA's Fiscal Futures Project"
   author: "Alea Wilbur-Mujtaba"
   date: last-modified
