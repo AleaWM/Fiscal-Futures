@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 .gitignore
+.gitattributes
 .tex
 .log
 .json
@@ -15,3 +16,6 @@ rev_temp.csv
 exp_temp.csv
 allexpfiles22.csv
 allrevfiles.csv
+sankeyattemp2022.csv
+federalcoviddollars.xlsx
+fedCUREexpenditures.xlsx
