@@ -1,0 +1,71 @@
+# An All Funds Approach
+
+```{r warning = FALSE, message=FALSE}
+#| include: false
+
+library(tidyverse)
+library(haven)
+library(formatR)
+library(lubridate)
+library(smooth)
+library(forecast)
+library(scales)
+library(kableExtra)
+library(ggplot2)
+library(readxl)
+library(tidyverse)
+library(data.table)
+library(quantmod)
+library(geofacet)
+library(janitor)
+
+
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+```
+
+## Including or Excluding funds in the Fiscal Futures All Funds Budget
+
+While it is called an "All Funds" Budget, that is a slight exaggeration. Illinois has over 700 funds. Whereas the overwhelming majority are included in our "All Funds" measure, some are not.  The starting point for our list of all funds is all appropriated funds, but, for the reasons listed below, we exclude a handful of appropriated funds and include a number of non-appropriated funds.[^fundsincluded-1] 
+
+[^fundsincluded-1]: Fiscal Futures Project Documentation. (2016). Institute of Government and Public Affairs, University of Illinois System. <https://igpa.uillinois.edu/fiscal-futures-project-documentation/.> Last document posted online. Updated by Richard Dye.
+
+Preliminary expenditure and revenue data is requested after the Fiscal Year ends, and the requested again at the end of the lapse period.[^fundsincluded-2] Calculations are based off the values received from the data received after October 31st when Illinois' lapse period ends.
+
+[^fundsincluded-2]: "Closed" year:  accounts have been reconciled and reported as final.
+
+    "Lapse period:"  June 30 fiscal year end date has passed, but books remain open 3-6 months to settle obligations.
+
+    "Open" year:  accounts are still subject to revision and reconciliation (includes lapse period).
+
+    "Current" year: fiscal year has begun (July 1) but not yet ended (June 30).
+
+    "Upcoming" year: next fiscal year for which have actual or proposed appropriations and official revenue estimates.
+
+    "Projection" year: future years for which model is used to project expenditure and revenue by category. 
+
+**Criterion 1: INCLUDE IF the fund collects a state-levied tax.**
+
+The state collects both state-levied taxes and locally levied taxes (typically local-option sales and utility taxes).  The state collects and returns local taxes to the local governments.  Upon receipt, local tax revenues are deposited into specifically-designated, non-appropriated state trust funds.  In cases where the state is solely acting as a collection agent for a local taxing body, this receiving trust fund, its revenue and distribution (expenditure) is NOT counted in our analytical frame.  If the tax is collected for the state, the fund and its revenue IS counted in our analytical frame. 
+
+**Criterion 2:  INCLUDE IF the fund supports a state function.**
+
+Non-appropriated funds may support state functions such as education, social services, transportation, public facilities, regulation, natural resources, and law enforcement.  Generally these are trust funds that hold federal dollars for a specified state project or purpose.  This category of *non-appropriated* funds is essentially the same as a large group of *appropriated* state and federal trust funds.  Because we are counting federal dollars as revenue, it would be inconsistent to count the appropriated funds, but not the non-appropriated funds that do essentially the same thing. 
+
+**Criterion 3:  EXCLUDE IF the fund is a holding fund for individuals.**
+
+Many funds are used to hold monies that belong to individuals, not the state.  Most of these funds are non-appropriated, but some are appropriated.  Examples of appropriated funds that we exclude from the frame are child support collection funds or employee pension own-contribution funds.  These funds are holding money that belongs to an individual and will be returned to the person, or used for a payment on behalf of that person, at a later date. 
+
+**Criterion 4:  EXCLUDE IF the fund's expenditures or revenues have been counted elsewhere (i.e., avoid double-counting).**
+
+In some cases, funds receive and disburse money that was already counted as revenues to or expenditures from other funds.  For example, the Commercial Consolidation Fund is a huge fund that distributes state benefit payments to individuals, service providers, and local governments by direct deposit.  Payments into this fund are counted, distributions from this fund are not. 
+
+**Criterion 5:  EXCLUDE IF the fund holds designated user fees targeted for a specific purpose that is not a public function (conduit).**
+
+Typically we have excluded non-appropriated funds that hold designated user fees that are directed to a specific purpose that is not a necessary public function.  These funds can be considered a conduit and we did not add these to the frame.  For example, we exclude Fund 0098, which collects fees from harness race entrants at the state fair and then pays them out to race winners.
+
+**Criterion 6:  INCLUDE IF the fund collects a user fee that supports a large, important state function (state function trumps user fee).**
+
+Non-appropriated funds that are supported by user fees AND perform a state function (e.g., transportation) ARE counted in the frame.  The rationale for this is that the state function would have to be performed even if the user fee and the fund structure did not exist.  The biggest example is the Illinois State Toll Highway Revenue Fund, which collects tolls and supports the expansion and maintenance of Illinois toll roads. 
+
+**Criterion 7:  EXCLUDE IF unclear information, dead fund, small amounts.** Some funds are defunct, and our historical information on fund descriptions does not include pre-2005 designations. Fund numbers are re-used, making it impossible to determine the original purpose of some older, defunct funds.  These funds generally appear to be very small.  Because we are projecting forward from the most recently completed fiscal year, we assumed that these funds would not be in the frame. 

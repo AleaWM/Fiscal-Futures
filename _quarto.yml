@@ -84,7 +84,7 @@ format:
   #     text: |
   #       \printindex
   #   
-bibliography: references.bib
+#bibliography: references.bib
 #reference-location: margin
 #citation-location: margin
 
