@@ -22,17 +22,23 @@ Read FY22 Fiscal Futures Annual Report [here.](https://igpa.uillinois.edu/) (for
 
 -   Alea Wilbur-Mujtaba, Francis Choi, and David Merriman. (2023). "Recovering from a COVID (Spending) Fever." Institute of Government and Public Affairs. *Forthcoming*.
 
-If you use code associated with this repository please cite the following work:
-
-> For general use of the code or examples provided, please use this citation: Alea Wilbur-Mujtaba. (2022). Institute of Government and Public Affairs. \_\_\_\_\_\_\_\_\_\_\_\_\_
-
 ## Github Data Organization
 
 The authors and IGPA believe that these novel datasets will be valuable to other researchers interested in Illinois' finances.
 
-Yearly files from the Illinois Comptroller are in the `data` --\> `revenue` and `expenditures` folders. These were acquired through a Freedom of Information Act (FOIA) request. The files within these folders are **before** cleaning or recoding the data. Most of the files for individual years are saved as .dta files due to using Stata before FY21. Please read the DATA_README for additional details.
+-   Original files as they were received from FOIA requests is in the `data/DATA_RAW` folder. The version of the files used in the analysis and to create this website are in the `data/DATA_DTA` folder. The files within these folders are **before** cleaning or recoding the data. Most of the files for individual years are saved as .dta files due to using Stata before FY21.
 
-Partially cleaned and recoded data can be found in the `exp_temp` and `rev_temp` files. Old or renamed agencies and new or reused funds have been recoded in these files but observations that are dropped in the analysis remain in these files. A summary file containing aggregated yearly expenditure and revenue values for categories used in the Fiscal Futures model can be found in the `summary_file_FY2022.xlsx` excel file. This excel file also contains additional tabs for all CAGR values calculated as well as the yearly change between the most recent fiscal year and the previous fiscal year.
+-   `allexp_fy22_recoded.csv` and `allrev_fy22_recoded` are probably the best for any researchers trying to use this data in their own projects.
+
+    -   Cleanest version of data before aggregating totals or dropping observations not included in the Fiscal Futures fiscal gap calculation. All years in one file. Funds and agencies should have numbers and consistent labels. Includes the "Group" variable used in the FF Annual Report used for calculating expenditures by function.
+    -   To do: Add group names to go with group number code. Done after pivoting and merging in normal Fiscal Gap calculation code.
+    -   Created in February 2023. Still checking accuracy.
+
+`exp_temp` and `rev_temp`
+
+-   Used in fiscal gap calculation. Data is cleaned and coded up to the point right before aggregating category totals. Drops observations we do not keep in fiscal gap calculation.
+
+A summary file containing aggregated yearly expenditure and revenue values for categories used in the Fiscal Futures model can be found in the `summary_file_FY2022.xlsx` excel file. This excel file also contains additional tabs for all CAGR values calculated as well as the yearly change between the most recent fiscal year and the previous fiscal year. All tables included in the Annual Report are in the summary file.
 
 *The Annual Report is part of Fiscal Futures project associated with the University of Illinois System Institute of Government and Policy Affairs (IGPA). Creating the R code, Github folder, and website for methodology was done by Alea Wilbur-Mujtaba. Any errors with code or findings are the fault of the author, not the research institute. Data is originally from annual FOIA requests to the Illinois Office of the Comptroller.*
 

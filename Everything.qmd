@@ -853,7 +853,7 @@ aggregate_exp_labeled <- exp_temp %>%
 aggregate_exp_labeled
 ```
 
-# Graphs and Tables
+# Graphs and Tables {#sec-graphs-and-tables}
 
 Create total revenues and total expenditures only:
 
@@ -1388,7 +1388,7 @@ rev_dotplot <- rev_long %>%
   scale_x_continuous(limits = c(0, 31000), labels = comma)
 rev_dotplot
 
-ggsave(plot = rev_dotplot, file = "Figure3.eps")
+#ggsave(plot = rev_dotplot, file = "Figure3.eps")
 
 exp_long %>%
     filter(Year == "2022" | Year == "2021") %>%
@@ -2494,7 +2494,7 @@ dataset_names <- list('rev_long' = rev_long, 'exp_long' = exp_long,
 write.xlsx(dataset_names, file = 'summary_file_FY2022_nototals.xlsx')
 ```
 
-# Dropping COVID State CURE Dollars
+# Dropping COVID State CURE Dollars {#sec-dropped-CURE}
 
 If only sustainable revenues are included in the model, then the federal dollars from the pandemic response (CARES, CRSSA,& ARPA)should be excluded from the calculation of the fiscal gap.
 

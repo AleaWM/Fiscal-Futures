@@ -18,14 +18,16 @@ If you use code associated with this repository please cite the following work:
 
 > For general use of the data or code provided, please use this citation: Alea Wilbur-Mujtaba. (2022). Institute of Government and Public Affairs. \_\_\_\_\_\_\_\_\_\_\_\_\_
 
-![](images/DataWarehouseB.jpg)
-
-# Github Data Structure
+# Illinois Budget Dataset
 
 The authors and IGPA believe that these novel datasets will be valuable to other researchers interested in Illinois' finances.
 
-Yearly files from the Illinois Comptroller are in the `data` --\> `revenue` and `expenditures` folders. These were acquired through a Freedom of Information Act (FOIA) request. The files within these folders are **before** cleaning or recoding the data. Most of the files for individual years are saved as .dta files due to using Stata before FY21. These individual yearly files are combined into larger files containing all revenues (`allrev22.csv`) and expenditures (`allexp22.csv`) for all fiscal years.
+Yearly files from the Illinois Comptroller are in the `data`/DATA_DTA/`revenue` and `expenditures` folders. These were acquired through a Freedom of Information Act (FOIA) request. The files within these folders are **before** cleaning or recoding the data. Most of the files for individual years are saved as .dta files due to using Stata before FY21. These individual yearly files are combined into larger files containing all revenues (`allrev22.csv`) and expenditures (`allexp22.csv`) for all fiscal years.
 
-Partially cleaned and recoded data can be found in the `exp_temp` and `rev_temp` files. Old or renamed agencies and new or reused funds have been recoded in these files but observations that are dropped in the analysis remain in these files. A summary file containing aggregated yearly expenditure and revenue values for categories used in the Fiscal Futures model can be found in the `summary_file_FY2022.xlsx` excel file. This excel file also contains additional tabs for all CAGR values calculated as well as the yearly change between the most recent fiscal year and the previous fiscal year.
+Partially cleaned and recoded data can be found in the `exp_temp` and `rev_temp` files. Old or renamed agencies and new or reused funds have been recoded in these files but observations that are dropped in the analysis remain in these files.
+
+A summary file containing aggregated yearly expenditure and revenue values for categories used in the Fiscal Futures model can be found in the `summary_file_FY2022.xlsx` excel file. This excel file also contains additional tabs for all CAGR values calculated as well as the yearly change between the most recent fiscal year and the previous fiscal year.
 
 *The Fiscal Futures Project is associated with the University of Illinois System Institute of Government and Policy Affairs (IGPA). Creating the R code, Github folder, and website for methodology was done by Alea Wilbur-Mujtaba. Any errors with code or findings are the fault of the author, not the research institute. Data is originally from annual FOIA requests to the Illinois Office of the Comptroller.*
+
+![](images/DataWarehouseB.jpg)

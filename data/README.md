@@ -1,10 +1,10 @@
 # Data Folder Details
 
-The rawest data available is in the data_RAW folder. *(coming soon)*
+The rawest data available is in the data_RAW folder.
 
 Intermediate stages of data available:
 
--   `allrevfiles22.csv` (and `allexpfiles22.csv` are the combined files received from the comptroller for fiscal years 1998-2022
+-   `allrevfiles22.csv` and `allexpfiles22.csv` are the combined files received from the comptroller for fiscal years 1998-2022
 
     -   These files do not have their agencies or funds recoded consistently over time. They do not have clean labels to go with the number of each agency, fund, org, etc.
 
@@ -16,9 +16,9 @@ Intermediate stages of data available:
     -   To do: Add group names to go with group number code. Done after pivoting and merging in normal Fiscal Gap calculation code.
     -   Created in February 2023. Still checking accuracy.
 
--   exp_temp and rev_temp
+-   `exp_temp` and `rev_temp`
 
-    -   Used in fiscal gap calculation. Data is cleaned and coded up to the point right before aggregating category totals.
+    -   Used in fiscal gap calculation. Data is cleaned and coded up to the point right before aggregating category totals. Drops observations we do not keep in fiscal gap calculation.
 
 ## Additional information
 
