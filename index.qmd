@@ -12,9 +12,11 @@ This site documents the methodology used to calculate Illinois' Fiscal Gap betwe
 
 This website was originally created by Alea Wilbur-Mujtaba as an internal document for Fiscal Futures researchers to increase reproducibility and update the methodology documentation used for the Fiscal Futures Annual Report. Until August 2022, The FF Annual Report was calculated in Stata with code and documentation that had been passed on for years and modified in a piece-meal fashion. Alea translated the Stata files into an R file before transitioning into a Github Page with downloadable public data.
 
-While the main purpose of the document is for documenting Fiscal Futures methodology, it also contains useful information on variables used by the Illinois Office of the Comptroller (IOC) that may be of use to other researchers. Frequently discussed topics (e.g. Pensions, Debt, Federal Revenue Sources, Medicaid, etc.) each have their own section dedicated to looking at the many relevant variables for that topic, even if the budget variables are not directly included while calculating the Fiscal Gap.
+While the main purpose of the document is for documenting Fiscal Futures methodology, it also contains useful information on variables used by the Illinois Office of the Comptroller (IOC) that may be of use to other researchers. Frequently discussed topics (e.g. Pensions, Debt, Federal Revenue Sources, Medicaid, etc.) each have their own section dedicated to looking at the many relevant variables for that topic, even if the budget variables are not directly included while calculating the Fiscal Gap for the Fiscal Futures Annual Report.
 
+::: {.callout-tip appearance="minimal" icon="false"}
 This is a novel dataset containing all revenue items and all expenditure items from fiscal year (FY) 1998 to FY 2022 received through yearly FOIA requests to the Illinois Comptroller. The data can be downloaded in this page's [data folder](https://github.com/AleaWM/Fiscal-Futures/tree/main/data). To the authors' knowledge, the revenue and expenditure data used in the analysis does not exist elsewhere and cannot be downloaded from the Comptroller's website or the Illinois Data Portal in this format.
+:::
 
 This document is a good faith effort to increase reproducibility and transparency. It is a living document in which we aim to describe things as clearly as possible in the time we have, share it with others, and improve each time we come back to it.
 
