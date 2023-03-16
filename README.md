@@ -10,13 +10,15 @@ This is a novel dataset containing all revenue items and all expenditure items f
 
 This document is a good faith effort to increase reproducibility and transparency. It is a living document in which we aim to describe things as clearly as possible in the time we have, share it with others, and improve each time we come back to it.
 
-Read FY22 Fiscal Futures Annual Report [here.](https://igpa.uillinois.edu/) (forthcoming, will update link once published - AWM 2/14/2023)
+Read the FY22 Fiscal Futures Annual Report: [Recovering From a (COVID) Spending Fever](https://igpa.uillinois.edu/wp-content/uploads/2023/03/IGPA_FiscalFuturesCOVID_FeverD.pdf)
 
--   Alea Wilbur-Mujtaba, Francis Choi, and David Merriman. (2023). "Recovering from a COVID (Spending) Fever." Institute of Government and Public Affairs. *Forthcoming*.
+-   Alea Wilbur-Mujtaba, Francis Choi, and David Merriman. (2023). "Recovering from a COVID (Spending) Fever." Institute of Government and Public Affairs. <https://igpa.uillinois.edu/wp-content/uploads/2023/03/IGPA_FiscalFuturesCOVID_FeverD.pdf>.
 
 If you use code associated with this repository please cite the following work:
 
-> For general use of the data or code provided, please use this citation: Alea Wilbur-Mujtaba. (2022). Institute of Government and Public Affairs. \_\_\_\_\_\_\_\_\_\_\_\_\_
+-   Alea Wilbur-Mujtaba. (2022). *Methodology for the Fiscal Futures Annual Report.* Retrieved from https://github.com/AleaWM/Fiscal-Futures.com/
+
+-   *I'm honestly not sure if this is the correct citation to use. Still a work in progress and figuring out the details. 3/16/2023*
 
 # Illinois Budget Dataset
 
