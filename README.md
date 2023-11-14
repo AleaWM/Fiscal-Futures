@@ -16,7 +16,7 @@ Read the FY22 Fiscal Futures Annual Report: [Recovering From a (COVID) Spending 
 
 If you use code associated with this repository please cite the following work:
 
--   Alea Wilbur-Mujtaba. (2022). *Methodology for the Fiscal Futures Annual Report.* Retrieved from https://github.com/AleaWM/Fiscal-Futures.com/
+-   Alea Wilbur-Mujtaba. (2022). *Methodology for the Fiscal Futures Annual Report.* Retrieved from <https://aleawm.github.io/Fiscal-Futures/>
 
 -   *I'm honestly not sure if this is the correct citation to use. Still a work in progress and figuring out the details. 3/16/2023*
 
