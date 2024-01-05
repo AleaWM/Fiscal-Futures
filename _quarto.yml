@@ -26,7 +26,7 @@ book:
   navbar: 
     right: 
       - icon: github
-        href: https://github.com/AleaWM/Fiscal-Futures-IL-FY2023.git
+        href: https://github.com/AleaWM/Fiscal-Futures.git
     left:
       - text: "About"
         file: index.qmd
@@ -44,7 +44,7 @@ book:
           - K12-Spending.qmd
           - Everything.qmd
       - text: "Data"
-        href: https://github.com/AleaWM/https://github.com/AleaWM/Fiscal-Futures-IL-FY2023/tree/main/data
+        href: https://github.com/AleaWM/https://github.com/AleaWM/Fiscal-Futures/tree/main/data
 #      - text: "Reports"
 #        file: FiscalGap.qmd
  #     - text: "COVID-related Federal Revenue"
