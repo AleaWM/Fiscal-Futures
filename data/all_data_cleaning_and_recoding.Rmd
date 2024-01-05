@@ -2,7 +2,7 @@
 
 library(tidyverse)
 library(haven)
-library(formatR)
+#library(formatR)
 library(lubridate)
 library(smooth)
 library(forecast)
@@ -13,7 +13,7 @@ library(readxl)
 library(tidyverse)
 library(data.table)
 library(quantmod)
-library(geofacet)
+#library(geofacet)
 library(janitor)
 
 
@@ -21,7 +21,13 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 ```
 
-This code is based on the [All Code Together](Everything.qmd) page BUT it doesn't contain as many graphs or descriptions behind the code. It also has been modified slightly so that it DOES NOT drop observations that would normally be removed (e.g. principle payments, statutory transfers, etc.). It was created purely for the purpose of making a dataset that had all the observations received from the comptrollers office with the labels used by fiscal futures researchers.
+::: {.callout-note appearance="minimal" icon="false"}
+## Budget data with all observations for other researchers
+
+This page describes the creation of `allexp_fy22_recoded_LASTDATEMODIFIED.csv` and `allrev_fy22_recoded_LASTDATEMODIFIED.csv`.
+:::
+
+This code is based on the [All Code Together](Everything.qmd) page BUT it doesn't contain as many graphs or descriptions behind the code. It also has been modified slightly so that it DOES NOT drop observations that would normally be removed (e.g. principle payments, statutory transfers, etc.) during the data processing for the Fiscal Futures report. It was created purely for the purpose of making a dataset that had all the observations received from the comptrollers office with the labels used by fiscal futures researchers.
 
 This is a good faith effort to create a publicly available file that is labeled and coded nicely for other researchers. I cannot guarantee the accuracy but it should at least get you started on your task. I will try to do quality checks in the near future to make sure grouping variables are correct and that the binary variables created to indicate transfers, debt, etc. are also reliable. Use at your own risk and read the code closely! - AWM
 
@@ -102,10 +108,32 @@ allexpfiles22 = list.files(path = "C:/Users/aleaw/OneDrive/Documents/PhD Fall 20
 #fy21 213372 observations, 20 variables
 # fy22 225587 obs, 21 vars.
 
-#write_csv(allexpfiles22, "allexpfiles.csv")
 
+
+# filling in missing values for source_name
+allrevfiles22 <- allrevfiles22 %>% 
+  mutate(source_name = 
+           case_when(
+             fy == "2018" ~ "rev IOC 2018",
+             fy =="2021" ~ "rev IOC Nov 2022",
+             fy == "2022" ~ " rev IOC Nov 2023",
+             TRUE ~ source_name)) %>%
+  mutate(from_fund = ifelse(from_fund==".", NA, from_fund) )
+
+allexpfiles22 <- allexpfiles22 %>% 
+  mutate(source_name = 
+           case_when(
+             fy == "2018" ~ "exp IOC 2018", # was missing label
+             fy == "2021" ~ "exp IOC Nov 2022", # when FOIA data request was received
+             fy == "2022" ~ "exp IOC Nov 2023",
+             TRUE ~ source_name))
+
+#write_csv(allexpfiles22, "allexpfiles.csv")
+        
 
 ```
+
+Data files received include all observations through August 31 of each fiscal year. Data is requested and received after the lapse period closes on October 31.
 
 Code below reads in the csv files created in chunks above (`allrevfiles.csv` and `allrexpfiles.csv`). These files contain all years of data combined into one file BEFORE any recoding is done. Do not use this file for summing categories because it is just an inbetween step before recoding revenue and expenditure categories. **It also does not have funds or agencies tracked consistently over time.** Essentially it is just the raw data for all years combined but we are including the file in the github folder just in case anybody can use it somehow.
 
@@ -113,6 +141,8 @@ Code below reads in the csv files created in chunks above (`allrevfiles.csv` and
 # combined in past chunks called create-rev-csv and create-exp-csv
 
 allrevfiles22 <- read_csv("allrevfiles22.csv") #combined but not recoded
+library(Hmisc)
+contents(allrevfiles22)
 allexpfiles22 <- read_csv("allexpfiles22.csv") #combined but not recoded
 
 ```
@@ -123,7 +153,7 @@ The numbers of funds, agencies, organizations, and revenue sources below were fo
 
 This can also be done using R and grouping new files by fund, agency, source number, source names, etc.. as is done in the code below.
 
-Comparing all known agencies and funds from past years to the most recent year od data tells us if any new funds, agencies, sources, etc. began to be used or if an old fund number was reused for a new function. Tracking changes over time is a crucial step in the Fiscal Futures project methodology.
+Comparing all known agencies and funds from past years to the most recent year of data tells us if any new funds, agencies, sources, etc. began to be used or if an old fund number was reused for a new function. Tracking changes over time is a crucial step in the Fiscal Futures project methodology.
 
 **General steps for finding new/reused funds:**
 
@@ -288,7 +318,18 @@ anti_join(sources22, sources_past, by = c("source", "source_name")) %>%
 
 Sources 2737 through 2756 were not found in the IOC_source file so I added them to `ioc_source_updated22_AWM.xlsx`. They do NOT have a rev_type in the file so each source must be searched on the Comptrollers website. We could ask for a variable key from the comptroller for a list of all revenue sources and their revenue type in the future to make our lives easier. I had to look at the sources within each revenue type to find the ones missing and then manually update our ioc_source file. Most of these were considered type 39, "Licenses, Fees, & Registrations". These were finally updated on January 20th 2023 after totals were created for the FY22 paper.
 
-> To do: Double check ioc_source file "local" variable. Make sure it is still accurate and that it isn't missing any local sources.
+> Disclaimer: The variable `local` existed when I began working on the project. I have not updated it or used it.
+
+```{r}
+## attempt at recreating items that were coded as amnesty==1 or local==1. 
+
+## if similar to data that was inheritied before joining the project, then I would apply it to FY19 to current FY to see if any revenue sources should have been coded as "local" or "amnesty"
+
+
+local_rev_words <- c("MPEA", "MUNI", "COUNTY", "CNTY", "HOME RUL*", "NON HOME R*", "RTA", "LOCAL", "CHICAGO", "CITY", "R.O.T", "R O T", " ROT ")
+
+amnesty_words <- c("AMNESTY")
+```
 
 ### Recoding New and Reused Funds
 
@@ -1073,8 +1114,11 @@ rm(rev_1998_2022)
 rm(exp_1998_2022)
 
 
-write.csv(exp_temp, "allexp_fy22_recoded_02242023.csv")
-write.csv(rev_temp, "allrev_fy22_recoded_02242023.csv")
+#write.csv(exp_temp, "allexp_fy22_recoded_02242023.csv")
+#write.csv(rev_temp, "allrev_fy22_recoded_02242023.csv")
+
+write.csv(exp_temp, "allexp_fy22_recoded_April262023.csv")
+write.csv(rev_temp, "allrev_fy22_recoded_April262023.csv")
 
 ```
 
