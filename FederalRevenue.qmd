@@ -41,13 +41,15 @@ library(janitor)
 #devtools::install_github("CMAP-REPOS/cmapplot", build_vignettes=TRUE)
 library(cmapplot)
 
+theme_set(theme_classic())
+
 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
-exp_temp <- read_csv("exp_temp.csv") %>% 
+exp_temp <- read_csv("./data/exp_temp.csv") %>% 
   filter(agency != "799") 
 
-rev_temp <- read_csv("rev_temp.csv") %>% 
+rev_temp <- read_csv("./data/rev_temp.csv") %>% 
   filter(agency != "799"  & rev_type != "75")
 ```
 
@@ -72,7 +74,7 @@ rev_temp %>%
     geom_recessions(xformay = "numeric",text = FALSE)+
 
   geom_line(aes(x=fy, y=receipts,color=rev_type_name)) +
-      theme_bw() +
+      theme_classic() +
   scale_y_continuous(labels = comma)+
   labs(title = "Federal to State Transfers", 
        caption = "These values include stimulus funds after the Great Recession and the COVID pandemic response.",
@@ -86,7 +88,7 @@ rev_temp %>%
   summarise(receipts = sum(receipts, na.rm = TRUE)/1000000) %>% 
   ggplot() +
   geom_line(aes(x=fy, y=receipts,color=rev_type_name)) +
-      theme_bw() +
+      theme_classic() +
   scale_y_continuous(labels = comma)+
   labs(title = "Federal to State Transfers", 
        caption = "These values include stimulus funds after the Great Recession and the COVID pandemic response.",
@@ -106,7 +108,7 @@ fedrev %>%
   summarise(receipts = sum(receipts, na.rm = TRUE)/1000000) %>% 
   ggplot() +
   geom_line(aes(x=fy, y=receipts)) +
-      theme_bw() +
+      theme_classic() +
   scale_y_continuous(labels = comma)+
   labs(title = "All Federal Revenue", 
        y = "Millions of Dollars", x = "") + 
@@ -121,7 +123,7 @@ fedrev %>%
   summarise(receipts = sum(receipts, na.rm = TRUE)/1000000) %>% 
   ggplot() +
   geom_line(aes(x=fy, y=receipts)) +
-      theme_bw() +
+      theme_classic() +
   scale_y_continuous(labels = comma)+
   labs(title = "All Federal EXCEPT Federal Stimulus Package", 
        y = "Millions of Dollars", x = "",

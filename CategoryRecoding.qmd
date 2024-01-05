@@ -21,15 +21,13 @@ library(janitor)
 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
 
-exp_temp <- read_csv("exp_temp.csv")
-rev_temp <- read_csv("rev_temp.csv")
+exp_temp <- read_csv("./data/exp_temp.csv")
+rev_temp <- read_csv("./data/rev_temp.csv")
 ```
 
-
-### Tax refunds 
+### Tax refunds
 
 Aggregate expenditures: Save tax refunds as negative revenue. Code refunds to match the rev_type codes (02=income taxes, 03 = corporate income taxes, 06=sales tax, 09=motor fuel tax, 24=insurance taxes and fees, 35 = all other tax refunds).
-
 
 ```{r tax-refunds}
 ## negative revenue becomes tax refunds
@@ -59,7 +57,7 @@ tax_refund <- tax_refund_long %>%
   mutate_all(~replace_na(.,0)) %>%
   arrange(fy)
 
-tax_refund %>% pivot_longer( ref_02:ref_35, names_to = "Refund Type", values_to = "Amount") %>%
+tax_refund %>% pivot_longer(ref_02:ref_35, names_to = "Refund Type", values_to = "Amount") %>%
   ggplot()+
   geom_line(aes(x=fy,y=Amount, group = `Refund Type`, color = `Refund Type`))+
   labs(title = "Refund Types", caption = "Refunds are excluded from Expenditure totals and instead subtracted from Revenue totals") + 
@@ -74,8 +72,6 @@ exp_temp <- exp_temp %>% filter(refund == "not refund")
 ```
 
 `tax_refund` amounts are removed from expenditure totals and subtracted from revenue totals (since they were tax refunds).
-
-
 
 ```{r group-codes}
 
@@ -203,7 +199,7 @@ exp_temp <- exp_temp %>%
 
 exp_temp %>% filter(group_name == "Check name")
 
-#write_csv(exp_temp, "all_expenditures_recoded.csv")
+#write_csv(exp_temp, "./data/all_expenditures_recoded.csv")
 
 ```
 
@@ -295,7 +291,6 @@ The Fiscal Futures model focuses on sustainable revenue sources. To understand o
 rev_temp <- rev_temp %>% mutate(covid_dollars = ifelse(source_name_AWM == "FEDERAL STIMULUS PACKAGE",1,0))
 ```
 
-
 ### Transfers in and Out:
 
 Funds that hold and disperse local taxes or fees are dropped from the analysis. Then other excluded revenue types are also dropped.
@@ -344,7 +339,7 @@ drop_type <- c("32", "45", "51",
 rev_temp <- rev_temp %>% filter(!rev_type_new %in% drop_type)
 # keep observations that do not have a revenue type mentioned in drop_type
 
-table(rev_temp$rev_type_new)
+#table(rev_temp$rev_type_new)
 
 rev_temp %>% 
   group_by(fy, rev_type_new) %>% 

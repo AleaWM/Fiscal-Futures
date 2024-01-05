@@ -18,13 +18,14 @@ library(quantmod)
 library(geofacet)
 library(janitor)
 
+theme_set(theme_classic())
 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
-exp_temp <- read_csv("exp_temp.csv") %>% 
+exp_temp <- read_csv("./data/exp_temp.csv") %>% 
   filter(agency != "799") 
 
-rev_temp <- read_csv("rev_temp.csv") %>% 
+rev_temp <- read_csv("./data/rev_temp.csv") %>% 
   filter(agency != "799")
 
 
@@ -137,6 +138,7 @@ all_debt %>%
 
 all_debt %>% 
   ggplot() + 
+  theme_classic() +
     geom_line(aes(x=fy, y=principal/1000000, color = "Principal"))+ 
     geom_line(aes(x=fy, y=interest/1000000, color = "Interest"))+
     geom_line(aes(x=fy, y = CapitalProjects / 1000000, color = "Capital Projects"))+
@@ -161,13 +163,14 @@ rev_temp %>%
 bond_proceeds <- rev_temp %>% 
   filter(rev_type == "72") %>% #bond proceeds
 #  filter(agency == "370" & source == "0571") %>%     
-  group_by(fy, fund_cat_name.y) %>% 
+  group_by(fy, fund_cat_name) %>% 
   summarize(sum = sum(receipts/1000000000, na.rm=FALSE))
 
-rev_temp %>% filter(rev_type == "72") %>% ggplot() + geom_col(aes(x=fy, y=receipts)) + labs(title = "All Bond Proceeds")
+rev_temp %>% filter(rev_type == "72") %>% ggplot() + geom_col(aes(x=fy, y=receipts)) + labs(title = "All Bond Proceeds") + theme_classic()
 
 bond_proceeds %>% ggplot() + 
-  geom_line(aes(x=fy, y=sum, color=fund_cat_name.y)) + 
+ theme_classic() +
+  geom_line(aes(x=fy, y=sum, color=fund_cat_name)) + 
   labs(title = "Bond Proceeds, Revenue Type = 72", y="Billions of Dollars")
 ```
 
@@ -261,6 +264,8 @@ tollway_bondproc <- rev_temp %>%
 
 
 ggplot()+
+    theme_classic() +
+
   geom_col(data=tollway_bondproc, aes(x=fy, y=sum)) +
   geom_line(data= tollwaydebt, aes(x=fy, y = sum, color = 'Debt Service'))+ 
   geom_line(data= tollway_exp, aes(x=fy, y = expenditure, color = 'Tollway Expenditures'))+ 
@@ -275,6 +280,7 @@ ggplot()+
        y = "Dollars")
 
 ggplot()+
+  theme_classic() +
   geom_line(data=alltollway_exp, aes(x=fy, y=expenditure/1000000000, color = "All Tollway Revenue")) +
   geom_line(data= alltollway_rev, aes(x=fy, y = sum/1000000000, color = 'All Tollway Expenditures'))+ 
   scale_color_manual(values = c(
@@ -282,8 +288,10 @@ ggplot()+
     'All Tollway Expenditures' = 'red')) +
   theme(legend.position = "bottom")+
   labs(title=" All revenues (Tolls + bond proceeds) and all expenditures (operations, capital improvements, & debt service.)", 
-       caption = "Tollway revenue + bond proceeds should be roughly equal to tollway expenditures + debt service.
-       Capital improvements and the cost of principal payments may be double counting those costs.
+       caption = "Tollway revenue + bond proceeds should be 
+       roughly equal to tollway expenditures + debt service.
+       Capital improvements and the cost of principal payments
+       may be double counting those costs.
        (The cost of the project and then the cost of debt service).", 
        y = "Billions of Dollars")
 
@@ -294,6 +302,8 @@ ggplot()+
 ```{r}
 all_debt %>%  # all debt does NOT include the tollway expenditures
   ggplot() + 
+    theme_classic() +
+
     geom_line(aes(x=fy, y=principal/1000000, color = "Principal"))+ 
     geom_line(aes(x=fy, y=interest/1000000, color = "Interest"))+
     geom_line(aes(x=fy, y = CapitalProjects / 1000000, color = "Capital Projects Debt Service"))+
@@ -307,6 +317,8 @@ all_debt %>%  # all debt does NOT include the tollway expenditures
 
 all_debt %>% 
   ggplot() + 
+    theme_classic() +
+
     geom_line(aes(x=fy, y=(principal+interest+CapitalProjects)/1000000, color = "All Principal & Interest"))+ 
     #geom_line(aes(x=fy, y=interest/1000000, color = "Interest"))+
   #  geom_line(aes(x=fy, y = CapitalProjects / 1000000, color = "Capital Projects Debt Service"))+

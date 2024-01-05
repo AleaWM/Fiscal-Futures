@@ -18,11 +18,13 @@ library(quantmod)
 library(geofacet)
 library(janitor)
 
+theme_set(theme_classic())
+
 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
-exp_temp <- read_csv("exp_temp.csv")
-rev_temp <- read_csv("rev_temp.csv")
+exp_temp <- read_csv("./data/exp_temp.csv")
+rev_temp <- read_csv("./data/rev_temp.csv")
 
 ```
 
