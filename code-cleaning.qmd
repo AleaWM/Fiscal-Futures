@@ -42,7 +42,7 @@ Normally, when your receive the new fiscal year files from the Comptrollers offi
 
 #Example code below: Read in excel file and rename columns so that it plays well with the other years' files.
 
-revenue_fy22 <- read_xlsx("Fis_Fut_Rev_2022_Final.xlsx") %>% 
+revenue_fy23 <- read_xlsx("Fis_Fut_Rev_2023_Final.xlsx") %>% 
   rename(fy = 'FY',
          fund = 'FUND',
          fund_name = 'FUND NAME',
@@ -53,7 +53,7 @@ revenue_fy22 <- read_xlsx("Fis_Fut_Rev_2022_Final.xlsx") %>%
          receipts = 'AMOUNT'
   ) 
 
-exp_fy22 <- read_xlsx("Fis_Fut_Exp_2022_Final.xlsx") %>% 
+exp_fy23 <- read_xlsx("Fis_Fut_Exp_2023_Final.xlsx") %>% 
   rename(fy = 'FY',
          fund = 'FUND',
          fund_name = 'FUND NAME',
@@ -87,28 +87,36 @@ For FY 2023 and after, .dta files can be avoided entirely and .csv or excel file
 
 For years after fy22: add line of code to bind csv files after binding the dta files together. Variable names must be identical to merge files together.
 
-```{r create-rev-csv-FY22, include=FALSE, eval=FALSE}
+<!--- Code chunk below not updated. Is in other .rmd files for fy2023--->
+
+```{r create-rev-csv-FY23, include=FALSE, eval=FALSE}
 # years after fy22: add line of code to bind csv files after binding the dta files.
 
-setwd("C:/Users/aleaw/OneDrive/Documents/PhD Fall 2021 - Spring 2022/Merriman RA/Fiscal Futures FY2022/Replication-Files/revenue")
+setwd("./data/ioc_data_received/revenue")
 
-allrevfiles22 = list.files(path = "C:/Users/aleaw/OneDrive/Documents/PhD Fall 2021 - Spring 2022/Merriman RA/Fiscal Futures FY2022/Replication-Files/revenue",  pattern = ".dta") %>%  lapply(read_dta) %>% bind_rows
+allrevfiles23 = list.files(path = "./data/ioc_data_received/revenue",  pattern = ".dta") %>%  lapply(read_dta) %>% bind_rows
 
 #Fy21: 62294 observations, 13 variables
 
 #FY22: 65094 obs, 13 vars
+ 
+#FY23: 57822 obs
 
-write_csv(allrevfiles22, "allrevfiles22.csv")
 
-setwd("C:/Users/aleaw/OneDrive/Documents/PhD Fall 2021 - Spring 2022/Merriman RA/Fiscal Futures FY2022/Replication-Files/expenditures")
+write_csv(allrevfiles23, "./data/allrevfiles23.csv")
 
-allexpfiles22 = list.files(path = "C:/Users/aleaw/OneDrive/Documents/PhD Fall 2021 - Spring 2022/Merriman RA/Fiscal Futures FY2022/Replication-Files/expenditures",  pattern = ".dta") %>%  lapply(read_dta) %>% bind_rows
+setwd("./data/ioc_data_received/expenditures")
+
+allexpfiles23 = list.files(path = "./data/ioc_data_received/expenditures",  pattern = ".dta") %>%  lapply(read_dta) %>% bind_rows
 
 #fy21 213372 observations, 20 variables
 
 # fy22 225587 obs, 21 vars.
 
-write_csv(allexpfiles22, "allexpfiles22.csv")
+# fy23 238089 obs
+
+
+write_csv(allexpfiles23, ".data/allexpfiles23.csv")
 ```
 
 Code below reads in the csv files created in chunks above (allrevfiles.csv and allrexpfiles.csv). These files contain all years of data combined into one file BEFORE any recoding is done. Do not use this file for summing categories because it is just an inbetween step before recoding revenue and expenditure categories. It also does not contain changes in funds or agencies.
@@ -117,159 +125,154 @@ Code below reads in the csv files created in chunks above (allrevfiles.csv and a
 
 # combined in past chunks called create-rev-csv and create-exp-csv
 
-allrevfiles22 <- read_csv("allrevfiles22.csv") #combined but not recoded
+allrevfiles23 <- read_csv("./data/allrevfiles_Nov132023.csv") #combined but not recoded
 
-allexpfiles22 <- read_csv("allexpfiles22.csv") #combined but not recoded
+allexpfiles23 <- read_csv("./data/allexpfiles_Nov132023.csv") #combined but not recoded
 ```
 
-### Inspecting new FY22 data files
+### Inspecting new FY23 data files
 
 Data files for closed years have been obtained from IOC. The numbers of funds, agencies, organizations, and revenue sources below were found by using pivot tables in the codebook files in the FY2022 Box folder. This could also be done using R and grouping new files by fund, agency, source number, source names, etc..
 
-Revenue File:
+~~Revenue File:~~
 
--   684 Fund Numbers
--   80 Agencies
--   1184 Revenue source numbers
--   1156 revenue source names
+-   ~~684 Fund Numbers~~
+-   ~~80 Agencies~~
+-   ~~1184 Revenue source numbers~~
+-   ~~1156 revenue source names~~
 
-Expenditure File:
+~~Expenditure File:~~
 
--   708 Fund Numbers
--   107 Agencies
--   98 Organization Numbers
--   313 Organization names
+-   ~~708 Fund Numbers~~
+-   ~~107 Agencies~~
+-   ~~98 Organization Numbers~~
+-   ~~313 Organization names~~
 
-### Finding new agencies and funds
+### ~~Finding new agencies and funds~~
 
-General steps:
+~~General steps:~~
 
-1.  Identify new and reused funds for newest fiscal year.
-2.  Recode funds to take into account different fund numbers/names over the years. See \[Recoding New and Reused Funds\] for code chunk that does this.
-3.  Update fund_ab_in_2022.xlsx with any changes from previous fiscal year.
+1.  ~~Identify new and reused funds for newest fiscal year.~~
+2.  ~~Recode funds to take into account different fund numbers/names over the years. See \[Recoding New and Reused Funds\] for code chunk that does this.~~
+3.  ~~Update fund_ab_in_2022.xlsx with any changes from previous fiscal year.~~
 
-**New Agencies, Funds, and Organizations from Expenditure files:**
+~~**New Agencies, Funds, and Organizations from Expenditure files:**~~
 
--   Using the code below, I found 2 agencies, multiple funds, and a couple organizations that had not been specifically mentioned in the funds_ab_in file - AWM, FY2022.
--   Note: One new org name and org number combo has an expenditure of \$600 million for pensions payment. Investigate later.
+-   ~~Using the code below, I found 2 agencies, multiple funds, and a couple organizations that had not been specifically mentioned in the funds_ab_in file - AWM, FY2022.~~
+-   ~~Note: One new org name and org number combo has an expenditure of \$600 million for pensions payment. Investigate later.~~
 
-```{r}
-allrevfiles22 <- read_csv("allrevfiles22.csv") #combined but not recoded
+```{r eval=FALSE}
 
-allexpfiles22 <- read_csv("allexpfiles22.csv") #combined but not recoded
-
+#allrevfiles23 <- read_csv("allrevfiles23.csv") #combined but not recoded
+#allexpfiles23 <- read_csv("allexpfiles23.csv") #combined but not recoded
 
 #### From Expenditure Data #####
 
 # agencies referenced in any year before 2020:
-
-agencies_past <- allexpfiles22 %>% 
-  filter(fy < 2022) %>% 
+agencies_past <- allexpfiles23 %>% 
+  filter(fy < 2023) %>% 
   mutate(agency == as.character(agency)) %>% 
-  group_by(agency, agency_name) %>% 
-  unique() %>% 
+  group_by(agency, agency_name) %>% unique() %>% 
   summarize(expenditure = sum(expenditure, na.rm = TRUE)) %>% 
   drop_na() %>% 
   arrange(agency)
-
 # agencies_past # 146 agencies ever
 
-# agencies in 2022 data:
 
-agencies22 <- allexpfiles22  %>% 
-  filter(fy == 2022) %>% 
+# agencies in 2023 data:
+agencies23 <- allexpfiles23  %>% 
+  filter(fy == 2023) %>% 
   mutate(agency == as.character(agency)) %>% 
   group_by(agency, agency_name) %>% 
   summarize(expenditure = sum(expenditure, na.rm = TRUE))
 
-# agencies22 # 107 agencies this year
 
 # 280 and 533 are new agency codes: 
-
-anti_join(agencies22, agencies_past, 
+anti_join(agencies23, agencies_past, 
           by = c("agency", "agency_name")) %>% 
   arrange(agency)
 
-funds_past <- allexpfiles22  %>% 
-  filter(fy < 2022) %>% 
+
+
+
+funds_past <- allexpfiles23  %>% 
+  filter(fy < 2023) %>% 
   mutate(fund == as.character(fund)) %>% 
   group_by(fund, fund_name) %>% 
   summarize(count = n(), Expenditure = sum(expenditure, na.rm = TRUE))  %>% 
   drop_na()
 
-funds22 <- allexpfiles22  %>% 
-  filter(fy == 2022) %>% 
+funds23 <- allexpfiles23  %>% 
+  filter(fy == 2023) %>% 
   mutate(fund == as.character(fund)) %>% 
   group_by(fund, fund_name) %>%  
   summarize(count = n(), Expenditure = sum(expenditure, na.rm = TRUE)) %>% 
   unique()
 
-# 15 funds were in FY22 data that were not in past data:
 
-anti_join(funds22, funds_past, by = c("fund", "fund_name")) %>% arrange(fund)
+# 15 funds were in FY22 data that were not in past data:
+anti_join(funds23, funds_past, 
+          by = c("fund", "fund_name")) %>% 
+  arrange(fund)
 
 # orgs_pastin the past =  916 org groups ever
-
-orgs_past <- allexpfiles22  %>% 
-  filter(fy < 2022) %>% 
+orgs_past <- allexpfiles23  %>% 
+  filter(fy < 2023) %>% 
   mutate(appr_org == as.character(appr_org)) %>% 
-  group_by(appr_org, org_name) %>% 
-  unique() %>% 
-  summarize(Expenditure = sum(expenditure, na.rm = TRUE)) %>% drop_na()
+  group_by(appr_org, org_name) %>% unique() %>% 
+  summarize(Expenditure = sum(expenditure, na.rm = TRUE)) %>% 
+  drop_na()
 
 # orgs_past # 916 org groups ever
-
-orgs22 <- allexpfiles22  %>% 
-  filter(fy == 2022) %>% 
+orgs23 <- allexpfiles23  %>% 
+  filter(fy == 2023) %>% 
   mutate(appr_org = as.character(appr_org)) %>% 
   group_by(appr_org, org_name) %>% 
   summarize(Expenditure = sum(expenditure, na.rm = TRUE))
-
 # orgs22 # 396 org groups this year
 
-# 4 org number and org name combos are new for FY2022:
 
-anti_join(orgs22, orgs_past, by = c("appr_org", "org_name")) %>% arrange(appr_org)
-
+# 4 org number and org name combos are new for FY2023:
+anti_join(orgs23, orgs_past,
+          by = c("appr_org", "org_name")) %>% 
+  arrange(appr_org)
 ```
 
 **New Revenue Funds, Sources, and New Agencies:**
 
-```{r}
-
+```{r eval=FALSE}
 #### From Revenue Data ####
 
-# agencies_past # 108 agencies ever
 
-agencies_past <- allrevfiles22  %>% 
-  filter(fy < 2022) %>% 
+
+# agencies_past # 108 agencies ever
+agencies_past <- allrevfiles23  %>% filter(fy < 2023) %>% 
   mutate(agency == as.character(agency)) %>% 
-  group_by(agency, agency_name) %>% 
-  unique() %>% 
+  group_by(agency, agency_name) %>% unique() %>% 
   summarize(Receipts = sum(receipts, na.rm = TRUE)) %>% 
   drop_na()
 
-# agencies22 # 80 agencies this year
 
-agencies22 <- allrevfiles22  %>% 
-  filter(fy == 2022) %>% 
+agencies23 <- allrevfiles23  %>% 
+  filter(fy == 2023) %>% 
   mutate(agency == as.character(agency)) %>% 
   group_by(agency, agency_name) %>% 
   summarize(Receipts = sum(receipts, na.rm = TRUE))
 
 # 0 new agencies in revenue data this year
+anti_join(agencies23, agencies_past, by = c("agency", "agency_name")) %>% 
+  arrange(agency)
 
-anti_join(agencies22, agencies_past, by = c("agency", "agency_name")) %>% arrange(agency)
 
-funds_past <- allrevfiles22  %>% 
-  filter(fy < 2022) %>% 
+funds_past <- allrevfiles23  %>% 
+  filter(fy < 2023) %>% 
   mutate(fund == as.character(fund)) %>% 
   group_by(fund, fund_name) %>% 
   summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE))  %>% 
   drop_na()
 
-funds22 <- allrevfiles22  %>% 
-  filter(fy == 2022) %>% 
+funds23 <- allrevfiles23  %>% 
+  filter(fy == 2023) %>% 
   mutate(fund == as.character(fund)) %>% 
   group_by(fund, fund_name) %>%  
   summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE)) %>% 
@@ -277,34 +280,33 @@ funds22 <- allrevfiles22  %>%
   drop_na()
 
 # 19 revenue funds were in FY22 revenue data that were not in past data 
-
 # some could be small fund name changes
+anti_join(funds23, funds_past, by = c("fund", "fund_name")) %>% 
+  arrange(fund)
 
-anti_join(funds22, funds_past, by = c("fund", "fund_name")) %>% arrange(fund)
 
-sources_past <- allrevfiles22  %>% 
-  filter(fy < 2022) %>% 
+
+sources_past <- allrevfiles23  %>% 
+  filter(fy < 2023) %>% 
   mutate(source == as.character(source)) %>% 
   group_by(source, source_name) %>% 
   summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE))  %>% 
   drop_na()
 
-sources22 <- allrevfiles22  %>% 
-  filter(fy == 2022) %>% 
+sources23 <- allrevfiles23  %>% 
+  filter(fy == 2023) %>% 
   mutate(source == as.character(source)) %>% 
-  group_by(source, source_name) %>%  
+  group_by(source, source_name) %>% 
   summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE)) %>% 
   unique()
 
+
 # 20 revenue sources were in FY22 data that were not in past data 
-
 # some could be small source name changes:
-
-anti_join(sources22, sources_past, by = c("source", "source_name")) %>% arrange(source)
+anti_join(sources23, sources_past, by = c("source", "source_name")) %>% 
+  arrange(source)
 
 ```
-
-Sources 2737 through 2756 were not found in the IOC_source file so I added them to `ioc_source_updated22_AWM.xlsx`. Revenue source types were found manually using the Comptroller's website and searching for each source listed above and identifying its type. Then the ioc_source excel file was updated to include the revenue type (Completed Jan. 20 2023, AFTER the FY22 paper totals were calculated. There were very minor differences in aggregated expenditures and revenues.) `ioc_source_updated22_AWM.xlsx` will become the generic `ioc_source.xlsx` file in the future.
 
 ### Recoding New and Reused Funds
 
@@ -327,7 +329,7 @@ New or reused funds revenue file recoding:
 
 # if first character is a 0, replace with a 9 if its purpose has changed
 
-rev_1998_2022 <- allrevfiles22 %>%
+rev_1998_2023 <- allrevfiles23 %>%
 
       mutate(fund = ifelse(fy < 2002 & fund %in% c("0730", "0241", "0350", "0367", "0381", "0382", "0526", "0603", "0734", "0913", "0379"), str_replace(fund, "0","9"), fund)) %>%
   
@@ -357,12 +359,16 @@ rev_1998_2022 <- allrevfiles22 %>%
 
   mutate(fund = ifelse(fy < 2022 & fund == "0367", "10367", as.character(fund)) # fund reused for 3rd time
 
-)
+) %>%
+
+  # 2023 fund changes
+  mutate(fund = ifelse(fy < 2023 & fund %in% c("0099","0210","0246", "0250", "0264", "0268", "0300", "0311", "0403", "0448","0645", "0727", "0729", "0791"), str_replace(fund,"0", "9"), as.character(fund))) %>%
+  mutate(fund = ifelse(fy < 2023 & fund == "0734" , "10734", as.character(fund)),
+         fund = ifelse(fy<2023 & fund == "0820", "10820", as.character(fund) ) # fund reused for 3rd time
+  )
 
 
 ```
-
-For 2022, new funds included The Essential Government Services fund, Electric Vehicle Rebate, Budget Stabilization fund, and more. New funds were added to the `funds_ab_in.xlsx` file and recoded funds were also updated.
 
 Expenditure recoding:
 
@@ -371,7 +377,7 @@ Expenditure recoding:
 
 # if first character is a 0, replace with a 9
 
-exp_1998_2022 <- allexpfiles22 %>%
+exp_1998_2023 <- allexpfiles23 %>%
 
       mutate(fund = ifelse(fy < 2002 & fund %in% c("0730", "0241", "0350", "0367", "0381", "0382", "0526", "0603", "0734", "0913", "0379"), str_replace(fund, "0","9"), fund)) %>%
 
@@ -398,6 +404,12 @@ exp_1998_2022 <- allexpfiles22 %>%
 
   mutate(fund = ifelse(fy < 2022 & fund == "0367", "10367", as.character(fund)) # fund reused for 3rd time 
 
+  ) %>%
+
+  # 2023 fund changes
+  mutate(fund = ifelse(fy < 2023 & fund %in% c("0099","0210","0246", "0250", "0264", "0268", "0300", "0311", "0403", "0448","0645", "0727", "0729", "0791"), str_replace(fund,"0", "9"), as.character(fund))) %>%
+  mutate(fund = ifelse(fy < 2023 & fund == "0734" , "10734", as.character(fund)),
+         fund = ifelse(fy<2023 & fund == "0820", "10820", as.character(fund) ) # fund reused for 3rd time
   )
 ```
 
@@ -407,22 +419,28 @@ The `funds_ab_in.xlsx` file contains the following information: all funds that h
 
 ```{r create-exp_temp, warning = FALSE, message = FALSE}
 
-funds_ab_in_2022 = readxl::read_excel("C:/Users/aleaw/OneDrive/Documents/PhD Fall 2021 - Spring 2022/Merriman RA/Fiscal Futures FY2022/Replication-Files/funds_ab_in_2022.xlsx")
+funds_ab_in_2023 = readxl::read_excel("./data/funds_ab_in_2023.xlsx")
 
-exp_temp <- exp_1998_2022 %>% 
+exp_temp <- exp_1998_2023 %>% 
   arrange(fund, fy) %>%
 #  filter(expenditure != 0) %>%             # keeps everything that is not zero
-# join  funds_ab_in_2021  to exp_temp
- left_join(funds_ab_in_2022, by = "fund")  # matches most recent fund number 
+ left_join(funds_ab_in_2023, by = "fund")  # matches most recent fund number 
 
 
 # Agency == 799 for Statutory transfers 
 #  Object == 1993 is for Interfund cash transfers  
 exp_temp <- exp_temp %>% 
   mutate(transfer = ifelse(org_name == "TRANSFERS", 1, 0),
-         trans_agency = ifelse(org_name == "TRANSFERS", str_sub(obj_seq_type,1,3), trans_agency),
-         trans_type = ifelse(org_name == "TRANSFERS", str_sub(obj_seq_type,4,9), trans_type)
+         trans_agency = ifelse(org_name == "TRANSFERS", str_sub(obj_seq_type,1,3), NA),
+         trans_type = ifelse(org_name == "TRANSFERS", str_sub(obj_seq_type,4,9), NA)
 
+         ) %>%   
+  
+  # these come from ioc_source file after merging
+  mutate(
+         object = ifelse(transfer == 0, as.character(str_sub(obj_seq_type, 1, 4)), NA_character_),
+         sequence = ifelse(transfer == 0, as.character(str_sub(obj_seq_type, 5,6)), NA_character_),
+         type = ifelse(transfer == 0, str_sub(obj_seq_type, 7,8), NA_character_)
          )
 
 ```
@@ -435,13 +453,10 @@ exp_temp <- exp_temp %>%
 
 # remove from computer memory to free up space (in case your computer needs it)
 
-rm(allexpfiles22)
+rm(allexpfiles23)
 
-rm(allrevfiles22)
+rm(allrevfiles23)
 
-rm(exp_fy22)
-
-rm(revenue_fy22)
 ```
 
 Update Agencies: Some agencies have merged with others or changed names over time.
@@ -468,18 +483,18 @@ exp_temp <- exp_temp %>%
     TRUE ~ (as.character(agency)))) 
 ```
 
-For aggregating revenue, use the rev_1998_2022 dataframe, join the funds_ab_in_2022 file to it, and then join the ioc_source_type file to the dataset. Remember: You need to update the funds_ab_in and ioc_source_type file every year!
+For aggregating revenue, use the rev_1998_2023 dataframe, join the funds_ab_in_2023 file to it, and then join the ioc_source_type file to the dataset. Remember: You need to update the funds_ab_in and ioc_source_type file every year!
 
 ```{r}
 #| code-fold: false
 
 # fund info to revenue for all years
 
-rev_temp <- inner_join(rev_1998_2022, funds_ab_in_2022, by = "fund") %>% arrange(source)
+rev_temp <- inner_join(rev_1998_2023, funds_ab_in_2023, by = "fund") %>% arrange(source)
 
 # need to update the ioc_source_type file every year! 
 
-ioc_source_type <- readxl::read_xlsx("C:/Users/aleaw/OneDrive/Documents/PhD Fall 2021 - Spring 2022/Merriman RA/Fiscal Futures FY2022/Replication-Files/ioc_source_updated22_AWM.xlsx")
+ioc_source_type <- readxl::read_xlsx("./data/ioc_source_updated23_AWM.xlsx")
 
 rev_temp <- left_join(rev_temp, ioc_source_type, by = "source")
 # automatically used source, source name does not match for the join to work using source_name
@@ -500,11 +515,11 @@ rev_temp <- rev_temp %>%
     TRUE ~ (as.character(agency))))
 ```
 
-```{r}
+```{r eval = FALSE}
 
-write_csv(rev_temp, file = "rev_temp.csv")
+write_csv(rev_temp, file = "./data/rev_temp.csv")
 
-write_csv(exp_temp, file = "exp_temp.csv")
+write_csv(exp_temp, file = "./data/exp_temp.csv")
 ```
 
 ::: {.callout-tip icon="false"}

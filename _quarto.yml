@@ -19,13 +19,14 @@ book:
     - Healthcare.qmd
     - FederalRevenue.qmd
     - Medicaid.qmd
+    - K12_Education.qmd
     - Everything.qmd 
 #    - FiscalGap.qmd
 
   navbar: 
     right: 
       - icon: github
-        href: https://github.com/AleaWM/Fiscal-Futures
+        href: https://github.com/AleaWM/Fiscal-Futures-IL-FY2023.git
     left:
       - text: "About"
         file: index.qmd
@@ -40,9 +41,10 @@ book:
           - Healthcare.qmd
           - FederalRevenue.qmd
           - Medicaid.qmd
+          - K12-Spending.qmd
           - Everything.qmd
       - text: "Data"
-        href: https://github.com/AleaWM/Fiscal-Futures/tree/main/data
+        href: https://github.com/AleaWM/https://github.com/AleaWM/Fiscal-Futures-IL-FY2023/tree/main/data
 #      - text: "Reports"
 #        file: FiscalGap.qmd
  #     - text: "COVID-related Federal Revenue"
@@ -51,7 +53,7 @@ book:
 
           
 
-site-url: https://aleawm.github.io/Fiscal-Futures/
+# site-url: https://aleawm.github.io/https://github.com/AleaWM/Fiscal-Futures-IL-FY2023.git
 #  repo-actions: [edit]
 #  downloads: [pdf, epub]
 #  sharing: [twitter, facebook]
@@ -64,15 +66,20 @@ site-url: https://aleawm.github.io/Fiscal-Futures/
 
 format:
   html:
+    theme: zephyr
+    toc: true
     code-fold: true
     code-tools: true
     code-overflow: wrap
-    df-print: paged
-    theme: 
-      light: lightly
-      dark: darkly
+    code-copy: true
     fig-cap-location: top
     tbl-cap-location: top
+    df-print: paged
+  #   grid: 
+  #     gutter-width: 1rem
+  #     sidebar-width: 300px
+  # #    body-width: 900px
+  #     margin-width: 300px
     
   # pdf:
   #   documentclass: scrreport
