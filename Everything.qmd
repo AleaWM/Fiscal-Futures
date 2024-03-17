@@ -1,4 +1,4 @@
-# Calculating the Fiscal Gap {#sec-all-code}
+#  Calculating the Fiscal Gap {#sec-all-code}
 
 ```{r setup, warning=FALSE, message=FALSE}
 
@@ -27,27 +27,133 @@ exp_temp <- read_csv("./data/exp_temp.csv")
 rev_temp <- read_csv("./data/rev_temp.csv")
 ```
 
+```{r include=FALSE}
+library(cmapplot)
+# build_recessions <- function(update){
+#   if(is.logical(update)){
+#     # if TRUE
+#     if(update){
+#       message("Trying to update recessions...")
+#       updated_recessions <- suppressWarnings(update_recessions(quietly = TRUE))
+# 
+#       # If updated_recessions is returned as NULL, use the default table
+#       if (is.null(updated_recessions)) {
+#         message("Could not update recessions. Using built-in recessions table...")
+#         return(recessions)
+#       }
+# 
+#       message("Successfully fetched from NBER")
+#       return(updated_recessions)
+#       # if FALSE
+#     } else {
+#       return(recessions)
+#     }
+#   # if DATAFRAME
+#   }else if(is.data.frame(update)){
+#     # confirm that table has correct structure
+#     if(!identical(update[NA,][1,], recessions[NA,][1,])){
+#       message("Recession table may not have correct format (See `?update_recessions`). Attempting anyway...")
+#     }
+#     return(update)
+#   # OTHERWISE
+#   }else{
+#     message("`update` must be TRUE, FALSE, or a data frame. Using built-in recessions table...")
+#     return(recessions)
+#   }
+# }
+
+
+update_recessions <- function(url = NULL, quietly = FALSE){
+
+  # Use default URL if user does not override
+  if (is_null(url) | missing(url)) {
+    url <- "https://data.nber.org/data/cycles/business_cycle_dates.json"
+  }
+  
+   # locally bind variable names
+  start_char <- end_char <- start_date <- end_date <- ongoing <- index <- peak <- trough <- NULL
+
+  return(
+    # attempt to download and format recessions table
+    tryCatch({
+      recessions <- jsonlite::fromJSON(url) %>%
+        # drop first row trough
+        dplyr::slice(-1) %>%
+        # convert peaks and troughs...
+        dplyr::mutate(
+          # ...to R dates
+          start_date = as.Date(peak),
+          end_date = as.Date(trough),
+          # ... and clean char strings
+          start_char = format(start_date, "%b %Y"),
+          end_char = format(end_date, "%b %Y")) %>%
+        # confirm ascending and create row number
+        dplyr::arrange(start_date) %>%
+        mutate(index = row_number()) %>%
+        mutate(
+          # Flag unfinished recessions
+          ongoing = case_when(
+            is.na(end_date) & index == max(.$index) ~ T,
+            TRUE ~ F),
+          # set ongoing recession to arbitrary future date
+          end_date = case_when(
+            ongoing ~ as.Date("2200-01-01"),
+            TRUE ~ end_date),
+          # mark ongoing recession in char field
+          end_char = case_when(
+            ongoing ~ "Ongoing",
+            TRUE ~ end_char)
+          ) %>%
+        # clean up
+        select(start_char, end_char, start_date, end_date, ongoing)
+
+      if (!quietly) {message("Successfully fetched from NBER")}
+
+      # Return recessions
+      recessions
+    },
+    error = function(cond){
+      if (!quietly) message("WARNING: Fetch or processing failed. `NULL` returned.")
+      return(NULL)
+    }
+    )
+  )
+}
+
+#recess_table <- list(build_recessions(update))
+recessions <- update_recessions()
+
+```
+
 ## Modify Expenditure File
 
 ### Tax refunds
 
 Aggregate expenditures: Save tax refunds as negative revenue. Code refunds to match the rev_type codes (02=income taxes, 03 = corporate income taxes, 06=sales tax, 09=motor fuel tax, 24=insurance taxes and fees, 35 = all other tax refunds).
 
-```{r}
-#| label: fig-tax-refunds
-#| fig-cap:  Tax Refunds
-## negative revenue becomes tax refunds
+Ideally the money going in and out of the funds used for refunds would be approximately equal.
 
-tax_refund_long <- exp_temp %>%           # fund != "0401" # removes State Trust Funds
-  filter(fund != "0401" & (object=="9910"|object=="9921"|object=="9923"|object=="9925")) %>%
+```{r}
+#| label: fig-tax-refunds-oldcode
+#| fig-cap:  Tax Refunds with Old Code
+#| eval: false
+
+
+# fund 0278 was set to in_ff == 0 so it would have been ignored from the revenue and expenditure side.
+
+tax_refund_long <- exp_temp %>%           
+  # fund != "0401" #  Protest Trust Fund
+  filter(#fund != "0401" &       # don't know why this was included? 
+    
+   (object == "9900" | object == "9910" | object == "9921" | object == "9923" | object == "9925") ) %>%
   # keeps these objects which represent revenue, insurance, treasurer,and financial and professional reg tax refunds
   mutate(refund = case_when(
-    fund=="0278" & sequence == "00" ~ "02", # for income tax refund
-    fund=="0278" & sequence == "01" ~ "03", # tax administration and enforcement and tax operations become corporate income tax refund
-     fund == "0278" & sequence == "02" ~ "02",
+    fund == "0278" & sequence == "00" ~ "02", # for income tax refund
+    fund == "0278" & sequence == "01" ~ "03", # tax administration and enforcement and tax operations become corporate income tax refund
+    fund == "0278" & sequence == "02" ~ "02",
     object=="9921" ~ "21",                # inheritance tax and estate tax refund appropriation
-    object=="9923" ~ "09",                # motor fuel tax refunds
-    obj_seq_type == "99250055" ~ "06",    # sales tax refund
+    object=="9923" | fund == "0012" ~ "09",                # motor fuel tax refunds
+    obj_seq_type == "99250055" ~ "06",    # sales tax refund, 
     fund=="0378" & object=="9925" ~ "24", # insurance privilege tax refund
    (fund=="0001" & object=="9925") | (object=="9925" & fund == "0384" & fy == 2023) ~ "35", # all other taxes
    # fund=="0001" & object=="9925" ~ "35", # all other taxes
@@ -76,7 +182,132 @@ tax_refund %>%
        24=insurance taxes and fees, 35 = all other tax refunds." )
 
 # remove the items we recoded in tax_refund_long
+# keep only non-refund expenditures with filter()
 exp_temp <- exp_temp %>% filter(refund == "not refund")
+```
+
+```{r}
+#| label: tbl-taxrefunds-newcode-revenue
+#| column: screen-inset
+
+# get all individual and corporate income tax revenue items 
+income_rev <- rev_temp %>% 
+  filter(rev_type %in% c( "02", "03" ) )
+
+
+tax_refunds_rev <- rev_temp %>% 
+  filter(str_detect(fund_name, "REFUND") |                   # search string for refund, just in case
+           fund %in% c("0121", "0278", "0378") |             # refund funds
+           source %in% c("1905", "1906", "1923", "2138")     # amnesty rev sources
+         )
+
+tax_refunds_rev %>% 
+  group_by(fy, rev_type, source, source_name_AWM ) %>% 
+  summarize(refunds_rev = round(sum(receipts)) ) %>% 
+  pivot_wider(id_cols = c(rev_type, source, source_name_AWM), names_from = fy, values_from = refunds_rev) %>%
+  arrange(rev_type)
+
+# expenditure Objects related to refunds 
+refund_expenses <- exp_temp %>% filter( #agency == 492 | 
+                                         (object >= 9900 & object <=9941) & expenditure > 0) 
+
+
+refund_expenses %>% 
+  group_by(object, fy) %>% 
+  summarize(exp = round(sum(expenditure))) %>% 
+  pivot_wider(names_from = "fy", values_from = "exp")
+
+# excellist <- list(income_rev, tax_refunds_exp, tax_refunds_rev)
+# writexl::write_xlsx(excellist,  "taxrefunds_check.xlsx")
+
+```
+
+```{r}
+#| label: tbl-taxrefunds-newcode-exp
+#| column: screen-inset
+
+
+tax_refunds_exp <- exp_temp %>% 
+  filter(str_detect(fund_name, "REFUND")
+           | fund %in% c("0121", "0278", "0378", "0380", "0671"))
+
+tax_refunds_exp %>% group_by(fy, fund, fund_name) %>% summarize(refunds_exp = sum(expenditure)) %>% pivot_wider(id_cols = c(fund, fund_name), names_from = fy, values_from = refunds_exp)
+```
+
+```{r}
+#| label: tbl-taxrefunds-groupedtables
+#| column: screen-inset
+
+tax_refunds_exp %>% filter(agency != "799") %>% group_by(fy, appr_org, org_name, fund, fund_name) %>% summarize(refunds_exp = sum(expenditure)) %>% pivot_wider(id_cols = c(appr_org, org_name, fund, fund_name), names_from = fy, values_from = refunds_exp)
+
+tax_refunds_exp %>% filter(agency != "799") %>% group_by(fy, object, fund, fund_name) %>% summarize(refunds_exp = sum(expenditure)) %>% pivot_wider(id_cols = c(object, fund, fund_name), names_from = fy, values_from = refunds_exp) %>% arrange(object)
+
+# excellist <- list(tax_refunds_exp, tax_refunds_rev)
+# writexl::write_xlsx(excellist,  "taxrefunds_check.xlsx")
+
+```
+
+After exporting the expenditures and revenues that were related to Refund funds (identified by searching for string containing "refund" and then also identifying the fund number because, in early years, data requested did not have fund labels associated with fund numbers. Yes, you could do just the fund numbers in the command, but if anything changes, looking for strings that contain "refund" would hopefully alert the coder that something new existed which would otherwise be more dificult if only using fund numbers).
+
+```{r}
+#| label: fig-tax-refunds-newway
+#| fig-cap:  Tax Refunds - New Way
+
+
+# What we want: To exclude refunds as expenditures from our expenditure totals.
+# Exclude funds that hold refund funds from both revenue and expenditure sides
+# Revenue neutral unless budget tricks are occurring
+# still want to examine refunds over time to compare to past years calculations
+
+tax_refund_long <- exp_temp %>%           # fund != "0401" # removes State Trust Funds
+  filter(# fund != "0401" & 
+           (object =="9900" | object=="9910"|object=="9921"|object=="9923"|object=="9925")) %>%
+  # keeps these objects which represent revenue, insurance, treasurer,and financial and professional reg tax refunds
+  mutate(refund = case_when(
+    fund=="0278" & object == "9910" ~ "02", # for income tax refund
+    fund=="0278" & object == "9900" ~ "03", # for corporate income tax refund
+  
+    fund == "0380" ~ "03", # tax administration and enforcement and tax operations become corporate income tax
+  
+    fund == "0121" ~ "21",                # inheritance tax and estate tax refund appropriation
+  
+    fund == "0946" ~ "09",                # motor fuel tax refunds & aviation fuel sales tax refund
+  
+    obj_seq_type == "99250055" ~ "06",    # sales tax refund, 
+  
+   object == "9939" ~ "06", # rent purchase agreement tax refund, some years
+  
+    fund=="0378" & object=="9925" ~ "24", # insurance privilege tax refund
+  
+   (fund=="0001" & object=="9925") | (object=="9925" & fund == "0384" & fy == 2023) ~ "35", # all other taxes
+   # fund=="0001" & object=="9925" ~ "35", # all other taxes
+      T ~ "CHECK"))                       # if none of the items above apply to the observations, then code them as CHECK 
+
+    
+# exp_temp <- left_join(exp_temp, tax_refund_long) %>%
+#  mutate(refund = ifelse(is.na(refund),"not refund", as.character(refund)))
+
+tax_refund <- tax_refund_long %>% 
+  group_by(refund, fy)%>%
+  summarize(refund_amount = sum(expenditure, na.rm = TRUE)/1000000) %>%
+  pivot_wider(names_from = refund, values_from = refund_amount, names_prefix = "ref_") %>%
+  mutate_all(~replace_na(.,0)) %>%
+  arrange(fy)
+
+tax_refund %>% 
+  pivot_longer( ref_02:ref_35, names_to = "Refund Type", values_to = "Amount") %>%
+  ggplot()+
+  theme_classic()+
+  geom_line(aes(x=fy,y=Amount, group = `Refund Type`, color = `Refund Type`))+
+  labs(title = "Refund Types", 
+       caption = "Refunds are excluded from Expenditure totals and instead subtracted from Revenue totals") + 
+  labs(title = "Tax refunds", 
+       caption = "Rev_type codes: 02=income taxes, 03=corporate income taxes, 06=sales tax, 09=motor fuel tax, 
+       24=insurance taxes and fees, 35 = all other tax refunds." )
+
+# remove the items we recoded in tax_refund_long
+# keep only non-refund expenditures with filter()
+# exp_temp <- exp_temp %>% filter(refund == "not refund")
 
 
 ```
@@ -145,10 +376,10 @@ exp_temp %>%
 
 exp_temp <- exp_temp %>% 
   # change object for 2010 and 2011, retirement expenditures were bond proceeds and would have been excluded
-  mutate(object = ifelse((pension >0 & in_ff == "0"), "4431", object)) %>% 
+  mutate(object = ifelse((pension > 0 & in_ff == "0"), "4431", object)) %>% 
   # changes weird teacher & judge retirement system  pensions object to normal pension object 4431
-  mutate(pension =  ifelse(pension >0 & in_ff == "0", 6, pension)) %>% # coded as 6 if it was supposed to be excluded. 
-  mutate(in_ff = ifelse(pension>0, "1", in_ff))
+  mutate(pension =  ifelse(pension > 0 & in_ff == "0", 6, pension)) %>% # coded as 6 if it was supposed to be excluded. 
+  mutate(in_ff = ifelse(pension > 0, "1", in_ff))
 
 table(exp_temp$pension) 
 
@@ -193,11 +424,18 @@ Drop all cash transfers between funds, statutory transfers, and purchases of inv
 transfers_drop <- exp_temp %>% filter(
   agency == "799" | # statutory transfers
            object == "1993" |  # interfund cash transfers
-           object == "1298") # purchase of investments
+           object == "1298",  # purchase of investments
+  ) 
 transfers_drop # items being dropped, 
 # always check to make sure you aren't accidently dropping something of interest.
 
 exp_temp <- anti_join(exp_temp, transfers_drop)
+
+
+refunds_drop <- exp_temp %>% filter(object %in% c())
+exp_temp <- anti_join(exp_temp, refunds_drop)
+
+
 exp_temp
 
 
@@ -212,6 +450,8 @@ If observation is a group insurance contribution, then the expenditure amount is
 Agency 416 had group insurance contributions for 1998-2005 and 2013-present. Agency 478 had group insurance contributions from 2006-2012.
 
 FY2021 and FY2022 contributions coded with object = 1900 (lump sum) for some reason??
+
+> Why is
 
 ```{r eehc1}
 #if observation is a group insurance contribution, then the expenditure amount is set to $0 (essentially dropped from analysis)
@@ -274,7 +514,7 @@ exp_temp %>%
 
 ### Local Transfers
 
-Separate transfers to local from parent agencies that come from DOR(492) or Transportation (494). Treats muni revenue transfers as expenditures, not negative revenue.
+Separate transfers to local from parent agencies that come from DOR(492) or Transportation (494). Treats muni revenue transfers as expenditures, not negative revenue. <!--- Check this ^^^ --->
 
 The share of certain taxes levied state-wide at a common rate and then transferred to local governments. (Purely local-option taxes levied by specific local governments with the state acting as collection agent are NOT included.)
 
@@ -294,6 +534,8 @@ Until Dec 18. 2022, Local CURE was being aggregated into Revenue totals since th
 -   In the FY21 New and Reused Funds word document, 0325 Local CURE is described as *"Created as a federal trust fund. The fund is established to receive transfers from either the disaster response and recovery fund or the state cure fund of federal funds received by the state. These transfers, subject to appropriation, will provide for the administration and payment of grants and expense reimbursements to units of local government. Revenues should be under Federal Other and expenditures under Commerce and Economic Opportunity."* - I propose changing it to exclude for both.
 
 ```{r transfers-to-local}
+# obj_seq_type = 44910008 includes pprt transfers
+ 
 exp_temp <- exp_temp %>% mutate(
   agency = case_when(fund=="0515" & object=="4470" & type=="08" ~ "971", # income tax to local governments
                      fund=="0515" & object=="4491" & type=="08" & sequence=="00" ~ "971", # object is shared revenue payments
@@ -363,7 +605,9 @@ debt_drop <- exp_temp %>%
 
 
 debt_keep <- exp_temp %>% 
-  filter(fund != "0455" & (object == "8813" | object == "8800" )) 
+ 
+  filter(fund != "0455" &      # ignore IL Tollway Highway Revenue Fund
+           (object == "8813" | object == "8800" )) 
 # examine the debt costs we want to include
 
 #debt_keep %>% group_by(fy) %>% summarize(sum = sum(expenditure)) %>% arrange(-fy) 
@@ -546,6 +790,13 @@ rev_temp <- rev_temp %>%
     TRUE ~ (as.character(agency)))) 
 ```
 
+We also do not want to include tax amnesty revenue sources that went into refund funds.
+
+```{r}
+rev_temp <- rev_temp %>% filter(source %in% c("1905", "1906", "1923", "2138")     # amnesty rev sources
+)
+```
+
 ### Federal to State Transfers
 
 For an deeper look at federal revenue to Illinois, [Chapter -@sec-covid-federal-funds].
@@ -655,13 +906,13 @@ emp_premium_long <- rev_temp %>%  filter(employee_premiums == 1)
 
 ### Transfers in and Out:
 
-Funds that hold and disperse local taxes or fees are dropped from the analysis. Then other excluded revenue types are also dropped.
+Then other excluded revenue types are also dropped.
 
 Drops Blank, Student Fees, Retirement contributions, proceeds/investments, bond issue proceeds, interagency receipts, cook IGT, Prior year refunds:
 
 ```{r}
 rev_temp <- rev_temp %>% 
-  filter(in_ff == 1) %>% 
+  filter(in_ff == 1 & amnesty != 1) %>% 
   mutate(local = ifelse(is.na(local), 0, local)) %>% # drops all revenue observations that were coded as "local == 1"
   filter(local != 1)
 
@@ -742,7 +993,7 @@ ff_rev <- rev_temp %>%
   summarize(sum_receipts = sum(receipts, na.rm=TRUE)/1000000 ) %>%
   pivot_wider(names_from = "rev_type_new", values_from = "sum_receipts", names_prefix = "rev_")
 
-ff_rev<- left_join(ff_rev, tax_refund)
+# ff_rev<- left_join(ff_rev, tax_refund)
 
 #ff_rev <- left_join(ff_rev, pension2_fy22, by=c("fy" = "year"))
 
@@ -772,20 +1023,24 @@ ff_rev <- mutate_all(ff_rev, ~replace_na(.,0))
 
 #noproblem <- c(0)  # if ref_CHECK = $0, then there is no problem. :) 
 
-if((sum(ff_rev$ref_CHECK) == 0 )){
-
-ff_rev <- ff_rev %>%
-  
-  mutate(rev_02 = rev_02 - ref_02,
-         rev_03 = rev_03 - ref_03,
-         rev_06 = rev_06 - ref_06,
-         rev_09 = rev_09 - ref_09,
-         rev_21 = rev_21 - ref_21,
-         rev_24 = rev_24 - ref_24,
-         rev_35 = rev_35 - ref_35
-         ) %>% 
-  select(-c(ref_02:ref_35, rev_99, rev_76, ref_CHECK )) 
-}else{"You have a problem! Check what revenue items did not have rev codes (causing it to be coded as rev_NA) or the check if there were refunds that were not assigned revenue codes (tax_refunds_long objects)"}
+# if((sum(ff_rev$ref_CHECK) == 0 )){
+# 
+# ff_rev <- ff_rev %>%
+#   # 
+#   # mutate(rev_02 = rev_02 - ref_02,
+#   #        rev_03 = rev_03 - ref_03,
+#   #        rev_06 = rev_06 - ref_06,
+#   #        rev_09 = rev_09 - ref_09,
+#   #        rev_21 = rev_21 - ref_21,
+#   #        rev_24 = rev_24 - ref_24,
+#   #        rev_35 = rev_35 - ref_35
+#   #        ) %>% 
+#   select(-c(ref_02:ref_35, 
+#             rev_99, 
+#             rev_76, 
+#             ref_CHECK 
+#             )) 
+# }else{"You have a problem! Check what revenue items did not have rev codes (causing it to be coded as rev_NA) or the check if there were refunds that were not assigned revenue codes (tax_refunds_long objects)"}
 
 ff_rev %>%  mutate_all(., ~round(.,digits=0))
 ```
@@ -1158,8 +1413,8 @@ annotation <- data.frame(
 
 annotation_nums <- data.frame(
   x = c(2023, 2023, 2023),
-  y = c(115, 95, -5),  
-  label = c("$110.6","$108.1", "-$2.5")
+  y = c(95, 120, 10),  
+  label = c("Exp = $110.6","Rev = $111.7", "$1.2")
 )
 
 ## Dashed line versions for expenditures: 
@@ -1229,7 +1484,6 @@ fiscal_gap2 <-ggplot(data = year_totals, aes(x=Year, y = Revenue/1000)) +
 
 fiscal_gap2
 ```
-
 
 ```{r export-Figure1}
 fiscal_gap2 <-ggplot(data = year_totals, aes(x=Year, y = Revenue/1000)) +
@@ -1418,10 +1672,16 @@ exp_long %>%
     scale_color_manual(values = c("#d62828", "#003049")) +
    theme_classic()+ 
     theme(
-    legend.position = "bottom" ,
+    legend.position = "none" ,
   axis.text.y = element_blank(),
   axis.ticks.y = element_blank(),
-  axis.line.y.left  = element_blank() ) +
+  axis.line.y.left  = element_blank(),
+    panel.background = element_rect(fill='transparent'), #transparent panel bg
+    plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
+    panel.grid.major = element_blank(), #remove major gridlines
+    panel.grid.minor = element_blank(), #remove minor gridlines
+    legend.background = element_rect(fill='transparent'), #transparent legend bg
+  ) +
   scale_x_continuous(limits = c(0, 35), labels = comma)
 ```
 
@@ -1482,109 +1742,7 @@ ownsource_rev
 
 ```
 
-```{r include=FALSE}
-build_recessions <- function(update){
-  if(is.logical(update)){
-    # if TRUE
-    if(update){
-      message("Trying to update recessions...")
-      updated_recessions <- suppressWarnings(update_recessions(quietly = TRUE))
-
-      # If updated_recessions is returned as NULL, use the default table
-      if (is.null(updated_recessions)) {
-        message("Could not update recessions. Using built-in recessions table...")
-        return(recessions)
-      }
-
-      message("Successfully fetched from NBER")
-      return(updated_recessions)
-      # if FALSE
-    } else {
-      return(recessions)
-    }
-  # if DATAFRAME
-  }else if(is.data.frame(update)){
-    # confirm that table has correct structure
-    if(!identical(update[NA,][1,], recessions[NA,][1,])){
-      message("Recession table may not have correct format (See `?update_recessions`). Attempting anyway...")
-    }
-    return(update)
-  # OTHERWISE
-  }else{
-    message("`update` must be TRUE, FALSE, or a data frame. Using built-in recessions table...")
-    return(recessions)
-  }
-}
-
-
-update_recessions <- function(url = NULL, quietly = FALSE){
-
-  # Use default URL if user does not override
-  if (is_null(url) | missing(url)) {
-    url <- "https://data.nber.org/data/cycles/business_cycle_dates.json"
-  }
-  
-   # locally bind variable names
-  start_char <- end_char <- start_date <- end_date <- ongoing <- index <- peak <- trough <- NULL
-
-  return(
-    # attempt to download and format recessions table
-    tryCatch({
-      recessions <- jsonlite::fromJSON(url) %>%
-        # drop first row trough
-        dplyr::slice(-1) %>%
-        # convert peaks and troughs...
-        dplyr::mutate(
-          # ...to R dates
-          start_date = as.Date(peak),
-          end_date = as.Date(trough),
-          # ... and clean char strings
-          start_char = format(start_date, "%b %Y"),
-          end_char = format(end_date, "%b %Y")) %>%
-        # confirm ascending and create row number
-        dplyr::arrange(start_date) %>%
-        mutate(index = row_number()) %>%
-        mutate(
-          # Flag unfinished recessions
-          ongoing = case_when(
-            is.na(end_date) & index == max(.$index) ~ T,
-            TRUE ~ F),
-          # set ongoing recession to arbitrary future date
-          end_date = case_when(
-            ongoing ~ as.Date("2200-01-01"),
-            TRUE ~ end_date),
-          # mark ongoing recession in char field
-          end_char = case_when(
-            ongoing ~ "Ongoing",
-            TRUE ~ end_char)
-          ) %>%
-        # clean up
-        select(start_char, end_char, start_date, end_date, ongoing)
-
-      if (!quietly) {message("Successfully fetched from NBER")}
-
-      # Return recessions
-      recessions
-    },
-    error = function(cond){
-      if (!quietly) message("WARNING: Fetch or processing failed. `NULL` returned.")
-      return(NULL)
-    }
-    )
-  )
-}
-
-recess_table <- list(build_recessions(update))
-recessions <- update_recessions()
-
-```
-
-
-
 ```{r}
-library(cmapplot)
-
-
 
 fed_rev <- ff_rev %>% select(fy, rev_57, rev_58, rev_59) %>%
   mutate(fed_total = rev_57+rev_58+rev_59)
@@ -1623,7 +1781,6 @@ ownsource_graph <- ggplot(ownsource_rev, aes(x=Year, y=Dollars/1000)) +
   y = "Billions of Dollars")
 ownsource_graph
 ```
-
 
 ```{r export-figure2}
 ownsource_graph <- ggplot(ownsource_rev, aes(x=Year, y=Dollars/1000)) + 
