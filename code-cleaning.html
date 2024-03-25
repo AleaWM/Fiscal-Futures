@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Methodology for the Fiscal Futures Annual Report - 2&nbsp; Gathering and Cleaning Data!</title>
+<title>Methodology for the Fiscal Futures Annual Report - 12&nbsp; Gathering and Cleaning Data!</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -64,7 +64,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./FedMoneyReceived.html" rel="next">
 <link href="./FundsIncluded.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -81,7 +80,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,12 +95,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
-
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
@@ -106,9 +111,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Methodology for the Fiscal Futures Annual Report</span>
     </a>
@@ -120,97 +125,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
- <span class="menu-text">About</span></a>
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-methodology" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-methodology" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Methodology</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-methodology">    
         <li>
-    <a class="dropdown-item" href="./FundsIncluded.html" rel="" target="">
+    <a class="dropdown-item" href="./FundsIncluded.html">
  <span class="dropdown-text">An All Funds Approach</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./code-cleaning.html" rel="" target="">
+    <a class="dropdown-item" href="./code-cleaning.html">
  <span class="dropdown-text">Gathering and Cleaning Data!</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./FedMoneyReceived.html" rel="" target="">
- <span class="dropdown-text">Federal COVID Money Received</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./LocalTransfers.html" rel="" target="">
- <span class="dropdown-text">Local Transfers</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./Debt.html" rel="" target="">
- <span class="dropdown-text">Debt Service Discussion</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./Pensions.html" rel="" target="">
- <span class="dropdown-text">Pensions</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./Healthcare.html" rel="" target="">
- <span class="dropdown-text">State Employee Healthcare Discussion</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./FederalRevenue.html" rel="" target="">
- <span class="dropdown-text">Federal Revenue</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./Medicaid.html" rel="" target="">
- <span class="dropdown-text">Medicaid</span></a>
-  </li>  
-        <li class="dropdown-header">K12-Spending.qmd</li>
-        <li>
-    <a class="dropdown-item" href="./Everything.html" rel="" target="">
+    <a class="dropdown-item" href="./Everything.html">
  <span class="dropdown-text">Calculating the Fiscal Gap</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="https://github.com/AleaWM/https://github.com/AleaWM/Fiscal-Futures-IL-FY2023/tree/main/data" rel="" target="">
- <span class="menu-text">Data</span></a>
+    <a class="nav-link" href="https://github.com/AleaWM/https://github.com/AleaWM/Fiscal-Futures/tree/main/data"> 
+<span class="menu-text">Data</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/AleaWM/Fiscal-Futures-IL-FY2023.git" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/AleaWM/Fiscal-Futures.git"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+    <a href="https://github.com/AleaWM/Fiscal-Futures/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./code-cleaning.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Gathering and Cleaning Data!</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./FundsIncluded.html">Methodology</a></li><li class="breadcrumb-item"><a href="./code-cleaning.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Gathering and Cleaning Data!</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
     </div>
   </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -219,94 +188,134 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Background Information</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Reports</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./FundsIncluded.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">An All Funds Approach</span></span></a>
+  <a href="./Everything.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Calculating the Fiscal Gap</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Budget Topics in the Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./code-cleaning.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Gathering and Cleaning Data!</span></span></a>
+  <a href="./FederalRevenue.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Federal Revenue</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./FedMoneyReceived.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Federal COVID Money Received</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./LocalTransfers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Local Transfers</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Local Transfers</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Medicaid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Medicaid</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Debt.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Debt Service Discussion</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Pensions.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Pensions</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Healthcare.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">State Employee Healthcare Discussion</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./FederalRevenue.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Federal Revenue</span></span></a>
+  <a href="./TaxRefunds.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Tax Refunds</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./Medicaid.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Medicaid</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./K12_Education.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">K-12 Spending &amp; ESSER Funds</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">K-12 Spending &amp; ESSER Funds</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Everything.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Calculating the Fiscal Gap</span></span></a>
+  <a href="./FedMoneyReceived.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Federal COVID Money Received</span></span></a>
   </div>
 </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Methodology</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./FundsIncluded.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">An All Funds Approach</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./code-cleaning.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Gathering and Cleaning Data!</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#inspecting-new-fy23-data-files" id="toc-inspecting-new-fy23-data-files" class="nav-link active" data-scroll-target="#inspecting-new-fy23-data-files"><span class="header-section-number">2.0.1</span> Inspecting new FY23 data files</a></li>
-  <li><a href="#finding-new-agencies-and-funds" id="toc-finding-new-agencies-and-funds" class="nav-link" data-scroll-target="#finding-new-agencies-and-funds"><span class="header-section-number">2.0.2</span> <del>Finding new agencies and funds</del></a></li>
-  <li><a href="#recoding-new-and-reused-funds" id="toc-recoding-new-and-reused-funds" class="nav-link" data-scroll-target="#recoding-new-and-reused-funds"><span class="header-section-number">2.0.3</span> Recoding New and Reused Funds</a></li>
+  <li><a href="#inspecting-new-fy23-data-files" id="toc-inspecting-new-fy23-data-files" class="nav-link active" data-scroll-target="#inspecting-new-fy23-data-files"><span class="header-section-number">12.0.1</span> Inspecting new FY23 data files</a></li>
+  <li><a href="#finding-new-agencies-and-funds" id="toc-finding-new-agencies-and-funds" class="nav-link" data-scroll-target="#finding-new-agencies-and-funds"><span class="header-section-number">12.0.2</span> <del>Finding new agencies and funds</del></a></li>
+  <li><a href="#recoding-new-and-reused-funds" id="toc-recoding-new-and-reused-funds" class="nav-link" data-scroll-target="#recoding-new-and-reused-funds"><span class="header-section-number">12.0.3</span> Recoding New and Reused Funds</a></li>
+  <li><a href="#export-intermediate-files" id="toc-export-intermediate-files" class="nav-link" data-scroll-target="#export-intermediate-files"><span class="header-section-number">12.0.4</span> Export Intermediate Files</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./FundsIncluded.html">Methodology</a></li><li class="breadcrumb-item"><a href="./code-cleaning.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Gathering and Cleaning Data!</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span id="sec-gathering-and-cleaning-data" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Gathering and Cleaning Data!</span></span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span id="sec-gathering-and-cleaning-data" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Gathering and Cleaning Data!</span></span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
@@ -319,14 +328,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <p>Information for the Fiscal Futures all funds database comes from detailed information provided by the Illinois Comptroller’s office.&nbsp; Currently the database includes 300,000 individual records for fiscal years 1998 to 2022.</p>
 <ul>
 <li>Do the FOIA request. In a week or so, they send the expenditure and revenue data as excel files.</li>
 <li>Checks whether there are any new agencies, re-used funds etc. Create a list of funds, agencies, fund names, etc. for the new year and compare it to the immediate prior year to identify new funds.</li>
 <li>Update the funds_ab_in file which shows the use of funds. Use criteria to determine if the new funds should be in or out of the all-funds frame.</li>
-<li>Change the variable names to be consistent with other files such as AGENCYNAME --&gt; agency_name</li>
+<li>Change the variable names to be consistent with other files such as AGENCYNAME –&gt; agency_name</li>
 <li>Once variable names are shared over all years of data, combine past years with newest year. All revenue files are in a `revenue` folder that I reference when I set the working directory. When adding new fiscal years, put the the newest year of data for revenue and expenditures in their respective folders.</li>
 </ul>
 <p>Normally, when your receive the new fiscal year files from the Comptrollers office, you will need to change the variable names so that they are consistent with past years. This is an example of reading in the new file and changing the variable names. They seem to change almost every year in the file received from the FOIA so if the code breaks here, check to make sure that the columns you are trying to rename exist and are spelled correctly! Once variables are the same, you will want to save the file as a csv file in its Revenue/Expenditure file and bind all past years and the current year together in one dataframe.</p>
@@ -375,7 +386,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!--- Code chunk below not updated. Is in other .rmd files for fy2023--->
 <p>Code below reads in the csv files created in chunks above (allrevfiles.csv and allrexpfiles.csv). These files contain all years of data combined into one file BEFORE any recoding is done. Do not use this file for summing categories because it is just an inbetween step before recoding revenue and expenditure categories. It also does not contain changes in funds or agencies.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># combined in past chunks called create-rev-csv and create-exp-csv</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -384,8 +395,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>allexpfiles23 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"./data/allexpfiles_Nov132023.csv"</span>) <span class="co">#combined but not recoded</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="inspecting-new-fy23-data-files" class="level3" data-number="2.0.1">
-<h3 data-number="2.0.1" class="anchored" data-anchor-id="inspecting-new-fy23-data-files"><span class="header-section-number">2.0.1</span> Inspecting new FY23 data files</h3>
+<section id="inspecting-new-fy23-data-files" class="level3" data-number="12.0.1">
+<h3 data-number="12.0.1" class="anchored" data-anchor-id="inspecting-new-fy23-data-files"><span class="header-section-number">12.0.1</span> Inspecting new FY23 data files</h3>
 <p>Data files for closed years have been obtained from IOC. The numbers of funds, agencies, organizations, and revenue sources below were found by using pivot tables in the codebook files in the FY2022 Box folder. This could also be done using R and grouping new files by fund, agency, source number, source names, etc..</p>
 <p><del>Revenue File:</del></p>
 <ul>
@@ -402,8 +413,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><del>313 Organization names</del></li>
 </ul>
 </section>
-<section id="finding-new-agencies-and-funds" class="level3" data-number="2.0.2">
-<h3 data-number="2.0.2" class="anchored" data-anchor-id="finding-new-agencies-and-funds"><span class="header-section-number">2.0.2</span> <del>Finding new agencies and funds</del></h3>
+<section id="finding-new-agencies-and-funds" class="level3" data-number="12.0.2">
+<h3 data-number="12.0.2" class="anchored" data-anchor-id="finding-new-agencies-and-funds"><span class="header-section-number">12.0.2</span> <del>Finding new agencies and funds</del></h3>
 <p><del>General steps:</del></p>
 <ol type="1">
 <li><del>Identify new and reused funds for newest fiscal year.</del></li>
@@ -416,7 +427,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><del>Note: One new org name and org number combo has an expenditure of $600 million for pensions payment. Investigate later.</del></li>
 </ul>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#allrevfiles23 &lt;- read_csv("allrevfiles23.csv") #combined but not recoded</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#allexpfiles23 &lt;- read_csv("allexpfiles23.csv") #combined but not recoded</span></span>
@@ -495,7 +506,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><strong>New Revenue Funds, Sources, and New Agencies:</strong></p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">#### From Revenue Data ####</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -564,8 +575,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 </section>
-<section id="recoding-new-and-reused-funds" class="level3" data-number="2.0.3">
-<h3 data-number="2.0.3" class="anchored" data-anchor-id="recoding-new-and-reused-funds"><span class="header-section-number">2.0.3</span> Recoding New and Reused Funds</h3>
+<section id="recoding-new-and-reused-funds" class="level3" data-number="12.0.3">
+<h3 data-number="12.0.3" class="anchored" data-anchor-id="recoding-new-and-reused-funds"><span class="header-section-number">12.0.3</span> Recoding New and Reused Funds</h3>
 <div class="callout callout-style-default callout-warning no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -582,7 +593,7 @@ Warning
 <p>New or reused funds were manually added to the <code>funds_ab_in.xlsx</code> file and determined if they should or should not be included in Fiscal Future calculations.</p>
 <p>For funds that were reused once, a 9 replaces the 0 as the first digit. If reused twice, then the first two values are 10.</p>
 <ul>
-<li>Ex. 0350 --&gt; 9350 because its use changed.</li>
+<li>Ex. 0350 –&gt; 9350 because its use changed.</li>
 <li>Ex. 0367 becomes 10367 because its use has changed twice now. There was fund 0367 originally, then its use changed and it was recoded as 9367, and now it changed again so it is a 10367.</li>
 <li>Excel file also has alternative ways to name funds (e.g.&nbsp;0397-A and 0397-B) and variables for the year that the fund stopped being used. These have not been updated consistently over the years but it is useful information when trying to find any coding mistakes from the past.</li>
 </ul>
@@ -630,7 +641,7 @@ Warning
 </div>
 <p>Expenditure recoding:</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if first character is a 0, replace with a 9</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -684,7 +695,7 @@ Tip
 </div>
 </div>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>funds_ab_in_2023 <span class="ot">=</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"./data/funds_ab_in_2023.xlsx"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -712,11 +723,11 @@ Tip
 </details>
 </div>
 <ul>
-<li>the initial combined and years of data are saved as dataframes named <code>exp_1998_2022</code> and <code>rev_1998_2022</code>. These are then saved as exp_temp and rev_temp while recoding variables. This is BEFORE creating Fiscal Future category groups and further data cleaning done in the Calculating the Fiscal Gap page.</li>
+<li>the initial combined and years of data are saved as dataframes named <code>exp_1998_2023</code> and <code>rev_1998_2023</code>. These are then saved as exp_temp and rev_temp while recoding variables. This is BEFORE creating Fiscal Future category groups and further data cleaning done in the Calculating the Fiscal Gap page.</li>
 </ul>
 <p>Update Agencies: Some agencies have merged with others or changed names over time.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># recodes old agency numbers to consistent agency number</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>exp_temp <span class="ot">&lt;-</span> exp_temp <span class="sc">%&gt;%</span> </span>
@@ -739,7 +750,7 @@ Tip
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> (<span class="fu">as.character</span>(agency)))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>For aggregating revenue, use the rev_1998_2023 dataframe, join the funds_ab_in_2023 file to it, and then join the ioc_source_type file to the dataset. Remember: You need to update the funds_ab_in and ioc_source_type file every year!</p>
+<p>For aggregating revenue, use the <code>rev_1998_2023</code> file, join the <code>funds_ab_in_2023</code> file to it, and then join the <code>ioc_source_type</code> file. Remember: You need to update the <code>funds_ab_in</code> and <code>ioc_source_type</code> file every year!</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fund info to revenue for all years</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -767,8 +778,11 @@ Tip
 <span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> (<span class="fu">as.character</span>(agency))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="export-intermediate-files" class="level3" data-number="12.0.4">
+<h3 data-number="12.0.4" class="anchored" data-anchor-id="export-intermediate-files"><span class="header-section-number">12.0.4</span> Export Intermediate Files</h3>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(rev_temp, <span class="at">file =</span> <span class="st">"./data/rev_temp.csv"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -925,10 +939,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -938,8 +951,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -952,6 +974,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -995,6 +1136,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1020,6 +1162,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1081,39 +1249,36 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./FundsIncluded.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">An All Funds Approach</span></span>
+      <a href="./FundsIncluded.html" class="pagination-link" aria-label="An All Funds Approach">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">An All Funds Approach</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./FedMoneyReceived.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Federal COVID Money Received</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb11" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Gathering and Cleaning Data! {#sec-gathering-and-cleaning-data}</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="in">```{r warning = FALSE, message=FALSE}</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="in">#| include: false</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(formatR)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(smooth)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forecast)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quantmod)</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(geofacet)</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="in">library(haven)</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="in">library(formatR)</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="in">library(lubridate)</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="in">library(smooth)</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="in">library(forecast)</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="in">library(scales)</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="in">library(kableExtra)</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="in">library(ggplot2)</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="in">library(readxl)</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="in">library(data.table)</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="in">library(quantmod)</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="in">library(geofacet)</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="in">library(janitor)</span></span>
 <span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">warning =</span> <span class="cn">FALSE</span>, <span class="at">message =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::opts_chunk$set(warning = FALSE, message = FALSE, eval=FALSE)</span></span>
 <span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
@@ -1122,7 +1287,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Do the FOIA request. In a week or so, they send the expenditure and revenue data as excel files.</span>
 <span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Checks whether there are any new agencies, re-used funds etc. Create a list of funds, agencies, fund names, etc. for the new year and compare it to the immediate prior year to identify new funds.</span>
 <span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Update the funds_ab_in file which shows the use of funds. Use criteria to determine if the new funds should be in or out of the all-funds frame.</span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Change the variable names to be consistent with other files such as AGENCYNAME <span class="sc">\-</span>-<span class="sc">\&gt;</span> agency_name</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Change the variable names to be consistent with other files such as AGENCYNAME --<span class="sc">\&gt;</span> agency_name</span>
 <span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Once variable names are shared over all years of data, combine past years with newest year. All revenue files are in a <span class="sc">\`</span>revenue<span class="sc">\`</span> folder that I reference when I set the working directory. When adding new fiscal years, put the the newest year of data for revenue and expenditures in their respective folders.</span>
 <span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>Normally, when your receive the new fiscal year files from the Comptrollers office, you will need to change the variable names so that they are consistent with past years. This is an example of reading in the new file and changing the variable names. They seem to change almost every year in the file received from the FOIA so if the code breaks here, check to make sure that the columns you are trying to rename exist and are spelled correctly! Once variables are the same, you will want to save the file as a csv file in its Revenue/Expenditure file and bind all past years and the current year together in one dataframe.</span>
@@ -1183,44 +1348,44 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--- Code chunk below not updated. Is in other .rmd files for fy2023---&gt;</span></span>
 <span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a><span class="in">```{r create-rev-csv-FY23, include=FALSE, eval=FALSE}</span></span>
-<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a><span class="co"># years after fy22: add line of code to bind csv files after binding the dta files.</span></span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a><span class="in"># years after fy22: add line of code to bind csv files after binding the dta files.</span></span>
 <span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"./data/ioc_data_received/revenue"</span>)</span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a><span class="in">setwd("./data/ioc_data_received/revenue")</span></span>
 <span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a>allrevfiles23 <span class="ot">=</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"./data/ioc_data_received/revenue"</span>,  <span class="at">pattern =</span> <span class="st">".dta"</span>) <span class="sc">%&gt;%</span>  <span class="fu">lapply</span>(read_dta) <span class="sc">%&gt;%</span> bind_rows</span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a><span class="in">allrevfiles23 = list.files(path = "./data/ioc_data_received/revenue",  pattern = ".dta") %&gt;%  lapply(read_dta) %&gt;% bind_rows</span></span>
 <span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a><span class="co">#Fy21: 62294 observations, 13 variables</span></span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a><span class="in">#Fy21: 62294 observations, 13 variables</span></span>
 <span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a><span class="co">#FY22: 65094 obs, 13 vars</span></span>
-<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a><span class="co">#FY23: 57822 obs</span></span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a><span class="in">#FY22: 65094 obs, 13 vars</span></span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a><span class="in"> </span></span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a><span class="in">#FY23: 57822 obs</span></span>
 <span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(allrevfiles23, <span class="st">"./data/allrevfiles23.csv"</span>)</span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a><span class="in">write_csv(allrevfiles23, "./data/allrevfiles23.csv")</span></span>
 <span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"./data/ioc_data_received/expenditures"</span>)</span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a><span class="in">setwd("./data/ioc_data_received/expenditures")</span></span>
 <span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>allexpfiles23 <span class="ot">=</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"./data/ioc_data_received/expenditures"</span>,  <span class="at">pattern =</span> <span class="st">".dta"</span>) <span class="sc">%&gt;%</span>  <span class="fu">lapply</span>(read_dta) <span class="sc">%&gt;%</span> bind_rows</span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a><span class="in">allexpfiles23 = list.files(path = "./data/ioc_data_received/expenditures",  pattern = ".dta") %&gt;%  lapply(read_dta) %&gt;% bind_rows</span></span>
 <span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a><span class="co">#fy21 213372 observations, 20 variables</span></span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a><span class="in">#fy21 213372 observations, 20 variables</span></span>
 <span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a><span class="co"># fy22 225587 obs, 21 vars.</span></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a><span class="in"># fy22 225587 obs, 21 vars.</span></span>
 <span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a><span class="co"># fy23 238089 obs</span></span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a><span class="in"># fy23 238089 obs</span></span>
 <span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(allexpfiles23, <span class="st">".data/allexpfiles23.csv"</span>)</span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="in">write_csv(allexpfiles23, ".data/allexpfiles23.csv")</span></span>
 <span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a>Code below reads in the csv files created in chunks above (allrevfiles.csv and allrexpfiles.csv). These files contain all years of data combined into one file BEFORE any recoding is done. Do not use this file for summing categories because it is just an inbetween step before recoding revenue and expenditure categories. It also does not contain changes in funds or agencies.</span>
 <span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a><span class="in">```{r readCSVs}</span></span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a><span class="in">```{r readCSVs, warning=FALSE, message=FALSE}</span></span>
 <span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a><span class="co"># combined in past chunks called create-rev-csv and create-exp-csv</span></span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a><span class="in"># combined in past chunks called create-rev-csv and create-exp-csv</span></span>
 <span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a>allrevfiles23 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"./data/allrevfiles_Nov132023.csv"</span>) <span class="co">#combined but not recoded</span></span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a><span class="in">allrevfiles23 &lt;- read_csv("./data/allrevfiles_Nov132023.csv") #combined but not recoded</span></span>
 <span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a>allexpfiles23 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"./data/allexpfiles_Nov132023.csv"</span>) <span class="co">#combined but not recoded</span></span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a><span class="in">allexpfiles23 &lt;- read_csv("./data/allexpfiles_Nov132023.csv") #combined but not recoded</span></span>
 <span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a><span class="fu">### Inspecting new FY23 data files</span></span>
@@ -1256,148 +1421,148 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE}</span></span>
 <span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a><span class="co">#allrevfiles23 &lt;- read_csv("allrevfiles23.csv") #combined but not recoded</span></span>
-<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a><span class="co">#allexpfiles23 &lt;- read_csv("allexpfiles23.csv") #combined but not recoded</span></span>
+<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a><span class="in">#allrevfiles23 &lt;- read_csv("allrevfiles23.csv") #combined but not recoded</span></span>
+<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a><span class="in">#allexpfiles23 &lt;- read_csv("allexpfiles23.csv") #combined but not recoded</span></span>
 <span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a><span class="do">#### From Expenditure Data #####</span></span>
+<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a><span class="in">#### From Expenditure Data #####</span></span>
 <span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a><span class="co"># agencies referenced in any year before 2020:</span></span>
-<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a>agencies_past <span class="ot">&lt;-</span> allexpfiles23 <span class="sc">%&gt;%</span> </span>
-<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fy <span class="sc">&lt;</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(agency <span class="sc">==</span> <span class="fu">as.character</span>(agency)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(agency, agency_name) <span class="sc">%&gt;%</span> <span class="fu">unique</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">expenditure =</span> <span class="fu">sum</span>(expenditure, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(agency)</span>
-<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a><span class="co"># agencies_past # 146 agencies ever</span></span>
+<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a><span class="in"># agencies referenced in any year before 2020:</span></span>
+<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a><span class="in">agencies_past &lt;- allexpfiles23 %&gt;% </span></span>
+<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(fy &lt; 2023) %&gt;% </span></span>
+<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(agency == as.character(agency)) %&gt;% </span></span>
+<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(agency, agency_name) %&gt;% unique() %&gt;% </span></span>
+<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(expenditure = sum(expenditure, na.rm = TRUE)) %&gt;% </span></span>
+<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a><span class="in">  drop_na() %&gt;% </span></span>
+<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a><span class="in">  arrange(agency)</span></span>
+<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a><span class="in"># agencies_past # 146 agencies ever</span></span>
 <span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a><span class="co"># agencies in 2023 data:</span></span>
-<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a>agencies23 <span class="ot">&lt;-</span> allexpfiles23  <span class="sc">%&gt;%</span> </span>
-<span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fy <span class="sc">==</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(agency <span class="sc">==</span> <span class="fu">as.character</span>(agency)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(agency, agency_name) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">expenditure =</span> <span class="fu">sum</span>(expenditure, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a><span class="in"># agencies in 2023 data:</span></span>
+<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a><span class="in">agencies23 &lt;- allexpfiles23  %&gt;% </span></span>
+<span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(fy == 2023) %&gt;% </span></span>
+<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(agency == as.character(agency)) %&gt;% </span></span>
+<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(agency, agency_name) %&gt;% </span></span>
+<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(expenditure = sum(expenditure, na.rm = TRUE))</span></span>
 <span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a><span class="co"># 280 and 533 are new agency codes: </span></span>
-<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a><span class="fu">anti_join</span>(agencies23, agencies_past, </span>
-<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"agency"</span>, <span class="st">"agency_name"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(agency)</span>
+<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a><span class="in"># 280 and 533 are new agency codes: </span></span>
+<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a><span class="in">anti_join(agencies23, agencies_past, </span></span>
+<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a><span class="in">          by = c("agency", "agency_name")) %&gt;% </span></span>
+<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a><span class="in">  arrange(agency)</span></span>
 <span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-197"><a href="#cb11-197" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-199"><a href="#cb11-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a>funds_past <span class="ot">&lt;-</span> allexpfiles23  <span class="sc">%&gt;%</span> </span>
-<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fy <span class="sc">&lt;</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(fund <span class="sc">==</span> <span class="fu">as.character</span>(fund)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(fund, fund_name) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">Expenditure =</span> <span class="fu">sum</span>(expenditure, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))  <span class="sc">%&gt;%</span> </span>
-<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a><span class="in">funds_past &lt;- allexpfiles23  %&gt;% </span></span>
+<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(fy &lt; 2023) %&gt;% </span></span>
+<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund == as.character(fund)) %&gt;% </span></span>
+<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(fund, fund_name) %&gt;% </span></span>
+<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(count = n(), Expenditure = sum(expenditure, na.rm = TRUE))  %&gt;% </span></span>
+<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a><span class="in">  drop_na()</span></span>
 <span id="cb11-206"><a href="#cb11-206" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a>funds23 <span class="ot">&lt;-</span> allexpfiles23  <span class="sc">%&gt;%</span> </span>
-<span id="cb11-208"><a href="#cb11-208" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fy <span class="sc">==</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-209"><a href="#cb11-209" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(fund <span class="sc">==</span> <span class="fu">as.character</span>(fund)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-210"><a href="#cb11-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(fund, fund_name) <span class="sc">%&gt;%</span>  </span>
-<span id="cb11-211"><a href="#cb11-211" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">Expenditure =</span> <span class="fu">sum</span>(expenditure, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-212"><a href="#cb11-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
+<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a><span class="in">funds23 &lt;- allexpfiles23  %&gt;% </span></span>
+<span id="cb11-208"><a href="#cb11-208" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(fy == 2023) %&gt;% </span></span>
+<span id="cb11-209"><a href="#cb11-209" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund == as.character(fund)) %&gt;% </span></span>
+<span id="cb11-210"><a href="#cb11-210" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(fund, fund_name) %&gt;%  </span></span>
+<span id="cb11-211"><a href="#cb11-211" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(count = n(), Expenditure = sum(expenditure, na.rm = TRUE)) %&gt;% </span></span>
+<span id="cb11-212"><a href="#cb11-212" aria-hidden="true" tabindex="-1"></a><span class="in">  unique()</span></span>
 <span id="cb11-213"><a href="#cb11-213" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-214"><a href="#cb11-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-215"><a href="#cb11-215" aria-hidden="true" tabindex="-1"></a><span class="co"># 15 funds were in FY22 data that were not in past data:</span></span>
-<span id="cb11-216"><a href="#cb11-216" aria-hidden="true" tabindex="-1"></a><span class="fu">anti_join</span>(funds23, funds_past, </span>
-<span id="cb11-217"><a href="#cb11-217" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"fund"</span>, <span class="st">"fund_name"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-218"><a href="#cb11-218" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(fund)</span>
+<span id="cb11-215"><a href="#cb11-215" aria-hidden="true" tabindex="-1"></a><span class="in"># 15 funds were in FY22 data that were not in past data:</span></span>
+<span id="cb11-216"><a href="#cb11-216" aria-hidden="true" tabindex="-1"></a><span class="in">anti_join(funds23, funds_past, </span></span>
+<span id="cb11-217"><a href="#cb11-217" aria-hidden="true" tabindex="-1"></a><span class="in">          by = c("fund", "fund_name")) %&gt;% </span></span>
+<span id="cb11-218"><a href="#cb11-218" aria-hidden="true" tabindex="-1"></a><span class="in">  arrange(fund)</span></span>
 <span id="cb11-219"><a href="#cb11-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-220"><a href="#cb11-220" aria-hidden="true" tabindex="-1"></a><span class="co"># orgs_pastin the past =  916 org groups ever</span></span>
-<span id="cb11-221"><a href="#cb11-221" aria-hidden="true" tabindex="-1"></a>orgs_past <span class="ot">&lt;-</span> allexpfiles23  <span class="sc">%&gt;%</span> </span>
-<span id="cb11-222"><a href="#cb11-222" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fy <span class="sc">&lt;</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-223"><a href="#cb11-223" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(appr_org <span class="sc">==</span> <span class="fu">as.character</span>(appr_org)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-224"><a href="#cb11-224" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(appr_org, org_name) <span class="sc">%&gt;%</span> <span class="fu">unique</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb11-225"><a href="#cb11-225" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Expenditure =</span> <span class="fu">sum</span>(expenditure, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-226"><a href="#cb11-226" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb11-220"><a href="#cb11-220" aria-hidden="true" tabindex="-1"></a><span class="in"># orgs_pastin the past =  916 org groups ever</span></span>
+<span id="cb11-221"><a href="#cb11-221" aria-hidden="true" tabindex="-1"></a><span class="in">orgs_past &lt;- allexpfiles23  %&gt;% </span></span>
+<span id="cb11-222"><a href="#cb11-222" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(fy &lt; 2023) %&gt;% </span></span>
+<span id="cb11-223"><a href="#cb11-223" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(appr_org == as.character(appr_org)) %&gt;% </span></span>
+<span id="cb11-224"><a href="#cb11-224" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(appr_org, org_name) %&gt;% unique() %&gt;% </span></span>
+<span id="cb11-225"><a href="#cb11-225" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(Expenditure = sum(expenditure, na.rm = TRUE)) %&gt;% </span></span>
+<span id="cb11-226"><a href="#cb11-226" aria-hidden="true" tabindex="-1"></a><span class="in">  drop_na()</span></span>
 <span id="cb11-227"><a href="#cb11-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-228"><a href="#cb11-228" aria-hidden="true" tabindex="-1"></a><span class="co"># orgs_past # 916 org groups ever</span></span>
-<span id="cb11-229"><a href="#cb11-229" aria-hidden="true" tabindex="-1"></a>orgs23 <span class="ot">&lt;-</span> allexpfiles23  <span class="sc">%&gt;%</span> </span>
-<span id="cb11-230"><a href="#cb11-230" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fy <span class="sc">==</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-231"><a href="#cb11-231" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">appr_org =</span> <span class="fu">as.character</span>(appr_org)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-232"><a href="#cb11-232" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(appr_org, org_name) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-233"><a href="#cb11-233" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Expenditure =</span> <span class="fu">sum</span>(expenditure, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb11-234"><a href="#cb11-234" aria-hidden="true" tabindex="-1"></a><span class="co"># orgs22 # 396 org groups this year</span></span>
+<span id="cb11-228"><a href="#cb11-228" aria-hidden="true" tabindex="-1"></a><span class="in"># orgs_past # 916 org groups ever</span></span>
+<span id="cb11-229"><a href="#cb11-229" aria-hidden="true" tabindex="-1"></a><span class="in">orgs23 &lt;- allexpfiles23  %&gt;% </span></span>
+<span id="cb11-230"><a href="#cb11-230" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(fy == 2023) %&gt;% </span></span>
+<span id="cb11-231"><a href="#cb11-231" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(appr_org = as.character(appr_org)) %&gt;% </span></span>
+<span id="cb11-232"><a href="#cb11-232" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(appr_org, org_name) %&gt;% </span></span>
+<span id="cb11-233"><a href="#cb11-233" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(Expenditure = sum(expenditure, na.rm = TRUE))</span></span>
+<span id="cb11-234"><a href="#cb11-234" aria-hidden="true" tabindex="-1"></a><span class="in"># orgs22 # 396 org groups this year</span></span>
 <span id="cb11-235"><a href="#cb11-235" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-236"><a href="#cb11-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-237"><a href="#cb11-237" aria-hidden="true" tabindex="-1"></a><span class="co"># 4 org number and org name combos are new for FY2023:</span></span>
-<span id="cb11-238"><a href="#cb11-238" aria-hidden="true" tabindex="-1"></a><span class="fu">anti_join</span>(orgs23, orgs_past,</span>
-<span id="cb11-239"><a href="#cb11-239" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"appr_org"</span>, <span class="st">"org_name"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-240"><a href="#cb11-240" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(appr_org)</span>
+<span id="cb11-237"><a href="#cb11-237" aria-hidden="true" tabindex="-1"></a><span class="in"># 4 org number and org name combos are new for FY2023:</span></span>
+<span id="cb11-238"><a href="#cb11-238" aria-hidden="true" tabindex="-1"></a><span class="in">anti_join(orgs23, orgs_past,</span></span>
+<span id="cb11-239"><a href="#cb11-239" aria-hidden="true" tabindex="-1"></a><span class="in">          by = c("appr_org", "org_name")) %&gt;% </span></span>
+<span id="cb11-240"><a href="#cb11-240" aria-hidden="true" tabindex="-1"></a><span class="in">  arrange(appr_org)</span></span>
 <span id="cb11-241"><a href="#cb11-241" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-242"><a href="#cb11-242" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-243"><a href="#cb11-243" aria-hidden="true" tabindex="-1"></a>**New Revenue Funds, Sources, and New Agencies:**</span>
 <span id="cb11-244"><a href="#cb11-244" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-245"><a href="#cb11-245" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE}</span></span>
-<span id="cb11-246"><a href="#cb11-246" aria-hidden="true" tabindex="-1"></a><span class="do">#### From Revenue Data ####</span></span>
+<span id="cb11-246"><a href="#cb11-246" aria-hidden="true" tabindex="-1"></a><span class="in">#### From Revenue Data ####</span></span>
 <span id="cb11-247"><a href="#cb11-247" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-248"><a href="#cb11-248" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-249"><a href="#cb11-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-250"><a href="#cb11-250" aria-hidden="true" tabindex="-1"></a><span class="co"># agencies_past # 108 agencies ever</span></span>
-<span id="cb11-251"><a href="#cb11-251" aria-hidden="true" tabindex="-1"></a>agencies_past <span class="ot">&lt;-</span> allrevfiles23  <span class="sc">%&gt;%</span> <span class="fu">filter</span>(fy <span class="sc">&lt;</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-252"><a href="#cb11-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(agency <span class="sc">==</span> <span class="fu">as.character</span>(agency)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-253"><a href="#cb11-253" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(agency, agency_name) <span class="sc">%&gt;%</span> <span class="fu">unique</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb11-254"><a href="#cb11-254" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Receipts =</span> <span class="fu">sum</span>(receipts, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-255"><a href="#cb11-255" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb11-250"><a href="#cb11-250" aria-hidden="true" tabindex="-1"></a><span class="in"># agencies_past # 108 agencies ever</span></span>
+<span id="cb11-251"><a href="#cb11-251" aria-hidden="true" tabindex="-1"></a><span class="in">agencies_past &lt;- allrevfiles23  %&gt;% filter(fy &lt; 2023) %&gt;% </span></span>
+<span id="cb11-252"><a href="#cb11-252" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(agency == as.character(agency)) %&gt;% </span></span>
+<span id="cb11-253"><a href="#cb11-253" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(agency, agency_name) %&gt;% unique() %&gt;% </span></span>
+<span id="cb11-254"><a href="#cb11-254" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(Receipts = sum(receipts, na.rm = TRUE)) %&gt;% </span></span>
+<span id="cb11-255"><a href="#cb11-255" aria-hidden="true" tabindex="-1"></a><span class="in">  drop_na()</span></span>
 <span id="cb11-256"><a href="#cb11-256" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-257"><a href="#cb11-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-258"><a href="#cb11-258" aria-hidden="true" tabindex="-1"></a>agencies23 <span class="ot">&lt;-</span> allrevfiles23  <span class="sc">%&gt;%</span> </span>
-<span id="cb11-259"><a href="#cb11-259" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fy <span class="sc">==</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-260"><a href="#cb11-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(agency <span class="sc">==</span> <span class="fu">as.character</span>(agency)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-261"><a href="#cb11-261" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(agency, agency_name) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-262"><a href="#cb11-262" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Receipts =</span> <span class="fu">sum</span>(receipts, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb11-258"><a href="#cb11-258" aria-hidden="true" tabindex="-1"></a><span class="in">agencies23 &lt;- allrevfiles23  %&gt;% </span></span>
+<span id="cb11-259"><a href="#cb11-259" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(fy == 2023) %&gt;% </span></span>
+<span id="cb11-260"><a href="#cb11-260" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(agency == as.character(agency)) %&gt;% </span></span>
+<span id="cb11-261"><a href="#cb11-261" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(agency, agency_name) %&gt;% </span></span>
+<span id="cb11-262"><a href="#cb11-262" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(Receipts = sum(receipts, na.rm = TRUE))</span></span>
 <span id="cb11-263"><a href="#cb11-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-264"><a href="#cb11-264" aria-hidden="true" tabindex="-1"></a><span class="co"># 0 new agencies in revenue data this year</span></span>
-<span id="cb11-265"><a href="#cb11-265" aria-hidden="true" tabindex="-1"></a><span class="fu">anti_join</span>(agencies23, agencies_past, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"agency"</span>, <span class="st">"agency_name"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-266"><a href="#cb11-266" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(agency)</span>
+<span id="cb11-264"><a href="#cb11-264" aria-hidden="true" tabindex="-1"></a><span class="in"># 0 new agencies in revenue data this year</span></span>
+<span id="cb11-265"><a href="#cb11-265" aria-hidden="true" tabindex="-1"></a><span class="in">anti_join(agencies23, agencies_past, by = c("agency", "agency_name")) %&gt;% </span></span>
+<span id="cb11-266"><a href="#cb11-266" aria-hidden="true" tabindex="-1"></a><span class="in">  arrange(agency)</span></span>
 <span id="cb11-267"><a href="#cb11-267" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-268"><a href="#cb11-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-269"><a href="#cb11-269" aria-hidden="true" tabindex="-1"></a>funds_past <span class="ot">&lt;-</span> allrevfiles23  <span class="sc">%&gt;%</span> </span>
-<span id="cb11-270"><a href="#cb11-270" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fy <span class="sc">&lt;</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-271"><a href="#cb11-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(fund <span class="sc">==</span> <span class="fu">as.character</span>(fund)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-272"><a href="#cb11-272" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(fund, fund_name) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-273"><a href="#cb11-273" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">Receipts =</span> <span class="fu">sum</span>(receipts, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))  <span class="sc">%&gt;%</span> </span>
-<span id="cb11-274"><a href="#cb11-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb11-269"><a href="#cb11-269" aria-hidden="true" tabindex="-1"></a><span class="in">funds_past &lt;- allrevfiles23  %&gt;% </span></span>
+<span id="cb11-270"><a href="#cb11-270" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(fy &lt; 2023) %&gt;% </span></span>
+<span id="cb11-271"><a href="#cb11-271" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund == as.character(fund)) %&gt;% </span></span>
+<span id="cb11-272"><a href="#cb11-272" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(fund, fund_name) %&gt;% </span></span>
+<span id="cb11-273"><a href="#cb11-273" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE))  %&gt;% </span></span>
+<span id="cb11-274"><a href="#cb11-274" aria-hidden="true" tabindex="-1"></a><span class="in">  drop_na()</span></span>
 <span id="cb11-275"><a href="#cb11-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-276"><a href="#cb11-276" aria-hidden="true" tabindex="-1"></a>funds23 <span class="ot">&lt;-</span> allrevfiles23  <span class="sc">%&gt;%</span> </span>
-<span id="cb11-277"><a href="#cb11-277" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fy <span class="sc">==</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-278"><a href="#cb11-278" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(fund <span class="sc">==</span> <span class="fu">as.character</span>(fund)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-279"><a href="#cb11-279" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(fund, fund_name) <span class="sc">%&gt;%</span>  </span>
-<span id="cb11-280"><a href="#cb11-280" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">Receipts =</span> <span class="fu">sum</span>(receipts, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-281"><a href="#cb11-281" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb11-282"><a href="#cb11-282" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb11-276"><a href="#cb11-276" aria-hidden="true" tabindex="-1"></a><span class="in">funds23 &lt;- allrevfiles23  %&gt;% </span></span>
+<span id="cb11-277"><a href="#cb11-277" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(fy == 2023) %&gt;% </span></span>
+<span id="cb11-278"><a href="#cb11-278" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund == as.character(fund)) %&gt;% </span></span>
+<span id="cb11-279"><a href="#cb11-279" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(fund, fund_name) %&gt;%  </span></span>
+<span id="cb11-280"><a href="#cb11-280" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE)) %&gt;% </span></span>
+<span id="cb11-281"><a href="#cb11-281" aria-hidden="true" tabindex="-1"></a><span class="in">  unique() %&gt;% </span></span>
+<span id="cb11-282"><a href="#cb11-282" aria-hidden="true" tabindex="-1"></a><span class="in">  drop_na()</span></span>
 <span id="cb11-283"><a href="#cb11-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-284"><a href="#cb11-284" aria-hidden="true" tabindex="-1"></a><span class="co"># 19 revenue funds were in FY22 revenue data that were not in past data </span></span>
-<span id="cb11-285"><a href="#cb11-285" aria-hidden="true" tabindex="-1"></a><span class="co"># some could be small fund name changes</span></span>
-<span id="cb11-286"><a href="#cb11-286" aria-hidden="true" tabindex="-1"></a><span class="fu">anti_join</span>(funds23, funds_past, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"fund"</span>, <span class="st">"fund_name"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-287"><a href="#cb11-287" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(fund)</span>
+<span id="cb11-284"><a href="#cb11-284" aria-hidden="true" tabindex="-1"></a><span class="in"># 19 revenue funds were in FY22 revenue data that were not in past data </span></span>
+<span id="cb11-285"><a href="#cb11-285" aria-hidden="true" tabindex="-1"></a><span class="in"># some could be small fund name changes</span></span>
+<span id="cb11-286"><a href="#cb11-286" aria-hidden="true" tabindex="-1"></a><span class="in">anti_join(funds23, funds_past, by = c("fund", "fund_name")) %&gt;% </span></span>
+<span id="cb11-287"><a href="#cb11-287" aria-hidden="true" tabindex="-1"></a><span class="in">  arrange(fund)</span></span>
 <span id="cb11-288"><a href="#cb11-288" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-289"><a href="#cb11-289" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-290"><a href="#cb11-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-291"><a href="#cb11-291" aria-hidden="true" tabindex="-1"></a>sources_past <span class="ot">&lt;-</span> allrevfiles23  <span class="sc">%&gt;%</span> </span>
-<span id="cb11-292"><a href="#cb11-292" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fy <span class="sc">&lt;</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-293"><a href="#cb11-293" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(source <span class="sc">==</span> <span class="fu">as.character</span>(source)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-294"><a href="#cb11-294" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source, source_name) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-295"><a href="#cb11-295" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">Receipts =</span> <span class="fu">sum</span>(receipts, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))  <span class="sc">%&gt;%</span> </span>
-<span id="cb11-296"><a href="#cb11-296" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb11-291"><a href="#cb11-291" aria-hidden="true" tabindex="-1"></a><span class="in">sources_past &lt;- allrevfiles23  %&gt;% </span></span>
+<span id="cb11-292"><a href="#cb11-292" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(fy &lt; 2023) %&gt;% </span></span>
+<span id="cb11-293"><a href="#cb11-293" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(source == as.character(source)) %&gt;% </span></span>
+<span id="cb11-294"><a href="#cb11-294" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(source, source_name) %&gt;% </span></span>
+<span id="cb11-295"><a href="#cb11-295" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE))  %&gt;% </span></span>
+<span id="cb11-296"><a href="#cb11-296" aria-hidden="true" tabindex="-1"></a><span class="in">  drop_na()</span></span>
 <span id="cb11-297"><a href="#cb11-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-298"><a href="#cb11-298" aria-hidden="true" tabindex="-1"></a>sources23 <span class="ot">&lt;-</span> allrevfiles23  <span class="sc">%&gt;%</span> </span>
-<span id="cb11-299"><a href="#cb11-299" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fy <span class="sc">==</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-300"><a href="#cb11-300" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(source <span class="sc">==</span> <span class="fu">as.character</span>(source)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-301"><a href="#cb11-301" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source, source_name) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-302"><a href="#cb11-302" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">Receipts =</span> <span class="fu">sum</span>(receipts, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-303"><a href="#cb11-303" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
+<span id="cb11-298"><a href="#cb11-298" aria-hidden="true" tabindex="-1"></a><span class="in">sources23 &lt;- allrevfiles23  %&gt;% </span></span>
+<span id="cb11-299"><a href="#cb11-299" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(fy == 2023) %&gt;% </span></span>
+<span id="cb11-300"><a href="#cb11-300" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(source == as.character(source)) %&gt;% </span></span>
+<span id="cb11-301"><a href="#cb11-301" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(source, source_name) %&gt;% </span></span>
+<span id="cb11-302"><a href="#cb11-302" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(count = n(), Receipts = sum(receipts, na.rm = TRUE)) %&gt;% </span></span>
+<span id="cb11-303"><a href="#cb11-303" aria-hidden="true" tabindex="-1"></a><span class="in">  unique()</span></span>
 <span id="cb11-304"><a href="#cb11-304" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-305"><a href="#cb11-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-306"><a href="#cb11-306" aria-hidden="true" tabindex="-1"></a><span class="co"># 20 revenue sources were in FY22 data that were not in past data </span></span>
-<span id="cb11-307"><a href="#cb11-307" aria-hidden="true" tabindex="-1"></a><span class="co"># some could be small source name changes:</span></span>
-<span id="cb11-308"><a href="#cb11-308" aria-hidden="true" tabindex="-1"></a><span class="fu">anti_join</span>(sources23, sources_past, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"source"</span>, <span class="st">"source_name"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-309"><a href="#cb11-309" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(source)</span>
+<span id="cb11-306"><a href="#cb11-306" aria-hidden="true" tabindex="-1"></a><span class="in"># 20 revenue sources were in FY22 data that were not in past data </span></span>
+<span id="cb11-307"><a href="#cb11-307" aria-hidden="true" tabindex="-1"></a><span class="in"># some could be small source name changes:</span></span>
+<span id="cb11-308"><a href="#cb11-308" aria-hidden="true" tabindex="-1"></a><span class="in">anti_join(sources23, sources_past, by = c("source", "source_name")) %&gt;% </span></span>
+<span id="cb11-309"><a href="#cb11-309" aria-hidden="true" tabindex="-1"></a><span class="in">  arrange(source)</span></span>
 <span id="cb11-310"><a href="#cb11-310" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-311"><a href="#cb11-311" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-312"><a href="#cb11-312" aria-hidden="true" tabindex="-1"></a></span>
@@ -1411,54 +1576,54 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-320"><a href="#cb11-320" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-321"><a href="#cb11-321" aria-hidden="true" tabindex="-1"></a>For funds that were reused once, a 9 replaces the 0 as the first digit. If reused twice, then the first two values are 10.</span>
 <span id="cb11-322"><a href="#cb11-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-323"><a href="#cb11-323" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Ex. 0350 <span class="sc">\-</span>-<span class="sc">\&gt;</span> 9350 because its use changed.</span>
+<span id="cb11-323"><a href="#cb11-323" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Ex. 0350 --<span class="sc">\&gt;</span> 9350 because its use changed.</span>
 <span id="cb11-324"><a href="#cb11-324" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Ex. 0367 becomes 10367 because its use has changed twice now. There was fund 0367 originally, then its use changed and it was recoded as 9367, and now it changed again so it is a 10367.</span>
 <span id="cb11-325"><a href="#cb11-325" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Excel file also has alternative ways to name funds (e.g. 0397-A and 0397-B) and variables for the year that the fund stopped being used. These have not been updated consistently over the years but it is useful information when trying to find any coding mistakes from the past.</span>
 <span id="cb11-326"><a href="#cb11-326" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-327"><a href="#cb11-327" aria-hidden="true" tabindex="-1"></a>New or reused funds revenue file recoding:</span>
 <span id="cb11-328"><a href="#cb11-328" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-329"><a href="#cb11-329" aria-hidden="true" tabindex="-1"></a><span class="in">```{r recode-rev-funds}</span></span>
-<span id="cb11-330"><a href="#cb11-330" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: false</span></span>
+<span id="cb11-330"><a href="#cb11-330" aria-hidden="true" tabindex="-1"></a><span class="in">#| code-fold: false</span></span>
 <span id="cb11-331"><a href="#cb11-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-332"><a href="#cb11-332" aria-hidden="true" tabindex="-1"></a><span class="co"># if first character is a 0, replace with a 9 if its purpose has changed</span></span>
+<span id="cb11-332"><a href="#cb11-332" aria-hidden="true" tabindex="-1"></a><span class="in"># if first character is a 0, replace with a 9 if its purpose has changed</span></span>
 <span id="cb11-333"><a href="#cb11-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-334"><a href="#cb11-334" aria-hidden="true" tabindex="-1"></a>rev_1998_2023 <span class="ot">&lt;-</span> allrevfiles23 <span class="sc">%&gt;%</span></span>
+<span id="cb11-334"><a href="#cb11-334" aria-hidden="true" tabindex="-1"></a><span class="in">rev_1998_2023 &lt;- allrevfiles23 %&gt;%</span></span>
 <span id="cb11-335"><a href="#cb11-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-336"><a href="#cb11-336" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2002</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0730"</span>, <span class="st">"0241"</span>, <span class="st">"0350"</span>, <span class="st">"0367"</span>, <span class="st">"0381"</span>, <span class="st">"0382"</span>, <span class="st">"0526"</span>, <span class="st">"0603"</span>, <span class="st">"0734"</span>, <span class="st">"0913"</span>, <span class="st">"0379"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-337"><a href="#cb11-337" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-338"><a href="#cb11-338" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span> (fy <span class="sc">&lt;</span> <span class="dv">2008</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0027"</span>, <span class="st">"0033"</span>, <span class="st">"0037"</span>, <span class="st">"0058"</span>, <span class="st">"0062"</span>, <span class="st">"0066"</span>, <span class="st">"0075"</span>, <span class="st">"0083"</span>, <span class="st">"0116"</span>, <span class="st">"0119"</span>, <span class="st">"0120"</span>, <span class="st">"0122"</span>, <span class="st">"0148"</span>, <span class="st">"0149"</span>, <span class="st">"0157"</span>, <span class="st">"0158"</span>, <span class="st">"0166"</span>, <span class="st">"0194"</span>, <span class="st">"0201"</span>, <span class="st">"0209"</span>, <span class="st">"0211"</span>, <span class="st">"0217"</span>, <span class="st">"0223"</span>, <span class="st">"0231"</span>, <span class="st">"0234"</span>, <span class="st">"0253"</span>, <span class="st">"0320"</span>, <span class="st">"0503"</span>, <span class="st">"0505"</span>, <span class="st">"0512"</span>, <span class="st">"0516"</span>, <span class="st">"0531"</span>, <span class="st">"0532"</span>, <span class="st">"0533"</span>, <span class="st">"0547"</span>, <span class="st">"0563"</span>, <span class="st">"0579"</span>, <span class="st">"0591"</span>, <span class="st">"0606"</span>, <span class="st">"0616"</span>, <span class="st">"0624"</span>, <span class="st">"0659"</span>, <span class="st">"0662"</span>, <span class="st">"0665"</span>, <span class="st">"0676"</span>, <span class="st">"0710"</span>, </span>
+<span id="cb11-336"><a href="#cb11-336" aria-hidden="true" tabindex="-1"></a><span class="in">      mutate(fund = ifelse(fy &lt; 2002 &amp; fund %in% c("0730", "0241", "0350", "0367", "0381", "0382", "0526", "0603", "0734", "0913", "0379"), str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
+<span id="cb11-337"><a href="#cb11-337" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
+<span id="cb11-338"><a href="#cb11-338" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse (fy &lt; 2008 &amp; fund %in% c("0027", "0033", "0037", "0058", "0062", "0066", "0075", "0083", "0116", "0119", "0120", "0122", "0148", "0149", "0157", "0158", "0166", "0194", "0201", "0209", "0211", "0217", "0223", "0231", "0234", "0253", "0320", "0503", "0505", "0512", "0516", "0531", "0532", "0533", "0547", "0563", "0579", "0591", "0606", "0616", "0624", "0659", "0662", "0665", "0676", "0710", </span></span>
 <span id="cb11-339"><a href="#cb11-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-340"><a href="#cb11-340" aria-hidden="true" tabindex="-1"></a><span class="st">"0068"</span>, <span class="st">"0076"</span>, <span class="st">"0115"</span>, <span class="st">"0119"</span>, <span class="st">"0168"</span>, <span class="st">"0182"</span>, <span class="st">"0199"</span>, <span class="st">"0241"</span>, <span class="st">"0307"</span>, <span class="st">"0506"</span>, <span class="st">"0509"</span>, <span class="st">"0513"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-340"><a href="#cb11-340" aria-hidden="true" tabindex="-1"></a><span class="in">"0068", "0076", "0115", "0119", "0168", "0182", "0199", "0241", "0307", "0506", "0509", "0513"), str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
 <span id="cb11-341"><a href="#cb11-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-342"><a href="#cb11-342" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2016</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0263"</span>, <span class="st">"0399"</span>, <span class="st">"0409"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-342"><a href="#cb11-342" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy &lt; 2016 &amp; fund %in% c("0263", "0399", "0409"), str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
 <span id="cb11-343"><a href="#cb11-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-344"><a href="#cb11-344" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span>  <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2017</span> <span class="sc">&amp;</span> fund <span class="sc">==</span> <span class="st">"0364"</span>, <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-344"><a href="#cb11-344" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund =  ifelse(fy &lt; 2017 &amp; fund == "0364", str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
 <span id="cb11-345"><a href="#cb11-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-346"><a href="#cb11-346" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span>  <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2018</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0818"</span>, <span class="st">"0767"</span>, <span class="st">"0671"</span>, <span class="st">"0593"</span>, <span class="st">"0578"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-346"><a href="#cb11-346" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund =  ifelse(fy &lt; 2018 &amp; fund %in% c("0818", "0767", "0671", "0593", "0578"), str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
 <span id="cb11-347"><a href="#cb11-347" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-348"><a href="#cb11-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-349"><a href="#cb11-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy<span class="sc">&gt;</span><span class="dv">1999</span> <span class="sc">&amp;</span> fy <span class="sc">&lt;</span> <span class="dv">2018</span> <span class="sc">&amp;</span> fund <span class="sc">==</span> <span class="st">"0231"</span>, <span class="st">"10231"</span>, fund) ) <span class="sc">%&gt;%</span></span>
-<span id="cb11-350"><a href="#cb11-350" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-349"><a href="#cb11-349" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy&gt;1999 &amp; fy &lt; 2018 &amp; fund == "0231", "10231", fund) ) %&gt;%</span></span>
+<span id="cb11-350"><a href="#cb11-350" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
 <span id="cb11-351"><a href="#cb11-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-352"><a href="#cb11-352" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2019</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0161"</span>, <span class="st">"0489"</span>, <span class="st">"0500"</span>, <span class="st">"0612"</span>, <span class="st">"0893"</span>, <span class="st">"0766"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-352"><a href="#cb11-352" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy &lt; 2019 &amp; fund %in% c("0161", "0489", "0500", "0612", "0893", "0766"), str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
 <span id="cb11-353"><a href="#cb11-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-354"><a href="#cb11-354" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span>  <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2020</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0254"</span>, <span class="st">"0304"</span>, <span class="st">"0324"</span>, <span class="st">"0610"</span>, <span class="st">"0887"</span>, <span class="st">"0908"</span>, <span class="st">"0939"</span>, <span class="st">"0968"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-354"><a href="#cb11-354" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund =  ifelse(fy &lt; 2020 &amp; fund %in% c("0254", "0304", "0324", "0610", "0887", "0908", "0939", "0968"), str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
 <span id="cb11-355"><a href="#cb11-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-356"><a href="#cb11-356" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span>  <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2021</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0255"</span>, <span class="st">"0325"</span>, <span class="st">"0348"</span>, <span class="st">"0967"</span>, <span class="st">"0972"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund) ) <span class="sc">%&gt;%</span></span>
-<span id="cb11-357"><a href="#cb11-357" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-358"><a href="#cb11-358" aria-hidden="true" tabindex="-1"></a>   <span class="co">#2022 changes</span></span>
+<span id="cb11-356"><a href="#cb11-356" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund =  ifelse(fy &lt; 2021 &amp; fund %in% c("0255", "0325", "0348", "0967", "0972"), str_replace(fund, "0","9"), fund) ) %&gt;%</span></span>
+<span id="cb11-357"><a href="#cb11-357" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
+<span id="cb11-358"><a href="#cb11-358" aria-hidden="true" tabindex="-1"></a><span class="in">   #2022 changes</span></span>
 <span id="cb11-359"><a href="#cb11-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-360"><a href="#cb11-360" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2022</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0110"</span>,<span class="st">"0165"</span>,<span class="st">"0351"</span>, <span class="st">"0392"</span>, <span class="st">"0393"</span>, <span class="st">"0422"</span>, <span class="st">"0544"</span>, <span class="st">"0628"</span>, <span class="st">"0634"</span>,  <span class="st">"0656"</span>, <span class="st">"0672"</span>, <span class="st">"0683"</span>, <span class="st">"0723"</span>, <span class="st">"0742"</span>, <span class="st">"0743"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), <span class="fu">as.character</span>(fund))) <span class="sc">%&gt;%</span>  <span class="co"># replaces first 0 it finds with a 9</span></span>
+<span id="cb11-360"><a href="#cb11-360" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy &lt; 2022 &amp; fund %in% c("0110","0165","0351", "0392", "0393", "0422", "0544", "0628", "0634",  "0656", "0672", "0683", "0723", "0742", "0743"), str_replace(fund, "0","9"), as.character(fund))) %&gt;%  # replaces first 0 it finds with a 9</span></span>
 <span id="cb11-361"><a href="#cb11-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-362"><a href="#cb11-362" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2022</span> <span class="sc">&amp;</span> fund <span class="sc">==</span> <span class="st">"0367"</span>, <span class="st">"10367"</span>, <span class="fu">as.character</span>(fund)) <span class="co"># fund reused for 3rd time</span></span>
+<span id="cb11-362"><a href="#cb11-362" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy &lt; 2022 &amp; fund == "0367", "10367", as.character(fund)) # fund reused for 3rd time</span></span>
 <span id="cb11-363"><a href="#cb11-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-364"><a href="#cb11-364" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-364"><a href="#cb11-364" aria-hidden="true" tabindex="-1"></a><span class="in">) %&gt;%</span></span>
 <span id="cb11-365"><a href="#cb11-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-366"><a href="#cb11-366" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2023 fund changes</span></span>
-<span id="cb11-367"><a href="#cb11-367" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2023</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0099"</span>,<span class="st">"0210"</span>,<span class="st">"0246"</span>, <span class="st">"0250"</span>, <span class="st">"0264"</span>, <span class="st">"0268"</span>, <span class="st">"0300"</span>, <span class="st">"0311"</span>, <span class="st">"0403"</span>, <span class="st">"0448"</span>,<span class="st">"0645"</span>, <span class="st">"0727"</span>, <span class="st">"0729"</span>, <span class="st">"0791"</span>), <span class="fu">str_replace</span>(fund,<span class="st">"0"</span>, <span class="st">"9"</span>), <span class="fu">as.character</span>(fund))) <span class="sc">%&gt;%</span></span>
-<span id="cb11-368"><a href="#cb11-368" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2023</span> <span class="sc">&amp;</span> fund <span class="sc">==</span> <span class="st">"0734"</span> , <span class="st">"10734"</span>, <span class="fu">as.character</span>(fund)),</span>
-<span id="cb11-369"><a href="#cb11-369" aria-hidden="true" tabindex="-1"></a>         <span class="at">fund =</span> <span class="fu">ifelse</span>(fy<span class="sc">&lt;</span><span class="dv">2023</span> <span class="sc">&amp;</span> fund <span class="sc">==</span> <span class="st">"0820"</span>, <span class="st">"10820"</span>, <span class="fu">as.character</span>(fund) ) <span class="co"># fund reused for 3rd time</span></span>
-<span id="cb11-370"><a href="#cb11-370" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-366"><a href="#cb11-366" aria-hidden="true" tabindex="-1"></a><span class="in">  # 2023 fund changes</span></span>
+<span id="cb11-367"><a href="#cb11-367" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy &lt; 2023 &amp; fund %in% c("0099","0210","0246", "0250", "0264", "0268", "0300", "0311", "0403", "0448","0645", "0727", "0729", "0791"), str_replace(fund,"0", "9"), as.character(fund))) %&gt;%</span></span>
+<span id="cb11-368"><a href="#cb11-368" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy &lt; 2023 &amp; fund == "0734" , "10734", as.character(fund)),</span></span>
+<span id="cb11-369"><a href="#cb11-369" aria-hidden="true" tabindex="-1"></a><span class="in">         fund = ifelse(fy&lt;2023 &amp; fund == "0820", "10820", as.character(fund) ) # fund reused for 3rd time</span></span>
+<span id="cb11-370"><a href="#cb11-370" aria-hidden="true" tabindex="-1"></a><span class="in">  )</span></span>
 <span id="cb11-371"><a href="#cb11-371" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-372"><a href="#cb11-372" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-373"><a href="#cb11-373" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
@@ -1468,42 +1633,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-377"><a href="#cb11-377" aria-hidden="true" tabindex="-1"></a><span class="in">```{r recode-exp-funds}</span></span>
 <span id="cb11-378"><a href="#cb11-378" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-379"><a href="#cb11-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-380"><a href="#cb11-380" aria-hidden="true" tabindex="-1"></a><span class="co"># if first character is a 0, replace with a 9</span></span>
+<span id="cb11-380"><a href="#cb11-380" aria-hidden="true" tabindex="-1"></a><span class="in"># if first character is a 0, replace with a 9</span></span>
 <span id="cb11-381"><a href="#cb11-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-382"><a href="#cb11-382" aria-hidden="true" tabindex="-1"></a>exp_1998_2023 <span class="ot">&lt;-</span> allexpfiles23 <span class="sc">%&gt;%</span></span>
+<span id="cb11-382"><a href="#cb11-382" aria-hidden="true" tabindex="-1"></a><span class="in">exp_1998_2023 &lt;- allexpfiles23 %&gt;%</span></span>
 <span id="cb11-383"><a href="#cb11-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-384"><a href="#cb11-384" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2002</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0730"</span>, <span class="st">"0241"</span>, <span class="st">"0350"</span>, <span class="st">"0367"</span>, <span class="st">"0381"</span>, <span class="st">"0382"</span>, <span class="st">"0526"</span>, <span class="st">"0603"</span>, <span class="st">"0734"</span>, <span class="st">"0913"</span>, <span class="st">"0379"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-384"><a href="#cb11-384" aria-hidden="true" tabindex="-1"></a><span class="in">      mutate(fund = ifelse(fy &lt; 2002 &amp; fund %in% c("0730", "0241", "0350", "0367", "0381", "0382", "0526", "0603", "0734", "0913", "0379"), str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
 <span id="cb11-385"><a href="#cb11-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-386"><a href="#cb11-386" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2008</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0027"</span>, <span class="st">"0033"</span>, <span class="st">"0037"</span>, <span class="st">"0058"</span>, <span class="st">"0062"</span>, <span class="st">"0066"</span>, <span class="st">"0075"</span>, <span class="st">"0083"</span>, <span class="st">"0116"</span>, <span class="st">"0119"</span>, <span class="st">"0120"</span>, <span class="st">"0122"</span>, <span class="st">"0148"</span>, <span class="st">"0149"</span>, <span class="st">"0157"</span>, <span class="st">"0158"</span>, <span class="st">"0166"</span>, <span class="st">"0194"</span>, <span class="st">"0201"</span>, <span class="st">"0209"</span>, <span class="st">"0211"</span>, <span class="st">"0217"</span>, <span class="st">"0223"</span>, <span class="st">"0231"</span>, <span class="st">"0234"</span>, <span class="st">"0253"</span>, <span class="st">"0320"</span>, <span class="st">"0503"</span>, <span class="st">"0505"</span>, <span class="st">"0512"</span>, <span class="st">"0516"</span>, <span class="st">"0531"</span>, <span class="st">"0532"</span>, <span class="st">"0533"</span>, <span class="st">"0547"</span>, <span class="st">"0563"</span>, <span class="st">"0579"</span>, <span class="st">"0591"</span>, <span class="st">"0606"</span>, <span class="st">"0616"</span>, <span class="st">"0624"</span>, <span class="st">"0659"</span>, <span class="st">"0662"</span>, <span class="st">"0665"</span>, <span class="st">"0676"</span>, <span class="st">"0710"</span>, </span>
+<span id="cb11-386"><a href="#cb11-386" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy &lt; 2008 &amp; fund %in% c("0027", "0033", "0037", "0058", "0062", "0066", "0075", "0083", "0116", "0119", "0120", "0122", "0148", "0149", "0157", "0158", "0166", "0194", "0201", "0209", "0211", "0217", "0223", "0231", "0234", "0253", "0320", "0503", "0505", "0512", "0516", "0531", "0532", "0533", "0547", "0563", "0579", "0591", "0606", "0616", "0624", "0659", "0662", "0665", "0676", "0710", </span></span>
 <span id="cb11-387"><a href="#cb11-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-388"><a href="#cb11-388" aria-hidden="true" tabindex="-1"></a><span class="st">"0068"</span>, <span class="st">"0076"</span>, <span class="st">"0115"</span>, <span class="st">"0119"</span>, <span class="st">"0168"</span>, <span class="st">"0182"</span>, <span class="st">"0199"</span>, <span class="st">"0241"</span>, <span class="st">"0307"</span>, <span class="st">"0506"</span>, <span class="st">"0509"</span>, <span class="st">"0513"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-389"><a href="#cb11-389" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-390"><a href="#cb11-390" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2016</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0263"</span>, <span class="st">"0399"</span>, <span class="st">"0409"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-388"><a href="#cb11-388" aria-hidden="true" tabindex="-1"></a><span class="in">"0068", "0076", "0115", "0119", "0168", "0182", "0199", "0241", "0307", "0506", "0509", "0513"), str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
+<span id="cb11-389"><a href="#cb11-389" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
+<span id="cb11-390"><a href="#cb11-390" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy &lt; 2016 &amp; fund %in% c("0263", "0399", "0409"), str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
 <span id="cb11-391"><a href="#cb11-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-392"><a href="#cb11-392" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span>  <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2017</span> <span class="sc">&amp;</span> fund <span class="sc">==</span> <span class="st">"0364"</span>, <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-392"><a href="#cb11-392" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund =  ifelse(fy &lt; 2017 &amp; fund == "0364", str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
 <span id="cb11-393"><a href="#cb11-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-394"><a href="#cb11-394" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span>  <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2018</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0818"</span>, <span class="st">"0767"</span>, <span class="st">"0671"</span>, <span class="st">"0593"</span>, <span class="st">"0578"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-394"><a href="#cb11-394" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund =  ifelse(fy &lt; 2018 &amp; fund %in% c("0818", "0767", "0671", "0593", "0578"), str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
 <span id="cb11-395"><a href="#cb11-395" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-396"><a href="#cb11-396" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy<span class="sc">&gt;</span><span class="dv">1999</span> <span class="sc">&amp;</span> fy <span class="sc">&lt;</span> <span class="dv">2018</span> <span class="sc">&amp;</span> fund <span class="sc">==</span> <span class="st">"0231"</span>, <span class="st">"10231"</span>, fund) ) <span class="sc">%&gt;%</span></span>
-<span id="cb11-397"><a href="#cb11-397" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-398"><a href="#cb11-398" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2019</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0161"</span>, <span class="st">"0489"</span>, <span class="st">"0500"</span>, <span class="st">"0612"</span>, <span class="st">"0893"</span>, <span class="st">"0766"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-396"><a href="#cb11-396" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy&gt;1999 &amp; fy &lt; 2018 &amp; fund == "0231", "10231", fund) ) %&gt;%</span></span>
+<span id="cb11-397"><a href="#cb11-397" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
+<span id="cb11-398"><a href="#cb11-398" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy &lt; 2019 &amp; fund %in% c("0161", "0489", "0500", "0612", "0893", "0766"), str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
 <span id="cb11-399"><a href="#cb11-399" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-400"><a href="#cb11-400" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span>  <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2020</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0254"</span>, <span class="st">"0304"</span>, <span class="st">"0324"</span>, <span class="st">"0610"</span>, <span class="st">"0887"</span>, <span class="st">"0908"</span>, <span class="st">"0939"</span>, <span class="st">"0968"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-400"><a href="#cb11-400" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund =  ifelse(fy &lt; 2020 &amp; fund %in% c("0254", "0304", "0324", "0610", "0887", "0908", "0939", "0968"), str_replace(fund, "0","9"), fund)) %&gt;%</span></span>
 <span id="cb11-401"><a href="#cb11-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-402"><a href="#cb11-402" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span>  <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2021</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0255"</span>, <span class="st">"0325"</span>, <span class="st">"0348"</span>, <span class="st">"0967"</span>, <span class="st">"0972"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), fund))  <span class="sc">%&gt;%</span></span>
-<span id="cb11-403"><a href="#cb11-403" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-404"><a href="#cb11-404" aria-hidden="true" tabindex="-1"></a>  <span class="co">#2022 changes</span></span>
-<span id="cb11-405"><a href="#cb11-405" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2022</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0110"</span>,<span class="st">"0165"</span>,<span class="st">"0351"</span>, <span class="st">"0392"</span>, <span class="st">"0393"</span>, <span class="st">"0422"</span>, <span class="st">"0544"</span>, <span class="st">"0628"</span>, <span class="st">"0634"</span>,  <span class="st">"0656"</span>, <span class="st">"0672"</span>, <span class="st">"0683"</span>,<span class="st">"0723"</span>, <span class="st">"0742"</span>, <span class="st">"0743"</span>), <span class="fu">str_replace</span>(fund, <span class="st">"0"</span>,<span class="st">"9"</span>), <span class="fu">as.character</span>(fund))) <span class="sc">%&gt;%</span>  <span class="co"># replaces first 0 it finds with a 9</span></span>
+<span id="cb11-402"><a href="#cb11-402" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund =  ifelse(fy &lt; 2021 &amp; fund %in% c("0255", "0325", "0348", "0967", "0972"), str_replace(fund, "0","9"), fund))  %&gt;%</span></span>
+<span id="cb11-403"><a href="#cb11-403" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
+<span id="cb11-404"><a href="#cb11-404" aria-hidden="true" tabindex="-1"></a><span class="in">  #2022 changes</span></span>
+<span id="cb11-405"><a href="#cb11-405" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy &lt; 2022 &amp; fund %in% c("0110","0165","0351", "0392", "0393", "0422", "0544", "0628", "0634",  "0656", "0672", "0683","0723", "0742", "0743"), str_replace(fund, "0","9"), as.character(fund))) %&gt;%  # replaces first 0 it finds with a 9</span></span>
 <span id="cb11-406"><a href="#cb11-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-407"><a href="#cb11-407" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2022</span> <span class="sc">&amp;</span> fund <span class="sc">==</span> <span class="st">"0367"</span>, <span class="st">"10367"</span>, <span class="fu">as.character</span>(fund)) <span class="co"># fund reused for 3rd time </span></span>
+<span id="cb11-407"><a href="#cb11-407" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy &lt; 2022 &amp; fund == "0367", "10367", as.character(fund)) # fund reused for 3rd time </span></span>
 <span id="cb11-408"><a href="#cb11-408" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-409"><a href="#cb11-409" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-409"><a href="#cb11-409" aria-hidden="true" tabindex="-1"></a><span class="in">  ) %&gt;%</span></span>
 <span id="cb11-410"><a href="#cb11-410" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-411"><a href="#cb11-411" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2023 fund changes</span></span>
-<span id="cb11-412"><a href="#cb11-412" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2023</span> <span class="sc">&amp;</span> fund <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0099"</span>,<span class="st">"0210"</span>,<span class="st">"0246"</span>, <span class="st">"0250"</span>, <span class="st">"0264"</span>, <span class="st">"0268"</span>, <span class="st">"0300"</span>, <span class="st">"0311"</span>, <span class="st">"0403"</span>, <span class="st">"0448"</span>,<span class="st">"0645"</span>, <span class="st">"0727"</span>, <span class="st">"0729"</span>, <span class="st">"0791"</span>), <span class="fu">str_replace</span>(fund,<span class="st">"0"</span>, <span class="st">"9"</span>), <span class="fu">as.character</span>(fund))) <span class="sc">%&gt;%</span></span>
-<span id="cb11-413"><a href="#cb11-413" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fund =</span> <span class="fu">ifelse</span>(fy <span class="sc">&lt;</span> <span class="dv">2023</span> <span class="sc">&amp;</span> fund <span class="sc">==</span> <span class="st">"0734"</span> , <span class="st">"10734"</span>, <span class="fu">as.character</span>(fund)),</span>
-<span id="cb11-414"><a href="#cb11-414" aria-hidden="true" tabindex="-1"></a>         <span class="at">fund =</span> <span class="fu">ifelse</span>(fy<span class="sc">&lt;</span><span class="dv">2023</span> <span class="sc">&amp;</span> fund <span class="sc">==</span> <span class="st">"0820"</span>, <span class="st">"10820"</span>, <span class="fu">as.character</span>(fund) ) <span class="co"># fund reused for 3rd time</span></span>
-<span id="cb11-415"><a href="#cb11-415" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-411"><a href="#cb11-411" aria-hidden="true" tabindex="-1"></a><span class="in">  # 2023 fund changes</span></span>
+<span id="cb11-412"><a href="#cb11-412" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy &lt; 2023 &amp; fund %in% c("0099","0210","0246", "0250", "0264", "0268", "0300", "0311", "0403", "0448","0645", "0727", "0729", "0791"), str_replace(fund,"0", "9"), as.character(fund))) %&gt;%</span></span>
+<span id="cb11-413"><a href="#cb11-413" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(fund = ifelse(fy &lt; 2023 &amp; fund == "0734" , "10734", as.character(fund)),</span></span>
+<span id="cb11-414"><a href="#cb11-414" aria-hidden="true" tabindex="-1"></a><span class="in">         fund = ifelse(fy&lt;2023 &amp; fund == "0820", "10820", as.character(fund) ) # fund reused for 3rd time</span></span>
+<span id="cb11-415"><a href="#cb11-415" aria-hidden="true" tabindex="-1"></a><span class="in">  )</span></span>
 <span id="cb11-416"><a href="#cb11-416" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-417"><a href="#cb11-417" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-418"><a href="#cb11-418" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip icon="false"}</span>
@@ -1512,71 +1677,71 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-421"><a href="#cb11-421" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-422"><a href="#cb11-422" aria-hidden="true" tabindex="-1"></a><span class="in">```{r create-exp_temp, warning = FALSE, message = FALSE}</span></span>
 <span id="cb11-423"><a href="#cb11-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-424"><a href="#cb11-424" aria-hidden="true" tabindex="-1"></a>funds_ab_in_2023 <span class="ot">=</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"./data/funds_ab_in_2023.xlsx"</span>)</span>
+<span id="cb11-424"><a href="#cb11-424" aria-hidden="true" tabindex="-1"></a><span class="in">funds_ab_in_2023 = readxl::read_excel("./data/funds_ab_in_2023.xlsx")</span></span>
 <span id="cb11-425"><a href="#cb11-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-426"><a href="#cb11-426" aria-hidden="true" tabindex="-1"></a>exp_temp <span class="ot">&lt;-</span> exp_1998_2023 <span class="sc">%&gt;%</span> </span>
-<span id="cb11-427"><a href="#cb11-427" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(fund, fy) <span class="sc">%&gt;%</span></span>
-<span id="cb11-428"><a href="#cb11-428" aria-hidden="true" tabindex="-1"></a><span class="co">#  filter(expenditure != 0) %&gt;%             # keeps everything that is not zero</span></span>
-<span id="cb11-429"><a href="#cb11-429" aria-hidden="true" tabindex="-1"></a> <span class="fu">left_join</span>(funds_ab_in_2023, <span class="at">by =</span> <span class="st">"fund"</span>)  <span class="co"># matches most recent fund number </span></span>
+<span id="cb11-426"><a href="#cb11-426" aria-hidden="true" tabindex="-1"></a><span class="in">exp_temp &lt;- exp_1998_2023 %&gt;% </span></span>
+<span id="cb11-427"><a href="#cb11-427" aria-hidden="true" tabindex="-1"></a><span class="in">  arrange(fund, fy) %&gt;%</span></span>
+<span id="cb11-428"><a href="#cb11-428" aria-hidden="true" tabindex="-1"></a><span class="in">#  filter(expenditure != 0) %&gt;%             # keeps everything that is not zero</span></span>
+<span id="cb11-429"><a href="#cb11-429" aria-hidden="true" tabindex="-1"></a><span class="in"> left_join(funds_ab_in_2023, by = "fund")  # matches most recent fund number </span></span>
 <span id="cb11-430"><a href="#cb11-430" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-431"><a href="#cb11-431" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-432"><a href="#cb11-432" aria-hidden="true" tabindex="-1"></a><span class="co"># Agency == 799 for Statutory transfers </span></span>
-<span id="cb11-433"><a href="#cb11-433" aria-hidden="true" tabindex="-1"></a><span class="co">#  Object == 1993 is for Interfund cash transfers  </span></span>
-<span id="cb11-434"><a href="#cb11-434" aria-hidden="true" tabindex="-1"></a>exp_temp <span class="ot">&lt;-</span> exp_temp <span class="sc">%&gt;%</span> </span>
-<span id="cb11-435"><a href="#cb11-435" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">transfer =</span> <span class="fu">ifelse</span>(org_name <span class="sc">==</span> <span class="st">"TRANSFERS"</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
-<span id="cb11-436"><a href="#cb11-436" aria-hidden="true" tabindex="-1"></a>         <span class="at">trans_agency =</span> <span class="fu">ifelse</span>(org_name <span class="sc">==</span> <span class="st">"TRANSFERS"</span>, <span class="fu">str_sub</span>(obj_seq_type,<span class="dv">1</span>,<span class="dv">3</span>), <span class="cn">NA</span>),</span>
-<span id="cb11-437"><a href="#cb11-437" aria-hidden="true" tabindex="-1"></a>         <span class="at">trans_type =</span> <span class="fu">ifelse</span>(org_name <span class="sc">==</span> <span class="st">"TRANSFERS"</span>, <span class="fu">str_sub</span>(obj_seq_type,<span class="dv">4</span>,<span class="dv">9</span>), <span class="cn">NA</span>)</span>
+<span id="cb11-432"><a href="#cb11-432" aria-hidden="true" tabindex="-1"></a><span class="in"># Agency == 799 for Statutory transfers </span></span>
+<span id="cb11-433"><a href="#cb11-433" aria-hidden="true" tabindex="-1"></a><span class="in">#  Object == 1993 is for Interfund cash transfers  </span></span>
+<span id="cb11-434"><a href="#cb11-434" aria-hidden="true" tabindex="-1"></a><span class="in">exp_temp &lt;- exp_temp %&gt;% </span></span>
+<span id="cb11-435"><a href="#cb11-435" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(transfer = ifelse(org_name == "TRANSFERS", 1, 0),</span></span>
+<span id="cb11-436"><a href="#cb11-436" aria-hidden="true" tabindex="-1"></a><span class="in">         trans_agency = ifelse(org_name == "TRANSFERS", str_sub(obj_seq_type,1,3), NA),</span></span>
+<span id="cb11-437"><a href="#cb11-437" aria-hidden="true" tabindex="-1"></a><span class="in">         trans_type = ifelse(org_name == "TRANSFERS", str_sub(obj_seq_type,4,9), NA)</span></span>
 <span id="cb11-438"><a href="#cb11-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-439"><a href="#cb11-439" aria-hidden="true" tabindex="-1"></a>         ) <span class="sc">%&gt;%</span>   </span>
-<span id="cb11-440"><a href="#cb11-440" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb11-441"><a href="#cb11-441" aria-hidden="true" tabindex="-1"></a>  <span class="co"># these come from ioc_source file after merging</span></span>
-<span id="cb11-442"><a href="#cb11-442" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb11-443"><a href="#cb11-443" aria-hidden="true" tabindex="-1"></a>         <span class="at">object =</span> <span class="fu">ifelse</span>(transfer <span class="sc">==</span> <span class="dv">0</span>, <span class="fu">as.character</span>(<span class="fu">str_sub</span>(obj_seq_type, <span class="dv">1</span>, <span class="dv">4</span>)), <span class="cn">NA_character_</span>),</span>
-<span id="cb11-444"><a href="#cb11-444" aria-hidden="true" tabindex="-1"></a>         <span class="at">sequence =</span> <span class="fu">ifelse</span>(transfer <span class="sc">==</span> <span class="dv">0</span>, <span class="fu">as.character</span>(<span class="fu">str_sub</span>(obj_seq_type, <span class="dv">5</span>,<span class="dv">6</span>)), <span class="cn">NA_character_</span>),</span>
-<span id="cb11-445"><a href="#cb11-445" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="fu">ifelse</span>(transfer <span class="sc">==</span> <span class="dv">0</span>, <span class="fu">str_sub</span>(obj_seq_type, <span class="dv">7</span>,<span class="dv">8</span>), <span class="cn">NA_character_</span>)</span>
-<span id="cb11-446"><a href="#cb11-446" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb11-439"><a href="#cb11-439" aria-hidden="true" tabindex="-1"></a><span class="in">         ) %&gt;%   </span></span>
+<span id="cb11-440"><a href="#cb11-440" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
+<span id="cb11-441"><a href="#cb11-441" aria-hidden="true" tabindex="-1"></a><span class="in">  # these come from ioc_source file after merging</span></span>
+<span id="cb11-442"><a href="#cb11-442" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(</span></span>
+<span id="cb11-443"><a href="#cb11-443" aria-hidden="true" tabindex="-1"></a><span class="in">         object = ifelse(transfer == 0, as.character(str_sub(obj_seq_type, 1, 4)), NA_character_),</span></span>
+<span id="cb11-444"><a href="#cb11-444" aria-hidden="true" tabindex="-1"></a><span class="in">         sequence = ifelse(transfer == 0, as.character(str_sub(obj_seq_type, 5,6)), NA_character_),</span></span>
+<span id="cb11-445"><a href="#cb11-445" aria-hidden="true" tabindex="-1"></a><span class="in">         type = ifelse(transfer == 0, str_sub(obj_seq_type, 7,8), NA_character_)</span></span>
+<span id="cb11-446"><a href="#cb11-446" aria-hidden="true" tabindex="-1"></a><span class="in">         )</span></span>
 <span id="cb11-447"><a href="#cb11-447" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-448"><a href="#cb11-448" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-449"><a href="#cb11-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-450"><a href="#cb11-450" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>the initial combined and years of data are saved as dataframes named <span class="in">`exp_1998_2022`</span> and <span class="in">`rev_1998_2022`</span>. These are then saved as exp_temp and rev_temp while recoding variables. This is BEFORE creating Fiscal Future category groups and further data cleaning done in the Calculating the Fiscal Gap page.</span>
+<span id="cb11-450"><a href="#cb11-450" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>the initial combined and years of data are saved as dataframes named <span class="in">`exp_1998_2023`</span> and <span class="in">`rev_1998_2023`</span>. These are then saved as exp_temp and rev_temp while recoding variables. This is BEFORE creating Fiscal Future category groups and further data cleaning done in the Calculating the Fiscal Gap page.</span>
 <span id="cb11-451"><a href="#cb11-451" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-452"><a href="#cb11-452" aria-hidden="true" tabindex="-1"></a><span class="in">```{r remove-all_obs_df, include=FALSE}</span></span>
 <span id="cb11-453"><a href="#cb11-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-454"><a href="#cb11-454" aria-hidden="true" tabindex="-1"></a><span class="co">#include = FALSE in the chunk settings run the code but do not include the chunk in the html output</span></span>
+<span id="cb11-454"><a href="#cb11-454" aria-hidden="true" tabindex="-1"></a><span class="in">#include = FALSE in the chunk settings run the code but do not include the chunk in the html output</span></span>
 <span id="cb11-455"><a href="#cb11-455" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-456"><a href="#cb11-456" aria-hidden="true" tabindex="-1"></a><span class="co"># remove from computer memory to free up space (in case your computer needs it)</span></span>
+<span id="cb11-456"><a href="#cb11-456" aria-hidden="true" tabindex="-1"></a><span class="in"># remove from computer memory to free up space (in case your computer needs it)</span></span>
 <span id="cb11-457"><a href="#cb11-457" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-458"><a href="#cb11-458" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(allexpfiles23)</span>
+<span id="cb11-458"><a href="#cb11-458" aria-hidden="true" tabindex="-1"></a><span class="in">rm(allexpfiles23)</span></span>
 <span id="cb11-459"><a href="#cb11-459" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-460"><a href="#cb11-460" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(allrevfiles23)</span>
+<span id="cb11-460"><a href="#cb11-460" aria-hidden="true" tabindex="-1"></a><span class="in">rm(allrevfiles23)</span></span>
 <span id="cb11-461"><a href="#cb11-461" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-462"><a href="#cb11-462" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-463"><a href="#cb11-463" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-464"><a href="#cb11-464" aria-hidden="true" tabindex="-1"></a>Update Agencies: Some agencies have merged with others or changed names over time.</span>
 <span id="cb11-465"><a href="#cb11-465" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-466"><a href="#cb11-466" aria-hidden="true" tabindex="-1"></a><span class="in">```{r agencies-exp}</span></span>
-<span id="cb11-467"><a href="#cb11-467" aria-hidden="true" tabindex="-1"></a><span class="co"># recodes old agency numbers to consistent agency number</span></span>
-<span id="cb11-468"><a href="#cb11-468" aria-hidden="true" tabindex="-1"></a>exp_temp <span class="ot">&lt;-</span> exp_temp <span class="sc">%&gt;%</span> </span>
+<span id="cb11-467"><a href="#cb11-467" aria-hidden="true" tabindex="-1"></a><span class="in"># recodes old agency numbers to consistent agency number</span></span>
+<span id="cb11-468"><a href="#cb11-468" aria-hidden="true" tabindex="-1"></a><span class="in">exp_temp &lt;- exp_temp %&gt;% </span></span>
 <span id="cb11-469"><a href="#cb11-469" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-470"><a href="#cb11-470" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">agency =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-470"><a href="#cb11-470" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(agency = case_when(</span></span>
 <span id="cb11-471"><a href="#cb11-471" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-472"><a href="#cb11-472" aria-hidden="true" tabindex="-1"></a>    (agency<span class="sc">==</span><span class="st">"438"</span><span class="sc">|</span> agency<span class="sc">==</span><span class="st">"475"</span> <span class="sc">|</span>agency <span class="sc">==</span> <span class="st">"505"</span>) <span class="sc">~</span> <span class="st">"440"</span>,</span>
-<span id="cb11-473"><a href="#cb11-473" aria-hidden="true" tabindex="-1"></a>    <span class="co"># financial institution &amp;  professional regulation &amp;</span></span>
-<span id="cb11-474"><a href="#cb11-474" aria-hidden="true" tabindex="-1"></a>     <span class="co"># banks and real estate  --&gt; coded as  financial and professional reg</span></span>
+<span id="cb11-472"><a href="#cb11-472" aria-hidden="true" tabindex="-1"></a><span class="in">    (agency=="438"| agency=="475" |agency == "505") ~ "440",</span></span>
+<span id="cb11-473"><a href="#cb11-473" aria-hidden="true" tabindex="-1"></a><span class="in">    # financial institution &amp;  professional regulation &amp;</span></span>
+<span id="cb11-474"><a href="#cb11-474" aria-hidden="true" tabindex="-1"></a><span class="in">     # banks and real estate  --&gt; coded as  financial and professional reg</span></span>
 <span id="cb11-475"><a href="#cb11-475" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-476"><a href="#cb11-476" aria-hidden="true" tabindex="-1"></a>    agency <span class="sc">==</span> <span class="st">"473"</span> <span class="sc">~</span> <span class="st">"588"</span>, <span class="co"># nuclear safety moved into IEMA</span></span>
+<span id="cb11-476"><a href="#cb11-476" aria-hidden="true" tabindex="-1"></a><span class="in">    agency == "473" ~ "588", # nuclear safety moved into IEMA</span></span>
 <span id="cb11-477"><a href="#cb11-477" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-478"><a href="#cb11-478" aria-hidden="true" tabindex="-1"></a>    (agency <span class="sc">==</span><span class="st">"531"</span> <span class="sc">|</span> agency <span class="sc">==</span><span class="st">"577"</span>) <span class="sc">~</span> <span class="st">"532"</span>, <span class="co"># coded as EPA</span></span>
+<span id="cb11-478"><a href="#cb11-478" aria-hidden="true" tabindex="-1"></a><span class="in">    (agency =="531" | agency =="577") ~ "532", # coded as EPA</span></span>
 <span id="cb11-479"><a href="#cb11-479" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-480"><a href="#cb11-480" aria-hidden="true" tabindex="-1"></a>    (agency <span class="sc">==</span><span class="st">"556"</span> <span class="sc">|</span> agency <span class="sc">==</span> <span class="st">"538"</span>) <span class="sc">~</span> <span class="st">"406"</span>, <span class="co"># coded as agriculture</span></span>
+<span id="cb11-480"><a href="#cb11-480" aria-hidden="true" tabindex="-1"></a><span class="in">    (agency =="556" | agency == "538") ~ "406", # coded as agriculture</span></span>
 <span id="cb11-481"><a href="#cb11-481" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-482"><a href="#cb11-482" aria-hidden="true" tabindex="-1"></a>    agency <span class="sc">==</span> <span class="st">"560"</span> <span class="sc">~</span> <span class="st">"592"</span>, <span class="co"># IL finance authority (fire trucks and agriculture stuff)to state fire marshal</span></span>
+<span id="cb11-482"><a href="#cb11-482" aria-hidden="true" tabindex="-1"></a><span class="in">    agency == "560" ~ "592", # IL finance authority (fire trucks and agriculture stuff)to state fire marshal</span></span>
 <span id="cb11-483"><a href="#cb11-483" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-484"><a href="#cb11-484" aria-hidden="true" tabindex="-1"></a>    agency <span class="sc">==</span> <span class="st">"570"</span> <span class="sc">&amp;</span> fund <span class="sc">==</span> <span class="st">"0011"</span> <span class="sc">~</span> <span class="st">"494"</span>,   <span class="co"># city of Chicago road fund to transportation</span></span>
-<span id="cb11-485"><a href="#cb11-485" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> (<span class="fu">as.character</span>(agency)))) </span>
+<span id="cb11-484"><a href="#cb11-484" aria-hidden="true" tabindex="-1"></a><span class="in">    agency == "570" &amp; fund == "0011" ~ "494",   # city of Chicago road fund to transportation</span></span>
+<span id="cb11-485"><a href="#cb11-485" aria-hidden="true" tabindex="-1"></a><span class="in">    TRUE ~ (as.character(agency)))) </span></span>
 <span id="cb11-486"><a href="#cb11-486" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-487"><a href="#cb11-487" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-488"><a href="#cb11-488" aria-hidden="true" tabindex="-1"></a>For aggregating revenue, use the rev_1998_2023 dataframe, join the funds_ab_in_2023 file to it, and then join the ioc_source_type file to the dataset. Remember: You need to update the funds_ab_in and ioc_source_type file every year!</span>
+<span id="cb11-488"><a href="#cb11-488" aria-hidden="true" tabindex="-1"></a>For aggregating revenue, use the <span class="in">`rev_1998_2023`</span> file, join the <span class="in">`funds_ab_in_2023`</span> file to it, and then join the <span class="in">`ioc_source_type`</span> file. Remember: You need to update the <span class="in">`funds_ab_in`</span> and <span class="in">`ioc_source_type`</span> file every year!</span>
 <span id="cb11-489"><a href="#cb11-489" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-492"><a href="#cb11-492" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb11-493"><a href="#cb11-493" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: false</span></span>
@@ -1608,19 +1773,22 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-519"><a href="#cb11-519" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> (<span class="fu">as.character</span>(agency))))</span>
 <span id="cb11-520"><a href="#cb11-520" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-521"><a href="#cb11-521" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-522"><a href="#cb11-522" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval = FALSE}</span></span>
+<span id="cb11-522"><a href="#cb11-522" aria-hidden="true" tabindex="-1"></a><span class="fu">### Export Intermediate Files</span></span>
 <span id="cb11-523"><a href="#cb11-523" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-524"><a href="#cb11-524" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(rev_temp, <span class="at">file =</span> <span class="st">"./data/rev_temp.csv"</span>)</span>
+<span id="cb11-524"><a href="#cb11-524" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE}</span></span>
 <span id="cb11-525"><a href="#cb11-525" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-526"><a href="#cb11-526" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(exp_temp, <span class="at">file =</span> <span class="st">"./data/exp_temp.csv"</span>)</span>
-<span id="cb11-527"><a href="#cb11-527" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb11-528"><a href="#cb11-528" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-529"><a href="#cb11-529" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip icon="false"}</span>
-<span id="cb11-530"><a href="#cb11-530" aria-hidden="true" tabindex="-1"></a>The <span class="in">`exp_temp.csv`</span> file and <span class="in">`rev_temp.csv`</span> file are most likely the data that non-Fiscal Future researchers would want to use for their own analyses. These files should have consistent agencies and funds tracked from 1998 to the present.</span>
-<span id="cb11-531"><a href="#cb11-531" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-526"><a href="#cb11-526" aria-hidden="true" tabindex="-1"></a><span class="in">write_csv(rev_temp, file = "./data/rev_temp.csv")</span></span>
+<span id="cb11-527"><a href="#cb11-527" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-528"><a href="#cb11-528" aria-hidden="true" tabindex="-1"></a><span class="in">write_csv(exp_temp, file = "./data/exp_temp.csv")</span></span>
+<span id="cb11-529"><a href="#cb11-529" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-530"><a href="#cb11-530" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-531"><a href="#cb11-531" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip icon="false"}</span>
+<span id="cb11-532"><a href="#cb11-532" aria-hidden="true" tabindex="-1"></a>The <span class="in">`exp_temp.csv`</span> file and <span class="in">`rev_temp.csv`</span> file are most likely the data that non-Fiscal Future researchers would want to use for their own analyses. These files should have consistent agencies and funds tracked from 1998 to the present.</span>
+<span id="cb11-533"><a href="#cb11-533" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
+
 
 
 
