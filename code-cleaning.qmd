@@ -426,12 +426,20 @@ The `funds_ab_in.xlsx` file contains the following information: all funds that h
 
 ```{r create-exp_temp, warning = FALSE, message = FALSE}
 
-funds_ab_in_2023 = readxl::read_excel("./data/funds_ab_in_2023.xlsx")
+
+agencies_exp <- exp_1998_2023 %>% distinct(agency, agency_name) %>% filter(!is.na(agency_name))
+funds_exp <- exp_1998_2023 %>% distinct(fund, fund_name) %>% filter(!is.na(fund_name))
+
+funds_ab_in_2023 = readxl::read_excel("data/funds_ab_in_2023.xlsx")
+
 
 exp_temp <- exp_1998_2023 %>% 
+  select(-fund_name) %>%
   arrange(fund, fy) %>%
-#  filter(expenditure != 0) %>%             # keeps everything that is not zero
- left_join(funds_ab_in_2023, by = "fund")  # matches most recent fund number 
+  filter(expenditure != 0) %>%             # keeps everything that is not zero
+# join  funds_ab_in_2021  to exp_temp
+ left_join(funds_ab_in_2023, by = "fund") %>%
+  left_join(funds_exp)
 
 
 # Agency == 799 for Statutory transfers 
@@ -496,12 +504,23 @@ For aggregating revenue, use the `rev_1998_2023` file, join the `funds_ab_in_202
 ```{r}
 #| code-fold: false
 
-# fund info to revenue for all years
 
-rev_temp <- left_join(rev_1998_2023, funds_ab_in_2023, by = "fund") %>% arrange(source)
+sources_rev <- rev_1998_2023 %>% distinct(source, source_name) %>% filter(!is.na(source_name))
+agencies_rev <- rev_1998_2023 %>% distinct(agency, agency_name) %>% filter(!is.na(agency_name))
+funds_rev <- rev_1998_2023 %>% distinct(fund, fund_name) %>% filter(!is.na(fund_name))
+
+
+# fund info to revenue for all years
+rev_1998_2023 <- rev_1998_2023 %>% 
+  select(-c(fund_name, agency_name, source_name)) %>%
+  #left_join(sources_rev) %>%
+  left_join(agencies_rev)
+
+rev_temp <- inner_join(rev_1998_2023, funds_ab_in_2023, by = "fund") %>% 
+  arrange(source) %>% left_join(funds_rev)
+
 
 # need to update the ioc_source_type file every year! 
-
 ioc_source_type <- readxl::read_xlsx("./data/ioc_source_updated23_AWM.xlsx")
 
 rev_temp <- left_join(rev_temp, ioc_source_type, by = "source")
