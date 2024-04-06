@@ -3,21 +3,13 @@
 ```{r warning = FALSE, message=FALSE}
 #| include: false
 
-library(tidyverse)
-library(haven)
-library(formatR)
-library(lubridate)
-library(smooth)
-library(forecast)
 library(scales)
 library(kableExtra)
 library(ggplot2)
 library(readxl)
 library(tidyverse)
-library(data.table)
-library(quantmod)
-library(geofacet)
 library(janitor)
+library(DT)
 
 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
@@ -69,3 +61,27 @@ Typically we have excluded non-appropriated funds that hold designated user fees
 Non-appropriated funds that are supported by user fees AND perform a state function (e.g., transportation) ARE counted in the frame.  The rationale for this is that the state function would have to be performed even if the user fee and the fund structure did not exist.  The biggest example is the Illinois State Toll Highway Revenue Fund, which collects tolls and supports the expansion and maintenance of Illinois toll roads. 
 
 **Criterion 7:  EXCLUDE IF unclear information, dead fund, small amounts.** Some funds are defunct, and our historical information on fund descriptions does not include pre-2005 designations. Fund numbers are re-used, making it impossible to determine the original purpose of some older, defunct funds.  These funds generally appear to be very small.  Because we are projecting forward from the most recently completed fiscal year, we assumed that these funds would not be in the frame. 
+
+```{r}
+#| label: tbl-iocfunds
+#| tbl-cap: "Past and Present IOC Fund Numbers and Names"
+
+
+funds <- read_xlsx("data/funds_ab_in_2023.xlsx")
+
+table <- funds %>% select(fund_ioc, fund, fund_name_ab, in_ff)
+
+datatable(
+  table, rownames = FALSE,
+  colnames = c('IOC Fund Number' = 'fund_ioc', 'Recoded Fund Number'='fund',  
+               'Fund Name' = 'fund_name_ab', 'Included in Gap Calculation' = 'in_ff' ),
+  #caption = "Table 1: Past and Present IOC Fund Numbers and Names", 
+  options = list(iDisplayLength = 50, dom = 'Blfrtip',
+                 buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
+                 lengthMenu = list(c(10,30, 50, -1), 
+                                   c('10', '30', '50', 'All')),
+                 paging = T),
+  extensions = 'Buttons'
+  
+)
+```
