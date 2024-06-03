@@ -166,7 +166,6 @@ rev_temp %>%
 
 ### Tax refunds
 
-
 Code refunds to match the rev_type codes (02=income taxes, 03 = corporate income taxes, 06=sales tax, 09=motor fuel tax, 24=insurance taxes and fees, 35 = all other tax refunds).
 
 Ideally the money going in and out of the funds used for refunds would be approximately equal. If equal, would drop from Fiscal Futures analysis so that Revenue reflects the amount of money the state gets to keep (and the local portion that becomes the local govt transfer)
@@ -229,7 +228,6 @@ tax_refund %>%
 # keep only non-refund expenditures with filter()
 # exp_temp <- exp_temp %>% filter(refund == "not refund")
 ```
-
 
 For FY23, the one-time abatement, object 9900, is included as an expenditure item within the Department of Revenue.
 
@@ -701,7 +699,7 @@ Expanded to include the following smaller sources:\
 
 For aggregating revenue, use the rev_1998_2022 dataframe, join the funds_ab_in_2022 file to it, and then join the ioc_source_type file to the dataset. Remember: You need to update the funds_ab_in and ioc_source_type file every year!
 
-```{r rev-recode-agencies, warning = FALSE, message=FALSE}
+```{r rev-recode-agencies, warning = FALSE, message=FALSE, eval=FALSE}
 
 # recodes old agency numbers to consistent agency number
 rev_temp <- rev_temp %>% 
@@ -1074,119 +1072,6 @@ Create total revenues and total expenditures only:
 
 -   after aggregating expenditures and revenues, pivoting wider, then I want to drop the columns that I no longer want and then pivot_longer(). After pivoting_longer() and creating `rev_long` and `exp_long`, expenditures and revenues are in the same format and can be combined together for the totals and gap each year.
 
-```{r rev-exp-totals-long-oldcatnames, eval=FALSE, include=FALSE}
-rev_long <- pivot_longer(ff_rev, rev_02:rev_78, names_to = c("type","Category"), values_to = "Dollars", names_sep = "_") %>% 
-  rename(Year = fy) %>%
-  mutate(Category_name = case_when(
-    Category == "02" ~ "INDIVIDUAL INCOME TAXES, gross of local, net of refunds" ,
-    Category == "03" ~ "CORPORATE INCOME TAXES, gross of PPRT, net of refunds" ,
-    Category == "06" ~ "SALES TAXES, gross of local share" ,
-    Category == "09" ~ "MOTOR FUEL TAX, gross of local share, net of refunds" ,
-    Category == "12" ~ "PUBLIC UTILITY TAXES, gross of PPRT" ,
-    Category == "15" ~ "CIGARETTE TAXES" ,
-    Category == "18" ~ "LIQUOR GALLONAGE TAXES" ,
-    Category == "21" ~ "INHERITANCE TAX" ,
-    Category == "24" ~ "INSURANCE TAXES&FEES&LICENSES, net of refunds " ,
-    Category == "27" ~ "CORP FRANCHISE TAXES & FEES" ,
-    Category == "30" ~ "HORSE RACING TAXES & FEES",  # in Other
-    Category == "31" ~ "MEDICAL PROVIDER ASSESSMENTS" ,
-    Category == "32" ~ "GARNISHMENT-LEVIES" , # dropped
-    Category == "33" ~  "LOTTERY RECEIPTS" ,
-    Category == "35" ~  "OTHER TAXES" ,
-    Category == "36" ~  "RECEIPTS FROM REVENUE PRODUCNG", 
-    Category == "39" ~  "LICENSES, FEES & REGISTRATIONS" ,
-    Category == "42" ~  "MOTOR VEHICLE AND OPERATORS" ,
-    Category == "45" ~  "STUDENT FEES-UNIVERSITIES",   # dropped
-    Category == "48" ~  "RIVERBOAT WAGERING TAXES" ,
-    Category == "51" ~  "RETIREMENT CONTRIBUTIONS" , # dropped
-    Category == "54" ~ "GIFTS AND BEQUESTS", 
-    Category == "57" ~  "FEDERAL OTHER" ,
-    Category == "58" ~  "FEDERAL MEDICAID", 
-    Category == "59" ~  "FEDERAL TRANSPORTATION" ,
-    Category == "60" ~  "OTHER GRANTS AND CONTRACTS", #other
-    Category == "63" ~  "INVESTMENT INCOME", # other
-    Category == "66" ~ "PROCEEDS,INVESTMENT MATURITIES" , #dropped
-    Category == "72" ~ "BOND ISSUE PROCEEDS",  #dropped
-    Category == "75" ~  "INTER-AGENCY RECEIPTS ",  #dropped
-    Category == "76" ~  "TRANSFER IN FROM OUT FUNDS",  #other
-    Category == "78" ~  "ALL OTHER SOURCES" ,
-    Category == "79" ~   "COOK COUNTY IGT", #dropped
-    Category == "98" ~  "PRIOR YEAR REFUNDS", #dropped
-                 T ~ "Check Me!"
-
-  ) )%>% 
-  mutate(Category_name = str_to_title(Category_name))
-
-
-exp_long <- pivot_longer(ff_exp, exp_402:exp_970 , names_to = c("type", "Category"), values_to = "Dollars", names_sep = "_") %>% 
-  rename(Year = fy ) %>% 
-  mutate(Category_name = 
-           case_when(
-             Category == "402" ~ "AGING" ,
-             Category == "406" ~ "AGRICULTURE", 
-             Category == "416" ~ "CENTRAL MANAGEMENT",
-             Category == "418" ~ "CHILDREN AND FAMILY SERVICES", 
-             Category == "420" ~ "COMMERCE AND ECONOMIC OPPORTUNITY",
-             Category == "422" ~ "NATURAL RESOURCES" ,
-             Category == "426" ~ "CORRECTIONS",
-             Category == "427" ~ "EMPLOYMENT SECURITY" ,
-             Category == "444" ~ "HUMAN SERVICES" ,
-             Category == "448" ~ "Innovation and Technology", # AWM added fy2022
-             Category == "478" ~ "HEALTHCARE & FAM SER NET OF MEDICAID", 
-             Category == "482" ~ "PUBLIC HEALTH", 
-             Category == "492" ~ "REVENUE", 
-             Category == "494" ~ "TRANSPORTATION" ,
-             Category == "532" ~ "ENVIRONMENTAL PROTECT AGENCY" ,
-             Category == "557" ~ "IL STATE TOLL HIGHWAY AUTH" ,
-             Category == "684" ~ "IL COMMUNITY COLLEGE BOARD", 
-             Category == "691" ~ "IL STUDENT ASSISTANCE COMM" ,
-             Category == "900" ~ "NOT IN FRAME",
-             Category == "901" ~ "STATE PENSION CONTRIBUTION",
-             Category == "903" ~ "DEBT SERVICE",
-             Category == "904" ~ "State Employee Healthcare",
-             Category == "910" ~ "LEGISLATIVE"  ,
-             Category == "920" ~ "JUDICIAL" ,
-             Category == "930" ~ "ELECTED OFFICERS" , 
-             Category == "940" ~ "OTHER HEALTH-RELATED", 
-             Category == "941" ~ "PUBLIC SAFETY" ,
-             Category == "942" ~ "ECON DEVT & INFRASTRUCTURE" ,
-             Category == "943" ~ "CENTRAL SERVICES",
-             Category == "944" ~ "BUS & PROFESSION REGULATION" ,
-             Category == "945" ~ "MEDICAID" ,
-             Category == "946" ~ "CAPITAL IMPROVEMENT" , 
-             Category == "948" ~ "OTHER DEPARTMENTS" ,
-             Category == "949" ~ "OTHER BOARDS & COMMISSIONS" ,
-             Category == "959" ~ "K-12 EDUCATION" ,
-             Category == "960" ~ "UNIVERSITY EDUCATION",
-             Category == "970" ~ "Local Govt Transfers",
-             T ~ "CHECK ME!")
-           ) %>% 
-  mutate(Category_name = str_to_title(Category_name))
-
-#write_csv(exp_long, "expenditures_recoded_long_FY23.csv")
-#write_csv(rev_long, "revenue_recoded_long_FY23.csv")
-
-aggregated_totals_long <- rbind(rev_long, exp_long)
-aggregated_totals_long
-
-
-year_totals <- aggregated_totals_long %>% 
-  group_by(type, Year) %>% 
-  summarize(Dollars = sum(Dollars, na.rm = TRUE)) %>% 
-  pivot_wider(names_from = "type", values_from = Dollars) %>% 
-  rename(
-         Expenditures = exp,
-         Revenue = rev) %>%  
-  mutate(Gap = Revenue - Expenditures) %>% 
-  arrange(desc(Year))
-# creates variable for the Gap each year
-
-year_totals %>% mutate_all(., ~round(., digits = 0))
-
-#write_csv(aggregated_totals_long, "aggregated_totals.csv")
-
-```
-
 ```{r}
 #| label: tbl-rev-and-exp-totals-long
 #| tbl-cap: Long Version of Data that has Revenue and Expenditures in One Dataframe
@@ -1332,9 +1217,9 @@ annotation <- data.frame(
 )
 
 annotation_nums <- data.frame(
-  x = c(2023, 2023, 2023),
-  y = c(95, 120, 10),  
-  label = c("Exp = $110.6","Rev = $111.7", "$1.2")
+  x = c(2023, 2022, 2023),
+  y = c(95, 120, -5),  
+  label = c("Exp = $112.0","Rev = $111.8", "-$0.2")
 )
 
 ## Dashed line versions for expenditures: 
@@ -1395,7 +1280,8 @@ fiscal_gap2 <-ggplot(data = year_totals, aes(x=Year, y = Revenue/1000)) +
   geom_hline(yintercept = 0) +
 
   scale_y_continuous(labels = comma)+
-  scale_x_continuous(expand = c(0,0), limits = c(1998, 2024) ) +
+  scale_x_continuous(expand = c(0,0), 
+                     limits = c(1998, 2025), breaks = c(1998, 2000, 2005, 2010, 2015, 2020, 2023) ) +
 
   xlab("Year") + 
   ylab("Billions of Dollars")  +
@@ -1426,8 +1312,8 @@ fiscal_gap2 <-ggplot(data = year_totals, aes(x=Year, y = Revenue/1000)) +
   geom_hline(yintercept = 0) +
 
   scale_y_continuous(labels = comma)+
-  scale_x_continuous(expand = c(0,0), limits = c(1998, 2024) ) +
-
+  scale_x_continuous(expand = c(0,0), 
+                     limits = c(1998, 2025), breaks = c(1998, 2000, 2005, 2010, 2015, 2020, 2023) ) +
   xlab("Year") + 
   ylab("Billions of Dollars")
 
@@ -1662,7 +1548,9 @@ ownsource_rev
 
 ```
 
-```{r}
+```{r }
+#| label: fig-export-figure2
+#| 
 
 fed_rev <- ff_rev %>% select(fy, rev_57, rev_58, rev_59) %>%
   mutate(fed_total = rev_57+rev_58+rev_59)
@@ -1675,9 +1563,9 @@ annotation <- data.frame(
 )
 
 annotation_nums <- data.frame(
-  x = c(2022, 2023),
-  y = c(78, 29),  
-  label = c("$74.9", "$33.2")
+  x = c(2022, 2022.5),
+  y = c(80, 30),  
+  label = c("$78.6", "$33.2")
 )
 
 ownsource_graph <- ggplot(ownsource_rev, aes(x=Year, y=Dollars/1000)) + 
@@ -1687,7 +1575,7 @@ ownsource_graph <- ggplot(ownsource_rev, aes(x=Year, y=Dollars/1000)) +
     geom_text(data = annotation, aes(x=x, y=y, label=label))+
       geom_text(data = annotation_nums, aes(x=x, y=y, label=label))+
     scale_y_continuous(labels = comma)+
-  scale_x_continuous(expand = c(0,0), limits = c(1998, 2024)) + 
+  scale_x_continuous(expand = c(0,0), limits = c(1998, 2024), breaks = c(1998, 2000, 2005, 2010, 2015, 2020, 2023)) + 
 
   theme_classic()+
   theme(legend.position = "none",
@@ -1700,9 +1588,17 @@ ownsource_graph <- ggplot(ownsource_rev, aes(x=Year, y=Dollars/1000)) +
   labs(title = "Own Source Revenue and Federal Revenue, 1998-2023", 
   y = "Billions of Dollars")
 ownsource_graph
+
+
+ggsave(plot = ownsource_graph, file = "./paper-figures/Figure2.eps", limitsize=FALSE)
+ggsave(plot = ownsource_graph, file = "./paper-figures/Figure2.png", limitsize = FALSE)
+
 ```
 
-```{r export-figure2}
+```{r export-figure2, include = FALSE}
+
+# Same as above but doesn't have title. 
+# Made for fy23 report and design team.
 ownsource_graph <- ggplot(ownsource_rev, aes(x=Year, y=Dollars/1000)) + 
   geom_recessions(text = FALSE, update = recessions)+
   geom_line(data = ownsource_rev, aes(x=Year, y=Dollars/1000), color = "Red") + 
@@ -1724,7 +1620,7 @@ ownsource_graph <- ggplot(ownsource_rev, aes(x=Year, y=Dollars/1000)) +
   y = "Billions of Dollars")
 ownsource_graph
 
-ggsave(plot = ownsource_graph, file = "./paper-figures/Figure2.eps",limitsize=FALSE)
+ggsave(plot = ownsource_graph, file = "./paper-figures/Figure2.eps", limitsize=FALSE)
 ggsave(plot = ownsource_graph, file = "./paper-figures/Figure2.png", limitsize = FALSE)
 
 ```
