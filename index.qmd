@@ -16,10 +16,13 @@ This website was originally created by Alea Wilbur-Mujtaba as an internal docume
 
 *Note from Alea Wilbur-Mujtaba: This document is a good faith effort to increase reproducibility and transparency for both the Fiscal Futures Annual Report and Illinois budget data as a whole. I recognized that the time and effort spent on identifying variables and graphing fiscal topics could be valuable to other researchers and took the initiative to create this page and repository from the documents I inherited as an IGPA Research Assistant. This endeavor has had a sharp learning curve and I could easily have made mistakes along the way. This is a working document and small edits are made to the site frequently. I intend to document major changes with new repository releases.*
 
+Read the FY23 Fiscal Futures Report here: [Finding the Balance: State Fiscal Sustainability and Local Government Challenges](https://igpa.uillinois.edu/reports/finding-the-balance-state-fiscal-sustainability-and-local-government-fiscal-challenges)
+
+-   Alea Wilbur-Mujtaba, Francis Choi, Rick Funderburg, Xiaoyan Hu, Paula R. Worthington, Yonghong Wu, Chen Xie, & David Merriman. "Finding the Balance: State Fiscal Sustainability and Local Government Challenges." (2024). Institute of Government and Public Affairs. <https://igpa.uillinois.edu/reports/finding-the-balance-state-fiscal-sustainability-and-local-government-fiscal-challenges>.
+
 You can read the FY22 Fiscal Futures Annual Report here: [Recovering from a (COVID) Spending Fever](https://igpa.uillinois.edu/wp-content/uploads/2023/03/IGPA_FiscalFuturesCOVID_FeverD.pdf)
 
 -   Alea Wilbur-Mujtaba, Francis Choi, and David Merriman. (2023). "Recovering from a COVID (Spending) Fever." Institute of Government and Public Affairs. <https://igpa.uillinois.edu/wp-content/uploads/2023/03/IGPA_FiscalFuturesCOVID_FeverD.pdf>.
--   FY2023 Report forthcoming
 
 To learn more about the history of the Fiscal Futures Project and read past reports, please visit [The Fiscal Futures webpage.](https://igpa.uillinois.edu/fiscal-futures-project/) The Fiscal Future Project is one of many research projects within the University of Illinois' [Institute of Government and Public Affairs (IGPA)](https://igpa.uillinois.edu/).
 
