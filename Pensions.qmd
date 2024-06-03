@@ -1,17 +1,20 @@
+---
+format: 
+  html: 
+    fig-cap-location: margin
+---
+
 # Pensions {#sec-pensions}
+
+The discussion of pension budget items on this page is to document how pensions items were identified and used in the Fiscal Futures Report. It also is meant to be informative for other researchers trying to use the data. For those trying to look at the bigger fiscal health picture and include unfunded liabilities and in/out flows, then items like purchase of investments and POB spikes in trends that occurred from policy changes should be analyzed and discussed in a separate section.
 
 ```{r warning = FALSE, message=FALSE}
 
 library(tidyverse)
-library(haven)
-library(formatR)
-library(lubridate)
-library(smooth)
 library(scales)
-library(kableExtra)
 library(ggplot2)
 library(readxl)
-library(tidyverse)
+library(ggrepel)
 library(data.table)
 library(janitor)
 
@@ -21,7 +24,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 ```
 
-**For yearly expenditure calculations, the state contributions to the pension funds (object = 4431) should be the expenditure included for pensions. If trying to look at the bigger fiscal health picture and include unfunded liabilities and in/out flows, then items like purchase of investments and POB spikes in trends that occurred from policy changes should be analyzed and discussed in a separate section. Again, State contributions TO the pension funds are the expenditures BUT an additional graph/discussion on the employer contributions, employee contributions, and benefits paid out should be included and considered for additional context on Illinois' situation.**
+**For Fiscal Gap yearly expenditure calculations, the state contributions to the pension funds (object = 4431) should be the expenditure included for pensions.**
 
 Pension expenditures referenced in the analysis are based on state payments to the following pension systems:
 
@@ -36,7 +39,18 @@ Employer contributions for pensions are excluded from analysis to avoid double c
 
 Most of these funds were found by either using CTRL-F with pension related words or scrolling through code options on the comptroller's website.
 
+-   Object 4430 is retirement benefits paid to employees.
+-   Object 4431 includes state payments INTO pension Fund.
+-   Object 1298 is excluded except for years 2010 and 2011 due to POBs.
+-   Object 4430 - Benefits Paid to Employees; EXCLUDED,
+-   Object 4431 - State Contributions; INCLUDED,
+-   Object 1160-1165 Employer Contributions to Pension Fund; EXCLUDED,
+-   Object 1298 - Purchase of Investments; DROPPED,
+-   Fund 0319 - Pension Stabilization, Object 4900 - Awards/Grants; Weird 2010-2011 values
+
 ```{r}
+#| label: fig-pensiondetails
+#| fig-cap: "Included and Excluded Items"
 
 exp_temp <- read_csv("./data/exp_temp.csv") %>% filter(agency != "799")
 rev_temp <- read_csv("./data/rev_temp.csv") %>% filter(agency!= "799")
@@ -48,42 +62,48 @@ rev_temp <- read_csv("./data/rev_temp.csv") %>% filter(agency!= "799")
 pension_funds <- c("0472", "0473", "0477", "0479", "0481", "0755", "0786", "0787", "0788", "0789", "0799")
 
 pension_check <- exp_temp %>% 
+  
   mutate(pension = case_when( 
- # object == "4430" & fund == "0825" ~ "Object 4430 - Pension Buyout/Benefits Paid Early",
-    (object=="4430") ~ "Object 4430 - Benefits Paid to Employees; EXCLUDED", # pensions, annuities, benefits
+    # object == "4430" & fund == "0825" ~ "Object 4430 - Pension Buyout/Benefits Paid Early",
+    (object=="4430") ~ "Object 4430 - Benefits Paid to \nEmployees; EXCLUDED", # pensions, annuities, benefits
     (object=="4431") ~ "Object 4431 - State Contributions; INCLUDED", # 4431 = state payments into pension fund
-        (obj_seq_type > "11590000" & obj_seq_type < "11660000")  ~ "Object 1160-1165 Employer Contributions to Pension Fund; EXCLUDED",
+    (obj_seq_type > "11590000" & obj_seq_type < "11660000")  ~ "Object 1160-1165 Employer Contributions \nto Pension Fund; EXCLUDED",
     # objects 1159 to 1166 are all considered Retirement by Comptroller 
     
-            TRUE ~ "0")) %>%  # All other observations coded as 0 for non-pension items
+    TRUE ~ "0")) %>%  # All other observations coded as 0 for non-pension items
   
   # recodes specific instances of code anomalies from past years:
   mutate(pension = case_when(
     (object=="1298" & fund %in% pension_funds ) ~ "Object 1298 - Purchase of Investments; DROPPED", 
-
-    
-      # pension stabilization fund in 2022 
- # object == "1900" & fund == "0319" ~ "Fund 0319-Pension Stabilization", 
+    # pension stabilization fund in 2022 
+    # object == "1900" & fund == "0319" ~ "Fund 0319-Pension Stabilization", 
     object == "1900" & fund %in% pension_funds ~ "Fund 0319 - Pension Stabilization", 
-
-  
-  object == "4900" & fund %in% pension_funds ~ "Object 4900 - Awards/Grants; Weird 2010-2011 values",
-  
+    
+    
+    object == "4900" & fund %in% pension_funds ~ "Object 4900 - Awards/Grants; Weird 2010-2011 values",
+    
     TRUE ~ as.character(pension)) ) %>% 
   filter(pension != "0" )
 
-pension_check %>% group_by(fy, pension) %>% 
+pension_check %>% 
+  mutate(label = if_else(fy == max(fy), as.character(pension), NA_character_)) %>%
+  group_by(fy, pension, label) %>% 
+  
   summarize(expenditure = sum(expenditure, na.rm = TRUE)) %>%
   ggplot(aes(x=fy, y = expenditure/1000000000, color = pension)) + 
   geom_line() + 
-
+  geom_text( aes(label = label),
+             hjust = .2, 
+             nudge_x = 0.1,
+             nudge_y = 0.1) +
   labs (title = "Pension Fund Payments In and Retirement Benefits Out", 
-  caption = "Object 4430 is retirement benefits paid to employees. 
-  Object 4431 includes state payments INTO pension Fund.
-  Object 1298 is excluded except for years 2010 and 2011 due to POBs.",
-  y= "Billions of Dollars")+
-    theme(legend.position = "bottom")+
-  guides(color = guide_legend(nrow=3))
+  y= "Billions of Dollars",  x = "")+
+   # theme(legend.position = "bottom")+
+    theme(legend.position = "none",
+                    plot.margin = margin(0, 6, 0, 0, "cm"))+
+    scale_x_continuous(expand = c(0,0)) +
+  coord_cartesian(clip = 'off', expand = TRUE)
+
 ```
 
 Pension contributions from employees and employers are not included as revenue sources but are useful for understanding the money going into the funds and the money flowing out of the funds. Identifying and graphing employee and employer contributions, as well as benefits paid to retired employees and state contributions was important for checking the items that should and should not be included in the analysis.
@@ -91,6 +111,9 @@ Pension contributions from employees and employers are not included as revenue s
 \
 
 ```{r}
+#| label: fig-retirementcontributions
+#| fig-cap: "Source 0573, 0572 is for employee contributions. 0577 is Contributions by employer."
+
 # rev_type = 51 is for retirement/pension contributions from both employers and employees.
 
 # current year employee revenue source = 0573, contributions by employee == 572 (stops at 2011)
@@ -120,11 +143,17 @@ state_contrib <- pension_check %>% filter(object == "4431") %>%
 
 rev_temp %>% 
   filter(rev_type == "51") %>% # all retirement contributions
-  group_by(fy, source) %>% 
+  mutate(label = if_else(fy == max(fy), as.character(source), NA_character_)) %>%
+  group_by(fy, source, label) %>% 
   summarise(sum = sum(receipts, na.rm = TRUE)) %>%
-  ggplot() +
-  geom_line(aes(x=fy, y = sum, color=source)) + labs(title="Retirement Contribution Sources, ALL rev_source == 51", 
-       caption = "Source 0573, 0572 is for employee contributions. 0577 is Contributions by employer.")
+  ggplot(aes(x=fy, y = sum, color=source)) +
+  geom_line() + 
+  theme(legend.position = "none")+
+  geom_label_repel(aes(label = label),
+                  nudge_x = 1,
+                  na.rm = TRUE) +
+  labs(title="Retirement Contribution Sources, ALL rev_source == 51") 
+    
 ```
 
 **Additional pension info:**\
