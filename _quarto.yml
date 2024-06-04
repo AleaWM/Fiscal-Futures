@@ -15,8 +15,9 @@ book:
       chapters:
       - Everything.qmd 
  #    - FiscalGap.qmd    
-    - part: "Budget Topics in the Data"
+    - part: "Illinois State Budget Data"
       chapters: 
+        - OwnSourceRev.qmd
         - FederalRevenue.qmd
         - LocalTransfers.qmd
         - Medicaid.qmd
@@ -30,6 +31,7 @@ book:
       chapters: 
         - FundsIncluded.qmd
         - code-cleaning.qmd
+        - past-mistakes.qmd
 
   navbar: 
     right: 
@@ -42,14 +44,6 @@ book:
         menu:
           - FundsIncluded.qmd
           - code-cleaning.qmd
-          # - FedMoneyReceived.qmd
-          # - LocalTransfers.qmd
-          # - Debt.qmd
-          # - Pensions.qmd
-          # - Healthcare.qmd
-          # - FederalRevenue.qmd
-          # - Medicaid.qmd
-          # - K12-Spending.qmd
           - Everything.qmd
       - text: "Data"
         href: https://github.com/AleaWM/https://github.com/AleaWM/Fiscal-Futures/tree/main/data
