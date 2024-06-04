@@ -46,7 +46,7 @@ book:
           - code-cleaning.qmd
           - Everything.qmd
       - text: "Data"
-        href: https://github.com/AleaWM/https://github.com/AleaWM/Fiscal-Futures/tree/main/data
+        href: https://github.com/AleaWM/Fiscal-Futures/tree/main/data
 #      - text: "Reports"
 #        file: FiscalGap.qmd
  #     - text: "COVID-related Federal Revenue"
