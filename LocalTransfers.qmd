@@ -104,3 +104,97 @@ transfers_long %>%
 ```
 
 Large increases in local transfers were driven by large increases in overall tax revenue collected by the state.
+
+2.  Local share of Personal Income Tax (at the 3.0% rate)
+
+<!-- -->
+
+6.  Local share of General Sales Tax (1.25% rate) [(20% of 6.25% sales tax on general merchandise and 100% of 1% sales tax on food/drugs/medical appliances)]{.underline}
+
+<!-- -->
+
+3.  Personal Property Replacement Tax on Business Income [(2.5% replacement tax on net Illinois income for corporations; 1.5% for partnerships, trusts, and S corporations)]{.underline}
+
+<!-- -->
+
+12. Personal Property Replacement Tax on Public Utilities [(0.8% tax on invested capital)]{.underline}
+
+<!-- -->
+
+9.  Local share of Motor Fuel Tax [& Transportation Renewal Fund 0952 (State collects 19cents/gallon and distributes it). Rebuild Illinois allows \$0.03 per gallon.]{.underline}
+
+## By Revenue Type
+
+```{r}
+rev_temp  %>% 
+  filter(rev_type == "03" | rev_type == "02") %>%
+  group_by(fy, source, source_name_AWM) %>% 
+  summarize(receipts = sum(receipts)) %>%
+  ggplot() + # aes(x=fy, y=receipts/1000, group = source))+
+     # geom_recessions(text = FALSE)+
+  geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
+  #geom_text(data = annotation, aes(x=x, y=y, label=label)) +
+  theme_classic() +
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = comma) +
+ # scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
+  # theme(legend.position = "none") +
+  labs(title = "All Income Tax by Revenue Source", 
+       subtitle = "Income Taxes include money transfered straight to local governments and funds saved for tax refunds.",
+       y = "Billions of Nominal Dollars") 
+```
+
+```{r}
+rev_temp  %>% 
+  filter(rev_type == "03" | rev_type == "02" | rev_type == "06") %>%
+  filter(str_detect(source_name_AWM, "PPRT") | str_detect(fund_name_ab, "REPLACE") | str_detect(fund_name_ab, "DISTRIBU") )  %>%
+  group_by(fy, source, source_name_AWM) %>% 
+  summarize(receipts = sum(receipts)) %>%
+  ggplot() + 
+  geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
+  #geom_text(data = annotation, aes(x=x, y=y, label=label)) +
+  theme_classic() +
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Tax Revenue by Revenue Source - For Local Transfers", 
+       subtitle = "Tax Revenue collected by the State that is transfered straight to local governments",
+       y = "Billions of Nominal Dollars") 
+
+
+rev_temp  %>% 
+  filter(rev_type == "03" | rev_type == "02" | rev_type == "06") %>%
+  filter(str_detect(source_name_AWM, "PPRT") | str_detect(fund_name_ab, "REFUND") ) %>%
+  group_by(fy, source, source_name_AWM) %>% 
+  summarize(receipts = sum(receipts)) %>%
+  ggplot() + 
+  geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
+  theme_classic() +
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Tax Revenue Collected by State for Local Transfers", 
+       subtitle = "Source contains PPRT or Refund in name",
+       y = "Billions of Nominal Dollars") 
+```
+
+```{r}
+rev_temp  %>% 
+  filter(#rev_type == "03" | 
+         #  rev_type == "02" | 
+           rev_type == "06") %>%
+  filter(!str_detect(source_name_AWM, "PPRT") & !str_detect(fund_name_ab, "REFUND")) %>%
+
+  group_by(fy, source, source_name_AWM) %>% 
+  summarize(receipts = sum(receipts)) %>%
+  ggplot() + # aes(x=fy, y=receipts/1000, group = source))+
+     # geom_recessions(text = FALSE)+
+  geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
+  #geom_text(data = annotation, aes(x=x, y=y, label=label)) +
+  theme_classic() +
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(labels = comma) +
+ scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
+  theme(legend.position = "none") +
+  labs(title = "What the State Actually Gets to Keep", 
+       subtitle = "Tax Revenue collected by the State - (refund fund $ & Local Transfers)",
+       y = "Billions of Nominal Dollars") 
+```
