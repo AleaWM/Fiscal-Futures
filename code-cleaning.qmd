@@ -1,22 +1,10 @@
 # Gathering and Cleaning Data! {#sec-gathering-and-cleaning-data}
 
-```{r warning = FALSE, message=FALSE}
+```{r setup, warning = FALSE, message=FALSE}
 #| include: false
 
 library(tidyverse)
-# library(haven)
-# library(formatR)
-# library(lubridate)
-# library(smooth)
-# library(forecast)
-# library(scales)
-# library(kableExtra)
-# library(ggplot2)
 library(readxl)
-# library(data.table)
-# library(quantmod)
-# library(geofacet)
-# library(janitor)
 
 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, eval=FALSE)
@@ -172,7 +160,7 @@ cur_fy  <- 2023  # Create variable for current fiscal year to save time for upda
 
 #### From Expenditure Data #####
 
-# agencies referenced in any year before 2020:
+# agencies referenced in any year before 2023:
 agencies_past <- allexpfiles23 %>% 
   filter(fy < cur_fy) %>% 
   mutate(agency == as.character(agency)) %>% 
@@ -180,7 +168,7 @@ agencies_past <- allexpfiles23 %>%
   summarize(expenditure = sum(expenditure, na.rm = TRUE)) %>% 
   drop_na() %>% 
   arrange(agency)
-# agencies_past # 146 agencies ever
+# agencies_past # 148 agencies ever
 
 
 # agencies in 2023 data:
@@ -191,7 +179,11 @@ agencies23 <- allexpfiles23  %>%
   summarize(expenditure = sum(expenditure, na.rm = TRUE))
 
 
-# 280 and 533 are new agency codes: 
+# 280 and 533 are new agency codes from old code cleaning methodology.
+# When creating fiscal future categories for the fiscal gap, 280 is assigned to Group = 920 ( Judicial) expenditure category
+# 533 was assigned to "949. Other Boards and Commissions"
+
+# no new agencies from fy22 to fy23: 
 anti_join(agencies23, agencies_past, 
           by = c("agency", "agency_name")) %>% 
   arrange(agency)
@@ -214,12 +206,14 @@ funds23 <- allexpfiles23  %>%
   unique()
 
 
-# 15 funds were in FY22 data that were not in past data:
+# 26 funds were in FY23 data that were not in past data:
 anti_join(funds23, funds_past, 
           by = c("fund", "fund_name")) %>% 
   arrange(fund)
+# Each year these must examined closely to determine if they are a new fund, a reused fund, or if there is just a slight difference in the name of the fund 
 
-# orgs_pastin the past =  916 org groups ever
+
+# orgs_past for orgs in the past =  920 org groups ever
 orgs_past <- allexpfiles23  %>% 
   filter(fy < cur_fy) %>% 
   mutate(appr_org == as.character(appr_org)) %>% 
@@ -233,14 +227,18 @@ orgs23 <- allexpfiles23  %>%
   mutate(appr_org = as.character(appr_org)) %>% 
   group_by(appr_org, org_name) %>% 
   summarize(Expenditure = sum(expenditure, na.rm = TRUE))
-# orgs22 # 396 org groups this year
+# orgs22 # 399 org groups this year
 
 
-# 4 org number and org name combos are new for FY2023:
+# 3 org number and org name combos are new for FY2023:
+# Usually not a big deal, orgs are not used much in the gap calculation.
+# but good to stay aware and look for any change that may be important.
 anti_join(orgs23, orgs_past,
           by = c("appr_org", "org_name")) %>% 
   arrange(appr_org)
 ```
+
+> Largest change for FY23 was the \$184 million Grocery Tax Replacement fund and \$20 million for fund 0156.
 
 **New Revenue Funds, Sources, and New Agencies:**
 
@@ -249,7 +247,7 @@ anti_join(orgs23, orgs_past,
 
 
 # agencies_past # 108 agencies ever
-agencies_past <- allrevfiles23  %>% filter(fy < 2023) %>% 
+agencies_past <- allrevfiles23  %>% filter(fy < cur_fy) %>% 
   mutate(agency == as.character(agency)) %>% 
   group_by(agency, agency_name) %>% unique() %>% 
   summarize(Receipts = sum(receipts, na.rm = TRUE)) %>% 
@@ -262,7 +260,8 @@ agencies23 <- allrevfiles23  %>%
   group_by(agency, agency_name) %>% 
   summarize(Receipts = sum(receipts, na.rm = TRUE))
 
-# 0 new agencies in revenue data this year
+
+# Finds 533 and 280 again. 
 anti_join(agencies23, agencies_past, by = c("agency", "agency_name")) %>% 
   arrange(agency)
 
@@ -282,7 +281,7 @@ funds23 <- allrevfiles23  %>%
   unique() %>% 
   drop_na()
 
-# 19 revenue funds were in FY22 revenue data that were not in past data 
+# 13 revenue funds were in FY23 revenue data that were not in past data 
 # some could be small fund name changes
 anti_join(funds23, funds_past, by = c("fund", "fund_name")) %>% 
   arrange(fund)
@@ -304,7 +303,7 @@ sources23 <- allrevfiles23  %>%
   unique()
 
 
-# 20 revenue sources were in FY22 data that were not in past data 
+# 16 revenue sources were in FY23 data that were not in past data 
 # some could be small source name changes:
 anti_join(sources23, sources_past, by = c("source", "source_name")) %>% 
   arrange(source)
@@ -424,22 +423,27 @@ exp_1998_2023 <- allexpfiles23 %>%
 The `funds_ab_in.xlsx` file contains the following information: all funds that have existed since 1998, if they still exist, indicates if fund numbers have been reused for varying purposes, and is updated yearly with new fund numbers used by the IOC.
 :::
 
-```{r create-exp_temp, warning = FALSE, message = FALSE}
+```{r create-exp_temp}
 
 
-agencies_exp <- exp_1998_2023 %>% distinct(agency, agency_name) %>% filter(!is.na(agency_name))
-funds_exp <- exp_1998_2023 %>% distinct(fund, fund_name) %>% filter(!is.na(fund_name))
+agencies_exp <- exp_1998_2023 %>% 
+  distinct(agency, agency_name) %>% 
+  filter(!is.na(agency_name)) %>%
+  mutate(agency = as.character(agency))
+
+funds_exp <- exp_1998_2023 %>% 
+  distinct(fund, fund_name) %>% 
+  filter(!is.na(fund_name))
 
 funds_ab_in_2023 = readxl::read_excel("data/funds_ab_in_2023.xlsx")
 
 
 exp_temp <- exp_1998_2023 %>% 
   select(-fund_name) %>%
-  arrange(fund, fy) %>%
-  filter(expenditure != 0) %>%             # keeps everything that is not zero
-# join  funds_ab_in_2021  to exp_temp
- left_join(funds_ab_in_2023, by = "fund") %>%
-  left_join(funds_exp)
+  arrange(fund, fy)  %>%
+# join  funds_ab_in_2023  to exp_temp
+  left_join(funds_ab_in_2023, by = "fund")
+
 
 
 # Agency == 799 for Statutory transfers 
@@ -497,6 +501,14 @@ exp_temp <- exp_temp %>%
 
     agency == "570" & fund == "0011" ~ "494",   # city of Chicago road fund to transportation
     TRUE ~ (as.character(agency)))) 
+
+# 
+# exp_temp <- exp_temp %>% filter(!is.na(fy))
+# ## Fill in missing names for funds
+# exp_temp <- exp_temp  %>%
+#   select(-c(agency_name)) %>%
+#   left_join(funds_exp) %>%
+#   left_join(agencies_exp)
 ```
 
 For aggregating revenue, use the `rev_1998_2023` file, join the `funds_ab_in_2023` file to it, and then join the `ioc_source_type` file. Remember: You need to update the `funds_ab_in` and `ioc_source_type` file every year!
@@ -505,25 +517,35 @@ For aggregating revenue, use the `rev_1998_2023` file, join the `funds_ab_in_202
 #| code-fold: false
 
 
-sources_rev <- rev_1998_2023 %>% distinct(source, source_name) %>% filter(!is.na(source_name))
-agencies_rev <- rev_1998_2023 %>% distinct(agency, agency_name) %>% filter(!is.na(agency_name))
-funds_rev <- rev_1998_2023 %>% distinct(fund, fund_name) %>% filter(!is.na(fund_name))
-
-
-# fund info to revenue for all years
-rev_1998_2023 <- rev_1998_2023 %>% 
-  select(-c(fund_name, agency_name, source_name)) %>%
-  #left_join(sources_rev) %>%
-  left_join(agencies_rev)
-
 rev_temp <- inner_join(rev_1998_2023, funds_ab_in_2023, by = "fund") %>% 
-  arrange(source) %>% left_join(funds_rev)
+  arrange(source) 
+
+funds_rev <- rev_temp %>% distinct(fund, fund_name_ab) %>% filter(!is.na(fund_name_ab))
+
+agencies_rev <- rev_temp %>% distinct(agency, agency_name) %>% filter(!is.na(agency_name)) %>%
+  mutate(agency = as.character(agency))
+
 
 
 # need to update the ioc_source_type file every year! 
 ioc_source_type <- readxl::read_xlsx("./data/ioc_source_updated23_AWM.xlsx")
 
 rev_temp <- left_join(rev_temp, ioc_source_type, by = "source")
+
+sources_rev <- rev_temp %>% distinct(source, source_name_AWM) %>% filter(!is.na(source_name_AWM))
+
+
+# fund info to revenue for all years
+rev_temp <- rev_temp %>% 
+  select(-c(fund_name, agency_name, 
+            source_name_AWM))  %>% 
+  left_join(funds_rev) %>%
+  left_join(sources_rev)
+
+
+
+
+
 # automatically used source, source name does not match for the join to work using source_name
 
 # recodes old agency numbers to consistent agency number
@@ -539,7 +561,10 @@ rev_temp <- rev_temp %>%
     agency == "560" ~ "592", # IL finance authority (fire trucks and agriculture stuff)to state fire marshal
     agency == "570" & fund == "0011" ~ "494",   # city of Chicago road fund to transportation
 
-    TRUE ~ (as.character(agency))))
+    TRUE ~ (as.character(agency)))) %>%
+  #left_join(sources_rev) %>%
+  left_join(agencies_rev) # add correct agency names back in
+
 ```
 
 ### Export Intermediate Files
