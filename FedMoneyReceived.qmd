@@ -45,6 +45,8 @@ Dropping revenue source "Federal Stimulus Package" from the IOC revenue data is 
 rev_temp <- read_csv("./data/rev_temp.csv") %>% 
   filter(agency!= "799")
 
+rev_temp <- rev_temp %>% mutate(fund_name = fund_name_ab)
+
 drop_type <- c("32", "45", "51", 
                "66", "72", "75", "79", "98")
 
@@ -1394,7 +1396,7 @@ rev_temp %>%
 
 
 exp_temp <- read_csv("./data/exp_temp.csv") %>% 
-  filter(agency!= "799")
+  filter(agency!= "799") %>% mutate(fund_name = fund_name_ab)
 
 exp_temp %>% 
   filter(fy >2019 & (fund_name == "STATE CURE" | fund_name == "LOCAL CURE" | fund_name == "SBE FEDERAL DEPT OF EDUCATION" | fund_name == "DISASTER RESPONSE AND RECOVERY" | fund_name == "ESSENTIAL GOVT SERV SUPPORT" )) %>% 
