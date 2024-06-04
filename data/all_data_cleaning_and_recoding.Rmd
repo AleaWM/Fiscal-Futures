@@ -42,7 +42,7 @@ Files were given consistent variable names. Each year the variable names in the 
 For FY 2023 and after, .dta files can be avoided entirely and .csv or excel files will be used. All files before this year had been saved and passed on as .dta files for Stata code before the transition to R in Fall 2022. For years after fy22: add line of code to bind csv files after binding the dta files together.
 
 ::: {.callout-important appearance="simple" icon="false"}
-Variable names must identical to merge files together.
+Variable names must be identical to merge files together.
 :::
 
 ```{r create-rev-csv-FY23, eval=FALSE}
@@ -50,8 +50,8 @@ Variable names must identical to merge files together.
 setwd("./data/ioc_data_received/revenue")
 
 allrevfiles23 = list.files(path = "./data/ioc_data_received/revenue",  pattern = ".dta") %>%  lapply(read_dta) %>% bind_rows
-#Fy21: 62294 observations, 13 variables
-#FY22: 65094 obs, 13 vars
+# Fy21: 62294 observations, 13 variables
+# FY22: 65094 obs, 13 vars
 
 
 
@@ -59,7 +59,7 @@ setwd("./data/ioc_data_received/expenditures")
 
 allexpfiles23 = list.files(path = ".data/ioc_data_received/expenditures",  pattern = ".dta") %>%  lapply(read_dta) %>% bind_rows
 
-#fy21 213372 observations, 20 variables
+# fy21 213372 observations, 20 variables
 # fy22 225587 obs, 21 vars.
 
 
@@ -325,7 +325,10 @@ rev_1998_2023 <- allrevfiles23 %>%
   mutate(fund = ifelse(fy < 2023 & fund %in% c("0099","0210","0246", "0250", "0264", "0268", "0300", "0311", "0403", "0448","0645", "0727", "0729", "0791"), str_replace(fund,"0", "9"), as.character(fund))) %>%
   mutate(fund = ifelse(fy < 2023 & fund == "0734" , "10734", as.character(fund)),
          fund = ifelse(fy<2023 & fund == "0820", "10820", as.character(fund) ) # fund reused for 3rd time
-  )
+  ) %>%
+
+ #  other fund changes noticed on April 1, 2024
+  mutate(fund = ifelse(fy < 2023 & fund %in% c("0490", "0684", "0747", "0869"), str_replace(fund,"0", "9"), as.character(fund))) 
 ```
 
 New funds were manually added to the funds_ab_in.xlsx file and recoded funds were addressed in the code chunks below and updated in the same excel file that helps track changes over time.
@@ -364,7 +367,10 @@ exp_1998_2023 <- allexpfiles23 %>%
   mutate(fund = ifelse(fy < 2023 & fund %in% c("0099","0210","0246", "0250", "0264", "0268", "0300", "0311", "0403", "0448","0645", "0727", "0729", "0791"), str_replace(fund,"0", "9"), as.character(fund))) %>%
   mutate(fund = ifelse(fy < 2023 & fund == "0734" , "10734", as.character(fund)),
          fund = ifelse(fy<2023 & fund == "0820", "10820", as.character(fund) ) # fund reused for 3rd time
-  )
+  )  %>%
+
+ #  other fund changes noticed on April 1, 2024
+  mutate(fund = ifelse(fy < 2023 & fund %in% c("0490", "0684", "0747", "0869"), str_replace(fund,"0", "9"), as.character(fund))) 
 
 ```
 
@@ -373,10 +379,17 @@ exp_1998_2023 <- allexpfiles23 %>%
 > :::
 
 ```{r create-exp_temp, warning = FALSE, message = FALSE}
+
+
+agencies_exp <- exp_temp %>% distinct(agency, agency_name) %>% filter(!is.na(agency_name))
+
+
+
 funds_ab_in_2023 = readxl::read_excel("funds_ab_in_2023.xlsx")
 
 
 exp_temp <- exp_1998_2023 %>% 
+  select(-fund_name) %>%
   arrange(fund, fy) %>%
   filter(expenditure != 0) %>%             # keeps everything that is not zero
 # join  funds_ab_in_2021  to exp_temp
@@ -433,8 +446,19 @@ exp_temp <- exp_temp %>%
 For aggregating revenue, use the rev_1998_2022 dataframe, join the funds_ab_in_2023 file to it, and then join the ioc_source_type file to the dataset. Remember: You need to update the funds_ab_in and ioc_source_type file every year!
 
 ```{r create-rev-temp, warning = FALSE, message=FALSE}
+
+sources_rev <- rev_1998_2023 %>% distinct(source, source_name) %>% filter(!is.na(source_name))
+agencies_rev <- rev_1998_2023 %>% distinct(agency, agency_name) %>% filter(!is.na(agency_name))
+
+
 # fund info to revenue for all years
-rev_temp <- inner_join(rev_1998_2023, funds_ab_in_2023, by = "fund") %>% arrange(source)
+rev_1998_2023 <- rev_1998_2023 %>% 
+  select(-c(fund_name, agency_name, source_name)) %>%
+  #left_join(sources_rev) %>%
+  left_join(agencies_rev)
+
+rev_temp <- inner_join(rev_1998_2023, funds_ab_in_2023, by = "fund") %>% 
+  arrange(source)
 
 # need to update the ioc_source_type file every year! 
 ioc_source_type <- readxl::read_xlsx("ioc_source_updated23_AWM.xlsx")
@@ -471,8 +495,6 @@ Aggregate expenditures: Save tax refunds as negative revenue. Code refunds to ma
 ```
 
 ```{r tax-refunds}
-## negative revenue becomes tax refunds
-
 tax_refund_long <- exp_temp %>%           # fund != "0401" # removes State Trust Funds
   filter(fund != "0401" & (object=="9910"|object=="9921"|object=="9923"|object=="9925")) %>%
   # keeps these objects which represent revenue, insurance, treasurer,and financial and professional reg tax refunds
