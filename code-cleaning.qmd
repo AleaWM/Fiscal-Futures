@@ -28,32 +28,64 @@ Normally, when your receive the new fiscal year files from the Comptrollers offi
 
 
 #Example code below: Read in excel file and rename columns so that it plays well with the other years' files.
+# 
+# revenue_fy23 <- read_xlsx("Fis_Fut_Rev_2023_Final.xlsx") %>% 
+#   rename(fy = 'FY',
+#          fund = 'FUND',
+#          fund_name = 'FUND NAME',
+#          agency = 'AGENCY',
+#          agency_name = 'AGENCY NAME',
+#          source = 'REVENUE SOURCE',
+#          source_name = 'REV SRC NAME',
+#          receipts = 'AMOUNT'
+#   ) 
+# 
+# exp_fy23 <- read_xlsx("Fis_Fut_Exp_2023_Final.xlsx") %>% 
+#   rename(fy = 'FY',
+#          fund = 'FUND',
+#          fund_name = 'FUND NAME',
+#          agency = 'AGENCY',
+#          agency_name = 'AGENCY NAME',
+#          appr_org = 'ORGANIZATION',
+#          org_name = 'ORGANIZATION NAME',
+#          obj_seq_type = 'APPROPRIATION',
+#          wh_approp_name = 'APPROPRIATION NAME',
+#         # exp_net_xfer = 'NET OF TRANS AMOUNT',
+#          expenditure = 'EXPENDED'
+# 
+#   ) 
 
-revenue_fy23 <- read_xlsx("Fis_Fut_Rev_2023_Final.xlsx") %>% 
-  rename(fy = 'FY',
+
+## New files had different variable names!! 
+## Had to update code slightly ## 
+rev_fy24 <- read_xlsx("data/revenue/Fis_Fut_Rev_071124.xlsx") %>% 
+  rename(fy = 'FISCAL YEAR',
          fund = 'FUND',
          fund_name = 'FUND NAME',
          agency = 'AGENCY',
          agency_name = 'AGENCY NAME',
          source = 'REVENUE SOURCE',
-         source_name = 'REV SRC NAME',
+         source_name = 'REVENUE SOURCE NAME',
          receipts = 'AMOUNT'
-  ) 
+  )  %>% mutate(data_source = "rev IOC 07.11.2024")
 
-exp_fy23 <- read_xlsx("Fis_Fut_Exp_2023_Final.xlsx") %>% 
-  rename(fy = 'FY',
+exp_fy24 <- read_xlsx("data/expenditures/Fis_Fut_Exp_071124.xlsx") %>% 
+  rename(fy = 'FISCALYEAR',
          fund = 'FUND',
          fund_name = 'FUND NAME',
          agency = 'AGENCY',
          agency_name = 'AGENCY NAME',
-         appr_org = 'ORGANIZATION',
-         org_name = 'ORGANIZATION NAME',
+         appr_org = 'DIVISION',
+         org_name = 'DIVISION NAME',
          obj_seq_type = 'APPROPRIATION',
          wh_approp_name = 'APPROPRIATION NAME',
-        # exp_net_xfer = 'NET OF TRANS AMOUNT',
-         expenditure = 'EXPENDED'
-
+         appn_net_xfer = 'NET OF TRANS AMT',
+         expenditure = 'EXPENDED THRU 6/30') %>%
+  mutate( data_source = "exp IOC 07.11.2024"
   ) 
+
+
+
 
 # %>%
 #   # these come from ioc_source file after merging
@@ -108,13 +140,46 @@ write_csv(allexpfiles23, ".data/allexpfiles23.csv")
 
 Code below reads in the csv files created in chunks above (allrevfiles.csv and allrexpfiles.csv). These files contain all years of data combined into one file BEFORE any recoding is done. Do not use this file for summing categories because it is just an inbetween step before recoding revenue and expenditure categories. It also does not contain changes in funds or agencies.
 
+
+
+```{r}
+
+allrevfiles23 <- read_csv("data/revenue/allrevfiles_Nov132023.csv")
+
+# add in excel file for current year
+allrevfiles24 <- allrevfiles23 %>% 
+  select(fy, fund, fund_name, agency, agency_name, source, source_name, receipts, data_source) %>% 
+  rbind(rev_fy24)
+
+
+#Fy21: 62294 observations, 13 variables
+#FY22: 65094 obs, 13 vars
+#FY23: 57822 obs
+#fy24: 70,492 obs
+
+
+
+allexpfiles23 <- read_csv("data/expenditures/allexpfiles_Nov142023.csv")
+
+# add in excel file for current year
+allexpfiles24 <- allexpfiles23 %>% 
+  select(fy, fund, fund_name, agency, agency_name, appr_org, org_name, obj_seq_type, wh_approp_name, appn_net_xfer, expenditure, data_source) %>% 
+  rbind(exp_fy24)
+
+# fy21 213372 observations, 20 variables
+# fy22 225587 obs, 21 vars.
+# fy23 238089 obs
+# fy24 250,411 obs
+
+```
+
 ```{r readCSVs, warning=FALSE, message=FALSE}
 
 # combined in past chunks called create-rev-csv and create-exp-csv
 
-allrevfiles23 <- read_csv("./data/allrevfiles_Nov132023.csv") #combined but not recoded
+allrevfiles24 <- read_csv("./data/allrevfiles.csv") #combined but not recoded
 
-allexpfiles23 <- read_csv("./data/allexpfiles_Nov132023.csv") #combined but not recoded
+allexpfiles24 <- read_csv("./data/allexpfiles.csv") #combined but not recoded
 ```
 
 ### Inspecting new FY23 data files
