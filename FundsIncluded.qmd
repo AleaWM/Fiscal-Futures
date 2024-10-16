@@ -67,7 +67,7 @@ Non-appropriated funds that are supported by user fees AND perform a state funct
 #| tbl-cap: "Past and Present IOC Fund Numbers and Names"
 
 
-funds <- read_xlsx("data/funds_ab_in_2023.xlsx")
+funds <- read_xlsx("inputs/funds_ab_in_2024.xlsx")
 
 table <- funds %>% select(fund_ioc, fund, fund_name_ab, in_ff)
 
