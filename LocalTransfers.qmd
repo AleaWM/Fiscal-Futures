@@ -41,7 +41,7 @@ theme_set(theme_classic())
 
 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
-
+current_year = 2024
 exp_temp <- read_csv("./data/exp_temp.csv")
 rev_temp <- read_csv("./data/rev_temp.csv")
 ```
@@ -99,6 +99,8 @@ transfers_long %>%
   summarize(expenditure = sum(expenditure, na.rm=TRUE) )%>% 
   ggplot() + 
   geom_line(aes(x=fy, y = expenditure, color=agency_name)) + 
+    scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
+
   labs(title = "Transfers to Local Governments", caption = "Data Source: Illinois Office of the Comptroller")
 
 ```
@@ -135,7 +137,7 @@ rev_temp  %>%
   geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
   #geom_text(data = annotation, aes(x=x, y=y, label=label)) +
   theme_classic() +
-  scale_x_continuous(expand = c(0,0)) +
+  scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
  # scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
   # theme(legend.position = "none") +
@@ -154,7 +156,7 @@ rev_temp  %>%
   geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
   #geom_text(data = annotation, aes(x=x, y=y, label=label)) +
   theme_classic() +
-  scale_x_continuous(expand = c(0,0)) +
+  scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
   labs(title = "Tax Revenue by Revenue Source - For Local Transfers", 
        subtitle = "Tax Revenue collected by the State that is transfered straight to local governments",
@@ -169,7 +171,7 @@ rev_temp  %>%
   ggplot() + 
   geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
   theme_classic() +
-  scale_x_continuous(expand = c(0,0)) +
+  scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
   labs(title = "Tax Revenue Collected by State for Local Transfers", 
        subtitle = "Source contains PPRT or Refund in name",
@@ -190,7 +192,7 @@ rev_temp  %>%
   geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
   #geom_text(data = annotation, aes(x=x, y=y, label=label)) +
   theme_classic() +
-  scale_x_continuous(expand = c(0,0)) +
+  scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
  scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
   theme(legend.position = "none") +

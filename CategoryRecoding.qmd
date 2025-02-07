@@ -18,11 +18,12 @@ library(quantmod)
 library(geofacet)
 library(janitor)
 
+current_year <- 2024
 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
 
-exp_temp <- read_csv("./data/exp_temp.csv")
-rev_temp <- read_csv("./data/rev_temp.csv")
+exp_temp <- read_csv(paste0("./data/FY", current_year, " Files/exp_temp.csv"))
+rev_temp <- read_csv(paste0("./data/FY", current_year, " Files/rev_temp.csv"))
 ```
 
 ### Tax refunds
@@ -199,7 +200,7 @@ exp_temp <- exp_temp %>%
 
 exp_temp %>% filter(group_name == "Check name")
 
-#write_csv(exp_temp, "./data/all_expenditures_recoded.csv")
+write_csv(exp_temp, "./data/FY", current_year, " Files/all_expenditures_recoded.csv")
 
 ```
 
@@ -355,10 +356,6 @@ rev_temp <- rev_temp %>%
 
 #table(rev_temp$rev_type_new)  # check work
 
-
-
-rm(rev_1998_2022)
-rm(exp_1998_2022)
 
 ```
 
@@ -602,8 +599,8 @@ exp_long <- pivot_longer(ff_exp, exp_402:exp_970 , names_to = c("type", "Categor
            ) %>% 
   mutate(Category_name = str_to_title(Category_name))
 
-#write_csv(exp_long, "expenditures_recoded_long_FY22.csv")
-#write_csv(rev_long, "revenue_recoded_long_FY22.csv")
+write_csv(exp_long, paste0("data/FY", current_year, " Files/expenditures_recoded_long.csv"))
+write_csv(rev_long, paste0("data/FY", current_year, " Files/revenue_recoded_long.csv"))
 
 aggregated_totals_long <- rbind(rev_long, exp_long)
 aggregated_totals_long
