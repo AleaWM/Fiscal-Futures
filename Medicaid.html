@@ -383,8 +383,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>medicaid_cost, <span class="fu">aes</span>(<span class="at">x=</span>fy, <span class="at">y=</span>sum), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>med_reimburse, <span class="fu">aes</span>(<span class="at">x=</span>fy, <span class="at">y =</span> sum), <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span> </span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Medicaid reimbursements and Medicaid expenditures"</span>, </span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Medicaid expenditures include funds provided to medical providers. "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Medicaid reimbursements and Medicaid expenditures"</span>, </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Medicaid expenditures include funds provided to medical providers. "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -907,32 +908,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
 <span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>medicaid_cost, <span class="fu">aes</span>(<span class="at">x=</span>fy, <span class="at">y=</span>sum), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
 <span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>med_reimburse, <span class="fu">aes</span>(<span class="at">x=</span>fy, <span class="at">y =</span> sum), <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span> </span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Medicaid reimbursements and Medicaid expenditures"</span>, </span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Medicaid expenditures include funds provided to medical providers. "</span>)</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>**Medicaid.**That portion of the Healthcare and Family Services (or Public Aid in earlier years, agency code 478) budget for Medical (appr_organization code 65) for awards and grants (object codes 4400 and 4900).</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; State CURE revenue will remain in the Medicaid category due to the nature of it being federal funds providing public health services and funding to locations that provide public services.</span></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Uses same appropriation name of "HEALTHCARE PROVIDER RELIEF" and fund == 0793 and obj_seq_type == 49000000. So can defend the "mistake" of including healthcare provider relief as Medicaid expenditure.</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Medicaid-check, include = FALSE, eval=FALSE}</span></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="in">medicaid_check &lt;- exp_temp %&gt;% filter(agency=="478" &amp; (appr_org=="01" | appr_org == "65" | appr_org=="88") &amp; (object=="4900" | object=="4400"))</span></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="in"># This includes the State CURE fund</span></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="in">medicaid_check %&gt;% group_by(fy) %&gt;% summarize(sum = sum(expenditure)) %&gt;% arrange(-fy)  # looks good I think AWM</span></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="in"># if we want state CURE as public health or other group number</span></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="in"># exp_temp &lt;- exp_temp %&gt;% mutate(group = if_else(fund == "0324" &amp; agency=="478" &amp; appr_org == "65" &amp; object=="4900", "478", as.character(group)))</span></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="in">medicaid_check %&gt;% filter(fy&gt;2020) %&gt;% group_by(wh_approp_name,fy) %&gt;% summarize(sum=sum(expenditure)) %&gt;% arrange(wh_approp_name)</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>Federal Medical Assistance Program (FMAP): in 1965. The FMAP formula compares the state per-capita income to the national per-capita income. There is no cap on the dollar amount that the federal government pays, so the more that a state spends the more that it receives. a maximum of 83%. States with a higher per-capita income receive lower FMAP funding but no less than 50%, and the states that have a lower per-capita income receive higher FMAP funding. Those that need more, get more.</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Medicaid reimbursements and Medicaid expenditures"</span>, </span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Medicaid expenditures include funds provided to medical providers. "</span>)</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>**Medicaid.**That portion of the Healthcare and Family Services (or Public Aid in earlier years, agency code 478) budget for Medical (appr_organization code 65) for awards and grants (object codes 4400 and 4900).</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; State CURE revenue will remain in the Medicaid category due to the nature of it being federal funds providing public health services and funding to locations that provide public services.</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Uses same appropriation name of "HEALTHCARE PROVIDER RELIEF" and fund == 0793 and obj_seq_type == 49000000. So can defend the "mistake" of including healthcare provider relief as Medicaid expenditure.</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="in">```{r Medicaid-check, include = FALSE, eval=FALSE}</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="in">medicaid_check &lt;- exp_temp %&gt;% filter(agency=="478" &amp; (appr_org=="01" | appr_org == "65" | appr_org=="88") &amp; (object=="4900" | object=="4400"))</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="in"># This includes the State CURE fund</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="in">medicaid_check %&gt;% group_by(fy) %&gt;% summarize(sum = sum(expenditure)) %&gt;% arrange(-fy)  # looks good I think AWM</span></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="in"># if we want state CURE as public health or other group number</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="in"># exp_temp &lt;- exp_temp %&gt;% mutate(group = if_else(fund == "0324" &amp; agency=="478" &amp; appr_org == "65" &amp; object=="4900", "478", as.character(group)))</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="in">medicaid_check %&gt;% filter(fy&gt;2020) %&gt;% group_by(wh_approp_name,fy) %&gt;% summarize(sum=sum(expenditure)) %&gt;% arrange(wh_approp_name)</span></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>Federal Medical Assistance Program (FMAP): in 1965. The FMAP formula compares the state per-capita income to the national per-capita income. There is no cap on the dollar amount that the federal government pays, so the more that a state spends the more that it receives. a maximum of 83%. States with a higher per-capita income receive lower FMAP funding but no less than 50%, and the states that have a lower per-capita income receive higher FMAP funding. Those that need more, get more.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
