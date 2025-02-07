@@ -34,9 +34,9 @@ book:
         - past-mistakes.qmd
 
   navbar: 
-    right: 
-      - icon: github
-        href: https://github.com/AleaWM/Fiscal-Futures.git
+    # right: 
+    #   - icon: github
+    #     href: https://github.com/AleaWM/Fiscal-Futures.git
     left:
       - text: "About"
         file: index.qmd
@@ -53,18 +53,7 @@ book:
  #       file: FedMoneyReceived.qmd
 
 
-          
-
-# site-url: https://aleawm.github.io/https://github.com/AleaWM/Fiscal-Futures-IL-FY2023.git
-#  repo-actions: [edit]
-#  downloads: [pdf, epub]
-#  sharing: [twitter, facebook]
-   # sidebar:
-      #title: "On this page"
-
-
-#execute: 
-#  freeze: auto
+        
 
 format:
   html:
@@ -77,27 +66,4 @@ format:
     fig-cap-location: top
     tbl-cap-location: top
     df-print: paged
-  #   grid: 
-  #     gutter-width: 1rem
-  #     sidebar-width: 300px
-  # #    body-width: 900px
-  #     margin-width: 300px
-    
-  # pdf:
-  #   documentclass: scrreport
-  #   include-in-header: 
-  #     text: |
-  #       \usepackage{makeidx}
-  #       \makeindex
-  #   include-after-body: 
-  #     text: |
-  #       \printindex
-  #   
-#bibliography: references.bib
-#reference-location: margin
-#citation-location: margin
-
-
-
-editor: visual
-
+ 
