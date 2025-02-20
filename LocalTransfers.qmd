@@ -1,5 +1,6 @@
 # Local Transfers
 
+
 Separate transfers to local from parent agencies that come from DOR(492) or Transportation (494). Treats muni revenue transfers as expenditures, not negative revenue.
 
 The share of certain taxes levied state-wide at a common rate and then transferred to local governments. (Purely local-option taxes levied by specific local governments with the state acting as collection agent are NOT included.)
@@ -44,6 +45,71 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 current_year = 2024
 exp_temp <- read_csv("./data/exp_temp.csv")
 rev_temp <- read_csv("./data/rev_temp.csv")
+```
+
+```{r include=FALSE}
+library(cmapplot)
+
+update_recessions <- function(url = NULL, quietly = FALSE){
+
+  # Use default URL if user does not override
+  if (is_null(url) | missing(url)) {
+    url <- "https://data.nber.org/data/cycles/business_cycle_dates.json"
+  }
+  
+   # locally bind variable names
+  start_char <- end_char <- start_date <- end_date <- ongoing <- index <- peak <- trough <- NULL
+
+  return(
+    # attempt to download and format recessions table
+    tryCatch({
+      recessions <- jsonlite::fromJSON(url) %>%
+        # drop first row trough
+        dplyr::slice(-1) %>%
+        # convert peaks and troughs...
+        dplyr::mutate(
+          # ...to R dates
+          start_date = as.Date(peak),
+          end_date = as.Date(trough),
+          # ... and clean char strings
+          start_char = format(start_date, "%b %Y"),
+          end_char = format(end_date, "%b %Y")) %>%
+        # confirm ascending and create row number
+        dplyr::arrange(start_date) %>%
+        mutate(index = row_number()) %>%
+        mutate(
+          # Flag unfinished recessions
+          ongoing = case_when(
+            is.na(end_date) & index == max(.$index) ~ T,
+            TRUE ~ F),
+          # set ongoing recession to arbitrary future date
+          end_date = case_when(
+            ongoing ~ as.Date("2200-01-01"),
+            TRUE ~ end_date),
+          # mark ongoing recession in char field
+          end_char = case_when(
+            ongoing ~ "Ongoing",
+            TRUE ~ end_char)
+          ) %>%
+        # clean up
+        select(start_char, end_char, start_date, end_date, ongoing)
+
+      if (!quietly) {message("Successfully fetched from NBER")}
+
+      # Return recessions
+      recessions
+    },
+    error = function(cond){
+      if (!quietly) message("WARNING: Fetch or processing failed. `NULL` returned.")
+      return(NULL)
+    }
+    )
+  )
+}
+
+#recess_table <- list(build_recessions(update))
+recessions <- update_recessions()
+
 ```
 
 ```{r}
@@ -188,7 +254,7 @@ rev_temp  %>%
   group_by(fy, source, source_name_AWM) %>% 
   summarize(receipts = sum(receipts)) %>%
   ggplot() + # aes(x=fy, y=receipts/1000, group = source))+
-     # geom_recessions(text = FALSE)+
+      geom_recessions(text = FALSE)+
   geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
   #geom_text(data = annotation, aes(x=x, y=y, label=label)) +
   theme_classic() +
