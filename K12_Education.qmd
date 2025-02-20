@@ -1,0 +1,366 @@
+# K-12 Spending & ESSER Funds
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+
+library(tidyverse)
+library(haven)
+library(formatR)
+library(lubridate)
+library(smooth)
+library(forecast)
+library(scales)
+library(kableExtra)
+library(ggplot2)
+library(readxl)
+library(tidyverse)
+library(data.table)
+library(quantmod)
+library(geofacet)
+library(janitor)
+library(cmapplot)
+
+theme_set(theme_classic())
+
+
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+exp_temp <- read_csv("./data/exp_temp.csv") %>% 
+  filter(agency != "799") 
+exp_temp <- exp_temp %>% mutate(fund_name = fund_name_ab)
+
+rev_temp <- read_csv("./data/rev_temp.csv") %>% 
+  filter(agency != "799"  & rev_type != "75") 
+
+rev_temp <- rev_temp %>% mutate(fund_name = fund_name_ab)
+```
+
+```{r include=FALSE}
+
+update_recessions <- function(url = NULL, quietly = FALSE){
+
+  # Use default URL if user does not override
+  if (is_null(url) | missing(url)) {
+    url <- "https://data.nber.org/data/cycles/business_cycle_dates.json"
+  }
+  
+   # locally bind variable names
+  start_char <- end_char <- start_date <- end_date <- ongoing <- index <- peak <- trough <- NULL
+
+  return(
+    # attempt to download and format recessions table
+    tryCatch({
+      recessions <- jsonlite::fromJSON(url) %>%
+        # drop first row trough
+        dplyr::slice(-1) %>%
+        # convert peaks and troughs...
+        dplyr::mutate(
+          # ...to R dates
+          start_date = as.Date(peak),
+          end_date = as.Date(trough),
+          # ... and clean char strings
+          start_char = format(start_date, "%b %Y"),
+          end_char = format(end_date, "%b %Y")) %>%
+        # confirm ascending and create row number
+        dplyr::arrange(start_date) %>%
+        mutate(index = row_number()) %>%
+        mutate(
+          # Flag unfinished recessions
+          ongoing = case_when(
+            is.na(end_date) & index == max(.$index) ~ T,
+            TRUE ~ F),
+          # set ongoing recession to arbitrary future date
+          end_date = case_when(
+            ongoing ~ as.Date("2200-01-01"),
+            TRUE ~ end_date),
+          # mark ongoing recession in char field
+          end_char = case_when(
+            ongoing ~ "Ongoing",
+            TRUE ~ end_char)
+          ) %>%
+        # clean up
+        select(start_char, end_char, start_date, end_date, ongoing)
+
+      if (!quietly) {message("Successfully fetched from NBER")}
+
+      # Return recessions
+      recessions
+    },
+    error = function(cond){
+      if (!quietly) message("WARNING: Fetch or processing failed. `NULL` returned.")
+      return(NULL)
+    }
+    )
+  )
+}
+
+#recess_table <- list(build_recessions(update))
+recessions <- update_recessions()
+
+```
+
+
+-   \$3.4266 billion Total spent through FY23 from ARP and ESSER Funds. - 1.694 billion spent in 2023 (ARP = ESSER III) but that money arrived in 2022 (=\> Fiscal Gap Implications!)
+
+-   \$2.34 Billion of ARP Emergency Relief Funds (aka ESSER III) spent in 2022 and 2023 combined
+
+-   583 million for ESSER II in 2021
+
+-   376 million with ESSER I in 2021 and 128 million in 2020.
+
+-   ISBE received around an additional \$7.9 billion total from ESSER compared to its normal federal funding because of COVID
+
+-   At end of State's FY23, \$3.43/\$7.9 billion = \~ 50% spent
+
+-   As of Dec.7th, it has spent 74.1% of these funds ("ESSER Spending Dashboard" 2023)
+
+-   640 million allocated for FY24 (according to CPS, I think they have different fiscal years though...)
+
+```{r}
+#| layout-ncol: 2
+#| column: screen
+#|
+rev_temp <- rev_temp %>% 
+  mutate(
+    rev_type = ifelse(rev_type=="57" & agency=="478" & (source=="0618"|source=="2364"|source=="0660"|source=="1552"| source=="2306"| source=="2076"|source=="0676"|source=="0692"), "58", rev_type),
+    rev_type_name = ifelse(rev_type=="58", "Federal Medicaid Reimbursements", rev_type_name),
+    rev_type = ifelse(rev_type=="57" & agency=="494", "59", rev_type),
+    rev_type_name = ifelse(rev_type=="59", "Federal Transportation", rev_type_name),
+    rev_type_name = ifelse(rev_type=="57", "Federal - Other", rev_type_name),
+    rev_type = ifelse(rev_type=="6", "06", rev_type),
+    rev_type = ifelse(rev_type=="9", "09", rev_type)) 
+
+rev_temp %>% 
+  filter(rev_type == "57") %>% 
+  group_by(fy, rev_type, rev_type_name) %>% 
+  summarise(receipts = sum(receipts, na.rm = TRUE)/1000000000) %>% 
+  ggplot(aes(x=fy, y=receipts, color=rev_type_name)) +
+  geom_recessions(xformat = "numeric",text = FALSE)+
+    geom_smooth(aes(x=fy, y = receipts), method = lm, se = FALSE, lty = "dashed", color = "red", alpha = .5, lwd = .5) + 
+
+  geom_line(aes(x=fy, y=receipts,color=rev_type_name), lwd = 1.5) +
+  theme_classic() +
+  scale_y_continuous(labels = comma)+
+  scale_x_continuous(expand = c(0,0)) +
+  labs(title = "Other Federal Revenue
+       with federal stimulus funds", 
+       caption = "These values include stimulus funds after the Great Recession and the COVID pandemic response.",
+       y = "Billions of Dollars", x = "") + 
+  theme(legend.position = "bottom", legend.title = element_blank()  )
+
+rev_temp %>% 
+  filter(rev_type == "57") %>% 
+  filter(source_name_AWM != "FEDERAL STIMULUS PACKAGE" & source_name_AWM != "STATE CURE") %>%
+  group_by(fy, rev_type, rev_type_name) %>% 
+  summarise(receipts = sum(receipts, na.rm = TRUE)/1000000000) %>% 
+  ggplot(aes(x=fy, y=receipts, color=rev_type_name) )+
+  geom_recessions(xformat = "numeric",text = FALSE)+
+  geom_line(aes(x=fy, y=receipts, color=rev_type_name), lwd = 1.5) +
+  geom_smooth(aes(x=fy, y = receipts), method = lm, se = FALSE, lty = "dashed", color = "red", alpha = .5, lwd = .5) + 
+  theme_classic() +
+  scale_y_continuous(limits = c(0,20), labels = comma)+
+  scale_x_continuous(expand = c(0,0)) +
+  labs(title = "Federal to State Transfers: All Other Fed Rev 
+       without Federal Stimulus $", 
+       caption = "These values do NOT include stimulus funds after the Great Recession and the COVID pandemic response.",
+       y = "Billions of Dollars", x = "") + 
+  theme(legend.position = "bottom", legend.title = element_blank()  )
+```
+
+```{r}
+#| label: fig-k12-federal-revenue
+
+rev_temp %>% 
+  filter(rev_type == "57" #fund_name == "SBE FEDERAL DEPT OF EDUCATION"
+         ) %>% 
+  group_by(fy) %>% 
+  summarise(receipts = sum(receipts, na.rm = TRUE)) %>%
+  mutate(adj_receipts = case_when(
+    fy==2020 ~ receipts - 677964975, # ESSER 1 from CARES
+    fy==2022 ~ receipts - 7353697183, # ARPA ESSER3 + CRRSA ESSER2 $ to ISBE
+  )
+         )
+  
+
+
+rev_temp %>% 
+  filter(fund_name == "SBE FEDERAL DEPT OF EDUCATION") %>% 
+  group_by(fy, rev_type, rev_type_name) %>% 
+  summarise(receipts = sum(receipts, na.rm = TRUE)/1000000000) %>% 
+  ggplot(aes(x=fy, y=receipts, color=rev_type_name)) +
+  geom_recessions(xformat = "numeric",text = FALSE)+
+    geom_smooth(aes(x=fy, y = receipts), method = lm, se = FALSE, lty = "dashed", color = "red", alpha = .5, lwd = .5) + 
+  geom_line(aes(x=fy, y=receipts,color=rev_type_name), lwd = 1.5) +
+  theme_classic() +
+  scale_y_continuous(limits = c(0,4), labels = comma)+
+  scale_x_continuous(expand = c(0,0)) +
+  labs(title = "K-12 Federal Revenue (all revenue received)", 
+       caption = "All funds received by the SBE fund",
+       y = "Billions of Dollars", x = "") + 
+  theme(legend.position = "bottom", legend.title = element_blank()  )
+
+
+
+rev_temp %>% 
+  filter(rev_type == "57" & fund_name == "SBE FEDERAL DEPT OF EDUCATION") %>% 
+  filter(source_name_AWM != "FEDERAL STIMULUS PACKAGE") %>%
+  group_by(fy, rev_type, rev_type_name) %>% 
+  summarise(receipts = sum(receipts, na.rm = TRUE)/1000000000) %>% 
+  ggplot(aes(x=fy, y=receipts, color=rev_type_name) )+
+  geom_recessions(xformat = "numeric",text = FALSE)+
+  geom_line(aes(x=fy, y=receipts, color=rev_type_name), lwd = 1.5) +
+  geom_smooth(aes(x=fy, y = receipts), method = lm, se = FALSE, lty = "dashed", color = "red", alpha = .5, lwd = .5) + 
+  theme_classic() +
+  scale_y_continuous(limits= c(0,4),labels = comma)+
+  scale_x_continuous(expand = c(0,0)) +
+  labs(title = "Federal Revenue for K-12", 
+       caption = "These values do NOT include stimulus funds after the Great Recession and the COVID pandemic response.",
+       y = "Billions of Dollars", x = "") + 
+  theme(legend.position = "bottom", legend.title = element_blank()  )
+```
+
+```{r}
+K12rev <- rev_temp %>% 
+  filter( fund_name == "SBE FEDERAL DEPT OF EDUCATION" &  agency_name == "STATE BOARD OF EDUCATION") %>%
+  group_by(fy) %>% 
+  summarize(receipts =round(sum(receipts)/1000000)) %>% 
+  arrange(-receipts)
+
+K12exp <- exp_temp %>% 
+  filter( fund_name == "SBE FEDERAL DEPT OF EDUCATION" & agency_name == "STATE BOARD OF EDUCATION") %>%
+  group_by(fy) %>% 
+  summarize(expenditure =round(sum(expenditure)/1000000)) %>% 
+  arrange(-expenditure)
+
+ggplot() +
+  geom_line(data = K12rev, aes(x=fy, y = receipts), lty = 1 ) +
+  geom_line(data = K12exp, aes(x=fy, y = expenditure), lty = 2) +
+  scale_x_continuous(expand = c(0,0)) 
+```
+
+```{r}
+#| collapse: false
+#| code-fold: false
+
+# looks at ISBE federal funding after 2018
+# gives a sort of base comparison of funding before pandemic
+# ESSER revenue sources had multiple source names so lots of scrolling and CTRL-F searching was done
+rev_temp %>% 
+  filter(
+  #rev_type == "57" & 
+           fy > 2018 & fund_name == "SBE FEDERAL DEPT OF EDUCATION") %>%
+  group_by(source_name_AWM , fund_name, fy) %>% 
+  summarize(receipts =round(sum(receipts)/1000000)) %>% 
+  arrange(-receipts)
+```
+
+```{r}
+#| fig-cap: "All Federal Revenue"
+#| layout-ncol: 2
+#| fig-show: hold
+#| fig-column: screen
+
+fedrev<- rev_temp %>% 
+  filter(rev_type == "58" | rev_type == "59" | rev_type == "57") 
+
+fedrev %>% 
+  group_by(fy) %>% 
+  summarise(receipts = sum(receipts, na.rm = TRUE)/1000000000) %>% 
+  ggplot() +
+  geom_line(aes(x=fy, y=receipts)) +
+  theme_classic() +
+  scale_y_continuous(labels = comma)+
+  labs(title = "All Federal Revenue w/ Fed. Stimulus Package", y = "Billions of Dollars", x = "") + 
+  theme(legend.position = "bottom", legend.title = element_blank()  )+
+  scale_y_continuous(limits = c(0,45))
+
+
+fedrev %>% 
+  filter(source_name_AWM != "FEDERAL STIMULUS PACKAGE") %>%
+  group_by(fy) %>% 
+  summarise(receipts = sum(receipts, na.rm = TRUE)/1000000000) %>% 
+  ggplot() +
+  geom_line(aes(x=fy, y=receipts)) +
+      theme_classic() +
+  scale_y_continuous(labels = comma)+
+  labs(title = "All Federal Rev EXCEPT Federal Stimulus Package", 
+       y = "Billions of Dollars", x = "",
+       caption = "Note: Dropping Federal Stimulus Package revenue only removes the $3.5 billion from FY20, $0.3 billion from FY21, and 
+       $8.5 billion from FY22. There is still over $12 billion more in Federal Revenue compared to FY19.") + 
+  theme(legend.position = "bottom", legend.title = element_blank()  ) +
+  scale_y_continuous(limits = c(0,45))
+```
+
+```{r}
+#| label: tbl-esserperyear
+#| code-fold: false
+#| tbl-cap: "All Appropriations made by State Board of Education - funds spent per state fiscal year"
+
+## Looking at ESSER funds spent per year ## 
+
+exp_temp %>% 
+  filter(fy >2018 & fund_name == "SBE FEDERAL DEPT OF EDUCATION" & 
+           agency_name == "STATE BOARD OF EDUCATION") %>% 
+  group_by(wh_approp_name) %>% 
+  summarize(expenditures = round(sum(expenditure)/1000000, digits = 2))
+```
+
+Key words and phrases from the appropriations above were used to identify appropriations that specifically used ESSER funds.
+
+```{r}
+K12_ESSER_words <- c("CRRSA","ESSER","EMER R", "EMR R", "CARES", "AMER R", "EMER ED")
+
+K12 <- exp_temp %>% 
+  filter(agency_name == "STATE BOARD OF EDUCATION") %>%
+  mutate(ESSERfunds = case_when(
+    str_detect(wh_approp_name, "CRRSA") ~ "ESSER",
+    str_detect(wh_approp_name, "ESSER") ~ "ESSER",
+    str_detect(wh_approp_name, "EMER R") ~ "ESSER",
+    str_detect(wh_approp_name, "EMR R") ~ "ESSER",
+    str_detect(wh_approp_name, "CARES") ~ "ESSER",
+    str_detect(wh_approp_name, "AMER R") ~ "ESSER",
+    str_detect(wh_approp_name, "EMER ED") ~ "ESSER",
+    
+    TRUE ~ 'not_esser')) %>%
+  filter(ESSERfunds == "ESSER")
+```
+
+```{r}
+#| tbl-column: margin
+#| label: tbl-table3
+#| tbl-cap: "Amount of ESSER money spent total (all years summed together)"
+#| collapse: false
+#| code-fold: false
+
+
+# amount of ESSER money spent total (all years summed together)
+
+K12 %>% 
+  summarize(esser_spent = sum(expenditure))
+```
+
+```{r}
+#| label: tbl-fig3
+#| code-fold: false
+#| collapse: false
+#| tbl-column: margin
+#| tbl-cap: "ESSER spent each year"
+
+# grouped by fiscal year
+K12 %>% 
+  group_by(fy) %>% 
+  summarize(esser_spent = sum(expenditure))
+```
+
+```{r}
+#| collapse: false
+#| label: tbl-table4
+#| code-fold: false
+#| tbl-cap: ESSER items grouped by fiscal year and appropriation description
+
+
+
+# Grouped by fiscal year and appropriation description
+K12 %>% 
+  group_by(fy, wh_approp_name) %>% 
+  summarize(esser_spent = sum(expenditure))
+```
