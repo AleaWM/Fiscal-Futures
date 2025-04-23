@@ -39,13 +39,10 @@ Employer contributions for pensions are excluded from analysis to avoid double c
 
 Most of these funds were found by either using CTRL-F with pension related words or scrolling through code options on the comptroller's website.
 
--   Object 4430 is retirement benefits paid to employees.
--   Object 4431 includes state payments INTO pension Fund.
+-   Object 4430 is retirement benefits paid to employees; EXCLUDED
+-   Object 4431 includes state payments INTO pension Fund (mostly TRS and SURS) INCLUDED
 -   Object 1298 is excluded except for years 2010 and 2011 due to POBs.
--   Object 4430 - Benefits Paid to Employees; EXCLUDED,
--   Object 4431 - State Contributions; INCLUDED,
--   Object 1160-1165 Employer Contributions to Pension Fund; EXCLUDED,
--   Object 1298 - Purchase of Investments; DROPPED,
+-   Object 1160-1165 Employer Contributions to Pension Fund; INCLUDED,
 -   Fund 0319 - Pension Stabilization, Object 4900 - Awards/Grants; Weird 2010-2011 values
 
 ```{r}
@@ -67,7 +64,7 @@ pension_check <- exp_temp %>%
     # object == "4430" & fund == "0825" ~ "Object 4430 - Pension Buyout/Benefits Paid Early",
     (object=="4430") ~ "Object 4430 - Benefits Paid to \nEmployees; EXCLUDED", # pensions, annuities, benefits
     (object=="4431") ~ "Object 4431 - State Contributions; INCLUDED", # 4431 = state payments into pension fund
-    (obj_seq_type > "11590000" & obj_seq_type < "11660000")  ~ "Object 1160-1165 Employer Contributions \nto Pension Fund; EXCLUDED",
+    (obj_seq_type > "11590000" & obj_seq_type < "11660000")  ~ "Object 1160-1165 Employer Contributions \nto Pension Fund; INCLUDED",
     # objects 1159 to 1166 are all considered Retirement by Comptroller 
     
     TRUE ~ "0")) %>%  # All other observations coded as 0 for non-pension items
