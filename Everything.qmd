@@ -266,9 +266,9 @@ exp_temp <-  exp_temp %>%
   mutate(pension = case_when( 
     (object=="4431") ~ 1, # 4431 = easy to find pension payments INTO fund
     
-    # (object>"1159" & object<"1166") & fund != "0183" & fund != "0193"   ~ 2, 
+     (object>"1159" & object<"1166") & fund != "0183" & fund != "0193"   ~ 2, 
     # objects 1159 to 1166 are all considered Retirement by Comptroller, 
-    # Excluded - employer contributions from agencies/organizations/etc.
+    # Included - employer contributions from agencies/organizations/etc.
     
     (object=="1298" &  # Purchase of Investments, Normally excluded
        (fy==2010 | fy==2011) & 
@@ -293,7 +293,8 @@ exp_temp %>%
   geom_col(aes(fill = pension)) + 
 
   labs (title = "Pension expenditures", 
-  caption = "1 = State contributions INTO pension funds. 
+  caption = "1 = State contributions INTO pension funds.  
+  2 = Employer Contributions.   
   3 = Purchase of Investments anomoly in 2010 and 2011. 
   4 = pension stabilization fund")+
     theme(legend.position = "bottom")
