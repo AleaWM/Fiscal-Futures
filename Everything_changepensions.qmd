@@ -27,6 +27,7 @@ library(readxl)
 #library(quantmod)
 #library(geofacet)
 library(janitor)
+#devtools::install_github("CMAP-REPOS/cmapplot")
 library(cmapplot)
 
 theme_set(theme_classic() )
@@ -579,7 +580,7 @@ exp_temp <- exp_temp %>%
 
 exp_temp %>% filter(group_name == "Check name")
 
-# write_csv(exp_temp, "data/FY2024 Files/all_expenditures_recoded_pensionrecode.csv")
+write_csv(exp_temp, "data/FY2024 Files/all_expenditures_recoded_pensionrecode.csv")
 
 ```
 
@@ -1050,9 +1051,9 @@ exp_long <- pivot_longer(ff_exp, exp_402:exp_970 , names_to = c("type", "Categor
            ) %>% 
   mutate(Category_name = str_to_title(Category_name))
 
-#write_csv(exp_long, paste0("data/FY", current_year, "_Files/expenditures_recoded_long_FY_pensionchange", current_year, ".csv"))
+write_csv(exp_long, paste0("data/FY", current_year, " Files/expenditures_recoded_long_pensionchange_FY", current_year, ".csv"))
 
-#write_csv(rev_long, paste0("data/FY", current_year,, "Files/revenue_recoded_long_FY_pensionchange", current_year, ".csv"))
+write_csv(rev_long, paste0("data/FY", current_year, " Files/revenue_recoded_long_pensionchange_FY", current_year, ".csv"))
 
 
 # combine revenue and expenditures into one data frame
@@ -1062,7 +1063,7 @@ aggregated_totals_long <- rbind(rev_long, exp_long)
 aggregated_totals_long %>% mutate(`Dollars (Millions)` = round(Dollars, digits = 0)) %>% select(-Dollars) %>%
   select(Year, Category_name, `Dollars (Millions)`, type, Category)
 
-#write_csv(aggregated_totals_long, paste0("data/FY", current_year, "aggregated_totals", current_year, ".csv"))
+write_csv(aggregated_totals_long, paste0("data/FY", current_year, " Files/aggregated_totals_pensionchange", current_year, ".csv"))
 
 ```
 
@@ -1706,6 +1707,9 @@ rm(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_max)
 Update all years in mutate() commands so that they all go up by 1:
 
 ```{r}
+first_year = as.numeric(1998)
+n_year_change = as.numeric(2024-1998)
+
 
 revenue_change2 <- rev_long %>%
   filter(Year >= past_year) %>%
@@ -1742,15 +1746,16 @@ revenue_change2 %>%
 
 
 expenditure_change2 <- exp_long %>%
-  filter(Year >= past_year) %>%
+  filter(Year >= past_year | Year == first_year) %>%
   pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
   mutate(
     "FY 2024 ($ billions)" = round(Dollars_2024/1000, digits = 2),
     "FY 2023 ($ billions)" = round(Dollars_2023/1000, digits = 2),
+    "FY 1994 ($ billions)" = round(Dollars_1998/1000, digits = 2),
          "1-Year Change" = round((Dollars_2024 -Dollars_2023)/Dollars_2023*100, digits = 2) )%>%
   left_join(CAGR_expenditures_summary_tot, by = c("Category_name" = "Expenditure Category")) %>% 
   arrange(-`FY 2024 ($ billions)`)%>%
-  select(-c(Dollars_2024, Dollars_2023, `1 Year CAGR`:`10 Year CAGR`)) %>%
+  select(-c( Dollars_1998, Dollars_2024, Dollars_2023, `1 Year CAGR`:`10 Year CAGR`)) %>%
 
   rename( "26-Year CAGR" = `26 Year CAGR`, 
           "Expenditure Category" = Category_name )
@@ -1845,59 +1850,80 @@ revenue_wide_majorcats <- rev_long_majorcats %>%
   relocate("All Other Sources **", .after = last_col()) %>%
   relocate("Total Revenue", .after =  last_col()) 
 
+n_categories <- 10 + 1 # (Top 10 and then Total )
 
-exp_long_majorcats <- pivot_longer(exp_totals, exp_402:exp_TOTALS , names_to = c("type", "Category"), values_to = "Dollars", names_sep = "_") %>% 
-  rename(Year = fy ) %>% 
-  mutate(Category_name = 
-           case_when(
-          #   Category == "402" ~ "Aging" ,
-          #  Category == "406" ~ "AGRICULTURE", 
-         #    Category == "416" ~ "Central Management",
-             Category == "418" ~ "Children & Family Services", 
-             Category == "420" ~ "Community Development",
-           #  Category == "422" ~ "NATURAL RESOURCES" ,
-             Category == "426" ~ "Corrections",
-           #  Category == "427" ~ "EMPLOYMENT SECURITY" ,
-             Category == "444" ~ "Human Services" ,
-           #  Category == "478" ~ "HEALTHCARE & FAM SER NET OF MEDICAID", 
-           #  Category == "482" ~ "PUBLIC HEALTH", 
-             Category == "492" ~ "Revenue", 
-             Category == "494" ~ "Transportation" ,
-           #  Category == "532" ~ "ENVIRONMENTAL PROTECT AGENCY" ,
-             Category == "557" ~ "Tollway" ,
-           #  Category == "684" ~ "IL COMMUNITY COLLEGE BOARD", 
-            # Category == "691" ~ "IL STUDENT ASSISTANCE COMM" ,
-           #  Category == "900" ~ "NOT IN FRAME",
-           #  Category == "901" ~ "State Pension Contribution",
-             Category == "903" ~ "Debt Service",
-             Category == "904" ~ "State Employee Healthcare",
-           #  Category == "910" ~ "LEGISLATIVE"  ,
-          #   Category == "920" ~ "JUDICIAL" ,
-         #   Category == "930" ~ "Elected Officers" , 
-            # Category == "940" ~ "OTHER HEALTH-RELATED", 
-             Category == "941" ~ "Public Safety" ,
-           #  Category == "942" ~ "ECON DEVT & INFRASTRUCTURE" ,
-           #  Category == "943" ~ "CENTRAL SERVICES",
-           #  Category == "944" ~ "BUS & PROFESSION REGULATION" ,
-             Category == "945" ~ "Medicaid" ,
-          #   Category == "946" ~ "Capital Improvement" , 
-           #  Category == "948" ~ "OTHER DEPARTMENTS" ,
-            # Category == "949" ~ "OTHER BOARDS & COMMISSIONS" ,
-             Category == "959" ~ "K-12 Education" ,
-             Category == "960" ~ "University Education",
-             Category == "970" ~ "Local Govt Revenue Sharing",
-          Category == "TOTALS" ~ "Total Expenditures",
-             T ~ "All Other Expenditures **")
-           ) %>% 
-  select(-type, -Category) %>% 
-  group_by(Year, Category_name) %>% 
-  summarise(Dollars= round(sum(Dollars),digits=2))
+exp_majorcats <- exp_long |> 
+  filter(Year == current_year
+         ) |>
+  arrange(desc(Dollars)) |>
+  slice(1:n_categories) # keep top 10 largest categories or categories larger than 2 billion for final table in report (not a set rule, changes each year depending what the focus of the report is or what is highlighted.)
+
+
+exp_long_majorcats <- exp_long |>
+  mutate(Category_name = ifelse(Category_name %in% exp_majorcats$Category_name, Category_name, "All Other Expenditures **"),
+         Category_name = ifelse(Category_name == "Total", "Total Expenditures", Category_name)) |>
+  group_by(Year, Category_name) |> 
+  summarize(Dollars = sum(Dollars, na.rm=TRUE))
 
 expenditure_wide_majorcats <- exp_long_majorcats %>% 
   pivot_wider(names_from = Category_name, 
               values_from = Dollars) %>%
   relocate("All Other Expenditures **", .after = last_col()) %>%
   relocate("Total Expenditures", .after =  last_col())
+
+# 
+# exp_long_majorcats <- pivot_longer(exp_totals, exp_402:exp_TOTALS , names_to = c("type", "Category"), values_to = "Dollars", names_sep = "_") %>% 
+#   rename(Year = fy ) %>% 
+#   mutate(Category_name = 
+#            case_when(
+#           #   Category == "402" ~ "Aging" ,
+#           #  Category == "406" ~ "AGRICULTURE", 
+#          #    Category == "416" ~ "Central Management",
+#          #    Category == "418" ~ "Children & Family Services", 
+#       #       Category == "420" ~ "Community Development",
+#            #  Category == "422" ~ "NATURAL RESOURCES" ,
+#        #      Category == "426" ~ "Corrections",
+#            #  Category == "427" ~ "EMPLOYMENT SECURITY" ,
+#              Category == "444" ~ "Human Services" ,
+#            #  Category == "478" ~ "HEALTHCARE & FAM SER NET OF MEDICAID", 
+#            #  Category == "482" ~ "PUBLIC HEALTH", 
+#           #   Category == "492" ~ "Revenue", 
+#              Category == "494" ~ "Transportation" ,
+#            #  Category == "532" ~ "ENVIRONMENTAL PROTECT AGENCY" ,
+#           #   Category == "557" ~ "Tollway" ,
+#            #  Category == "684" ~ "IL COMMUNITY COLLEGE BOARD", 
+#             # Category == "691" ~ "IL STUDENT ASSISTANCE COMM" ,
+#            #  Category == "900" ~ "NOT IN FRAME",
+#            #  Category == "901" ~ "State Pension Contribution",
+#              Category == "903" ~ "Debt Service",
+#              Category == "904" ~ "State Employee Healthcare",
+#            #  Category == "910" ~ "LEGISLATIVE"  ,
+#           #   Category == "920" ~ "JUDICIAL" ,
+#          #   Category == "930" ~ "Elected Officers" , 
+#             # Category == "940" ~ "OTHER HEALTH-RELATED", 
+#              Category == "941" ~ "Public Safety" ,
+#            #  Category == "942" ~ "ECON DEVT & INFRASTRUCTURE" ,
+#            #  Category == "943" ~ "CENTRAL SERVICES",
+#            #  Category == "944" ~ "BUS & PROFESSION REGULATION" ,
+#              Category == "945" ~ "Medicaid" ,
+#           #   Category == "946" ~ "Capital Improvement" , 
+#            #  Category == "948" ~ "OTHER DEPARTMENTS" ,
+#             # Category == "949" ~ "OTHER BOARDS & COMMISSIONS" ,
+#              Category == "959" ~ "K-12 Education" ,
+#              Category == "960" ~ "University Education",
+#              Category == "970" ~ "Local Govt Revenue Sharing",
+#           Category == "TOTALS" ~ "Total Expenditures",
+#              T ~ "All Other Expenditures **")
+#            ) %>% 
+#   select(-type, -Category) %>% 
+#   group_by(Year, Category_name) %>% 
+#   summarise(Dollars= round(sum(Dollars),digits=2))
+# 
+# expenditure_wide_majorcats <- exp_long_majorcats %>% 
+#   pivot_wider(names_from = Category_name, 
+#               values_from = Dollars) %>%
+#   relocate("All Other Expenditures **", .after = last_col()) %>%
+#   relocate("Total Expenditures", .after =  last_col())
 
 
 # CAGR values for largest expenditure categories and combined All Other Expenditures
@@ -1965,19 +1991,24 @@ CAGR_expenditures_majorcats_tot%>%
     row_spec(lastrow, bold = T, color = "black", background = "gray")
 
 
-
-# Yearly change for Top 13 largest expenditure categories
+# Yearly change for Top n largest expenditure categories
 expenditure_change_majorcats <- exp_long_majorcats %>%
-  filter(Year >= past_year) %>%
+  filter(Year >= past_year |
+           Year == first_year) %>%
   pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
   mutate("FY 2024 ($ Billions)" = round(Dollars_2024/1000, digits = 2),
          "FY 2023 ($ Billions)" = round(Dollars_2023/1000, digits = 2),
-         "1-Year Change" = percent((Dollars_2024 -Dollars_2023)/Dollars_2023, accuracy = .01) )  %>%
-  left_join(CAGR_expenditures_majorcats_tot, by = c("Category_name" = "Expenditure Category")) %>% 
+         "FY 1998 ($ Billions)" = round(Dollars_1998/1000, digits = 2),
+         "1-Year Change" = percent((Dollars_2024 -Dollars_2023)/Dollars_2023, accuracy = .01),
+         )  %>%
+ left_join(CAGR_expenditures_majorcats_tot, by = c("Category_name" = "Expenditure Category")) %>% 
   arrange(-`FY 2024 ($ Billions)`)%>%
   mutate(`26-Year CAGR` = percent(`26-Year CAGR`/100, accuracy=.1)) %>%
-  select(-c(Dollars_2024, Dollars_2023, `1 Year CAGR`:`10 Year CAGR`)) %>%
-  rename( "26-Year CAGR" = `26-Year CAGR`, 
+  select(-c(Dollars_1998, Dollars_2024, Dollars_2023, `1 Year CAGR`:`10 Year CAGR`
+            )) %>%
+  rename(
+   # "1-Year Change" = `1 Year CAGR`,
+    "26-Year Change" = `26-Year CAGR`, 
           "Expenditure Category" = Category_name )
 
 allother_row <- which(grepl("All Other", expenditure_change_majorcats$`Expenditure Category`))
@@ -2130,7 +2161,7 @@ dataset_names <- list('Aggregate Revenues' = revenue_wide2,
                       'aggregated_totals_long' = aggregated_totals_long # all data in long format. Good for creating pivot tables in Excel
                       )
 
-write.xlsx(dataset_names, file = paste0("data/FY", current_year, " Files/summary_file_FY24_PensionChange_2025_04_23.xlsx"))
+write.xlsx(dataset_names, file = paste0("data/FY", current_year, " Files/summary_file_FY24_PensionChange_2025_07_06.xlsx"))
 ```
 
 Saves main items in one excel file named `summary_file.xlsx`. Delete `eval=FALSE` to run on local computer.
