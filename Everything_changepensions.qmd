@@ -480,6 +480,7 @@ exp_temp <- exp_temp %>%
       agency == "586" ~ "959", # create new K-12 group
 
       agency=="402" | agency=="418" | agency=="478" | agency=="444" | agency=="482" ~ as.character(agency), # aging, CFS, HFS, human services, public health
+      
       T ~ as.character(group))
     ) %>%      
 
@@ -525,10 +526,10 @@ exp_temp <- exp_temp %>%
 # - State Lottery (458)   
 # - Veteran's Affairs (497) 
 
-       agency=="507" | agency=="442" | agency=="445" | agency=="452" |agency=="458" | agency=="497" ~ as.character(agency), # Were included within "other departments"
+  #     agency=="507" | agency=="442" | agency=="445" | agency=="452" |agency=="458" | agency=="497" ~ as.character(agency), # Were included within "other departments"
     
-  #  agency=="507"|  agency=="442" | agency=="445" | agency=="452" |agency=="458" | agency=="497" ~ "948", # other departments
-###########################################3
+    agency=="507"|  agency=="442" | agency=="445" | agency=="452" |agency=="458" | agency=="497" ~ "948", # other departments
+###########################################
     
 
 # other boards & Commissions
@@ -1477,12 +1478,13 @@ rev_long <- pivot_longer(rev_totals, rev_02:rev_TOTALS, names_to = c("type","Cat
   ) ) %>% 
   select(-type, -Category) %>%  # drop extra columns type and Category number
   group_by(Year, Category_name) %>%
-  summarise(Dollars= round(sum(Dollars),digits=2)) %>% 
+  summarise(Dollars= round(sum(Dollars, na.rm=TRUE), digits=2)) %>% 
   mutate(Category_name = str_to_title(Category_name))
 
 # creates wide version of table where each revenue source is a column
-revenue_wide2 <- rev_long %>% pivot_wider(names_from = Category_name, 
-                                          values_from = Dollars) %>%
+revenue_wide2 <- rev_long %>% 
+  pivot_wider(names_from = Category_name, 
+              values_from = Dollars) %>%
   #  relocate("Other Revenue Sources **", .after = last_col()) %>%
   relocate("Total", .after =  last_col())
 ```
@@ -1491,6 +1493,7 @@ revenue_wide2 <- rev_long %>% pivot_wider(names_from = Category_name,
 ```{r}
 
 exp_long <- pivot_longer(exp_totals, exp_402:exp_TOTALS , names_to = c("type", "Category"), values_to = "Dollars", names_sep = "_") %>%
+
   rename(Year = fy ) %>% 
   mutate(Category_name = 
            case_when(
@@ -1539,15 +1542,20 @@ exp_long <- pivot_longer(exp_totals, exp_402:exp_TOTALS , names_to = c("type", "
              T ~ "CHECK ME" 
             #  T ~ "All Other Expenditures **")
            )) %>% 
-  select(-type, -Category) %>% 
+    select(-type, -Category) %>% 
+
+   # mutate(Category_name = ifelse(Dollars < 1, "Other Departments", Category_name)) |>
+
   group_by(Year, Category_name) %>% 
-  summarise(Dollars= round(sum(Dollars),digits=2)) %>% 
+  summarise(Dollars = round(sum(Dollars, na.rm=TRUE), digits=2)) %>% 
   mutate(Category_name = str_to_title(Category_name))
 
-expenditure_wide2 <- exp_long%>% 
+expenditure_wide2 <- exp_long %>% 
   pivot_wider(names_from = Category_name, 
               values_from = Dollars) %>%
   relocate("Total", .after =  last_col())
+
+
 
 ```
 
@@ -1567,42 +1575,42 @@ calc_cagr <- function(df, n) {
     mutate(cagr = ((`Dollars` / lag(`Dollars`, n)) ^ (1 / n)) - 1,
            cagr = ifelse(is.na(cagr), 0, cagr)
 )
-  
+
   return(df)
 }
 
 cagr_calculations <- function(df){ # This works for one variable at a time
   
+  df <- df
+  
   cagr_max <- calc_cagr(df, 26) %>% 
     summarize(cagr_max = round(sum(cagr*100, na.rm = TRUE), 2))
-  
-  # doesn't need to be changed since it is just pre-covid 
-  cagr_precovid <- df %>%
-    filter(Year <= 2019) %>%
-    calc_cagr(21) %>% 
-    summarize(cagr_21 = round(sum(cagr*100, na.rm = TRUE), 2))
-  
+
   # Update year in the filter() and summarize() commands to current year.
   cagr_10 <- calc_cagr(df, 10) %>% 
     filter(Year == current_year) %>%
     summarize(cagr_10 = case_when(Year == current_year ~ round(sum(cagr*100, na.rm = TRUE), 2)))
-  
+
   cagr_5 <- calc_cagr(df, 5) %>% 
     filter(Year == current_year) %>%
     summarize(cagr_5 = case_when(Year == current_year ~ round(sum(cagr*100, na.rm = TRUE), 2)))
-  
+
   cagr_3 <- calc_cagr(df, 3) %>% 
     filter(Year == current_year) %>%
     summarize(cagr_3 = case_when(Year == current_year ~ round(sum(cagr*100, na.rm = TRUE), 2)))
-  
+
   cagr_2 <- calc_cagr(df, 2) %>% 
     filter(Year == current_year) %>%
     summarize(cagr_2 = case_when(Year == current_year ~ round(sum(cagr*100, na.rm = TRUE), 2)))
-  
+
   cagr_1 <- calc_cagr(df, 1) %>% 
     filter(Year == current_year) %>%
     summarize(cagr_1 = case_when(Year == current_year ~ round(sum(cagr*100, na.rm = TRUE), 2)))
-}
+  
+    # Combine all into one tibble
+  result <- data.frame(cagr_max, cagr_10, cagr_5, cagr_3, cagr_2, cagr_1)
+  return(result)
+  }
 ```
 
 
@@ -1611,9 +1619,8 @@ cagr_calculations <- function(df){ # This works for one variable at a time
 #| tbl-cap: Expenditure Category CAGRs with Total CAGR (Ordered Alphabetically)
 #| tbl-cap-location: top
 
-cagr_calculations(exp_long)
 
-CAGR_expenditures_summary_tot <-  data.frame(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_max ) |>  
+CAGR_expenditures_summary_tot <- cagr_calculations(exp_long)   |>
   select(-c(Category_name.1, Category_name.2, Category_name.3, Category_name.4, Category_name.5 )) %>% 
   rename("Expenditure Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10, "26 Year CAGR" = cagr_max )
 
@@ -1636,9 +1643,7 @@ CAGR_expenditures_summary_tot %>%
 #| tbl-cap: Revenue Category CAGRs with Total CAGR (Ordered Alphabetically)
 #| tbl-cap-location: top
 
-cagr_calculations(rev_long)
-
-CAGR_revenue_summary_tot <- data.frame(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_max) %>%   
+CAGR_revenue_summary_tot <- cagr_calculations(rev_long) %>%   
   select(-c(Category_name.1, Category_name.2, Category_name.3, Category_name.4, Category_name.5 )) %>% 
   rename("Revenue Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10, "26 Year CAGR" = cagr_max )
 
@@ -1656,11 +1661,6 @@ CAGR_revenue_summary_tot %>%
     row_spec(lastrow, bold = T, color = "black", background = "gray")
 ```
 
-```{r include = FALSE}
-rm(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_max)
-```
-
-Update all years in mutate() commands so that they all go up by 1:
 
 ```{r}
 #| label: tbl-AppendixItem1
@@ -1672,18 +1672,20 @@ n_year_change = as.numeric(2024-1998)
 
 
 revenue_change2 <- rev_long %>%
-  filter(Year >= past_year) %>%
+  filter(Year >= past_year | Year == first_year) %>%
   pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
   mutate(
-    "FY Current FY ($ billions)" = round(Dollars_2024/1000, digits = 2),
-    "FY Past FY ($ billions)" = round(Dollars_2023/1000, digits = 2),
+    "Current FY ($ billions)" = round(Dollars_2024/1000, digits = 2),
+    "Past FY ($ billions)" = round(Dollars_2023/1000, digits = 2),
         "FY 1994 ($ billions)" = round(Dollars_1998/1000, digits = 2),
-         "1-Year Change" = round(((Dollars_2024 -Dollars_2023)/Dollars_2023*100), digits = 2)) %>%
+    "1-Year Change" = percent((Dollars_2024 -Dollars_2023)/Dollars_2023, accuracy = .01)) |>
   left_join(CAGR_revenue_summary_tot, by = c("Category_name" = "Revenue Category")) %>% 
-    arrange(-`FY Current FY ($ billions)`)%>%
-  rename( "26-Year CAGR" = `26 Year CAGR`, 
+    arrange(-`Current FY ($ billions)`)%>%
+    mutate(`26 Year CAGR` = percent(`26 Year CAGR`/100, accuracy=.01)) %>%
+
+  rename(  
           "Revenue Category" = Category_name ) %>%
-  select(-c( Dollars_1998, Dollars_2024, Dollars_2023, `1 Year CAGR`:`10 Year CAGR`)) %>%
+  select(-c( Dollars_1998, Dollars_2024, Dollars_2023, `1 Year CAGR`:`10 Year CAGR`))
 
 
 allother_row <- which(grepl("All Other", revenue_change2$`Revenue Category`))
@@ -1709,19 +1711,24 @@ revenue_change2 %>%
 #| tbl-cap: "Yearly Change in Expenditures - All FF Categories, Ordered from Largest to Smallest Expenditure Amount"
 
 expenditure_change2 <- exp_long %>%
+  group_by(Year, Category_name) |>
+  summarize(Dollars = sum(Dollars, na.rm=TRUE)) |>
+  ungroup() |>
   filter(Year >= past_year | Year == first_year) %>%
   pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
   mutate(
     "FY 2024 ($ billions)" = round(Dollars_2024/1000, digits = 2),
     "FY 2023 ($ billions)" = round(Dollars_2023/1000, digits = 2),
-    "FY 1994 ($ billions)" = round(Dollars_1998/1000, digits = 2),
-    "1-Year Change" = round((Dollars_2024 -Dollars_2023)/Dollars_2023*100, digits = 2) ) %>%
+    "FY 1998 ($ billions)" = round(Dollars_1998/1000, digits = 2),
+    "1-Year Change" = percent((Dollars_2024 -Dollars_2023)/Dollars_2023, accuracy = .01)) |>
   left_join(CAGR_expenditures_summary_tot, by = c("Category_name" = "Expenditure Category")) %>% 
   arrange(-`FY 2024 ($ billions)`)%>%
+    mutate(`26 Year CAGR` = percent(`26 Year CAGR`/100, accuracy=.01)) %>%
+
   select(-c( Dollars_1998, Dollars_2024, Dollars_2023, `1 Year CAGR`:`10 Year CAGR`)) %>%
 
-  rename( "26-Year CAGR" = `26 Year CAGR`, 
-          "Expenditure Category" = Category_name )
+  rename("Expenditure Category" = Category_name ) # |> filter(!is.na(`Expenditure Category`))
+
 
 allother_row <- which(grepl("All Other", expenditure_change2$`Expenditure Category`))
 
@@ -1733,7 +1740,6 @@ expenditure_change2 <- move_to_last(expenditure_change2, totalrow) # Move "Total
 lastrow = nrow(expenditure_change2)
 
 expenditure_change2 %>% 
- filter(!is.na(`Expenditure Category`)) %>%
   kbl(row.names = FALSE) %>% 
   kable_classic() %>%
     row_spec(lastrow, bold = T, color = "black", background = "gray")
@@ -1749,24 +1755,20 @@ The 10 largest revenue sources and 15 largest expenditure sources remain separat
 -   You need to manually comment out the categories that are not the largest each year. Check and compare to the previous years largest categories!
 
 ```{r }
-#| label: tbl-top-exp-CAGRs
-#| tbl-cap: Largest Expenditure Categories with CAGRs
-
-
-
-#rev_totals <- ff_rev %>% rowwise() %>%  mutate(rev_TOTALS = sum(across(rev_02:rev_78), na.rm=TRUE))
+#| label: tbl-top-rev-CAGRs
+#| tbl-cap: Largest Revenue Categories with CAGRs
 
 n_categories <- 10+1 # (Top 10 and then Total )
 
 rev_majorcats <- rev_long |> 
-  filter(Year == current_year
+  filter(Year == current_year | Year == first_year
          ) |>
   arrange(desc(Dollars)) |>
   slice(1:n_categories)
 
 rev_long_majorcats <- rev_long |>
-  mutate(Category_name = ifelse(Category_name %in% rev_majorcats$Category_name, Category_name, "All Other Expenditures **"),
-         Category_name = ifelse(Category_name == "Total", "Total Expenditures", Category_name)) |>
+  mutate(Category_name = ifelse(Category_name %in% rev_majorcats$Category_name, Category_name, "All Other Sources"),
+         Category_name = ifelse(Category_name == "Total", "Total Revenue", Category_name)) |>
   group_by(Year, Category_name) |> 
   summarize(Dollars = sum(Dollars, na.rm=TRUE))
 
@@ -1775,104 +1777,17 @@ rev_long_majorcats <- rev_long |>
 revenue_wide_majorcats <- rev_long_majorcats %>% 
   pivot_wider(names_from = Category_name, 
               values_from = Dollars) %>%
-  relocate("All Other Sources **", .after = last_col()) %>%
+  relocate("All Other Sources", .after = last_col()) %>%
   relocate("Total Revenue", .after =  last_col())
 ```
-
-
-```{r }
-n_categories <- 9 + 1 # (Top 9 and then Total )
-
-exp_majorcats <- exp_long |> 
-  filter(Year == current_year
-         ) |>
-  arrange(desc(Dollars)) |>
-  slice(1:n_categories) # keep top 10 largest categories or categories larger than 2 billion for final table in report (not a set rule, changes each year depending what the focus of the report is or what is highlighted.)
-
-
-exp_long_majorcats <- exp_long |>
-  mutate(Category_name = ifelse(Category_name %in% exp_majorcats$Category_name, Category_name, "All Other Expenditures **"),
-         Category_name = ifelse(Category_name == "Total", "Total Expenditures", Category_name)) |>
-  group_by(Year, Category_name) |> 
-  summarize(Dollars = sum(Dollars, na.rm=TRUE))
-
-# expenditure_wide_majorcats <- exp_long_majorcats %>% 
-#   pivot_wider(names_from = Category_name, 
-#               values_from = Dollars) %>%
-#   relocate("All Other Expenditures **", .after = last_col()) %>%
-#   relocate("Total Expenditures", .after =  last_col())
-
-
-
-# CAGR values for largest expenditure categories and combined All Other Expenditures
-
-cagr_calculations(exp_long_majorcats)
-
-CAGR_expenditures_majorcats_tot <- data.frame(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_max) %>% 
-  select(-c(Category_name.1, Category_name.2, Category_name.3, Category_name.4, Category_name.5 )) %>% 
-  rename("Expenditure Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10,"26-Year CAGR" = cagr_max )
-
-allother_row <- which(grepl("All Other", CAGR_expenditures_majorcats_tot$`Expenditure Category`))
-
-CAGR_expenditures_majorcats_tot <- move_to_last(CAGR_expenditures_majorcats_tot, allother_row) # Move "All Other" to 2nd to last row
-
-totalrow <- which(grepl("Total", CAGR_expenditures_majorcats_tot$`Expenditure Category`))
-CAGR_expenditures_majorcats_tot <- move_to_last(CAGR_expenditures_majorcats_tot, totalrow) # Move "Total" to last row
-
-lastrow = nrow(CAGR_expenditures_majorcats_tot)
-
-CAGR_expenditures_majorcats_tot%>%   
-  kbl(caption = "CAGR Calculations for Largest Expenditure Categories" , row.names=FALSE) %>% 
-     kable_classic()  %>%
-    row_spec(lastrow, bold = T, color = "black", background = "gray")
-
-
-# Yearly change for Top n largest expenditure categories
-expenditure_change_majorcats <- exp_long_majorcats %>%
-  filter(Year >= past_year |
-           Year == first_year) %>%
-  pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
-  mutate("FY 2024 ($ Billions)" = round(Dollars_2024/1000, digits = 2),
-         "FY 2023 ($ Billions)" = round(Dollars_2023/1000, digits = 2),
-         "FY 1998 ($ Billions)" = round(Dollars_1998/1000, digits = 2),
-         "1-Year Change" = percent((Dollars_2024 -Dollars_2023)/Dollars_2023, accuracy = .01),
-         )  %>%
- left_join(CAGR_expenditures_majorcats_tot, by = c("Category_name" = "Expenditure Category")) %>% 
-  arrange(-`FY 2024 ($ Billions)`)%>%
-  mutate(`26-Year CAGR` = percent(`26-Year CAGR`/100, accuracy=.1)) %>%
-  select(-c(Dollars_1998, Dollars_2024, Dollars_2023, `1 Year CAGR`:`10 Year CAGR`
-            )) %>%
-  rename(
-   # "1-Year Change" = `1 Year CAGR`,
-    "26-Year Change" = `26-Year CAGR`, 
-          "Expenditure Category" = Category_name )
-
-allother_row <- which(grepl("All Other", expenditure_change_majorcats$`Expenditure Category`))
-
-expenditure_change_majorcats <- move_to_last(expenditure_change_majorcats, allother_row) # Move "All Other" to 2nd to last row
-
-totalrow <- which(grepl("Total", expenditure_change_majorcats$`Expenditure Category`))
-expenditure_change_majorcats <- move_to_last(expenditure_change_majorcats, totalrow) # Move "Total" to last row
-
-lastrow = nrow(expenditure_change_majorcats)
-
-expenditure_change_majorcats %>% 
-  kbl(caption = "Yearly Change in Expenditures", row.names = FALSE, align = "l") %>% 
-  kable_classic() %>%
-    row_spec(lastrow, bold = T, color = "black", background = "gray")
-
-```
-
-Top 10 revenue sources CAGRs and Yearly Change Tables:
 
 ```{r}
 #| label: tbl-top10-rev-CAGRs
 #| tbl-cap: Top 10 Revenue Sources with CAGRs
 #| tbl-cap-location: top
 
-cagr_calculations(rev_long_majorcats)
 
-CAGR_revenue_majorcats_tot <- data.frame(cagr_1, cagr_2, cagr_3, cagr_5, cagr_10, cagr_max) %>%   
+CAGR_revenue_majorcats_tot <- cagr_calculations(rev_long_majorcats) %>%   
   select(-c(Category_name.1, Category_name.2, Category_name.3, Category_name.4, Category_name.5 )) %>% 
   rename("Revenue Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10, "26-Year CAGR" = cagr_max )
 
@@ -1899,18 +1814,18 @@ CAGR_revenue_majorcats_tot %>%
 ###### Yearly change summary table for Top 10 Revenues #####
 revenue_change_majorcats <- rev_long_majorcats %>%
   #select(-c(Category)) %>%
-  filter(Year >= past_year) %>%
+  filter(Year >= past_year |  Year == first_year) %>%
   pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
   mutate(
-    "FY 2024 ($ billions)" = round(Dollars_2024/1000, digits = 1),
-            "FY 2023 ($ billions)" = round(Dollars_2023/1000, digits = 1),
-
-                 "FY 1998 ($ Billions)" = round(Dollars_1998/1000, digits = 2),
-         "1-Year Change" = percent((Dollars_2024 -Dollars_2023)/Dollars_2023, accuracy = .01),
-         )  %>%
- left_join(CAGR_revenues_majorcats_tot, by = c("Category_name" = "Expenditure Category")) %>% 
-  arrange(-`FY 2024 ($ Billions)`)%>%
-  mutate(`26-Year CAGR` = percent(`26-Year CAGR`/100, accuracy=.1)) %>%
+    "FY 2024 ($ billions)" = round(Dollars_2024/1000, digits = 2),
+    "FY 2023 ($ billions)" = round(Dollars_2023/1000, digits = 2),
+    "FY 1998 ($ billions)" = round(Dollars_1998/1000, digits = 2),
+    "1-Year Change" = percent((Dollars_2024 -Dollars_2023)/Dollars_2023, accuracy = .01),
+  )  %>%
+  left_join(CAGR_revenue_majorcats_tot, by = c("Category_name" = "Revenue Category")
+            ) %>% 
+  arrange(-`FY 2024 ($ billions)`)%>%
+  mutate(`26-Year CAGR` = percent(`26-Year CAGR`/100, accuracy=.01)) %>%
   select(-c(Dollars_1998, Dollars_2024, Dollars_2023, `1 Year CAGR`:`10 Year CAGR`
             )) %>%
   rename("Revenue Category" = Category_name )
@@ -1931,32 +1846,114 @@ revenue_change_majorcats%>%
 
 ```
 
+
+```{r }
+#| label: tbl-top-exp-CAGRs
+#| tbl-cap: Largest Expenditure Categories with CAGRs
+
+n_categories <- 9 + 1 # (Top 9 and then Total )
+
+exp_majorcats <- exp_long |> 
+  filter(Year == current_year | Year == first_year
+         ) |>
+  arrange(desc(Dollars)) |>
+  slice(1:n_categories) # keep top 10 largest categories or categories larger than 2 billion for final table in report (not a set rule, changes each year depending what the focus of the report is or what is highlighted.)
+
+
+exp_long_majorcats <- exp_long |>
+  mutate(Category_name = ifelse(Category_name %in% exp_majorcats$Category_name, Category_name, "All Other Expenditures **"),
+         Category_name = ifelse(Category_name == "Total", "Total Expenditures", Category_name)) |>
+  group_by(Year, Category_name) |> 
+  summarize(Dollars = sum(Dollars, na.rm=TRUE))
+
+# expenditure_wide_majorcats <- exp_long_majorcats %>% 
+#   pivot_wider(names_from = Category_name, 
+#               values_from = Dollars) %>%
+#   relocate("All Other Expenditures **", .after = last_col()) %>%
+#   relocate("Total Expenditures", .after =  last_col())
+
+
+
+# CAGR values for largest expenditure categories and combined All Other Expenditures
+
+
+CAGR_expenditures_majorcats_tot <- cagr_calculations(exp_long_majorcats) |>
+  select(-c(Category_name.1, Category_name.2, Category_name.3, Category_name.4, Category_name.5 )) %>% 
+  rename("Expenditure Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10,"26-Year CAGR" = cagr_max )
+
+allother_row <- which(grepl("Other", CAGR_expenditures_majorcats_tot$`Expenditure Category`))
+
+CAGR_expenditures_majorcats_tot <- move_to_last(CAGR_expenditures_majorcats_tot, allother_row) # Move "All Other" to 2nd to last row
+
+totalrow <- which(grepl("Total", CAGR_expenditures_majorcats_tot$`Expenditure Category`))
+CAGR_expenditures_majorcats_tot <- move_to_last(CAGR_expenditures_majorcats_tot, totalrow) # Move "Total" to last row
+
+lastrow = nrow(CAGR_expenditures_majorcats_tot)
+
+CAGR_expenditures_majorcats_tot%>%   
+  kbl(caption = "CAGR Calculations for Largest Expenditure Categories" , row.names=FALSE) %>% 
+     kable_classic()  %>%
+    row_spec(lastrow, bold = T, color = "black", background = "gray")
+
+
+# Yearly change for Top n largest expenditure categories
+expenditure_change_majorcats <- exp_long_majorcats %>%
+  filter(Year >= past_year |
+           Year == first_year) %>%
+  pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
+  mutate("FY 2024 ($ Billions)" = round(Dollars_2024/1000, digits = 2),
+         "FY 2023 ($ Billions)" = round(Dollars_2023/1000, digits = 2),
+         "FY 1998 ($ Billions)" = round(Dollars_1998/1000, digits = 2),
+         "1-Year Change" = percent((Dollars_2024 -Dollars_2023)/Dollars_2023, accuracy = .01),
+         )  %>%
+ left_join(CAGR_expenditures_majorcats_tot, by = c("Category_name" = "Expenditure Category")) %>% 
+  arrange(-`FY 2024 ($ Billions)`)%>%
+  mutate(`26-Year CAGR` = percent(`26-Year CAGR`/100, accuracy=.01)) %>%
+  select(-c(Dollars_1998, Dollars_2024, Dollars_2023, `1 Year CAGR`:`10 Year CAGR`
+            )) %>%
+  rename(
+   # "1-Year Change" = `1 Year CAGR`,
+    "26-Year Change" = `26-Year CAGR`, 
+          "Expenditure Category" = Category_name )
+
+allother_row <- which(grepl("All Other", expenditure_change_majorcats$`Expenditure Category`))
+
+expenditure_change_majorcats <- move_to_last(expenditure_change_majorcats, allother_row) # Move "All Other" to 2nd to last row
+
+totalrow <- which(grepl("Total", expenditure_change_majorcats$`Expenditure Category`))
+expenditure_change_majorcats <- move_to_last(expenditure_change_majorcats, totalrow) # Move "Total" to last row
+
+lastrow = nrow(expenditure_change_majorcats)
+
+expenditure_change_majorcats %>% 
+  kbl(caption = "Yearly Change in Expenditures", row.names = FALSE, align = "l") %>% 
+  kable_classic() %>%
+    row_spec(lastrow, bold = T, color = "black", background = "gray")
+
+```
+
+
+
 Export summary file with Totals
 
 ```{r}
 #install.packages("openxlsx")
 library(openxlsx)
 
-dataset_names <- list('Aggregate Revenues' = revenue_wide2, 
-                      'Aggregate Expenditures' = expenditure_wide2, 
+dataset_names <- list(#'Aggregate Revenues' = revenue_wide2, 
+                      #'Aggregate Expenditures' = expenditure_wide2, 
 
 
                       
                       'Table 1' = revenue_change_majorcats, #Top categories with yearly change, 23 yr cagr
                       'Table 2' = expenditure_change_majorcats,
                       
-                      'Table 1a. AllCats' = revenue_change2,
-                      'Table 2a. AllCats' = expenditure_change2,
+                      'Appendix 1' = revenue_change2,
+                      'Appendix 2' = expenditure_change2,
                       
                       'CAGR Rev-MajorCats' = CAGR_revenue_majorcats_tot, # Categories Match Table 1 in paper
-                      'CAGR Exp-MajorCats' = CAGR_expenditures_majorcats_tot, 
+                      'CAGR Exp-MajorCats' = CAGR_expenditures_majorcats_tot,  
                                             
-                     # 'Table 1-AllCats' = expenditure_change_allcats,  # All Categories by Year
-                    #  'Table 2-AllCats' = revenue_change_allcats,
-                      
-                    #  'CAGR_Revenue-AllCats' = CAGR_revenue_summary_tot, 
-                   #   'CAGR_Expenditures-AllCats' = CAGR_expenditures_summary_tot, 
-                      
                       'Fiscal Gap' = year_totals,    # Total Revenue, Expenditure, and Fiscal gap per year
                       
                       'aggregated_totals_long' = aggregated_totals_long # all data in long format. Good for creating pivot tables in Excel
