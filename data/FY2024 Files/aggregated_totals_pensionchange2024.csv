@@ -682,16 +682,11 @@ Year,type,Category,Dollars,Category_name
 1998,exp,422,198.90832422,Natural Resources
 1998,exp,426,987.0140263100001,Corrections
 1998,exp,427,181.27781240000002,Employment Security
-1998,exp,442,8.731049480000001,Human Rights
 1998,exp,444,3934.13656738,Human Services
-1998,exp,452,5.82356037,Labor
-1998,exp,458,286.77674132,State Lottery
 1998,exp,478,113.13410134,Family Services Net Medicaid
 1998,exp,482,161.09740625,Public Health
 1998,exp,492,440.0671357,Revenue
 1998,exp,494,1977.7148153399999,Transportation
-1998,exp,497,56.78335099,Veterns' Affairs
-1998,exp,507,42.22099206,Gomb
 1998,exp,532,310.20428102999995,Environmental Protect Agency
 1998,exp,557,367.42032926,Il State Toll Highway Auth
 1998,exp,904,729.7605494300001,State Employee Healthcare
@@ -702,11 +697,10 @@ Year,type,Category,Dollars,Category_name
 1998,exp,944,154.2265805,Bus & Profession Regulation
 1998,exp,945,5398.44057766,Medicaid
 1998,exp,946,256.61600266,Capital Improvement
-1998,exp,948,9.31691191,Other Departments
+1998,exp,948,409.65260613,Other Departments
 1998,exp,949,94.33091046,Other Boards & Commissions
 1998,exp,959,5604.80360031,K-12 Education
 1998,exp,960,2283.40741281,University Education
-1998,exp,445,NA,Il Power Agency
 1998,exp,901,NA,State Pension Contribution
 1998,exp,903,484.53383483,Debt Service
 1998,exp,970,3476.47340622,Local Govt Transfers
@@ -718,16 +712,11 @@ Year,type,Category,Dollars,Category_name
 1999,exp,422,237.41977759,Natural Resources
 1999,exp,426,1103.8591784300002,Corrections
 1999,exp,427,184.49014449,Employment Security
-1999,exp,442,8.408676119999999,Human Rights
 1999,exp,444,4128.57649542,Human Services
-1999,exp,452,6.4805328399999995,Labor
-1999,exp,458,297.90596564,State Lottery
 1999,exp,478,120.39660468000001,Family Services Net Medicaid
 1999,exp,482,169.31931811,Public Health
 1999,exp,492,479.30071755,Revenue
 1999,exp,494,1895.0874249400001,Transportation
-1999,exp,497,59.100781839999996,Veterns' Affairs
-1999,exp,507,4.85853993,Gomb
 1999,exp,532,320.4168053,Environmental Protect Agency
 1999,exp,557,461.11222988,Il State Toll Highway Auth
 1999,exp,904,779.0175351800001,State Employee Healthcare
@@ -738,11 +727,10 @@ Year,type,Category,Dollars,Category_name
 1999,exp,944,167.17631655000002,Bus & Profession Regulation
 1999,exp,945,5767.25773417,Medicaid
 1999,exp,946,400.63922838999997,Capital Improvement
-1999,exp,948,8.63460559,Other Departments
+1999,exp,948,385.38910196,Other Departments
 1999,exp,949,107.20270191,Other Boards & Commissions
 1999,exp,959,6229.8089062300005,K-12 Education
 1999,exp,960,2404.07500521,University Education
-1999,exp,445,NA,Il Power Agency
 1999,exp,901,NA,State Pension Contribution
 1999,exp,903,507.52762319,Debt Service
 1999,exp,970,4031.5164429099996,Local Govt Transfers
@@ -754,16 +742,11 @@ Year,type,Category,Dollars,Category_name
 2000,exp,422,277.93209348,Natural Resources
 2000,exp,426,1190.4217942999999,Corrections
 2000,exp,427,189.35984993,Employment Security
-2000,exp,442,8.64949176,Human Rights
 2000,exp,444,4238.06760915,Human Services
-2000,exp,452,7.4208897700000005,Labor
-2000,exp,458,297.8988324,State Lottery
 2000,exp,478,141.01060519,Family Services Net Medicaid
 2000,exp,482,185.00055243,Public Health
 2000,exp,492,499.8511602,Revenue
 2000,exp,494,2480.03248334,Transportation
-2000,exp,497,62.88328541,Veterns' Affairs
-2000,exp,507,4.6133945899999995,Gomb
 2000,exp,532,359.19852710000004,Environmental Protect Agency
 2000,exp,557,434.67865002999997,Il State Toll Highway Auth
 2000,exp,904,927.48653323,State Employee Healthcare
@@ -774,11 +757,10 @@ Year,type,Category,Dollars,Category_name
 2000,exp,944,139.62594961,Bus & Profession Regulation
 2000,exp,945,6442.31650401,Medicaid
 2000,exp,946,829.17508889,Capital Improvement
-2000,exp,948,12.84370019,Other Departments
+2000,exp,948,394.30959412,Other Departments
 2000,exp,949,132.08594242,Other Boards & Commissions
 2000,exp,959,6733.0634085,K-12 Education
 2000,exp,960,2506.92996585,University Education
-2000,exp,445,NA,Il Power Agency
 2000,exp,901,NA,State Pension Contribution
 2000,exp,903,543.84052911,Debt Service
 2000,exp,970,4366.14101383,Local Govt Transfers
@@ -790,16 +772,11 @@ Year,type,Category,Dollars,Category_name
 2001,exp,422,319.12886616000003,Natural Resources
 2001,exp,426,1271.2018237300001,Corrections
 2001,exp,427,291.54904393,Employment Security
-2001,exp,442,8.3162154,Human Rights
 2001,exp,444,4559.15299111,Human Services
-2001,exp,452,7.20296021,Labor
-2001,exp,458,250.11087033,State Lottery
 2001,exp,478,140.42073412,Family Services Net Medicaid
 2001,exp,482,227.17837324,Public Health
 2001,exp,492,855.6193329,Revenue
 2001,exp,494,2718.31626877,Transportation
-2001,exp,497,66.84825814,Veterns' Affairs
-2001,exp,507,56.08995890999999,Gomb
 2001,exp,532,393.12374538,Environmental Protect Agency
 2001,exp,557,346.13919503,Il State Toll Highway Auth
 2001,exp,904,1000.12568813,State Employee Healthcare
@@ -810,11 +787,10 @@ Year,type,Category,Dollars,Category_name
 2001,exp,944,151.97823931,Bus & Profession Regulation
 2001,exp,945,7187.341484529999,Medicaid
 2001,exp,946,891.1103064700001,Capital Improvement
-2001,exp,948,10.6065964,Other Departments
+2001,exp,948,399.17485939,Other Departments
 2001,exp,949,140.90948965,Other Boards & Commissions
 2001,exp,959,7183.31668943,K-12 Education
 2001,exp,960,2659.9799161399997,University Education
-2001,exp,445,NA,Il Power Agency
 2001,exp,901,NA,State Pension Contribution
 2001,exp,903,590.04423966,Debt Service
 2001,exp,970,4471.93355919,Local Govt Transfers
@@ -826,16 +802,11 @@ Year,type,Category,Dollars,Category_name
 2002,exp,422,359.601865,Natural Resources
 2002,exp,426,1332.1885510999998,Corrections
 2002,exp,427,349.69499126,Employment Security
-2002,exp,442,8.690605099999999,Human Rights
 2002,exp,444,4574.02824294,Human Services
-2002,exp,452,7.53713763,Labor
-2002,exp,458,280.42425435,State Lottery
 2002,exp,478,147.36709352,Family Services Net Medicaid
 2002,exp,482,270.78984781,Public Health
 2002,exp,492,718.40877922,Revenue
 2002,exp,494,3224.01293012,Transportation
-2002,exp,497,69.92267419,Veterns' Affairs
-2002,exp,507,4.80342296,Gomb
 2002,exp,532,470.82742423,Environmental Protect Agency
 2002,exp,557,392.74387821,Il State Toll Highway Auth
 2002,exp,904,1061.93568766,State Employee Healthcare
@@ -846,11 +817,10 @@ Year,type,Category,Dollars,Category_name
 2002,exp,944,153.78076747,Bus & Profession Regulation
 2002,exp,945,7291.78917015,Medicaid
 2002,exp,946,1150.46547802,Capital Improvement
-2002,exp,948,10.417648869999999,Other Departments
+2002,exp,948,381.79574310000004,Other Departments
 2002,exp,949,145.18670709,Other Boards & Commissions
 2002,exp,959,7513.775633179999,K-12 Education
 2002,exp,960,2915.03872959,University Education
-2002,exp,445,NA,Il Power Agency
 2002,exp,901,NA,State Pension Contribution
 2002,exp,903,640.25704888,Debt Service
 2002,exp,970,4300.10066935,Local Govt Transfers
@@ -862,16 +832,11 @@ Year,type,Category,Dollars,Category_name
 2003,exp,422,323.96350624,Natural Resources
 2003,exp,426,1244.99931002,Corrections
 2003,exp,427,387.57618931,Employment Security
-2003,exp,442,8.75088351,Human Rights
 2003,exp,444,4483.09527985,Human Services
-2003,exp,452,7.22516705,Labor
-2003,exp,458,281.43437045999997,State Lottery
 2003,exp,478,309.87397834,Family Services Net Medicaid
 2003,exp,482,246.53393459999998,Public Health
 2003,exp,492,572.6688721,Revenue
 2003,exp,494,3295.5950754200003,Transportation
-2003,exp,497,72.23847792000001,Veterns' Affairs
-2003,exp,507,4.87113728,Gomb
 2003,exp,532,467.65607642000003,Environmental Protect Agency
 2003,exp,557,360.73293909,Il State Toll Highway Auth
 2003,exp,904,1314.7476423,State Employee Healthcare
@@ -882,11 +847,10 @@ Year,type,Category,Dollars,Category_name
 2003,exp,944,153.27092033000002,Bus & Profession Regulation
 2003,exp,945,7900.568223480001,Medicaid
 2003,exp,946,1076.66622554,Capital Improvement
-2003,exp,948,17.311876100000003,Other Departments
+2003,exp,948,391.83191232,Other Departments
 2003,exp,949,93.61956792000001,Other Boards & Commissions
 2003,exp,959,7689.47472516,K-12 Education
 2003,exp,960,2843.28245627,University Education
-2003,exp,445,NA,Il Power Agency
 2003,exp,901,NA,State Pension Contribution
 2003,exp,903,731.2021835500001,Debt Service
 2003,exp,970,4119.48820917,Local Govt Transfers
@@ -898,16 +862,11 @@ Year,type,Category,Dollars,Category_name
 2004,exp,422,283.25136657999997,Natural Resources
 2004,exp,426,1256.1638053299998,Corrections
 2004,exp,427,220.03402391999998,Employment Security
-2004,exp,442,8.36896903,Human Rights
 2004,exp,444,4663.760792239999,Human Services
-2004,exp,452,6.47688367,Labor
-2004,exp,458,NA,State Lottery
 2004,exp,478,300.49337646,Family Services Net Medicaid
 2004,exp,482,268.84736297,Public Health
 2004,exp,492,843.18966168,Revenue
 2004,exp,494,3018.86858452,Transportation
-2004,exp,497,74.37213778,Veterns' Affairs
-2004,exp,507,5.68753601,Gomb
 2004,exp,532,565.2232261,Environmental Protect Agency
 2004,exp,557,417.18865935,Il State Toll Highway Auth
 2004,exp,904,1431.56501696,State Employee Healthcare
@@ -918,11 +877,10 @@ Year,type,Category,Dollars,Category_name
 2004,exp,944,145.95277934,Bus & Profession Regulation
 2004,exp,945,10061.413063850001,Medicaid
 2004,exp,946,834.37242966,Capital Improvement
-2004,exp,948,1391.98163341,Other Departments
+2004,exp,948,1486.8871599000001,Other Departments
 2004,exp,949,87.32587486,Other Boards & Commissions
 2004,exp,959,12217.844895729999,K-12 Education
 2004,exp,960,4055.7395644000003,University Education
-2004,exp,445,NA,Il Power Agency
 2004,exp,901,NA,State Pension Contribution
 2004,exp,903,1288.58426201,Debt Service
 2004,exp,970,4256.60560819,Local Govt Transfers
@@ -934,16 +892,11 @@ Year,type,Category,Dollars,Category_name
 2005,exp,422,249.26126116,Natural Resources
 2005,exp,426,1284.6665139200002,Corrections
 2005,exp,427,205.0136505,Employment Security
-2005,exp,442,8.80402092,Human Rights
 2005,exp,444,4796.47350078,Human Services
-2005,exp,452,6.4569543,Labor
-2005,exp,458,NA,State Lottery
 2005,exp,478,492.86417323,Family Services Net Medicaid
 2005,exp,482,295.45021843,Public Health
 2005,exp,492,729.86260105,Revenue
 2005,exp,494,2681.02294041,Transportation
-2005,exp,497,75.93476371999999,Veterns' Affairs
-2005,exp,507,4.523308429999999,Gomb
 2005,exp,532,384.41357217,Environmental Protect Agency
 2005,exp,557,479.32018221,Il State Toll Highway Auth
 2005,exp,904,1522.69660054,State Employee Healthcare
@@ -954,11 +907,10 @@ Year,type,Category,Dollars,Category_name
 2005,exp,944,183.90838049,Bus & Profession Regulation
 2005,exp,945,9529.546222559999,Medicaid
 2005,exp,946,582.68710374,Capital Improvement
-2005,exp,948,65.93186044,Other Departments
+2005,exp,948,161.65090781,Other Departments
 2005,exp,949,95.86818929,Other Boards & Commissions
 2005,exp,959,8547.14007623,K-12 Education
 2005,exp,960,2630.7391597600003,University Education
-2005,exp,445,NA,Il Power Agency
 2005,exp,901,NA,State Pension Contribution
 2005,exp,903,1351.8173164500001,Debt Service
 2005,exp,970,4674.178671850001,Local Govt Transfers
@@ -970,16 +922,11 @@ Year,type,Category,Dollars,Category_name
 2006,exp,422,246.08094619,Natural Resources
 2006,exp,426,1243.6461883900001,Corrections
 2006,exp,427,207.41371922,Employment Security
-2006,exp,442,8.35701359,Human Rights
 2006,exp,444,4863.117340899999,Human Services
-2006,exp,452,6.16138164,Labor
-2006,exp,458,NA,State Lottery
 2006,exp,478,728.13891539,Family Services Net Medicaid
 2006,exp,482,296.87109429000003,Public Health
 2006,exp,492,839.11021005,Revenue
 2006,exp,494,2789.6782869699996,Transportation
-2006,exp,497,74.70671653,Veterns' Affairs
-2006,exp,507,5.2408372199999995,Gomb
 2006,exp,532,379.59220369,Environmental Protect Agency
 2006,exp,557,1073.7547139,Il State Toll Highway Auth
 2006,exp,904,1622.83187374,State Employee Healthcare
@@ -990,11 +937,10 @@ Year,type,Category,Dollars,Category_name
 2006,exp,944,185.57031815000002,Bus & Profession Regulation
 2006,exp,945,10465.75244916,Medicaid
 2006,exp,946,493.31643924,Capital Improvement
-2006,exp,948,0.21991772,Other Departments
+2006,exp,948,94.6858667,Other Departments
 2006,exp,949,160.93020984999998,Other Boards & Commissions
 2006,exp,959,8487.6210515,K-12 Education
 2006,exp,960,2552.56106196,University Education
-2006,exp,445,NA,Il Power Agency
 2006,exp,901,NA,State Pension Contribution
 2006,exp,903,1415.45327269,Debt Service
 2006,exp,970,5203.7770244,Local Govt Transfers
@@ -1006,16 +952,11 @@ Year,type,Category,Dollars,Category_name
 2007,exp,422,269.91242823000005,Natural Resources
 2007,exp,426,1202.42697973,Corrections
 2007,exp,427,199.63791457,Employment Security
-2007,exp,442,9.857340429999999,Human Rights
 2007,exp,444,4974.05601959,Human Services
-2007,exp,452,6.93411318,Labor
-2007,exp,458,NA,State Lottery
 2007,exp,478,689.1563349500001,Family Services Net Medicaid
 2007,exp,482,331.38825210000005,Public Health
 2007,exp,492,859.2767719499999,Revenue
 2007,exp,494,3043.0967754000003,Transportation
-2007,exp,497,82.73103581999999,Veterns' Affairs
-2007,exp,507,6.74191708,Gomb
 2007,exp,532,419.66218423000004,Environmental Protect Agency
 2007,exp,557,1432.8793855899999,Il State Toll Highway Auth
 2007,exp,904,1751.62380245,State Employee Healthcare
@@ -1026,11 +967,10 @@ Year,type,Category,Dollars,Category_name
 2007,exp,944,210.34187874,Bus & Profession Regulation
 2007,exp,945,11198.462198,Medicaid
 2007,exp,946,389.69792501,Capital Improvement
-2007,exp,948,0.1118696,Other Departments
+2007,exp,948,106.37627611,Other Departments
 2007,exp,949,148.33261333000002,Other Boards & Commissions
 2007,exp,959,9084.7151679,K-12 Education
 2007,exp,960,2742.41237052,University Education
-2007,exp,445,NA,Il Power Agency
 2007,exp,901,NA,State Pension Contribution
 2007,exp,903,1417.2083298799998,Debt Service
 2007,exp,970,5578.12285448,Local Govt Transfers
@@ -1042,16 +982,11 @@ Year,type,Category,Dollars,Category_name
 2008,exp,422,248.84232648,Natural Resources
 2008,exp,426,1289.5977314200002,Corrections
 2008,exp,427,208.54797631,Employment Security
-2008,exp,442,11.74473816,Human Rights
 2008,exp,444,5223.37718063,Human Services
-2008,exp,452,7.98083625,Labor
-2008,exp,458,NA,State Lottery
 2008,exp,478,705.9498693200001,Family Services Net Medicaid
 2008,exp,482,357.43549924,Public Health
 2008,exp,492,865.59199166,Revenue
 2008,exp,494,2859.62101219,Transportation
-2008,exp,497,90.64518297,Veterns' Affairs
-2008,exp,507,6.40742285,Gomb
 2008,exp,532,402.99820825,Environmental Protect Agency
 2008,exp,557,1587.69669403,Il State Toll Highway Auth
 2008,exp,904,1789.66790126,State Employee Healthcare
@@ -1062,11 +997,10 @@ Year,type,Category,Dollars,Category_name
 2008,exp,944,212.19693187000001,Bus & Profession Regulation
 2008,exp,945,12699.20047202,Medicaid
 2008,exp,946,262.37155247,Capital Improvement
-2008,exp,948,0.13060637,Other Departments
+2008,exp,948,116.90878660000001,Other Departments
 2008,exp,949,123.19313799,Other Boards & Commissions
 2008,exp,959,9997.02207227,K-12 Education
 2008,exp,960,2866.66951471,University Education
-2008,exp,445,0,Il Power Agency
 2008,exp,901,NA,State Pension Contribution
 2008,exp,903,1414.2337261,Debt Service
 2008,exp,970,5873.26115267,Local Govt Transfers
@@ -1078,16 +1012,11 @@ Year,type,Category,Dollars,Category_name
 2009,exp,422,233.02124969,Natural Resources
 2009,exp,426,1373.88833232,Corrections
 2009,exp,427,239.31307450999998,Employment Security
-2009,exp,442,12.18531526,Human Rights
 2009,exp,444,5433.036203,Human Services
-2009,exp,452,8.05261185,Labor
-2009,exp,458,NA,State Lottery
 2009,exp,478,717.13455263,Family Services Net Medicaid
 2009,exp,482,359.92934066000004,Public Health
 2009,exp,492,890.0247014199999,Revenue
 2009,exp,494,3070.77228472,Transportation
-2009,exp,497,96.79795231,Veterns' Affairs
-2009,exp,507,5.331426759999999,Gomb
 2009,exp,532,418.87451501,Environmental Protect Agency
 2009,exp,557,1599.27061967,Il State Toll Highway Auth
 2009,exp,904,1770.02965118,State Employee Healthcare
@@ -1098,11 +1027,10 @@ Year,type,Category,Dollars,Category_name
 2009,exp,944,228.32591929999998,Bus & Profession Regulation
 2009,exp,945,13826.58674312,Medicaid
 2009,exp,946,166.64487599,Capital Improvement
-2009,exp,948,0.09757431999999999,Other Departments
+2009,exp,948,123.50915284999999,Other Departments
 2009,exp,949,182.78335033000002,Other Boards & Commissions
 2009,exp,959,10903.4815421,K-12 Education
 2009,exp,960,2964.3750348000003,University Education
-2009,exp,445,1.04427235,Il Power Agency
 2009,exp,901,NA,State Pension Contribution
 2009,exp,903,1421.07800529,Debt Service
 2009,exp,970,5520.558796109999,Local Govt Transfers
@@ -1114,16 +1042,11 @@ Year,type,Category,Dollars,Category_name
 2010,exp,422,226.46634935,Natural Resources
 2010,exp,426,1227.7357163299998,Corrections
 2010,exp,427,283.23736447000005,Employment Security
-2010,exp,442,10.22935927,Human Rights
 2010,exp,444,5412.602871020001,Human Services
-2010,exp,452,7.71373209,Labor
-2010,exp,458,NA,State Lottery
 2010,exp,478,475.04717101,Family Services Net Medicaid
 2010,exp,482,368.982773,Public Health
 2010,exp,492,735.67488219,Revenue
 2010,exp,494,3814.5030255099996,Transportation
-2010,exp,497,94.16598862,Veterns' Affairs
-2010,exp,507,3.76741756,Gomb
 2010,exp,532,533.79507125,Environmental Protect Agency
 2010,exp,557,1292.2441540799998,Il State Toll Highway Auth
 2010,exp,904,1792.2102457199999,State Employee Healthcare
@@ -1134,11 +1057,10 @@ Year,type,Category,Dollars,Category_name
 2010,exp,944,254.96464039,Bus & Profession Regulation
 2010,exp,945,14155.9385009,Medicaid
 2010,exp,946,215.50493174000002,Capital Improvement
-2010,exp,948,0.07472338,Other Departments
+2010,exp,948,117.03277639999999,Other Departments
 2010,exp,949,351.93751530000003,Other Boards & Commissions
 2010,exp,959,10722.93942822,K-12 Education
 2010,exp,960,2758.1001340099997,University Education
-2010,exp,445,1.08155548,Il Power Agency
 2010,exp,901,809.40137211,State Pension Contribution
 2010,exp,903,1387.92024044,Debt Service
 2010,exp,970,5194.19321064,Local Govt Transfers
@@ -1150,16 +1072,11 @@ Year,type,Category,Dollars,Category_name
 2011,exp,422,235.46821960999998,Natural Resources
 2011,exp,426,1270.99823625,Corrections
 2011,exp,427,319.74996296000006,Employment Security
-2011,exp,442,11.96613531,Human Rights
 2011,exp,444,5709.87572503,Human Services
-2011,exp,452,8.17086234,Labor
-2011,exp,458,NA,State Lottery
 2011,exp,478,508.90313904000004,Family Services Net Medicaid
 2011,exp,482,316.13354932,Public Health
 2011,exp,492,760.79805286,Revenue
 2011,exp,494,4473.82647876,Transportation
-2011,exp,497,97.85180667,Veterns' Affairs
-2011,exp,507,3.68096143,Gomb
 2011,exp,532,770.6849133100001,Environmental Protect Agency
 2011,exp,557,739.80110963,Il State Toll Highway Auth
 2011,exp,904,1884.42773143,State Employee Healthcare
@@ -1170,11 +1087,10 @@ Year,type,Category,Dollars,Category_name
 2011,exp,944,239.78317912,Bus & Profession Regulation
 2011,exp,945,14161.02022563,Medicaid
 2011,exp,946,367.03495259,Capital Improvement
-2011,exp,948,39.06311689,Other Departments
+2011,exp,948,164.67187275,Other Departments
 2011,exp,949,377.93332553000005,Other Boards & Commissions
 2011,exp,959,9777.42483035,K-12 Education
 2011,exp,960,2557.74994237,University Education
-2011,exp,445,3.9389901099999998,Il Power Agency
 2011,exp,901,745.54649664,State Pension Contribution
 2011,exp,903,1640.8520024000002,Debt Service
 2011,exp,970,5529.052197790001,Local Govt Transfers
@@ -1186,16 +1102,11 @@ Year,type,Category,Dollars,Category_name
 2012,exp,422,228.25995989,Natural Resources
 2012,exp,426,1281.9039491299998,Corrections
 2012,exp,427,270.32791806,Employment Security
-2012,exp,442,12.16378563,Human Rights
 2012,exp,444,5271.63734916,Human Services
-2012,exp,452,10.18955613,Labor
-2012,exp,458,597.88870438,State Lottery
 2012,exp,478,541.11739044,Family Services Net Medicaid
 2012,exp,482,408.44516953,Public Health
 2012,exp,492,524.60824528,Revenue
 2012,exp,494,4463.758309399999,Transportation
-2012,exp,497,109.48777406999999,Veterns' Affairs
-2012,exp,507,3.87059478,Gomb
 2012,exp,532,653.5788828899999,Environmental Protect Agency
 2012,exp,557,698.72918798,Il State Toll Highway Auth
 2012,exp,904,2353.706227,State Employee Healthcare
@@ -1206,11 +1117,10 @@ Year,type,Category,Dollars,Category_name
 2012,exp,944,258.30725276,Bus & Profession Regulation
 2012,exp,945,12228.48252349,Medicaid
 2012,exp,946,619.42823287,Capital Improvement
-2012,exp,948,904.22969347,Other Departments
+2012,exp,948,1641.44477894,Other Departments
 2012,exp,949,330.19927584,Other Boards & Commissions
 2012,exp,959,11371.762608719999,K-12 Education
 2012,exp,960,3475.3413429,University Education
-2012,exp,445,3.61467048,Il Power Agency
 2012,exp,901,NA,State Pension Contribution
 2012,exp,903,1784.8645659000001,Debt Service
 2012,exp,970,5568.990849299999,Local Govt Transfers
@@ -1222,16 +1132,11 @@ Year,type,Category,Dollars,Category_name
 2013,exp,422,244.19380084,Natural Resources
 2013,exp,426,1252.5710594700001,Corrections
 2013,exp,427,266.26083701000005,Employment Security
-2013,exp,442,12.336687309999999,Human Rights
 2013,exp,444,5612.10346521,Human Services
-2013,exp,452,11.68240275,Labor
-2013,exp,458,604.68422172,State Lottery
 2013,exp,478,389.52460651,Family Services Net Medicaid
 2013,exp,482,363.25847551,Public Health
 2013,exp,492,425.49168174,Revenue
 2013,exp,494,4295.8411367,Transportation
-2013,exp,497,110.40307504,Veterns' Affairs
-2013,exp,507,3.34217534,Gomb
 2013,exp,532,537.61661399,Environmental Protect Agency
 2013,exp,557,950.24235075,Il State Toll Highway Auth
 2013,exp,904,2174.92617471,State Employee Healthcare
@@ -1242,11 +1147,10 @@ Year,type,Category,Dollars,Category_name
 2013,exp,944,275.85110486,Bus & Profession Regulation
 2013,exp,945,14776.36709009,Medicaid
 2013,exp,946,532.58986569,Capital Improvement
-2013,exp,948,1048.82289363,Other Departments
+2013,exp,948,1792.34128779,Other Departments
 2013,exp,949,281.5074729,Other Boards & Commissions
 2013,exp,959,11439.90268783,K-12 Education
 2013,exp,960,3714.61978735,University Education
-2013,exp,445,1.069832,Il Power Agency
 2013,exp,901,NA,State Pension Contribution
 2013,exp,903,1802.85670795,Debt Service
 2013,exp,970,5828.579201660001,Local Govt Transfers
@@ -1258,16 +1162,11 @@ Year,type,Category,Dollars,Category_name
 2014,exp,422,278.79288099,Natural Resources
 2014,exp,426,1355.49113703,Corrections
 2014,exp,427,251.08554735,Employment Security
-2014,exp,442,12.642397240000001,Human Rights
 2014,exp,444,5628.19878617,Human Services
-2014,exp,452,9.386791789999998,Labor
-2014,exp,458,592.91289586,State Lottery
 2014,exp,478,484.17435557,Family Services Net Medicaid
 2014,exp,482,466.14053437,Public Health
 2014,exp,492,494.61930174,Revenue
 2014,exp,494,4472.90348041,Transportation
-2014,exp,497,114.28261692999999,Veterns' Affairs
-2014,exp,507,3.4205736300000003,Gomb
 2014,exp,532,482.30877573,Environmental Protect Agency
 2014,exp,557,1423.40512143,Il State Toll Highway Auth
 2014,exp,904,2625.89449946,State Employee Healthcare
@@ -1278,11 +1177,10 @@ Year,type,Category,Dollars,Category_name
 2014,exp,944,307.13789706,Bus & Profession Regulation
 2014,exp,945,15189.78782041,Medicaid
 2014,exp,946,741.29798837,Capital Improvement
-2014,exp,948,1097.45590631,Other Departments
+2014,exp,948,1833.05967568,Other Departments
 2014,exp,949,268.94709935000003,Other Boards & Commissions
 2014,exp,959,12436.095890139999,K-12 Education
 2014,exp,960,3891.68846847,University Education
-2014,exp,445,2.95849392,Il Power Agency
 2014,exp,901,NA,State Pension Contribution
 2014,exp,903,1920.01656271,Debt Service
 2014,exp,970,6030.58129638,Local Govt Transfers
@@ -1294,16 +1192,11 @@ Year,type,Category,Dollars,Category_name
 2015,exp,422,312.43421954,Natural Resources
 2015,exp,426,1386.3538884700001,Corrections
 2015,exp,427,218.49438684,Employment Security
-2015,exp,442,12.947358869999999,Human Rights
 2015,exp,444,5902.28620534,Human Services
-2015,exp,452,22.792950330000004,Labor
-2015,exp,458,940.24025358,State Lottery
 2015,exp,478,429.61848968,Family Services Net Medicaid
 2015,exp,482,405.09321428000004,Public Health
 2015,exp,492,459.16197841999997,Revenue
 2015,exp,494,4535.09563187,Transportation
-2015,exp,497,119.6426945,Veterns' Affairs
-2015,exp,507,3.5159574399999998,Gomb
 2015,exp,532,641.78261622,Environmental Protect Agency
 2015,exp,557,1894.3990662200001,Il State Toll Highway Auth
 2015,exp,904,2454.66639179,State Employee Healthcare
@@ -1314,11 +1207,10 @@ Year,type,Category,Dollars,Category_name
 2015,exp,944,313.65270847,Bus & Profession Regulation
 2015,exp,945,16913.59457004,Medicaid
 2015,exp,946,753.98041336000006,Capital Improvement
-2015,exp,948,1148.68113621,Other Departments
+2015,exp,948,2250.4669273600002,Other Departments
 2015,exp,949,248.69468878,Other Boards & Commissions
 2015,exp,959,12349.90314908,K-12 Education
 2015,exp,960,3832.42751862,University Education
-2015,exp,445,2.6465764299999996,Il Power Agency
 2015,exp,901,NA,State Pension Contribution
 2015,exp,903,2014.55568518,Debt Service
 2015,exp,970,6283.47793569,Local Govt Transfers
@@ -1330,16 +1222,11 @@ Year,type,Category,Dollars,Category_name
 2016,exp,422,175.97519347,Natural Resources
 2016,exp,426,955.6298708400001,Corrections
 2016,exp,427,205.40274234,Employment Security
-2016,exp,442,11.40360792,Human Rights
 2016,exp,444,5065.8061307,Human Services
-2016,exp,452,9.69326568,Labor
-2016,exp,458,541.53233685,State Lottery
 2016,exp,478,357.57391934,Family Services Net Medicaid
 2016,exp,482,347.57350669,Public Health
 2016,exp,492,435.23525141000005,Revenue
 2016,exp,494,4333.51872362,Transportation
-2016,exp,497,118.56655112,Veterns' Affairs
-2016,exp,507,3.01888827,Gomb
 2016,exp,532,818.1649149,Environmental Protect Agency
 2016,exp,557,2245.99601849,Il State Toll Highway Auth
 2016,exp,904,478.67398667000003,State Employee Healthcare
@@ -1350,11 +1237,10 @@ Year,type,Category,Dollars,Category_name
 2016,exp,944,234.27612735,Bus & Profession Regulation
 2016,exp,945,17034.82557192,Medicaid
 2016,exp,946,95.50588327,Capital Improvement
-2016,exp,948,1367.1799693599999,Other Departments
+2016,exp,948,2054.92817202,Other Departments
 2016,exp,949,213.04733271999999,Other Boards & Commissions
 2016,exp,959,13092.4521344,K-12 Education
 2016,exp,960,2472.24072372,University Education
-2016,exp,445,3.53355282,Il Power Agency
 2016,exp,901,NA,State Pension Contribution
 2016,exp,903,1906.0034094300001,Debt Service
 2016,exp,970,6231.73605521,Local Govt Transfers
@@ -1366,16 +1252,11 @@ Year,type,Category,Dollars,Category_name
 2017,exp,422,232.45793626,Natural Resources
 2017,exp,426,1275.4857715,Corrections
 2017,exp,427,193.98612000999998,Employment Security
-2017,exp,442,11.92309887,Human Rights
 2017,exp,444,5409.73459971,Human Services
-2017,exp,452,9.07687344,Labor
-2017,exp,458,601.2668430900001,State Lottery
 2017,exp,478,388.51204875,Family Services Net Medicaid
 2017,exp,482,373.35684664999997,Public Health
 2017,exp,492,509.84963619999996,Revenue
 2017,exp,494,4179.54269487,Transportation
-2017,exp,497,113.63459759,Veterns' Affairs
-2017,exp,507,5.243884059999999,Gomb
 2017,exp,532,925.2574473000001,Environmental Protect Agency
 2017,exp,557,1763.57585644,Il State Toll Highway Auth
 2017,exp,904,3320.90217221,State Employee Healthcare
@@ -1386,11 +1267,10 @@ Year,type,Category,Dollars,Category_name
 2017,exp,944,201.9391916,Bus & Profession Regulation
 2017,exp,945,17852.95398318,Medicaid
 2017,exp,946,258.04527121,Capital Improvement
-2017,exp,948,1309.44360506,Other Departments
+2017,exp,948,2055.95321106,Other Departments
 2017,exp,949,217.98582346999999,Other Boards & Commissions
 2017,exp,959,13760.765585620002,K-12 Education
 2017,exp,960,4066.77929331,University Education
-2017,exp,445,5.36430895,Il Power Agency
 2017,exp,901,NA,State Pension Contribution
 2017,exp,903,1851.63592052,Debt Service
 2017,exp,970,6459.7416522799995,Local Govt Transfers
@@ -1402,16 +1282,11 @@ Year,type,Category,Dollars,Category_name
 2018,exp,422,254.12127471,Natural Resources
 2018,exp,426,1949.21206613,Corrections
 2018,exp,427,236.51142621,Employment Security
-2018,exp,442,10.84185063,Human Rights
 2018,exp,444,5436.21393326,Human Services
-2018,exp,452,9.58269898,Labor
-2018,exp,458,789.47450379,State Lottery
 2018,exp,478,411.3528003,Family Services Net Medicaid
 2018,exp,482,379.31343485,Public Health
 2018,exp,492,550.3731216699999,Revenue
 2018,exp,494,3599.8246789699997,Transportation
-2018,exp,497,120.37449062,Veterns' Affairs
-2018,exp,507,6.43144652,Gomb
 2018,exp,532,906.34216879,Environmental Protect Agency
 2018,exp,557,1467.50758754,Il State Toll Highway Auth
 2018,exp,904,5851.72845374,State Employee Healthcare
@@ -1422,11 +1297,10 @@ Year,type,Category,Dollars,Category_name
 2018,exp,944,193.83398981,Bus & Profession Regulation
 2018,exp,945,18587.36222093,Medicaid
 2018,exp,946,226.50150585,Capital Improvement
-2018,exp,948,1319.31643711,Other Departments
+2018,exp,948,2264.54194499,Other Departments
 2018,exp,949,218.36028625999998,Other Boards & Commissions
 2018,exp,959,14567.264292360001,K-12 Education
 2018,exp,960,3665.40555593,University Education
-2018,exp,445,8.52051734,Il Power Agency
 2018,exp,901,NA,State Pension Contribution
 2018,exp,903,1970.69456089,Debt Service
 2018,exp,970,6180.91691266,Local Govt Transfers
@@ -1438,16 +1312,11 @@ Year,type,Category,Dollars,Category_name
 2019,exp,422,283.18076963,Natural Resources
 2019,exp,426,1582.8907955,Corrections
 2019,exp,427,221.36637786000003,Employment Security
-2019,exp,442,12.97246583,Human Rights
 2019,exp,444,5623.367277310001,Human Services
-2019,exp,452,8.98772082,Labor
-2019,exp,458,647.09082758,State Lottery
 2019,exp,478,497.28522476999996,Family Services Net Medicaid
 2019,exp,482,437.25449369,Public Health
 2019,exp,492,619.24087243,Revenue
 2019,exp,494,3448.7655594499997,Transportation
-2019,exp,497,130.66840369,Veterns' Affairs
-2019,exp,507,11.16469357,Gomb
 2019,exp,532,841.9039502999999,Environmental Protect Agency
 2019,exp,557,1751.0649049600001,Il State Toll Highway Auth
 2019,exp,904,3151.8790617,State Employee Healthcare
@@ -1458,11 +1327,10 @@ Year,type,Category,Dollars,Category_name
 2019,exp,944,198.94107941,Bus & Profession Regulation
 2019,exp,945,19025.87600858,Medicaid
 2019,exp,946,259.67781974,Capital Improvement
-2019,exp,948,1424.3467781400002,Other Departments
+2019,exp,948,2244.81219679,Other Departments
 2019,exp,949,229.01731015000001,Other Boards & Commissions
 2019,exp,959,15345.92899951,K-12 Education
 2019,exp,960,3714.3899996799996,University Education
-2019,exp,445,9.58130716,Il Power Agency
 2019,exp,901,NA,State Pension Contribution
 2019,exp,903,2052.34078095,Debt Service
 2019,exp,970,6520.18424595,Local Govt Transfers
@@ -1474,16 +1342,11 @@ Year,type,Category,Dollars,Category_name
 2020,exp,422,278.23797176,Natural Resources
 2020,exp,426,1538.4608600899999,Corrections
 2020,exp,427,236.52931031,Employment Security
-2020,exp,442,12.15387918,Human Rights
 2020,exp,444,5996.50360731,Human Services
-2020,exp,452,9.41072799,Labor
-2020,exp,458,471.10135912,State Lottery
 2020,exp,478,350.87838935,Family Services Net Medicaid
 2020,exp,482,560.00437686,Public Health
 2020,exp,492,1155.27471794,Revenue
 2020,exp,494,4082.3811597199997,Transportation
-2020,exp,497,130.76413783,Veterns' Affairs
-2020,exp,507,11.61803728,Gomb
 2020,exp,532,719.03306994,Environmental Protect Agency
 2020,exp,557,1917.63322051,Il State Toll Highway Auth
 2020,exp,904,2981.81766794,State Employee Healthcare
@@ -1494,11 +1357,10 @@ Year,type,Category,Dollars,Category_name
 2020,exp,944,196.05752354,Bus & Profession Regulation
 2020,exp,945,22289.405404959998,Medicaid
 2020,exp,946,311.20346082,Capital Improvement
-2020,exp,948,1717.81604152,Other Departments
+2020,exp,948,2365.25574918,Other Departments
 2020,exp,949,210.73415912000002,Other Boards & Commissions
 2020,exp,959,16639.79886252,K-12 Education
 2020,exp,960,4057.00036709,University Education
-2020,exp,445,12.39156626,Il Power Agency
 2020,exp,901,NA,State Pension Contribution
 2020,exp,903,1947.22765114,Debt Service
 2020,exp,970,6455.3859012,Local Govt Transfers
@@ -1510,16 +1372,11 @@ Year,type,Category,Dollars,Category_name
 2021,exp,422,290.89005383999995,Natural Resources
 2021,exp,426,1612.7887346,Corrections
 2021,exp,427,327.40724113,Employment Security
-2021,exp,442,13.30006893,Human Rights
 2021,exp,444,6550.210349630001,Human Services
-2021,exp,452,10.9999667,Labor
-2021,exp,458,696.394692,State Lottery
 2021,exp,478,392.92628307,Family Services Net Medicaid
 2021,exp,482,942.82283018,Public Health
 2021,exp,492,1711.91366392,Revenue
 2021,exp,494,5382.27846948,Transportation
-2021,exp,497,139.22275243,Veterns' Affairs
-2021,exp,507,10.8306802,Gomb
 2021,exp,532,674.75910349,Environmental Protect Agency
 2021,exp,557,1963.23937193,Il State Toll Highway Auth
 2021,exp,904,2881.4015127,State Employee Healthcare
@@ -1530,11 +1387,10 @@ Year,type,Category,Dollars,Category_name
 2021,exp,944,204.8209231,Bus & Profession Regulation
 2021,exp,945,26277.16957997,Medicaid
 2021,exp,946,457.86952443,Capital Improvement
-2021,exp,948,1778.26676907,Other Departments
+2021,exp,948,2671.2886559699996,Other Departments
 2021,exp,949,247.90095024000001,Other Boards & Commissions
 2021,exp,959,17744.57896652,K-12 Education
 2021,exp,960,4202.44614998,University Education
-2021,exp,445,22.27372664,Il Power Agency
 2021,exp,901,NA,State Pension Contribution
 2021,exp,903,2026.26050134,Debt Service
 2021,exp,970,7178.371065359999,Local Govt Transfers
@@ -1546,16 +1402,11 @@ Year,type,Category,Dollars,Category_name
 2022,exp,422,291.64852007,Natural Resources
 2022,exp,426,1502.11068704,Corrections
 2022,exp,427,274.72413502,Employment Security
-2022,exp,442,13.2284792,Human Rights
 2022,exp,444,7276.78423488,Human Services
-2022,exp,452,13.025209380000002,Labor
-2022,exp,458,623.4477052799999,State Lottery
 2022,exp,478,376.95945197,Family Services Net Medicaid
 2022,exp,482,837.46956924,Public Health
 2022,exp,492,1867.7226761599998,Revenue
 2022,exp,494,4572.00877907,Transportation
-2022,exp,497,128.53715789,Veterns' Affairs
-2022,exp,507,7.40410671,Gomb
 2022,exp,532,653.44835274,Environmental Protect Agency
 2022,exp,557,2101.83432449,Il State Toll Highway Auth
 2022,exp,904,3005.2094902100002,State Employee Healthcare
@@ -1566,11 +1417,10 @@ Year,type,Category,Dollars,Category_name
 2022,exp,944,218.97281990000002,Bus & Profession Regulation
 2022,exp,945,28651.80652707,Medicaid
 2022,exp,946,427.74632504000004,Capital Improvement
-2022,exp,948,1847.36931225,Other Departments
+2022,exp,948,2653.4127551399997,Other Departments
 2022,exp,949,245.36771126,Other Boards & Commissions
 2022,exp,959,19496.6996582,K-12 Education
 2022,exp,960,4367.45779532,University Education
-2022,exp,445,20.400784429999998,Il Power Agency
 2022,exp,901,300,State Pension Contribution
 2022,exp,903,2009.4535459299998,Debt Service
 2022,exp,970,10347.07955976,Local Govt Transfers
@@ -1582,16 +1432,11 @@ Year,type,Category,Dollars,Category_name
 2023,exp,422,322.03109955,Natural Resources
 2023,exp,426,1704.2905444,Corrections
 2023,exp,427,270.89516165000003,Employment Security
-2023,exp,442,14.05245788,Human Rights
 2023,exp,444,8829.550607610001,Human Services
-2023,exp,452,13.90658825,Labor
-2023,exp,458,1398.43216676,State Lottery
 2023,exp,478,427.35105201,Family Services Net Medicaid
 2023,exp,482,767.32992385,Public Health
 2023,exp,492,3113.0811492899998,Revenue
 2023,exp,494,5294.9939433,Transportation
-2023,exp,497,135.87395432,Veterns' Affairs
-2023,exp,507,11.17505206,Gomb
 2023,exp,532,616.3407029499999,Environmental Protect Agency
 2023,exp,557,1893.92975523,Il State Toll Highway Auth
 2023,exp,904,3002.3629412,State Employee Healthcare
@@ -1602,11 +1447,10 @@ Year,type,Category,Dollars,Category_name
 2023,exp,944,231.83463486000002,Bus & Profession Regulation
 2023,exp,945,32406.41271788,Medicaid
 2023,exp,946,652.6195217000001,Capital Improvement
-2023,exp,948,1816.3738935899999,Other Departments
+2023,exp,948,3425.13964304,Other Departments
 2023,exp,949,327.65707205,Other Boards & Commissions
 2023,exp,959,21054.235006490002,K-12 Education
 2023,exp,960,4668.43918244,University Education
-2023,exp,445,35.32553018,Il Power Agency
 2023,exp,901,400,State Pension Contribution
 2023,exp,903,1951.4366831900002,Debt Service
 2023,exp,970,10901.30023769,Local Govt Transfers
@@ -1618,16 +1462,11 @@ Year,type,Category,Dollars,Category_name
 2024,exp,422,381.71826274,Natural Resources
 2024,exp,426,1828.03721297,Corrections
 2024,exp,427,265.77943516,Employment Security
-2024,exp,442,15.662537530000002,Human Rights
 2024,exp,444,10466.751546610001,Human Services
-2024,exp,452,17.3197229,Labor
-2024,exp,458,1002.56151857,State Lottery
 2024,exp,478,463.68056482,Family Services Net Medicaid
 2024,exp,482,730.8552468400001,Public Health
 2024,exp,492,1385.56332126,Revenue
 2024,exp,494,5913.430236720001,Transportation
-2024,exp,497,154.09881389,Veterns' Affairs
-2024,exp,507,34.271007270000005,Gomb
 2024,exp,532,881.17839088,Environmental Protect Agency
 2024,exp,557,1976.80223428,Il State Toll Highway Auth
 2024,exp,904,3162.77220997,State Employee Healthcare
@@ -1638,11 +1477,10 @@ Year,type,Category,Dollars,Category_name
 2024,exp,944,254.30576994999998,Bus & Profession Regulation
 2024,exp,945,33440.83506686,Medicaid
 2024,exp,946,829.1605043999999,Capital Improvement
-2024,exp,948,1860.97480668,Other Departments
+2024,exp,948,3136.49627079,Other Departments
 2024,exp,949,349.77865227999996,Other Boards & Commissions
 2024,exp,959,21706.66184103,K-12 Education
 2024,exp,960,5015.67565965,University Education
-2024,exp,445,51.607863949999995,Il Power Agency
 2024,exp,901,0,State Pension Contribution
 2024,exp,903,2288.36071001,Debt Service
 2024,exp,970,9655.795549550001,Local Govt Transfers
