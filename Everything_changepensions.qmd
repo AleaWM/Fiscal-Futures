@@ -1,11 +1,8 @@
 # Pension Costs Included within Department Expenditures {#sec-all-code-pensionchange}
 
+In previous reports, a e xpenditure category was created to represent all Pension spending. It was created by removing pension expenditures out of the agencies that that had the expenses in order to highlight the amount that was spent on pensions.
 
-**An Explanation of a Methodological Change in How We Categorize Some Pension Spending**
-
-Fiscal Futures’ conceptual framework requires categorizing expenditures according to the function they support rather than the budgetary funds through which they are funneled. Because of this, past reports counted most pension spending as part of the expenditures for the employees of the relevant agency. For example, pension spending that went as benefits to human service employees was counted as spending on human services. However, because most teachers are not state employees, in past years, spending to support teacher pensions was treated differently.  We accounted for this spending as a separate expenditure item rather than including it as part of state spending on K-12 education.
-
-On reflection, we decided to treat these pension payments in parallel with other pension spending and, therefore, include them as part of K-12 education spending. In order to maintain consistency across years we have recalculated all previous years using this methodology.
+As of the FY2024 report, pension expenditures will remain in the agency that has the pension expenses to better represent the total cost of providing a service to the public.
 
 However, we thought that readers also might be interested in total pension spending during current and past years.  We have added a separate table showing this information but emphasize that pension spending is already incorporated in other spending categories and should not be added to the total shown in Table 1 of the report.
 
@@ -32,9 +29,9 @@ move_to_last <- function(df, n) df[c(setdiff(seq_len(nrow(df)), n), n), ]
 current_year <- 2025 # fiscal year, not calendar year
 past_year=current_year-1
 
-rev_temp <- read_csv(paste0("../../Fiscal Futures IGPA/Fiscal-Future-Topics/data/FY", current_year, " Files/rev_temp.csv"))
+rev_temp <- read_csv(paste0("data/FY", current_year, " Files/rev_temp.csv"))
 
-exp_temp <- read_csv(paste0("../../Fiscal Futures IGPA/Fiscal-Future-Topics/data/FY", current_year, " Files/exp_temp.csv"))
+exp_temp <- read_csv(paste0("data/FY", current_year, " Files/exp_temp.csv"))
 ```
 
 
@@ -106,18 +103,32 @@ recessions <- update_recessions()
 
 ### Tax refunds
 
-Aggregate expenditures: Save tax refunds as negative revenue. Code refunds to match the rev_type codes (02=income taxes, 03 = corporate income taxes, 06=sales tax, 09=motor fuel tax, 24=insurance taxes and fees, 35 = all other tax refunds).
+For more details on refund items, see @sec-taxrefunds.
+
+Aggregate expenditures:
+
+Code refunds to match the rev_type codes (02=income taxes, 03=corporate income taxes, 06=sales tax, 09=motor fuel tax, 24=insurance taxes and fees, 35 = all other tax refunds).
+
+
+Ideally the money going in and out of the funds used for refunds would be approximately equal. If equal, would drop from Fiscal Futures analysis so that Revenue reflects the amount of money the state gets to keep (and the local portion that becomes the local govt transfer)
 
 ```{r}
-#| label: fig-tax-refunds
-#| fig-cap:  Tax Refunds
+# What we want: To exclude refunds as expenditures from our expenditure totals.
+# Exclude funds that hold refund funds from both revenue and expenditure sides
+# Revenue neutral unless budget tricks are occurring
+# still want to examine refunds over time to compare to past years calculations
 
-tax_refund_long <- exp_temp %>%           # fund != "0401" # removes State Trust Funds
-  filter(fund != "0401" &
+
+tax_refund_long <- exp_temp %>%  
+  
+  # filter out only refund objects
+    # keeps these objects which represent revenue, insurance, treasurer,and financial and professional reg tax refunds
+  filter(fund != "0401" & # fund != "0401" # removes State Trust Funds
            (object == "9900" | object=="9910"|object=="9921"|object=="9923"|object=="9925")) %>%
-  # keeps these objects which represent revenue, insurance, treasurer,and financial and professional reg tax refunds
+
+  # add revenue category numbers
   mutate(refund = case_when(
-    object == "9900" ~ "FY23_Rebates",
+    object == "9900" ~ "FY23_Rebates",      # part of COVID relief
     fund=="0278" & sequence == "00" ~ "02", # for income tax refund
     fund=="0278" & sequence == "01" ~ "03", # tax administration and enforcement and tax operations become corporate income tax refund
      fund == "0278" & sequence == "02" ~ "02",
@@ -125,13 +136,23 @@ tax_refund_long <- exp_temp %>%           # fund != "0401" # removes State Trust
     object=="9923" ~ "09",                # motor fuel tax refunds
     obj_seq_type == "99250055" ~ "06",    # sales tax refund
     fund=="0378" & object=="9925" ~ "24", # insurance privilege tax refund
-   (fund=="0001" & object=="9925") | (object=="9925" & fund == "0384" & fy == 2023) ~ "35", # all other taxes
-   # fund=="0001" & object=="9925" ~ "35", # all other taxes
+   (fund=="0001" & object=="9925") | 
+     (object=="9925" & fund == "0384" & 
+        fy == 2023) ~ "35",               # all other taxes
       T ~ "CHECK"))                       # if none of the items above apply to the observations, then code them as CHECK 
 
     
 exp_temp <- left_join(exp_temp, tax_refund_long) %>%
   mutate(refund = ifelse(is.na(refund),"not refund", as.character(refund)))
+
+
+```
+
+
+```{r}
+#| label: fig-tax-refunds
+#| fig-cap:  Tax Refunds
+#| column: margin 
 
 tax_refund <- tax_refund_long %>% 
   group_by(refund, fy)%>%
@@ -139,23 +160,26 @@ tax_refund <- tax_refund_long %>%
   pivot_wider(names_from = refund, values_from = refund_amount, names_prefix = "ref_") %>%
   mutate_all(~replace_na(.,0)) %>%
   arrange(fy)
-# 
-# tax_refund %>% 
-#   pivot_longer(c(ref_06:ref_35, ref_FY23_Rebates), names_to = "Refund Type", values_to = "Amount") %>%
-#   ggplot()+  
-#   theme_classic()+
-#   geom_line(aes(x=fy,y=Amount, group = `Refund Type`, color = `Refund Type`))+
-#   labs(title = "Refund Types", 
-#        caption = "Refunds are excluded from Expenditure totals and instead subtracted from Revenue totals") + 
-#   labs(title = "Tax refunds", 
-#        caption = "Rev_type codes: 02=income taxes, 03=corporate income taxes, 06=sales tax, 09=motor fuel tax, 
-#        24=insurance taxes and fees, 35 = all other tax refunds." )
+
+tax_refund %>%
+  pivot_longer(c(ref_02:ref_35, ref_FY23_Rebates), names_to = "Refund Type", values_to = "Amount") %>%
+  ggplot()+
+  theme_classic()+
+  geom_line(aes(x=fy,y=Amount, group = `Refund Type`, color = `Refund Type`))+
+  labs(title = "Refund Types",
+       caption = "Refunds are excluded from Expenditure totals and instead subtracted from Revenue totals") +
+  labs(title = "Tax refunds",
+       caption = "Rev_type codes: 02=income taxes, 03=corporate income taxes, 06=sales tax, 09=motor fuel tax,
+       24=insurance taxes and fees, 35 = all other tax refunds." )
 
 # remove the items we recoded in tax_refund_long
 # exp_temp <- exp_temp %>% filter(refund == "not refund")
 
 
 ```
+
+For FY23, the one-time abatement, object 9900, is included as an expenditure item within the Department of Revenue.
+
 
 ```{r}
 # manually adds the abatements as expenditure item and keeps on expenditure side.
@@ -169,7 +193,7 @@ exp_temp <- exp_temp %>%
 State pension contributions for TRS and SURS are largely captured with object=4431. **(State payments into pension fund).** State payments to the following pension systems:
 
 -   Teachers Retirement System (TRS) Agency 493 -->    K-12 Education (Group = 959)
--   New POB bond in 2019: Accelerated Bond Fund paid benefits in advance as lump sum   
+  -   New POB bond in 2019: Accelerated Bond Fund paid benefits in advance as lump sum   
 -   State Employee Retirement System (SERS) Agency 589 -->    SERS Agency 589 - _Note: Object 4431 does not have SERS expenditures in it. Those are only in object 116X objects_   
 -   State University Retirement System (SURS) Agency 693 -->  University Education (Group = 960)   
 -   Judges Retirement System (JRS) Agency 275  --> Judicial (Group = 920)   
@@ -191,7 +215,7 @@ exp_temp <-  exp_temp %>%
   mutate(pension = case_when( 
     
     ## Commented out line below:
-    # (object=="4431") ~ 1, # 4431 = easy to find pension payments INTO fund
+     (object=="4431") ~ 1, # 4431 = easy to find pension payments INTO fund
     
 
     
@@ -219,15 +243,16 @@ exp_temp <- exp_temp %>%
 
 
 
-# all other pensions objects  codes get agency code 901 for State Pension Contributions
-exp_temp <- exp_temp %>% 
-  mutate(agency = ifelse(pension > 0, "901", as.character(agency)),
-         agency_name = ifelse(agency == "901", "State Pension Contributions", as.character(agency_name)))
+# # all other pensions objects  codes get agency code 901 for State Pension Contributions
+# exp_temp <- exp_temp %>% 
+#   mutate(agency = ifelse(pension > 0, "901", as.character(agency)),
+#          agency_name = ifelse(agency == "901", "State Pension Contributions", as.character(agency_name)))
 
 ```
 
 Can also be thought of past commitments vs current contributions.
-Cost of past commitments in the form of Pension benefits paid out, 
+
+- Where past commitments in the form of pension benefits paid out.  
 
 
 
@@ -274,10 +299,12 @@ exp_temp <- anti_join(exp_temp, transfers_drop)
 
 > Commented out line of code that seperates healthcare costs. This should keep healthcare costs in the agency, similar to the change that was made for pensions.
 
+Also not grouping the agencies below into "Other Departments" until final steps of aggregation. Smallest agencies will be combined into Other Departments for final summary tables. 
+
     agency=="507"|  agency=="442" | agency=="445" | agency=="452" |agency=="458" | agency=="497" ~ "948", # other departments
 
 
-It looks like healthcare costs shift to "Other Departments" which includes : 
+When healthcare costs are not manually separated into their own category, it looks like the costs shift to many of the smaller departments, such as:
 
 - GOMB (507)  
 - Human Rights (442)  
@@ -287,6 +314,9 @@ It looks like healthcare costs shift to "Other Departments" which includes :
 - Veteran's Affairs (497)    
 
 ```{r}
+#| label: examine-bureau-of-benefits-expenditures
+#| include: false
+
 exp_temp |> filter(org_name == "BUREAU OF BENEFITS") |> 
   group_by(fy, agency) |>
   summarize(expenditure = sum(expenditure) ) |>
@@ -312,7 +342,9 @@ exp_temp |>
 ```
 
 
-```{r eehc1}
+```{r}
+#| label: employee-healthcare
+
 #if observation is a group insurance contribution, then the expenditure amount is set to $0 (essentially dropped from analysis)
 
 # pretend eehc is named group_insurance_contribution or something like that
@@ -512,7 +544,8 @@ exp_temp <- exp_temp %>%
     agency=="427"  ~ as.character(agency), # employment security
     
 ############################ 
-# Leaving these agencies as their own agency number for now. Had been coded to "Other departments" Group 948
+# Leaving these agencies as their own agency number for now. 
+# Had been coded to "Other departments" Group 948
 # - GOMB (507)  
 # - Human Rights (442)  
 # - Illinois Power Agency (445)  
@@ -709,7 +742,6 @@ rev_temp <- rev_temp %>%
 # I end up excluding rev_76 in later steps
 ```
 
-> Are the 4 smallest categories from past years still the 4 smallest categories? Check it each year.
 
 ```{r droprevtypes}
 # revenue types to drop
@@ -730,17 +762,6 @@ rev_temp %>%
   summarize(total_reciepts = sum(receipts)/1000000) %>%
   pivot_wider(names_from = rev_type_new, values_from = total_reciepts, names_prefix = "rev_") 
 
-# combines smallest 4  categories to to "Other"
-# they were the 4 smallest in past years, are they still the 4 smallest? 
-
-# rev_temp <- rev_temp %>%  
-#  mutate(rev_type_new = ifelse(rev_type=="30" | rev_type=="60" | rev_type=="63" ,
-#                             ##  | rev_type=="76", 
-#                               "78", rev_type_new))
-
-
-#table(rev_temp$rev_type_new)  # check work
-
 
 
 rm(rev_1998_2022)
@@ -755,7 +776,6 @@ write_csv(rev_temp, file = paste0("./data/FY", current_year, " Files/rev_pension
 
 ## Pivoting and Merging
 
--   Local Government Transfers (exp_970) should be on the expenditure side
 
 ### Revenues
 
@@ -878,7 +898,6 @@ Create exp_970 for all local government transfers (exp_971 + exp_972 + exp_975 +
 ```{r}
 #| label: tbl-ffexp-notlabeled
 #| tbl-cap: "Pivoted Expenditure Categories ($ Millions). Intermediate step. Not actually used for anything other than having output similar to past STATA output."
-#| include: false
 
 ff_exp <- exp_temp %>% 
   group_by(fy, group) %>% 
@@ -894,7 +913,7 @@ ff_exp <- exp_temp %>%
  ff_exp<- ff_exp %>% 
   select(-c(exp_971:exp_976)) # drop unwanted columns that are already included in exp_970
 
-ff_exp # not labeled
+# ff_exp # not labeled
 ```
 
 ```{r}
@@ -1751,8 +1770,6 @@ expenditure_change2 %>%
 
 The 10 largest revenue sources and 15 largest expenditure sources remain separate categories and all other smaller sources/expenditures are combined into "All Other Revenues (Expenditures)". These condensed tables are typically used in the Fiscal Futures articles. They were manually created in past years but this hopefully automates the process a bit until final formatting stages.
 
--   take ff_rev and ff_exp data frames, which were in wide format, pivot them longer and mutate the Category_name variable to nicer labels. Keep largest categories separate and aggregate the rest.
--   You need to manually comment out the categories that are not the largest each year. Check and compare to the previous years largest categories!
 
 ```{r }
 #| label: tbl-top-rev-CAGRs
