@@ -321,8 +321,8 @@ all_debt %>%  # all debt does NOT include the tollway expenditures
     labs(y = "Debt ($Millions)", title = "Short term borrowing and GO Bonds",
          subtitle = "Principal and Interest payments", 
          caption = "Capital projects (object 8800) does not include Illinois tollway debt service (fund 0455).
-         Tollway debt service is graphed separately.
-         ") 
+         Tollway debt service is graphed separately.", 
+         color = element_blank()) 
 
 all_debt %>% 
   ggplot() + 
@@ -337,5 +337,5 @@ all_debt %>%
 
     labs(y = "Debt ($Millions)", title = "Illinois Debt Service Expenditure",
          subtitle = "All Principal and Interest payments", caption = "All principal and interest includes short-term borrowing, GO bonds, and capital projects debt service 
-         EXCEPT the Illinois Tollway debt service. Illinois tollway debt service is graphed separately.") 
+         EXCEPT the Illinois Tollway debt service. Illinois tollway debt service is graphed separately.", color = element_blank()) 
 ```
