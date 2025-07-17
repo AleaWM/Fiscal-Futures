@@ -184,19 +184,6 @@ allexpfiles <- read_csv(paste0("data/FY", current_year, " Files/allexpfiles_", c
 
 Data files for closed years have been obtained from IOC. The numbers of funds, agencies, organizations, and revenue sources below were found by using pivot tables in the codebook files in the FY2022 Box folder. This could also be done using R and grouping new files by fund, agency, source number, source names, etc..
 
-Revenue File:
-
--   684 Fund Numbers
--   80 Agencies
--   1184 Revenue source numbers
--   1156 revenue source names
-
-Expenditure File:
-
--   708 Fund Numbers
--   107 Agencies
--   98 Organization Numbers
--   313 Organization names
 
 ### Finding new agencies and funds
 
@@ -239,9 +226,10 @@ agencies <- allexpfiles  %>%
 
 
 #compare past and present
-anti_join(agencies, agencies_past, 
+new <- anti_join(agencies, agencies_past, 
           by = c("agency", "agency_name")) %>% 
   arrange(agency)
+new
 ```
 
 FY25 preliminary results: Agency 480, Early Childhood ($0 expenditures) appears as new agency. 
@@ -354,7 +342,7 @@ anti_join(funds, funds_past, by = c("fund", "fund_name")) %>%
 
 13 revenue funds were in new revenue data that were not in past data Remember, some of them maybe be false alarms and have small fund name changes.
 
-```{r eval=FALSE}
+```{r}
 sources_past <- allrevfiles  %>% 
   filter(fy < cur_fy) %>% 
   mutate(source == as.character(source)) %>% 
@@ -396,7 +384,8 @@ For funds that were reused once, a 9 replaces the 0 as the first digit. If reuse
 
 New or reused funds revenue file recoding:
 
-```{r recode-rev-funds}
+```{r}
+#| label:  recode-rev-funds
 #| code-fold: false
 
 # if first character is a 0, replace with a 9 if its purpose has changed
@@ -430,19 +419,28 @@ rev_allyears <- allrevfiles %>%
   mutate(fund = ifelse(fy < 2022 & fund %in% c("0110","0165","0351", "0392", "0393", "0422", "0544", "0628", "0634",  "0656", "0672", "0683", "0723", "0742", "0743"), str_replace(fund, "0","9"), as.character(fund))) %>%  # replaces first 0 it finds with a 9
 
   mutate(fund = ifelse(fy < 2022 & fund == "0367", "10367", as.character(fund)) # fund reused for 3rd time
-
-) %>%
-
+         
+  ) %>%
+  
   # 2023 fund changes
   mutate(fund = ifelse(fy < 2023 & fund %in% c("0099","0210","0246", "0250", "0264", "0268", "0300", "0311", "0403", "0448","0645", "0727", "0729", "0791"), str_replace(fund,"0", "9"), as.character(fund))) %>%
   mutate(fund = ifelse(fy < 2023 & fund == "0734" , "10734", as.character(fund)),
          fund = ifelse(fy < 2023 & fund == "0820", "10820", as.character(fund) ) # fund reused for 3rd time
   ) %>%
-
- #  other fund changes noticed on April 1, 2024
+  
+  #  other fund changes noticed on April 1, 2024
   mutate(fund = ifelse(fy < 2023 & fund %in% c("0490", "0684", "0747", "0869"), str_replace(fund,"0", "9"), as.character(fund)))  |>
   
-   mutate(fund = ifelse(fy < 2024 & fund %in% c("0064","0162","0267", "0349", "0420"), str_replace(fund,"0", "9"), as.character(fund)))
+  mutate(fund = ifelse(fy < 2024 & fund %in% c("0064","0162","0267", "0349", "0420"), str_replace(fund,"0", "9"), as.character(fund))) |>
+  
+  # fy2025 FUND CHANGES
+  mutate(fund = ifelse(fy < 2025 & fund %in% c("0213", "0235", "0280", "0321", "0456", "0486", "0487", "0494", "0507"), str_replace(fund,"0", "9"), as.character(fund)),
+         
+         fund = ifelse(fy < 2025 & fund == "0253", "10253", as.character(fund)), # fund reused for 3rd time)  
+         fund = ifelse(fy < 2025 & fund == "0526", "10526", as.character(fund)) # fund reused for 3rd time)  
+         )
+
+
 ```
 
 Expenditure recoding:
@@ -490,7 +488,15 @@ exp_allyears <- allexpfiles %>%
  #  other fund changes noticed on April 1, 2024
   mutate(fund = ifelse(fy < 2023 & fund %in% c("0490", "0684", "0747", "0869"), str_replace(fund,"0", "9"), as.character(fund)))  |>
   
-   mutate(fund = ifelse(fy < 2024 & fund %in% c("0064","0162","0267", "0349", "0420"), str_replace(fund,"0", "9"), as.character(fund)))
+  mutate(fund = ifelse(fy < 2024 & fund %in% c("0064","0162","0267", "0349", "0420"), str_replace(fund,"0", "9"), as.character(fund))) |>
+  
+  # fy2025 FUND CHANGES
+  mutate(fund = ifelse(fy < 2025 & fund %in% c("0213", "0235", "0280", "0321", "0456", "0486", "0487", "0494", "0507"), str_replace(fund,"0", "9"), as.character(fund)),
+         
+         fund = ifelse(fy < 2025 & fund == "0253", "10253", as.character(fund)),
+         fund = ifelse(fy < 2025 & fund == "0526", "10526", as.character(fund)     ) # fund reused for 3rd time)  
+         
+  )
 ```
 
 ::: {.callout-tip icon="false"}
