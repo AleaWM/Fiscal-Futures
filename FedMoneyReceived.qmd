@@ -13,20 +13,13 @@ library(haven)
 
 library(lubridate)
 library(smooth)
-library(forecast)
 library(scales)
-
 library(ggplot2)
 library(readxl)
 library(tidyverse)
 library(data.table)
-library(quantmod)
-library(geofacet)
-library(fredr)
-library(sf) 
-library(usmap)
+#library(fredr)
 library(janitor)
-
 library(RColorBrewer)
 #library(ggsankey)
 library(ggalluvial)
@@ -36,14 +29,44 @@ comma <- function(x) format(x, digits = 2, big.mark = ",")
 options(scipen = 999)
 ```
 
+
+```{r warning = FALSE, message=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+first_year = 1998
+current_year = 2025
+
+rev_temp <- read_csv(paste0("./data/FY", current_year, " Files/rev_temp.csv"))
+
+exp_temp <- read_csv(paste0("./data/FY", current_year, " Files/exp_temp.csv"))
+
+alea_theme <- function() {
+  font <-"Whitney"
+  
+  ggplot2::theme(
+    legend.position = "right",
+    legend.title = element_blank(),
+    
+    panel.background = ggplot2::element_blank(),
+    panel.grid.minor.x = ggplot2::element_blank(),
+    panel.grid.major.y = element_line(color = "grey"),
+    panel.grid.minor.y = element_line(color = "grey", 
+                                      linetype = "dashed"),
+    # panel.grid.major.x = ggplot2::element_blank(),
+    axis.ticks = element_line(color = "gray"),
+    axis.ticks.x = element_blank()
+  )
+  
+}
+
+theme_set(alea_theme())
+
+```
+
 Dropping revenue source "Federal Stimulus Package" from the IOC revenue data is one way to start estimating how revenue will look after the COVID relief ends. The graphs below show Illinois revenue with and without Federal Stimulus Package revenue. It is important to note that only the \$8.127 ARPA State CURE and \$3.519 CARES CRF/State CURE revenue were labeled as "Federal Stimulus Package" in the IOC revenue data. There was still an additional \$12 billion dollars in other federal revenue that went to the state in FY22 compared to FY19. When trying to understand the states finances and the yearly fiscal gap, we also need to understand when and where the funds were considered revenue in the IOC data and consider the fiscal year that the funds were spent. Finally, allocations or expenditures may be grouped and labeled differently by the State compared to the Fiscal Futures project categorization. Some items that the federal relief funds are spent on are not included in Fiscal Gap calculations (e.g. the Unemployment Insurance Trust Fund repayments). The biggest challenge when determining the Fiscal Gap for Illinois centers around the timing of revenue and expenditures occurring in different fiscal years during the COVID response.
 
 ![State CURE expenditures and allocations in the larger context of COVID-related federal revenue.](images/bothgraphs.png){#fig-revandCUREexp}
 
 ```{r}
-
-rev_temp <- read_csv("./data/rev_temp.csv") %>% 
-  filter(agency!= "799")
 
 rev_temp <- rev_temp %>% mutate(fund_name = fund_name_ab)
 
@@ -1395,7 +1418,7 @@ rev_temp %>%
 #| code-fold: false
 
 
-exp_temp <- read_csv("./data/exp_temp.csv") %>% 
+exp_temp <- exp_temp %>% 
   filter(agency!= "799") %>% mutate(fund_name = fund_name_ab)
 
 exp_temp %>% 
