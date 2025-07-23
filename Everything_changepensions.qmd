@@ -1576,6 +1576,7 @@ Things to do when updating the code:
 
 ```{r}
 
+max_cagr_years = current_year-1998
 
 # function for calculating the CAGR
 calc_cagr <- function(df, n) {
@@ -1593,7 +1594,7 @@ cagr_calculations <- function(df){ # This works for one variable at a time
   
   df <- df
   
-  cagr_max <- calc_cagr(df, 26) %>% 
+  cagr_max <- calc_cagr(df, max_cagr_years) %>% 
     summarize(cagr_max = round(sum(cagr*100, na.rm = TRUE), 2))
 
   # Update year in the filter() and summarize() commands to current year.
@@ -1632,7 +1633,7 @@ cagr_calculations <- function(df){ # This works for one variable at a time
 
 CAGR_expenditures_summary_tot <- cagr_calculations(exp_long)   |>
   select(-c(Category_name.1, Category_name.2, Category_name.3, Category_name.4, Category_name.5 )) %>% 
-  rename("Expenditure Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10, "26 Year CAGR" = cagr_max )
+  rename("Expenditure Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10, "27 Year CAGR" = cagr_max )
 
 
 totalrow <- which(grepl("Total", CAGR_expenditures_summary_tot$`Expenditure Category`))
@@ -1655,7 +1656,7 @@ CAGR_expenditures_summary_tot %>%
 
 CAGR_revenue_summary_tot <- cagr_calculations(rev_long) %>%   
   select(-c(Category_name.1, Category_name.2, Category_name.3, Category_name.4, Category_name.5 )) %>% 
-  rename("Revenue Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10, "26 Year CAGR" = cagr_max )
+  rename("Revenue Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10, "27 Year CAGR" = cagr_max )
 
 CAGR_revenue_summary_tot <- move_to_last(CAGR_revenue_summary_tot, 1)
 
@@ -1691,7 +1692,7 @@ revenue_change2 <- rev_long %>%
     "1-Year Change" = percent((Dollars_2025 -Dollars_2024)/Dollars_2024, accuracy = .01)) |>
   left_join(CAGR_revenue_summary_tot, by = c("Category_name" = "Revenue Category")) %>% 
     arrange(-`Current FY ($ billions)`)%>%
-    mutate(`26 Year CAGR` = percent(`26 Year CAGR`/100, accuracy=.01)) %>%
+    mutate(`27 Year CAGR` = percent(`27 Year CAGR`/100, accuracy=.01)) %>%
 
   rename(  
           "Revenue Category" = Category_name ) %>%
@@ -1733,7 +1734,7 @@ expenditure_change2 <- exp_long %>%
     "1-Year Change" = percent((Dollars_2025 -Dollars_2024)/Dollars_2024, accuracy = .01)) |>
   left_join(CAGR_expenditures_summary_tot, by = c("Category_name" = "Expenditure Category")) %>% 
   arrange(-`FY 2025 ($ billions)`)%>%
-    mutate(`26 Year CAGR` = percent(`26 Year CAGR`/100, accuracy=.01)) %>%
+    mutate(`27 Year CAGR` = percent(`27 Year CAGR`/100, accuracy=.01)) %>%
 
   select(-c( Dollars_1998, Dollars_2025, Dollars_2024, `1 Year CAGR`:`10 Year CAGR`)) %>%
 
@@ -1797,7 +1798,7 @@ revenue_wide_majorcats <- rev_long_majorcats %>%
 
 CAGR_revenue_majorcats_tot <- cagr_calculations(rev_long_majorcats) %>%   
   select(-c(Category_name.1, Category_name.2, Category_name.3, Category_name.4, Category_name.5 )) %>% 
-  rename("Revenue Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10, "26-Year CAGR" = cagr_max )
+  rename("Revenue Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10, "27 Year CAGR" = cagr_max )
 
 allother_row <- which(grepl("All Other", CAGR_revenue_majorcats_tot$`Revenue Category`))
 
@@ -1833,7 +1834,7 @@ revenue_change_majorcats <- rev_long_majorcats %>%
   left_join(CAGR_revenue_majorcats_tot, by = c("Category_name" = "Revenue Category")
             ) %>% 
   arrange(-`FY 2025 ($ billions)`)%>%
-  mutate(`26-Year CAGR` = percent(`26-Year CAGR`/100, accuracy=.01)) %>%
+  mutate(`27 Year CAGR` = percent(`27 Year CAGR`/100, accuracy=.01)) %>%
   select(-c(Dollars_1998, Dollars_2025, Dollars_2024, `1 Year CAGR`:`10 Year CAGR`
             )) %>%
   rename("Revenue Category" = Category_name )
@@ -1887,7 +1888,7 @@ exp_long_majorcats <- exp_long |>
 
 CAGR_expenditures_majorcats_tot <- cagr_calculations(exp_long_majorcats) |>
   select(-c(Category_name.1, Category_name.2, Category_name.3, Category_name.4, Category_name.5 )) %>% 
-  rename("Expenditure Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10,"26-Year CAGR" = cagr_max )
+  rename("Expenditure Category" = Category_name, "1 Year CAGR" = cagr_1, "2 Year CAGR" = cagr_2, "3 Year CAGR" = cagr_3, "5 Year CAGR" = cagr_5, "10 Year CAGR" = cagr_10,"27 Year CAGR" = cagr_max )
 
 allother_row <- which(grepl("Other", CAGR_expenditures_majorcats_tot$`Expenditure Category`))
 
@@ -1916,12 +1917,12 @@ expenditure_change_majorcats <- exp_long_majorcats %>%
          )  %>%
  left_join(CAGR_expenditures_majorcats_tot, by = c("Category_name" = "Expenditure Category")) %>% 
   arrange(-`FY 2025 ($ Billions)`)%>%
-  mutate(`26-Year CAGR` = percent(`26-Year CAGR`/100, accuracy=.01)) %>%
+  mutate(`27 Year CAGR` = percent(`27 Year CAGR`/100, accuracy=.01)) %>%
   select(-c(Dollars_1998, Dollars_2025, Dollars_2024, `1 Year CAGR`:`10 Year CAGR`
             )) %>%
   rename(
    # "1-Year Change" = `1 Year CAGR`,
-    "26-Year Change" = `26-Year CAGR`, 
+    "27 Year Change" = `27 Year CAGR`, 
           "Expenditure Category" = Category_name )
 
 allother_row <- which(grepl("All Other", expenditure_change_majorcats$`Expenditure Category`))
