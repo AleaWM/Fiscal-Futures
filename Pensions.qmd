@@ -26,14 +26,14 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 **For Fiscal Gap yearly expenditure calculations, the state contributions to the pension funds (object = 4431) should be the expenditure included for pensions.**
 
-Pension expenditures referenced in the analysis are based on state payments to the following pension systems:
+State pension contributions for TRS and SURS are largely captured with object=4431. **(State payments into pension fund).** State payments to the following pension systems:
 
--   Teachers Retirement System (TRS)
--   New POB bond in 2019: Accelerated Bond Fund paid benefits in advance as lump sum
--   State Employee Retirement System (SERS)
--   State University Retirement System (SURS)
--   Judges Retirement System (JRS)
--   General Assembly Retirement System (GARS)
+-   Teachers Retirement System (TRS) Agency 493 -->    K-12 Education (Group = 959)
+  -   New POB bond in 2019: Accelerated Bond Fund paid benefits in advance as lump sum   
+-   State Employee Retirement System (SERS) Agency 589 -->    SERS Agency 589 - _Note: Object 4431 does not have SERS expenditures in it. Those are only in object 116X objects_   
+-   State University Retirement System (SURS) Agency 693 -->  University Education (Group = 960)   
+-   Judges Retirement System (JRS) Agency 275  --> Judicial (Group = 920)   
+-   General Assembly Retirement System (GARS)  --> Legislative (Group 910)  
 
 Employer contributions for pensions are excluded from analysis to avoid double counting the cost of pensions. Expenditures with object 4430 for pensions, benefits, and annuities appears in items from funds 0473, 0477, 0479, 0481, (TRS, JRS, SERS, GARS), 0755, 0786, 0787, 0788, 0789, 0799 (deferred compensation plan, GAR excess benefit, JRS excess benefit, SER excess benefit, TRS excess benefit, state university retirement system) are NOT included in the analysis. All are coded with in_ff=0 in the fund_ab_in.xlsx file of funds.
 
@@ -49,9 +49,12 @@ Most of these funds were found by either using CTRL-F with pension related words
 #| label: fig-pensiondetails
 #| fig-cap: "Included and Excluded Items"
 
-exp_temp <- read_csv("./data/exp_temp.csv") %>% filter(agency != "799")
-rev_temp <- read_csv("./data/rev_temp.csv") %>% filter(agency!= "799")
+current_year <- 2025 # fiscal year, not calendar year
+past_year=current_year-1
 
+rev_temp <- read_csv(paste0("../../Fiscal Futures IGPA/Fiscal-Future-Topics/data/FY", current_year, " Files/rev_temp.csv"))
+
+exp_temp <- read_csv(paste0("../../Fiscal Futures IGPA/Fiscal-Future-Topics/data/FY", current_year, " Files/exp_temp.csv"))
 
 # check what is being included in pensions
 
