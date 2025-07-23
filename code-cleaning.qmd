@@ -285,7 +285,7 @@ anti_join(orgs, orgs_past,
   arrange(appr_org)
 ```
 
-1 org number and org name combo are new for FY{`r print0(current_year)`}.
+1 org number and org name combo are new for FY{`r print(current_year)`}.
 
 Changes in organizations are usually not a big deal for the Fiscal Gap calculation. However keeping track of changes in organizations names may be useful in an expected way or other researchers can use it. 
 
