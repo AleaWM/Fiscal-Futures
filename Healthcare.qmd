@@ -1,26 +1,47 @@
 # State Employee Healthcare Discussion
 
-```{r warning = FALSE, message=FALSE, include=FALSE}
+```{r warning = FALSE, message=FALSE}
 
 library(tidyverse)
 library(haven)
 library(formatR)
 library(lubridate)
-library(smooth)
-library(forecast)
 library(scales)
 library(kableExtra)
 library(ggplot2)
 library(readxl)
 library(tidyverse)
 library(data.table)
-library(quantmod)
-library(geofacet)
 library(janitor)
 
-theme_set(theme_classic())
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+first_year = 1998
+current_year = 2025
 
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+rev_temp <- read_csv(paste0("data/FY", current_year, " Files/rev_temp.csv"))
+
+exp_temp <- read_csv(paste0("data/FY", current_year, " Files/exp_temp.csv"))
+
+alea_theme <- function() {
+  font <-"Whitney"
+  
+  ggplot2::theme(
+    legend.position = "right",
+    legend.title = element_blank(),
+    
+    panel.background = ggplot2::element_blank(),
+    panel.grid.minor.x = ggplot2::element_blank(),
+    panel.grid.major.y = element_line(color = "grey"),
+    panel.grid.minor.y = element_line(color = "grey", 
+                                      linetype = "dashed"),
+    # panel.grid.major.x = ggplot2::element_blank(),
+    axis.ticks = element_line(color = "gray"),
+    axis.ticks.x = element_blank()
+  )
+  
+}
+
+theme_set(alea_theme())
 
 ```
 
@@ -51,10 +72,6 @@ Employer group insurance contributions for health insurance are excluded to avoi
 If observation is a group insurance contribution, then the expenditure amount is set to \$0 (essentially dropped from analysis).
 
 ```{r healthcare-employer-contributions}
-exp_temp <- read_csv("./data/exp_temp.csv")
-rev_temp <- read_csv("./data/rev_temp.csv")
-
-
 health_ins_reserve <- exp_temp %>% 
   filter(fund == "0907") %>%  
   group_by(fy) %>% 
