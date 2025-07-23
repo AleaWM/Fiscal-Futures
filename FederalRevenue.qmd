@@ -27,16 +27,12 @@ library(tidyverse)
 library(haven)
 library(formatR)
 library(lubridate)
-library(smooth)
-library(forecast)
 library(scales)
 library(kableExtra)
 library(ggplot2)
 library(readxl)
 library(tidyverse)
 library(data.table)
-library(quantmod)
-library(geofacet)
 library(janitor)
 #devtools::install_github("CMAP-REPOS/cmapplot", build_vignettes=TRUE)
 library(cmapplot)
@@ -46,11 +42,12 @@ theme_set(theme_classic())
 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
-exp_temp <- read_csv("./data/exp_temp.csv") %>% 
-  filter(agency != "799") 
+current_year <- 2025 # fiscal year, not calendar year
+past_year=current_year-1
 
-rev_temp <- read_csv("./data/rev_temp.csv") %>% 
+rev_temp <- read_csv(paste0("data/FY", current_year, " Files/rev_temp.csv")) |>
   filter(agency != "799"  & rev_type != "75")
+
 ```
 
 Federal revenue broken down into Transportation, Medicaid, and Other:
