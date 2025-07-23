@@ -11,33 +11,44 @@ format:
 library(tidyverse)
 library(haven)
 library(formatR)
-library(lubridate)
-library(smooth)
-library(forecast)
 library(scales)
 library(kableExtra)
 library(ggplot2)
 library(readxl)
 library(tidyverse)
 library(data.table)
-library(quantmod)
-library(geofacet)
 library(janitor)
 library(cmapplot)
 library(ggrepel)
 
-theme_set(theme_classic())
-
-
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+first_year = 1998
+current_year = 2025
 
-exp_temp <- read_csv("./data/exp_temp.csv") %>% 
-  filter(agency != "799") 
+rev_temp <- read_csv(paste0("data/FY", current_year, " Files/rev_temp.csv"))
 
-rev_temp <- read_csv("./data/rev_temp.csv") %>% 
-  filter(agency != "799")
+exp_temp <- read_csv(paste0("data/FY", current_year, " Files/exp_temp.csv"))
 
-current_year = 2024
+alea_theme <- function() {
+  font <-"Whitney"
+  
+  ggplot2::theme(
+    legend.position = "right",
+    legend.title = element_blank(),
+    
+    panel.background = ggplot2::element_blank(),
+    panel.grid.minor.x = ggplot2::element_blank(),
+    panel.grid.major.y = element_line(color = "grey"),
+    panel.grid.minor.y = element_line(color = "grey", 
+                                      linetype = "dashed"),
+    # panel.grid.major.x = ggplot2::element_blank(),
+    axis.ticks = element_line(color = "gray"),
+    axis.ticks.x = element_blank()
+  )
+  
+}
+theme_set(alea_theme())
+
 ```
 
 ```{r include=FALSE}
@@ -106,9 +117,7 @@ recessions <- update_recessions()
 ```
 
 
-![](images/clipboard-434299901.png)
 
-![](images/clipboard-131008373.png)
 
 ## Income Taxes
 
@@ -129,7 +138,6 @@ rev_temp  %>%
   ggplot(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
   geom_line() + 
   geom_text(aes(label = label)) +
-  theme_classic() +
     theme(legend.position = "bottom" ,
                    plot.margin = margin(0, 4, 0, 0, "cm")) +
 
@@ -183,7 +191,6 @@ rev_temp  %>%
   summarize(receipts = sum(receipts)) %>%
   ggplot() + 
   geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
-  theme_classic() +
 #  scale_x_continuous(expand = c(0,0)) +
     scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
 
@@ -198,7 +205,6 @@ rev_temp  %>%
   summarize(receipts = sum(receipts)) %>%
   ggplot() + 
   geom_line(aes(x=fy, y=receipts/1000000000, color = fund_name_ab)) + 
-  theme_classic() +
  # scale_x_continuous(expand = c(0,0)) +
     scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
 
@@ -225,7 +231,6 @@ rev_temp  %>%
   summarize(receipts = sum(receipts)) %>%
   ggplot() + 
   geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
-  theme_classic() +
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
   labs(title = "Corporate Income Tax  Breakdown", 
@@ -238,7 +243,6 @@ rev_temp  %>%
   summarize(receipts = sum(receipts)) %>%
   ggplot() + 
   geom_line(aes(x=fy, y=receipts/1000000000, color = fund_name_ab)) + 
-  theme_classic() +
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
 
@@ -310,11 +314,10 @@ rev_temp  %>%
   summarize(receipts = sum(receipts)) %>%
   ggplot() + 
   geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
-  theme_classic() +
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
   theme(legend.position = "bottom") +
-   # theme(legend.position = "none") +
+   theme(legend.position = "none") +
 
   labs(title = "Sales Tax Breakdown", 
        y = "Billions of Nominal Dollars") 
@@ -326,7 +329,6 @@ rev_temp  %>%
   ggplot() + 
   geom_line(aes(x=fy, y=receipts/1000000000, color = fund_name_ab)) + 
   #geom_text(data = annotation, aes(x=x, y=y, label=label)) +
-  theme_classic() +
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
  # scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
@@ -397,7 +399,6 @@ rev_temp %>%
   geom_line(aes(color=fund_name_ab))+
   geom_vline(xintercept = 2018)+
   geom_vline(xintercept = 2021)+
-  theme_classic()+
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   labs(title="State Retailers' Occupation Tax, Source 0481")
 
@@ -436,7 +437,6 @@ rev_temp %>%
   geom_line(aes(color=fund_name_ab))+
   geom_vline(xintercept = 2018)+
   geom_vline(xintercept = 2020)+
-  theme_classic() +
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   labs(title="State Retailers' Occupation Tax")
 
@@ -448,7 +448,6 @@ rev_temp %>%
   geom_line(aes(x=fy, y=revenue, color=fund_name_ab))+
   geom_vline(xintercept = 2018) +
   geom_vline(xintercept = 2021) +
-  theme_classic()+
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   labs(title="State ROT - 2.2%")
 ```
@@ -465,7 +464,6 @@ rev_temp %>%
   geom_line(aes(x=fy, y=revenue, color=source_name_AWM))+
   geom_vline(xintercept = 2018)+
   geom_vline(xintercept = 2021)+
-  theme_classic()+
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   labs(title="State ROT - 2.2% & ",
        subtitle = "Large increases due to Leveling the Playing Field Act & Online shopping during pandemic??")
@@ -486,7 +484,6 @@ rev_temp  %>%
   geom_recessions(text = FALSE)+
   geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
   #geom_text(data = annotation, aes(x=x, y=y, label=label)) +
-  theme_classic() +
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
  scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
@@ -512,7 +509,6 @@ rev_temp  %>%
   geom_line(aes(x=fy, y=receipts/1000000000,
                 group = rev_type, color=rev_type
                 ) )+ 
-  theme_classic() +
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
 
