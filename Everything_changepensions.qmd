@@ -1,6 +1,6 @@
 # Pension Costs Included within Department Expenditures {#sec-all-code-pensionchange}
 
-In previous reports, a e xpenditure category was created to represent all Pension spending. It was created by removing pension expenditures out of the agencies that that had the expenses in order to highlight the amount that was spent on pensions.
+In previous reports, a expenditure category was created to represent all Pension spending. It was created by removing pension expenditures out of the agencies that that had the expenses in order to highlight the amount that was spent on pensions.
 
 As of the FY2024 report, pension expenditures will remain in the agency that has the pension expenses to better represent the total cost of providing a service to the public.
 
@@ -21,7 +21,6 @@ library(janitor)
 #devtools::install_github("CMAP-REPOS/cmapplot")
 library(cmapplot)
 
-theme_set(theme_classic() )
 
 move_to_last <- function(df, n) df[c(setdiff(seq_len(nrow(df)), n), n), ]
 
@@ -32,6 +31,8 @@ past_year=current_year-1
 rev_temp <- read_csv(paste0("data/FY", current_year, " Files/rev_temp.csv"))
 
 exp_temp <- read_csv(paste0("data/FY", current_year, " Files/exp_temp.csv"))
+
+
 ```
 
 
@@ -125,21 +126,21 @@ tax_refund_long <- exp_temp %>%
     # keeps these objects which represent revenue, insurance, treasurer,and financial and professional reg tax refunds
   filter(fund != "0401" & # fund != "0401" # removes State Trust Funds
            (object == "9900" | object=="9910"|object=="9921"|object=="9923"|object=="9925")) %>%
-
+  
   # add revenue category numbers
   mutate(refund = case_when(
     object == "9900" ~ "FY23_Rebates",      # part of COVID relief
     fund=="0278" & sequence == "00" ~ "02", # for income tax refund
     fund=="0278" & sequence == "01" ~ "03", # tax administration and enforcement and tax operations become corporate income tax refund
-     fund == "0278" & sequence == "02" ~ "02",
+    fund == "0278" & sequence == "02" ~ "02",
     object=="9921" ~ "21",                # inheritance tax and estate tax refund appropriation
     object=="9923" ~ "09",                # motor fuel tax refunds
     obj_seq_type == "99250055" ~ "06",    # sales tax refund
     fund=="0378" & object=="9925" ~ "24", # insurance privilege tax refund
-   (fund=="0001" & object=="9925") | 
-     (object=="9925" & fund == "0384" & 
-        fy == 2023) ~ "35",               # all other taxes
-      T ~ "CHECK"))                       # if none of the items above apply to the observations, then code them as CHECK 
+    (fund=="0001" & object=="9925") | 
+      (object=="9925" & fund == "0384" & 
+         fy == 2023) ~ "35",               # all other taxes
+    T ~ "CHECK"))                       # if none of the items above apply to the observations, then code them as CHECK 
 
     
 exp_temp <- left_join(exp_temp, tax_refund_long) %>%
@@ -469,10 +470,6 @@ debt_keep_yearly <- debt_keep %>%
 
 ### Add Other Fiscal Future group codes
 
-> Commented out line that creates Other departments from a few agencies. Keeping them seperate to see where healthcare costs go. 
-
-
-    agency=="507"|  agency=="442" | agency=="445" | agency=="452" |agency=="458" | agency=="497" ~ "948", # other departments
 
 
 
@@ -585,7 +582,6 @@ exp_temp <- exp_temp %>%
              group == "482" ~ "Public Health",
              group == "497" ~ "Veteran's Affairs",
              group == "507" ~ "GOMB",
-             group == "900" ~ "NOT IN FRAME",
              group == "901" ~ "STATE PENSION CONTRIBUTION",
              group == "903" ~ "DEBT SERVICE",
              group == "910" ~ "LEGISLATIVE"  ,
@@ -761,11 +757,6 @@ rev_temp %>%
   group_by(fy, rev_type_new) %>% 
   summarize(total_reciepts = sum(receipts)/1000000) %>%
   pivot_wider(names_from = rev_type_new, values_from = total_reciepts, names_prefix = "rev_") 
-
-
-
-rm(rev_1998_2022)
-rm(exp_1998_2022)
 
 
 write_csv(exp_temp, file = paste0("./data/FY", current_year, " Files/exp_pensionrecode.csv"))
@@ -1276,8 +1267,8 @@ rev_long %>%
 #| label: fig-bargraphs-largest-expandrev-cats
 #| fig-cap: 
 #| fig-subcap: 
-#| - "Largest Expenditures for FY2024"
-#| - "Largest Revenue Sources for FY2024"
+#| - "Largest Expenditures"
+#| - "Largest Revenue Sources"
 
 exp_long %>%
   filter( Year == current_year) %>%
@@ -1418,7 +1409,7 @@ ownsource_graph <- ggplot(ownsource_rev, aes(x=Year, y=Dollars/1000)) +
     geom_text(data = annotation, aes(x=x, y=y, label=label))+
     geom_text(data = annotation_nums, aes(x=x, y=y, label=label))+
     scale_y_continuous(labels = comma)+
-  scale_x_continuous(expand = c(0,0), limits = c(1998, 2024)) + 
+  scale_x_continuous(expand = c(0,0), limits = c(1998, current_year)) + 
   theme_classic()+
   theme(legend.position = "none",
     panel.background = element_rect(fill='transparent'), #transparent panel bg
@@ -1841,7 +1832,7 @@ revenue_change_majorcats <- rev_long_majorcats %>%
   )  %>%
   left_join(CAGR_revenue_majorcats_tot, by = c("Category_name" = "Revenue Category")
             ) %>% 
-  arrange(-`FY 2024 ($ billions)`)%>%
+  arrange(-`FY 2025 ($ billions)`)%>%
   mutate(`26-Year CAGR` = percent(`26-Year CAGR`/100, accuracy=.01)) %>%
   select(-c(Dollars_1998, Dollars_2025, Dollars_2024, `1 Year CAGR`:`10 Year CAGR`
             )) %>%
