@@ -8,7 +8,7 @@ The share of certain taxes levied state-wide at a common rate and then transferr
 The six corresponding revenue items are:
 
 -   Local share of Personal Income Tax
-    -   Individual Income Tax Pass-Through New 2021 (source 2582).
+-   Individual Income Tax Pass-Through New 2021 (source 2582).
 -   Local share of General Sales Tax
 -   Personal Property Replacement Tax on Business Income
 -   Personal Property Replacement Tax on Public Utilities
@@ -27,39 +27,58 @@ library(tidyverse)
 library(haven)
 library(formatR)
 library(lubridate)
-library(smooth)
-library(forecast)
 library(scales)
 library(kableExtra)
 library(ggplot2)
 library(readxl)
 library(tidyverse)
 library(data.table)
-library(quantmod)
-library(geofacet)
 library(janitor)
-theme_set(theme_classic())
-
 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
-current_year = 2024
-exp_temp <- read_csv("./data/exp_temp.csv")
-rev_temp <- read_csv("./data/rev_temp.csv")
+first_year = 1998
+current_year = 2025
+
+rev_temp <- read_csv(paste0("data/FY", current_year, " Files/rev_temp.csv"))
+
+exp_temp <- read_csv(paste0("data/FY", current_year, " Files/exp_temp.csv"))
+
+alea_theme <- function() {
+  font <-"Whitney"
+  
+  ggplot2::theme(
+    legend.position = "right",
+    legend.title = element_blank(),
+    
+    panel.background = ggplot2::element_blank(),
+    panel.grid.minor.x = ggplot2::element_blank(),
+    panel.grid.major.y = element_line(color = "grey"),
+    panel.grid.minor.y = element_line(color = "grey", 
+                                      linetype = "dashed"),
+    # panel.grid.major.x = ggplot2::element_blank(),
+    axis.ticks = element_line(color = "gray"),
+    axis.ticks.x = element_blank()
+  )
+  
+}
+
+theme_set(alea_theme())
+
 ```
 
 ```{r include=FALSE}
 library(cmapplot)
 
 update_recessions <- function(url = NULL, quietly = FALSE){
-
+  
   # Use default URL if user does not override
   if (is_null(url) | missing(url)) {
     url <- "https://data.nber.org/data/cycles/business_cycle_dates.json"
   }
   
-   # locally bind variable names
+  # locally bind variable names
   start_char <- end_char <- start_date <- end_date <- ongoing <- index <- peak <- trough <- NULL
-
+  
   return(
     # attempt to download and format recessions table
     tryCatch({
@@ -90,12 +109,12 @@ update_recessions <- function(url = NULL, quietly = FALSE){
           end_char = case_when(
             ongoing ~ "Ongoing",
             TRUE ~ end_char)
-          ) %>%
+        ) %>%
         # clean up
         select(start_char, end_char, start_date, end_date, ongoing)
-
+      
       if (!quietly) {message("Successfully fetched from NBER")}
-
+      
       # Return recessions
       recessions
     },
@@ -165,8 +184,9 @@ transfers_long %>%
   summarize(expenditure = sum(expenditure, na.rm=TRUE) )%>% 
   ggplot() + 
   geom_line(aes(x=fy, y = expenditure, color=agency_name)) + 
-    scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
-
+  alea_theme() + 
+  scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
+  
   labs(title = "Transfers to Local Governments", caption = "Data Source: Illinois Office of the Comptroller")
 
 ```
@@ -199,14 +219,13 @@ rev_temp  %>%
   group_by(fy, source, source_name_AWM) %>% 
   summarize(receipts = sum(receipts)) %>%
   ggplot() + # aes(x=fy, y=receipts/1000, group = source))+
-     # geom_recessions(text = FALSE)+
+  # geom_recessions(text = FALSE)+
   geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
   #geom_text(data = annotation, aes(x=x, y=y, label=label)) +
-  theme_classic() +
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
- # scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
-  # theme(legend.position = "none") +
+  # scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
+  alea_theme() + 
   labs(title = "All Income Tax by Revenue Source", 
        subtitle = "Income Taxes include money transfered straight to local governments and funds saved for tax refunds.",
        y = "Billions of Nominal Dollars") 
@@ -221,7 +240,7 @@ rev_temp  %>%
   ggplot() + 
   geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
   #geom_text(data = annotation, aes(x=x, y=y, label=label)) +
-  theme_classic() +
+  alea_theme()+ 
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
   labs(title = "Tax Revenue by Revenue Source - For Local Transfers", 
@@ -236,7 +255,7 @@ rev_temp  %>%
   summarize(receipts = sum(receipts)) %>%
   ggplot() + 
   geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
-  theme_classic() +
+  alea_theme() + 
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
   labs(title = "Tax Revenue Collected by State for Local Transfers", 
@@ -244,24 +263,52 @@ rev_temp  %>%
        y = "Billions of Nominal Dollars") 
 ```
 
+
 ```{r}
 rev_temp  %>% 
-  filter(#rev_type == "03" | 
-         #  rev_type == "02" | 
+  filter(rev_type == "03" | 
+           rev_type == "02" | 
            rev_type == "06") %>%
   filter(!str_detect(source_name_AWM, "PPRT") & !str_detect(fund_name_ab, "REFUND")) %>%
 
+  group_by(fy,
+           rev_type
+           # source, source_name_AWM
+           ) %>% 
+  summarize(receipts = sum(receipts)) %>%
+  ggplot() + # aes(x=fy, y=receipts/1000, group = source))+
+  geom_line(aes(x=fy, y=receipts/1000000000,
+                group = rev_type, color=rev_type
+                ) )+ 
+  scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
+  scale_y_continuous(labels = comma) +
+
+  theme(legend.position = "bottom") +
+  labs(title = "What the State Actually Gets to Keep", 
+       subtitle = "Tax Revenue collected by the State minus (refund fund $ & Local Transfers)",
+       y = "Billions of Nominal Dollars") 
+```
+
+
+
+```{r}
+rev_temp  %>% 
+  filter(#rev_type == "03" | 
+    #  rev_type == "02" | 
+    rev_type == "06") %>%
+  filter(!str_detect(source_name_AWM, "PPRT") & !str_detect(fund_name_ab, "REFUND")) %>%
+  
   group_by(fy, source, source_name_AWM) %>% 
   summarize(receipts = sum(receipts)) %>%
   ggplot() + # aes(x=fy, y=receipts/1000, group = source))+
-      geom_recessions(text = FALSE)+
+  geom_recessions(text = FALSE)+
   geom_line(aes(x=fy, y=receipts/1000000000, color = source_name_AWM)) + 
   #geom_text(data = annotation, aes(x=x, y=y, label=label)) +
-  theme_classic() +
   scale_x_continuous(expand = c(0,0), limits = c(1998, current_year+.5), breaks = c(1998, 2005, 2010, 2015, 2020, current_year)) +
   scale_y_continuous(labels = comma) +
- scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
-  theme(legend.position = "none") +
+  scale_linetype_manual(values = c("dotted", "dashed", "solid")) +
+  alea_theme() + 
+  theme(legend.position= "none") + 
   labs(title = "What the State Actually Gets to Keep", 
        subtitle = "Tax Revenue collected by the State - (refund fund $ & Local Transfers)",
        y = "Billions of Nominal Dollars") 
