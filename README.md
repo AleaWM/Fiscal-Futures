@@ -10,6 +10,12 @@ This is a novel dataset containing all revenue items and all expenditure items f
 
 This document is a good faith effort to increase reproducibility and transparency. It is a living document in which we aim to describe things as clearly as possible in the time we have, share it with others, and improve each time we come back to it.
 
+
+The FY24 Fiscal Futures Report is available here: [The State of Illinois' FY 2024 Fiscal Situation: A Solid Performance but Threats Remain](https://igpa.uillinois.edu/wp-content/uploads/2025/07/IPGA-FY24-Annual-Report-07-15-25.pdf)
+
+- David Merriman, Richard Funderburg, Xiaoyan Hu, Jahun Lee, Alea Wilbur-Mujtaba, Paula Worthington. (2025).Institute of Government and Public Affairs."The State of Illinois' FY 2024 Fiscal Situation: A Solid Performance but Threats Remain".  <https://igpa.uillinois.edu/fiscal-and-economic-policy/new-policy-spotlight-highlights-illinois-financial-gains-discusses-potential-benefits-of-a-service-sector-sales-tax>.
+
+
 Read the FY23 Fiscal Futures Report here: [Finding the Balance: State Fiscal Sustainability and Local Government Challenges](https://igpa.uillinois.edu/reports/finding-the-balance-state-fiscal-sustainability-and-local-government-fiscal-challenges)
 
 -   Alea Wilbur-Mujtaba, Francis Choi, Rick Funderburg, Xiaoyan Hu, Paula R. Worthington, Yonghong Wu, Chen Xie, & David Merriman. "Finding the Balance: State Fiscal Sustainability and Local Government Challenges." (2024). Institute of Government and Public Affairs.
@@ -19,11 +25,6 @@ Read the FY22 Fiscal Futures Annual Report: [Recovering From a (COVID) Spending 
 
 -   Alea Wilbur-Mujtaba, Francis Choi, and David Merriman. (2023). "Recovering from a COVID (Spending) Fever." Institute of Government and Public Affairs.
 
-If you use code associated with this repository please cite the following work:
-
--   Alea Wilbur-Mujtaba. (2022). *Methodology for the Fiscal Futures Annual Report.* Retrieved from <https://aleawm.github.io/Fiscal-Futures/>
-
--   *I'm honestly not sure if this is the correct citation to use. Still a work in progress and figuring out the details. 3/16/2023*
 
 # Illinois Budget Dataset
 
