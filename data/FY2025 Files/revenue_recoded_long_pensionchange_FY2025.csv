@@ -1,0 +1,701 @@
+Year,type,Category,Dollars,Category_name
+1998,rev,02,6846.82673814,Individual Income Taxes
+1998,rev,03,1860.32232311,Corporate Income Taxes
+1998,rev,06,7198.4008548,Sales Taxes
+1998,rev,09,1300.65798379,Motor Fuel Tax
+1998,rev,12,1193.32776505,Public Utility Taxes
+1998,rev,15,464.24209418,Cigarette Taxes
+1998,rev,18,57.033945530000004,Liquor Gallonage Taxes
+1998,rev,21,250.43418059,Inheritance Tax
+1998,rev,24,132.33733757,Insurance Taxes&Fees&Licenses
+1998,rev,27,122.77171484,Corp Franchise Taxes & Fees
+1998,rev,30,42.82760159,Horse Racing Taxes & Fees
+1998,rev,31,543.15383701,Medical Provider Assessments
+1998,rev,33,834.69492952,Lottery Receipts
+1998,rev,35,244.68487256999998,Other Taxes
+1998,rev,36,727.72515399,Receipts From Revenue Producing
+1998,rev,39,304.80131432,"Licenses, Fees & Registrations"
+1998,rev,42,747.43720951,Motor Vehicle And Operators
+1998,rev,48,210.49650906,Riverboat Wagering Taxes
+1998,rev,54,138.10764785,Gifts And Bequests
+1998,rev,57,3747.77919652,Federal Other
+1998,rev,58,3339.058569,Federal Medicaid
+1998,rev,59,835.15853064,Federal Transportation
+1998,rev,60,2.73917896,Other Grants And Contracts
+1998,rev,63,277.61165641,Investment Income
+1998,rev,78,607.8167074099999,All Other Sources
+1999,rev,02,7225.76358578,Individual Income Taxes
+1999,rev,03,1854.8882219399998,Corporate Income Taxes
+1999,rev,06,7646.72795974,Sales Taxes
+1999,rev,09,1328.7993239099999,Motor Fuel Tax
+1999,rev,12,1423.40239839,Public Utility Taxes
+1999,rev,15,499.05601972,Cigarette Taxes
+1999,rev,18,57.23468337,Liquor Gallonage Taxes
+1999,rev,21,346.97772513,Inheritance Tax
+1999,rev,24,248.56499406,Insurance Taxes&Fees&Licenses
+1999,rev,27,121.34756702000001,Corp Franchise Taxes & Fees
+1999,rev,30,41.640031549999996,Horse Racing Taxes & Fees
+1999,rev,31,548.5762785,Medical Provider Assessments
+1999,rev,33,844.8850225900001,Lottery Receipts
+1999,rev,35,268.88842042,Other Taxes
+1999,rev,36,715.98572279,Receipts From Revenue Producing
+1999,rev,39,328.44941536,"Licenses, Fees & Registrations"
+1999,rev,42,773.00301611,Motor Vehicle And Operators
+1999,rev,48,309.82945875999997,Riverboat Wagering Taxes
+1999,rev,54,157.97435822999998,Gifts And Bequests
+1999,rev,57,3924.44471575,Federal Other
+1999,rev,58,3599.680071,Federal Medicaid
+1999,rev,59,725.98535545,Federal Transportation
+1999,rev,60,2.53047152,Other Grants And Contracts
+1999,rev,63,306.53286303999994,Investment Income
+1999,rev,78,664.49139278,All Other Sources
+2000,rev,02,7685.810654739999,Individual Income Taxes
+2000,rev,03,2067.90734966,Corporate Income Taxes
+2000,rev,06,8218.14786839,Sales Taxes
+2000,rev,09,1356.2829962399999,Motor Fuel Tax
+2000,rev,12,1524.36904966,Public Utility Taxes
+2000,rev,15,467.34953768,Cigarette Taxes
+2000,rev,18,127.86823993,Liquor Gallonage Taxes
+2000,rev,21,348.00884343,Inheritance Tax
+2000,rev,24,267.60997482,Insurance Taxes&Fees&Licenses
+2000,rev,27,143.9241533,Corp Franchise Taxes & Fees
+2000,rev,30,22.58485344,Horse Racing Taxes & Fees
+2000,rev,31,649.1760273,Medical Provider Assessments
+2000,rev,33,814.2805805700001,Lottery Receipts
+2000,rev,35,275.44702110000003,Other Taxes
+2000,rev,36,736.81247463,Receipts From Revenue Producing
+2000,rev,39,402.69867629000004,"Licenses, Fees & Registrations"
+2000,rev,42,973.43027835,Motor Vehicle And Operators
+2000,rev,48,435.97841569999997,Riverboat Wagering Taxes
+2000,rev,54,180.34686223999998,Gifts And Bequests
+2000,rev,57,4232.71491712,Federal Other
+2000,rev,58,3763.4157959999998,Federal Medicaid
+2000,rev,59,927.46996978,Federal Transportation
+2000,rev,60,2.9199970299999998,Other Grants And Contracts
+2000,rev,63,349.50786537,Investment Income
+2000,rev,78,1077.38749784,All Other Sources
+2001,rev,02,7995.794037199999,Individual Income Taxes
+2001,rev,03,1789.67247863,Corporate Income Taxes
+2001,rev,06,8175.164488689999,Sales Taxes
+2001,rev,09,1366.56332475,Motor Fuel Tax
+2001,rev,12,1605.87778177,Public Utility Taxes
+2001,rev,15,472.6152376,Cigarette Taxes
+2001,rev,18,124.31482256999999,Liquor Gallonage Taxes
+2001,rev,21,361.03876561000004,Inheritance Tax
+2001,rev,24,298.24655809999996,Insurance Taxes&Fees&Licenses
+2001,rev,27,150.68925959999999,Corp Franchise Taxes & Fees
+2001,rev,30,12.82682409,Horse Racing Taxes & Fees
+2001,rev,31,678.1500717,Medical Provider Assessments
+2001,rev,33,765.0459256900001,Lottery Receipts
+2001,rev,35,281.55455493,Other Taxes
+2001,rev,36,743.05298839,Receipts From Revenue Producing
+2001,rev,39,526.65658306,"Licenses, Fees & Registrations"
+2001,rev,42,1134.5203038999998,Motor Vehicle And Operators
+2001,rev,48,490.70986486000004,Riverboat Wagering Taxes
+2001,rev,54,202.979996,Gifts And Bequests
+2001,rev,57,4309.87224624,Federal Other
+2001,rev,58,4355.735472,Federal Medicaid
+2001,rev,59,1019.2127170499999,Federal Transportation
+2001,rev,60,3.08349373,Other Grants And Contracts
+2001,rev,63,425.44709466,Investment Income
+2001,rev,78,997.64911634,All Other Sources
+2002,rev,02,7471.385042089999,Individual Income Taxes
+2002,rev,03,1383.8216876600002,Corporate Income Taxes
+2002,rev,06,8279.1115143,Sales Taxes
+2002,rev,09,1373.52166662,Motor Fuel Tax
+2002,rev,12,1568.09848238,Public Utility Taxes
+2002,rev,15,468.77614148000004,Cigarette Taxes
+2002,rev,18,122.00049128,Liquor Gallonage Taxes
+2002,rev,21,329.16753178,Inheritance Tax
+2002,rev,24,322.84128252,Insurance Taxes&Fees&Licenses
+2002,rev,27,165.30385429,Corp Franchise Taxes & Fees
+2002,rev,30,12.59532069,Horse Racing Taxes & Fees
+2002,rev,31,655.9115494,Medical Provider Assessments
+2002,rev,33,825.54162247,Lottery Receipts
+2002,rev,35,277.98584837,Other Taxes
+2002,rev,36,749.83969558,Receipts From Revenue Producing
+2002,rev,39,554.1946707999999,"Licenses, Fees & Registrations"
+2002,rev,42,1177.66339353,Motor Vehicle And Operators
+2002,rev,48,540.31126469,Riverboat Wagering Taxes
+2002,rev,54,250.13616222,Gifts And Bequests
+2002,rev,57,4578.864234029999,Federal Other
+2002,rev,58,4484.163175,Federal Medicaid
+2002,rev,59,995.88892412,Federal Transportation
+2002,rev,60,3.3891778200000005,Other Grants And Contracts
+2002,rev,63,220.98759427000002,Investment Income
+2002,rev,78,1110.85673077,All Other Sources
+2003,rev,02,7340.981842110001,Individual Income Taxes
+2003,rev,03,1293.18682284,Corporate Income Taxes
+2003,rev,06,8227.82825575,Sales Taxes
+2003,rev,09,1388.31567453,Motor Fuel Tax
+2003,rev,12,1439.25176115,Public Utility Taxes
+2003,rev,15,699.75122168,Cigarette Taxes
+2003,rev,18,122.76700165999999,Liquor Gallonage Taxes
+2003,rev,21,236.94978894,Inheritance Tax
+2003,rev,24,372.04686740999995,Insurance Taxes&Fees&Licenses
+2003,rev,27,147.42889426,Corp Franchise Taxes & Fees
+2003,rev,30,11.91567214,Horse Racing Taxes & Fees
+2003,rev,31,817.97644467,Medical Provider Assessments
+2003,rev,33,817.04459676,Lottery Receipts
+2003,rev,35,270.58786147,Other Taxes
+2003,rev,36,742.14375061,Receipts From Revenue Producing
+2003,rev,39,553.76076774,"Licenses, Fees & Registrations"
+2003,rev,42,1107.27569317,Motor Vehicle And Operators
+2003,rev,48,615.99417109,Riverboat Wagering Taxes
+2003,rev,54,351.07418306,Gifts And Bequests
+2003,rev,57,5012.4304522,Federal Other
+2003,rev,58,4673.565524,Federal Medicaid
+2003,rev,59,846.3241898499999,Federal Transportation
+2003,rev,60,3.92775617,Other Grants And Contracts
+2003,rev,63,114.12961089,Investment Income
+2003,rev,78,1246.1097014000002,All Other Sources
+2004,rev,02,7272.4879706599995,Individual Income Taxes
+2004,rev,03,1596.45327886,Corporate Income Taxes
+2004,rev,06,8636.674562870001,Sales Taxes
+2004,rev,09,1423.88421109,Motor Fuel Tax
+2004,rev,12,1536.12153248,Public Utility Taxes
+2004,rev,15,760.22728436,Cigarette Taxes
+2004,rev,18,126.7708251,Liquor Gallonage Taxes
+2004,rev,21,221.72264338,Inheritance Tax
+2004,rev,24,473.21365608,Insurance Taxes&Fees&Licenses
+2004,rev,27,169.40772086,Corp Franchise Taxes & Fees
+2004,rev,30,12.03978776,Horse Racing Taxes & Fees
+2004,rev,31,901.1003701000001,Medical Provider Assessments
+2004,rev,33,879.90447738,Lottery Receipts
+2004,rev,35,297.92969758,Other Taxes
+2004,rev,36,866.08120676,Receipts From Revenue Producing
+2004,rev,39,812.37250069,"Licenses, Fees & Registrations"
+2004,rev,42,1161.74228229,Motor Vehicle And Operators
+2004,rev,48,708.20930996,Riverboat Wagering Taxes
+2004,rev,54,538.6649821799999,Gifts And Bequests
+2004,rev,57,5565.79542783,Federal Other
+2004,rev,58,6359.505718,Federal Medicaid
+2004,rev,59,998.6016088800001,Federal Transportation
+2004,rev,60,4.83449371,Other Grants And Contracts
+2004,rev,63,91.83820241,Investment Income
+2004,rev,78,1196.3071316499997,All Other Sources
+2005,rev,02,7978.77951184,Individual Income Taxes
+2005,rev,03,1971.81427329,Corporate Income Taxes
+2005,rev,06,8980.95868171,Sales Taxes
+2005,rev,09,1434.5949535299999,Motor Fuel Tax
+2005,rev,12,1501.03244609,Public Utility Taxes
+2005,rev,15,656.4726572000001,Cigarette Taxes
+2005,rev,18,147.23757933000002,Liquor Gallonage Taxes
+2005,rev,21,310.42024127,Inheritance Tax
+2005,rev,24,434.43672987,Insurance Taxes&Fees&Licenses
+2005,rev,27,189.70325174,Corp Franchise Taxes & Fees
+2005,rev,30,11.653864449999999,Horse Racing Taxes & Fees
+2005,rev,31,1601.3355031800002,Medical Provider Assessments
+2005,rev,33,903.4690904,Lottery Receipts
+2005,rev,35,320.49174826999996,Other Taxes
+2005,rev,36,823.60362002,Receipts From Revenue Producing
+2005,rev,39,875.9697850900001,"Licenses, Fees & Registrations"
+2005,rev,42,1168.75717146,Motor Vehicle And Operators
+2005,rev,48,751.66480425,Riverboat Wagering Taxes
+2005,rev,54,627.4336855299999,Gifts And Bequests
+2005,rev,57,5313.030271930001,Federal Other
+2005,rev,58,5853.287827,Federal Medicaid
+2005,rev,59,1001.76890581,Federal Transportation
+2005,rev,60,0.57045753,Other Grants And Contracts
+2005,rev,63,129.65268740000002,Investment Income
+2005,rev,78,1318.06831904,All Other Sources
+2006,rev,02,8635.104331780001,Individual Income Taxes
+2006,rev,03,2400.2686173800003,Corporate Income Taxes
+2006,rev,06,9638.33434263,Sales Taxes
+2006,rev,09,1446.0673123600002,Motor Fuel Tax
+2006,rev,12,1549.56316699,Public Utility Taxes
+2006,rev,15,640.3340616900001,Cigarette Taxes
+2006,rev,18,152.29980713999998,Liquor Gallonage Taxes
+2006,rev,21,271.86364276999996,Inheritance Tax
+2006,rev,24,404.43327568,Insurance Taxes&Fees&Licenses
+2006,rev,27,189.12766363,Corp Franchise Taxes & Fees
+2006,rev,30,10.54572359,Horse Racing Taxes & Fees
+2006,rev,31,889.6801049400001,Medical Provider Assessments
+2006,rev,33,981.06350821,Lottery Receipts
+2006,rev,35,351.27913651,Other Taxes
+2006,rev,36,878.30287548,Receipts From Revenue Producing
+2006,rev,39,808.43597915,"Licenses, Fees & Registrations"
+2006,rev,42,1295.8877350999999,Motor Vehicle And Operators
+2006,rev,48,766.52790823,Riverboat Wagering Taxes
+2006,rev,54,728.4933847,Gifts And Bequests
+2006,rev,57,5210.83298897,Federal Other
+2006,rev,58,5996.508283939999,Federal Medicaid
+2006,rev,59,1141.15335209,Federal Transportation
+2006,rev,60,0.554377,Other Grants And Contracts
+2006,rev,63,272.23391531,Investment Income
+2006,rev,78,1510.78581178,All Other Sources
+2007,rev,02,9408.43655743,Individual Income Taxes
+2007,rev,03,2936.35811472,Corporate Income Taxes
+2007,rev,06,9785.236293709999,Sales Taxes
+2007,rev,09,1453.70669718,Motor Fuel Tax
+2007,rev,12,1604.1786106,Public Utility Taxes
+2007,rev,15,638.7958567200001,Cigarette Taxes
+2007,rev,18,155.68040566,Liquor Gallonage Taxes
+2007,rev,21,264.3953763,Inheritance Tax
+2007,rev,24,408.57305313,Insurance Taxes&Fees&Licenses
+2007,rev,27,201.36560369,Corp Franchise Taxes & Fees
+2007,rev,30,8.51208188,Horse Racing Taxes & Fees
+2007,rev,31,1528.86352527,Medical Provider Assessments
+2007,rev,33,956.90566545,Lottery Receipts
+2007,rev,35,354.17719953,Other Taxes
+2007,rev,36,1108.44483147,Receipts From Revenue Producing
+2007,rev,39,794.3925912000001,"Licenses, Fees & Registrations"
+2007,rev,42,1288.0728796699998,Motor Vehicle And Operators
+2007,rev,48,763.91749265,Riverboat Wagering Taxes
+2007,rev,54,401.66252983,Gifts And Bequests
+2007,rev,57,5523.92406363,Federal Other
+2007,rev,58,6420.81657125,Federal Medicaid
+2007,rev,59,1159.12136956,Federal Transportation
+2007,rev,60,1.079162,Other Grants And Contracts
+2007,rev,63,379.06716245,Investment Income
+2007,rev,78,1948.66859339,All Other Sources
+2008,rev,02,10320.239473459998,Individual Income Taxes
+2008,rev,03,3115.60429312,Corporate Income Taxes
+2008,rev,06,9993.849863950001,Sales Taxes
+2008,rev,09,1334.6642577,Motor Fuel Tax
+2008,rev,12,1635.5312374100001,Public Utility Taxes
+2008,rev,15,613.65044847,Cigarette Taxes
+2008,rev,18,158.06612816999998,Liquor Gallonage Taxes
+2008,rev,21,372.79753415000005,Inheritance Tax
+2008,rev,24,400.99190782,Insurance Taxes&Fees&Licenses
+2008,rev,27,234.49218889,Corp Franchise Taxes & Fees
+2008,rev,30,8.360460940000001,Horse Racing Taxes & Fees
+2008,rev,31,2189.18955154,Medical Provider Assessments
+2008,rev,33,991.73254493,Lottery Receipts
+2008,rev,35,345.67231580000004,Other Taxes
+2008,rev,36,910.89907023,Receipts From Revenue Producing
+2008,rev,39,835.74432448,"Licenses, Fees & Registrations"
+2008,rev,42,1301.54455822,Motor Vehicle And Operators
+2008,rev,48,639.86511133,Riverboat Wagering Taxes
+2008,rev,54,428.39486643,Gifts And Bequests
+2008,rev,57,5424.68992493,Federal Other
+2008,rev,58,6888.9042975,Federal Medicaid
+2008,rev,59,1366.73868044,Federal Transportation
+2008,rev,60,1.04265826,Other Grants And Contracts
+2008,rev,63,368.36353403000004,Investment Income
+2008,rev,78,1761.5002175999998,All Other Sources
+2009,rev,02,9223.00273601,Individual Income Taxes
+2009,rev,03,2752.35222083,Corporate Income Taxes
+2009,rev,06,9298.43626611,Sales Taxes
+2009,rev,09,1467.40196099,Motor Fuel Tax
+2009,rev,12,1666.68127417,Public Utility Taxes
+2009,rev,15,582.3265889099999,Cigarette Taxes
+2009,rev,18,157.62122275,Liquor Gallonage Taxes
+2009,rev,21,287.73938696,Inheritance Tax
+2009,rev,24,439.95629784,Insurance Taxes&Fees&Licenses
+2009,rev,27,209.82929520999997,Corp Franchise Taxes & Fees
+2009,rev,30,6.87472118,Horse Racing Taxes & Fees
+2009,rev,31,1723.94564901,Medical Provider Assessments
+2009,rev,33,988.5008575500001,Lottery Receipts
+2009,rev,35,288.00928905,Other Taxes
+2009,rev,36,876.78650939,Receipts From Revenue Producing
+2009,rev,39,756.76038089,"Licenses, Fees & Registrations"
+2009,rev,42,1302.28596386,Motor Vehicle And Operators
+2009,rev,48,506.89941830000004,Riverboat Wagering Taxes
+2009,rev,54,488.73209999,Gifts And Bequests
+2009,rev,57,7950.31733342,Federal Other
+2009,rev,58,7043.2293705,Federal Medicaid
+2009,rev,59,1383.9407853500002,Federal Transportation
+2009,rev,60,0.8421965,Other Grants And Contracts
+2009,rev,63,153.96552204,Investment Income
+2009,rev,78,1909.82554658,All Other Sources
+2010,rev,02,8510.42027171,Individual Income Taxes
+2010,rev,03,2195.77825294,Corporate Income Taxes
+2010,rev,06,8789.064695,Sales Taxes
+2010,rev,09,1339.2278266199999,Motor Fuel Tax
+2010,rev,12,1571.65448305,Public Utility Taxes
+2010,rev,15,581.81664598,Cigarette Taxes
+2010,rev,18,175.85254150999998,Liquor Gallonage Taxes
+2010,rev,21,243.37897847,Inheritance Tax
+2010,rev,24,426.10080383999997,Insurance Taxes&Fees&Licenses
+2010,rev,27,216.44339845,Corp Franchise Taxes & Fees
+2010,rev,30,7.034094280000001,Horse Racing Taxes & Fees
+2010,rev,31,1574.87157598,Medical Provider Assessments
+2010,rev,33,1070.52556385,Lottery Receipts
+2010,rev,35,259.53098586,Other Taxes
+2010,rev,36,886.53099724,Receipts From Revenue Producing
+2010,rev,39,830.5223332999999,"Licenses, Fees & Registrations"
+2010,rev,42,1369.98969485,Motor Vehicle And Operators
+2010,rev,48,442.01775380000004,Riverboat Wagering Taxes
+2010,rev,54,560.36136551,Gifts And Bequests
+2010,rev,57,9052.4480031,Federal Other
+2010,rev,58,7326.5334165,Federal Medicaid
+2010,rev,59,1885.4697107199997,Federal Transportation
+2010,rev,60,0.5242185,Other Grants And Contracts
+2010,rev,63,46.1268782,Investment Income
+2010,rev,78,1834.78544102,All Other Sources
+2011,rev,02,11225.36990458,Individual Income Taxes
+2011,rev,03,2986.4393471,Corporate Income Taxes
+2011,rev,06,9513.531541879998,Sales Taxes
+2011,rev,09,1314.2344447799999,Motor Fuel Tax
+2011,rev,12,1624.16839028,Public Utility Taxes
+2011,rev,15,588.26663329,Cigarette Taxes
+2011,rev,18,182.26071769,Liquor Gallonage Taxes
+2011,rev,21,122.24361025,Inheritance Tax
+2011,rev,24,423.71931073,Insurance Taxes&Fees&Licenses
+2011,rev,27,215.04237085999998,Corp Franchise Taxes & Fees
+2011,rev,30,6.74735692,Horse Racing Taxes & Fees
+2011,rev,31,1634.99420377,Medical Provider Assessments
+2011,rev,33,1091.02120474,Lottery Receipts
+2011,rev,35,282.21145687,Other Taxes
+2011,rev,36,1324.59909719,Receipts From Revenue Producing
+2011,rev,39,866.02642368,"Licenses, Fees & Registrations"
+2011,rev,42,1493.52598723,Motor Vehicle And Operators
+2011,rev,48,443.1811121,Riverboat Wagering Taxes
+2011,rev,54,912.7283426900001,Gifts And Bequests
+2011,rev,57,8378.65026943,Federal Other
+2011,rev,58,8124.2366335,Federal Medicaid
+2011,rev,59,1915.92925921,Federal Transportation
+2011,rev,60,0.72290929,Other Grants And Contracts
+2011,rev,63,49.66214736,Investment Income
+2011,rev,78,1584.4374104400001,All Other Sources
+2012,rev,02,15512.31094107,Individual Income Taxes
+2012,rev,03,3481.99458938,Corporate Income Taxes
+2012,rev,06,10002.663751850001,Sales Taxes
+2012,rev,09,1290.26487252,Motor Fuel Tax
+2012,rev,12,1480.6875609400001,Public Utility Taxes
+2012,rev,15,606.42173985,Cigarette Taxes
+2012,rev,18,279.2704248,Liquor Gallonage Taxes
+2012,rev,21,234.86387926,Inheritance Tax
+2012,rev,24,445.02615015,Insurance Taxes&Fees&Licenses
+2012,rev,27,199.60711452,Corp Franchise Taxes & Fees
+2012,rev,30,7.232797150000001,Horse Racing Taxes & Fees
+2012,rev,31,1677.44122206,Medical Provider Assessments
+2012,rev,33,1272.6934683600002,Lottery Receipts
+2012,rev,35,301.34119189,Other Taxes
+2012,rev,36,1693.62570774,Receipts From Revenue Producing
+2012,rev,39,1026.86842061,"Licenses, Fees & Registrations"
+2012,rev,42,1497.9516536800002,Motor Vehicle And Operators
+2012,rev,48,490.83917472,Riverboat Wagering Taxes
+2012,rev,54,673.91949959,Gifts And Bequests
+2012,rev,57,6413.799999,Federal Other
+2012,rev,58,6528.295469,Federal Medicaid
+2012,rev,59,1844.5266901199998,Federal Transportation
+2012,rev,60,1.70109,Other Grants And Contracts
+2012,rev,63,42.33931183999999,Investment Income
+2012,rev,78,1416.5636424900001,All Other Sources
+2013,rev,02,16538.66052816,Individual Income Taxes
+2013,rev,03,4448.32565034,Corporate Income Taxes
+2013,rev,06,10235.63980828,Sales Taxes
+2013,rev,09,1259.83230611,Motor Fuel Tax
+2013,rev,12,1506.93880722,Public Utility Taxes
+2013,rev,15,856.33797262,Cigarette Taxes
+2013,rev,18,279.92998955,Liquor Gallonage Taxes
+2013,rev,21,293.32097336000004,Inheritance Tax
+2013,rev,24,455.4075812,Insurance Taxes&Fees&Licenses
+2013,rev,27,212.87555718000002,Corp Franchise Taxes & Fees
+2013,rev,30,6.01207831,Horse Racing Taxes & Fees
+2013,rev,31,1656.30021243,Medical Provider Assessments
+2013,rev,33,1379.16294346,Lottery Receipts
+2013,rev,35,355.51030010000005,Other Taxes
+2013,rev,36,1985.9642045399999,Receipts From Revenue Producing
+2013,rev,39,1131.23333676,"Licenses, Fees & Registrations"
+2013,rev,42,1462.17352145,Motor Vehicle And Operators
+2013,rev,48,515.70926705,Riverboat Wagering Taxes
+2013,rev,54,780.08431341,Gifts And Bequests
+2013,rev,57,6268.954413840001,Federal Other
+2013,rev,58,8285.53164422,Federal Medicaid
+2013,rev,59,1704.99158732,Federal Transportation
+2013,rev,60,0.971,Other Grants And Contracts
+2013,rev,63,37.324573969999996,Investment Income
+2013,rev,78,1444.56672267,All Other Sources
+2014,rev,02,16642.15521835,Individual Income Taxes
+2014,rev,03,4435.27847708,Corporate Income Taxes
+2014,rev,06,10654.34650818,Sales Taxes
+2014,rev,09,1293.96777059,Motor Fuel Tax
+2014,rev,12,1454.4996584100002,Public Utility Taxes
+2014,rev,15,859.86593195,Cigarette Taxes
+2014,rev,18,279.58717856,Liquor Gallonage Taxes
+2014,rev,21,276.48907355,Inheritance Tax
+2014,rev,24,456.13464886,Insurance Taxes&Fees&Licenses
+2014,rev,27,211.14443114,Corp Franchise Taxes & Fees
+2014,rev,30,6.88348314,Horse Racing Taxes & Fees
+2014,rev,31,2413.0468030399998,Medical Provider Assessments
+2014,rev,33,1334.94659297,Lottery Receipts
+2014,rev,35,473.47030938,Other Taxes
+2014,rev,36,1958.5712693399998,Receipts From Revenue Producing
+2014,rev,39,1191.35281353,"Licenses, Fees & Registrations"
+2014,rev,42,1510.80157434,Motor Vehicle And Operators
+2014,rev,48,477.36714304000003,Riverboat Wagering Taxes
+2014,rev,54,597.0448476,Gifts And Bequests
+2014,rev,57,6462.11660582,Federal Other
+2014,rev,58,8878.0439977,Federal Medicaid
+2014,rev,59,1738.3332169,Federal Transportation
+2014,rev,60,0.125,Other Grants And Contracts
+2014,rev,63,51.52815639,Investment Income
+2014,rev,78,1611.95520299,All Other Sources
+2015,rev,02,15913.81619089,Individual Income Taxes
+2015,rev,03,4054.26679995,Corporate Income Taxes
+2015,rev,06,11148.458136770001,Sales Taxes
+2015,rev,09,1293.27247004,Motor Fuel Tax
+2015,rev,12,1475.6799219700001,Public Utility Taxes
+2015,rev,15,861.95373109,Cigarette Taxes
+2015,rev,18,283.17717977999996,Liquor Gallonage Taxes
+2015,rev,21,333.29526236000004,Inheritance Tax
+2015,rev,24,469.34860851999997,Insurance Taxes&Fees&Licenses
+2015,rev,27,219.3942276,Corp Franchise Taxes & Fees
+2015,rev,30,6.70416816,Horse Racing Taxes & Fees
+2015,rev,31,1961.2767806099998,Medical Provider Assessments
+2015,rev,33,1261.4795070599998,Lottery Receipts
+2015,rev,35,614.32460671,Other Taxes
+2015,rev,36,2116.04300415,Receipts From Revenue Producing
+2015,rev,39,1223.01810292,"Licenses, Fees & Registrations"
+2015,rev,42,1539.2705857,Motor Vehicle And Operators
+2015,rev,48,466.24060280000003,Riverboat Wagering Taxes
+2015,rev,54,699.82297333,Gifts And Bequests
+2015,rev,57,6212.42931371,Federal Other
+2015,rev,58,10491.23628361,Federal Medicaid
+2015,rev,59,2030.9343196999998,Federal Transportation
+2015,rev,60,0.408668,Other Grants And Contracts
+2015,rev,63,52.441473020000004,Investment Income
+2015,rev,78,1861.50326144,All Other Sources
+2016,rev,02,13806.52578659,Individual Income Taxes
+2016,rev,03,3191.53209179,Corporate Income Taxes
+2016,rev,06,11307.085201459999,Sales Taxes
+2016,rev,09,1354.03965081,Motor Fuel Tax
+2016,rev,12,1405.6592386099999,Public Utility Taxes
+2016,rev,15,844.92884975,Cigarette Taxes
+2016,rev,18,287.86510453,Liquor Gallonage Taxes
+2016,rev,21,305.71692877,Inheritance Tax
+2016,rev,24,521.7902616,Insurance Taxes&Fees&Licenses
+2016,rev,27,215.66423860000003,Corp Franchise Taxes & Fees
+2016,rev,30,6.7831282,Horse Racing Taxes & Fees
+2016,rev,31,1951.69786961,Medical Provider Assessments
+2016,rev,33,1303.3672075,Lottery Receipts
+2016,rev,35,695.18981791,Other Taxes
+2016,rev,36,2196.9813344300005,Receipts From Revenue Producing
+2016,rev,39,1219.59435332,"Licenses, Fees & Registrations"
+2016,rev,42,1551.97597525,Motor Vehicle And Operators
+2016,rev,48,442.75664284,Riverboat Wagering Taxes
+2016,rev,54,937.0537914600001,Gifts And Bequests
+2016,rev,57,5904.40240104,Federal Other
+2016,rev,58,11246.69538979,Federal Medicaid
+2016,rev,59,1845.4318384399999,Federal Transportation
+2016,rev,60,1.18068704,Other Grants And Contracts
+2016,rev,63,54.067659490000004,Investment Income
+2016,rev,78,1556.6013524300001,All Other Sources
+2017,rev,02,13661.74562027,Individual Income Taxes
+2017,rev,03,2747.17070156,Corporate Income Taxes
+2017,rev,06,11384.59206293,Sales Taxes
+2017,rev,09,1348.41448643,Motor Fuel Tax
+2017,rev,12,1396.15754275,Public Utility Taxes
+2017,rev,15,781.52928651,Cigarette Taxes
+2017,rev,18,294.30435236,Liquor Gallonage Taxes
+2017,rev,21,261.26378122,Inheritance Tax
+2017,rev,24,532.284727,Insurance Taxes&Fees&Licenses
+2017,rev,27,215.13147254000003,Corp Franchise Taxes & Fees
+2017,rev,30,6.57429933,Horse Racing Taxes & Fees
+2017,rev,31,2137.62069041,Medical Provider Assessments
+2017,rev,33,1244.41732542,Lottery Receipts
+2017,rev,35,755.64697571,Other Taxes
+2017,rev,36,2221.40704684,Receipts From Revenue Producing
+2017,rev,39,1206.93901892,"Licenses, Fees & Registrations"
+2017,rev,42,1585.4487883699999,Motor Vehicle And Operators
+2017,rev,48,439.52856610000003,Riverboat Wagering Taxes
+2017,rev,54,1127.6678003499999,Gifts And Bequests
+2017,rev,57,5933.826931510001,Federal Other
+2017,rev,58,10448.32276429,Federal Medicaid
+2017,rev,59,2105.46272011,Federal Transportation
+2017,rev,60,0.15165196,Other Grants And Contracts
+2017,rev,63,88.850989,Investment Income
+2017,rev,78,1735.6083388299999,All Other Sources
+2018,rev,02,18748.04399713,Individual Income Taxes
+2018,rev,03,3452.1671297400003,Corporate Income Taxes
+2018,rev,06,11744.817931619998,Sales Taxes
+2018,rev,09,1367.9394468200003,Motor Fuel Tax
+2018,rev,12,1431.4115712799999,Public Utility Taxes
+2018,rev,15,764.29479104,Cigarette Taxes
+2018,rev,18,296.16253167,Liquor Gallonage Taxes
+2018,rev,21,358.10847749,Inheritance Tax
+2018,rev,24,563.47811176,Insurance Taxes&Fees&Licenses
+2018,rev,27,215.84464005999996,Corp Franchise Taxes & Fees
+2018,rev,30,6.83977798,Horse Racing Taxes & Fees
+2018,rev,31,2204.52808119,Medical Provider Assessments
+2018,rev,33,1260.7115748499998,Lottery Receipts
+2018,rev,35,824.51743249,Other Taxes
+2018,rev,36,2476.6726292,Receipts From Revenue Producing
+2018,rev,39,1218.89577773,"Licenses, Fees & Registrations"
+2018,rev,42,1483.02002522,Motor Vehicle And Operators
+2018,rev,48,433.57407225,Riverboat Wagering Taxes
+2018,rev,54,1206.51913064,Gifts And Bequests
+2018,rev,57,5802.46394704,Federal Other
+2018,rev,58,13474.61210265,Federal Medicaid
+2018,rev,59,1593.22014479,Federal Transportation
+2018,rev,60,0.01512267,Other Grants And Contracts
+2018,rev,63,173.03232382,Investment Income
+2018,rev,78,1913.67805674,All Other Sources
+2019,rev,02,20411.25857608,Individual Income Taxes
+2019,rev,03,3988.9596463899998,Corporate Income Taxes
+2019,rev,06,12456.85694585,Sales Taxes
+2019,rev,09,1350.5085531799998,Motor Fuel Tax
+2019,rev,12,1474.32796026,Public Utility Taxes
+2019,rev,15,769.47516647,Cigarette Taxes
+2019,rev,18,297.24915266999994,Liquor Gallonage Taxes
+2019,rev,21,388.29539561,Inheritance Tax
+2019,rev,24,523.69252784,Insurance Taxes&Fees&Licenses
+2019,rev,27,256.69869957000003,Corp Franchise Taxes & Fees
+2019,rev,30,6.664187259999999,Horse Racing Taxes & Fees
+2019,rev,31,2376.1845600099996,Medical Provider Assessments
+2019,rev,33,1326.4133212699999,Lottery Receipts
+2019,rev,35,901.6796256,Other Taxes
+2019,rev,36,2589.9790074000002,Receipts From Revenue Producing
+2019,rev,39,1178.2404801,"Licenses, Fees & Registrations"
+2019,rev,42,1599.24628996,Motor Vehicle And Operators
+2019,rev,48,422.69140733,Riverboat Wagering Taxes
+2019,rev,54,1114.5401427000002,Gifts And Bequests
+2019,rev,57,5942.08160865,Federal Other
+2019,rev,58,12066.82019685,Federal Medicaid
+2019,rev,59,1362.6759261900002,Federal Transportation
+2019,rev,60,0.23182618,Other Grants And Contracts
+2019,rev,63,283.41204518,Investment Income
+2019,rev,78,1549.48284283,All Other Sources
+2020,rev,02,19600.708671760003,Individual Income Taxes
+2020,rev,03,3636.7209881999997,Corporate Income Taxes
+2020,rev,06,12273.26935867,Sales Taxes
+2020,rev,09,2318.9591395,Motor Fuel Tax
+2020,rev,12,1424.11609276,Public Utility Taxes
+2020,rev,15,850.56335983,Cigarette Taxes
+2020,rev,18,302.77449139000004,Liquor Gallonage Taxes
+2020,rev,21,283.24693270999995,Inheritance Tax
+2020,rev,24,479.88810943,Insurance Taxes&Fees&Licenses
+2020,rev,27,219.11439228999998,Corp Franchise Taxes & Fees
+2020,rev,30,6.96072717,Horse Racing Taxes & Fees
+2020,rev,31,3473.8385677200004,Medical Provider Assessments
+2020,rev,33,1158.6710565,Lottery Receipts
+2020,rev,35,823.0034299399999,Other Taxes
+2020,rev,36,2174.1956140700004,Receipts From Revenue Producing
+2020,rev,39,1419.25369478,"Licenses, Fees & Registrations"
+2020,rev,42,1458.0913355,Motor Vehicle And Operators
+2020,rev,48,326.23720298,Riverboat Wagering Taxes
+2020,rev,54,918.07353694,Gifts And Bequests
+2020,rev,57,9705.12242953,Federal Other
+2020,rev,58,13841.846912219999,Federal Medicaid
+2020,rev,59,1783.5205157,Federal Transportation
+2020,rev,60,1.9009388999999999,Other Grants And Contracts
+2020,rev,63,260.40690811,Investment Income
+2020,rev,78,1848.26097516,All Other Sources
+2021,rev,02,23979.886093279998,Individual Income Taxes
+2021,rev,03,5991.90552129,Corporate Income Taxes
+2021,rev,06,13897.74366299,Sales Taxes
+2021,rev,09,2383.66556647,Motor Fuel Tax
+2021,rev,12,1369.42402377,Public Utility Taxes
+2021,rev,15,917.04281503,Cigarette Taxes
+2021,rev,18,312.10127911,Liquor Gallonage Taxes
+2021,rev,21,449.80045057999996,Inheritance Tax
+2021,rev,24,633.460773,Insurance Taxes&Fees&Licenses
+2021,rev,27,332.05712143,Corp Franchise Taxes & Fees
+2021,rev,30,8.83792716,Horse Racing Taxes & Fees
+2021,rev,31,3809.35655872,Medical Provider Assessments
+2021,rev,33,1483.83753136,Lottery Receipts
+2021,rev,35,884.7331525,Other Taxes
+2021,rev,36,2317.21269957,Receipts From Revenue Producing
+2021,rev,39,1971.3409143499998,"Licenses, Fees & Registrations"
+2021,rev,42,1691.84525723,Motor Vehicle And Operators
+2021,rev,48,176.77904052000002,Riverboat Wagering Taxes
+2021,rev,54,1498.28149288,Gifts And Bequests
+2021,rev,57,9209.680510260001,Federal Other
+2021,rev,58,17555.61878063,Federal Medicaid
+2021,rev,59,2379.56348973,Federal Transportation
+2021,rev,60,0.45832265,Other Grants And Contracts
+2021,rev,63,103.02020393,Investment Income
+2021,rev,78,1848.61441686,All Other Sources
+2022,rev,02,26441.334020640003,Individual Income Taxes
+2022,rev,03,10027.44502876,Corporate Income Taxes
+2022,rev,06,15474.16469422,Sales Taxes
+2022,rev,09,2527.36488968,Motor Fuel Tax
+2022,rev,12,1411.7897733999998,Public Utility Taxes
+2022,rev,15,841.36644287,Cigarette Taxes
+2022,rev,18,320.00049307,Liquor Gallonage Taxes
+2022,rev,21,603.30596471,Inheritance Tax
+2022,rev,24,610.0830054500001,Insurance Taxes&Fees&Licenses
+2022,rev,27,224.46879003,Corp Franchise Taxes & Fees
+2022,rev,30,8.588081429999999,Horse Racing Taxes & Fees
+2022,rev,31,3733.75619684,Medical Provider Assessments
+2022,rev,33,1392.2671951399998,Lottery Receipts
+2022,rev,35,1449.99910718,Other Taxes
+2022,rev,36,2386.9186534299997,Receipts From Revenue Producing
+2022,rev,39,1886.18847954,"Licenses, Fees & Registrations"
+2022,rev,42,1597.28919903,Motor Vehicle And Operators
+2022,rev,48,319.56448811,Riverboat Wagering Taxes
+2022,rev,54,1854.19843534,Gifts And Bequests
+2022,rev,57,19381.02681831,Federal Other
+2022,rev,58,19045.02118168,Federal Medicaid
+2022,rev,59,1833.56280947,Federal Transportation
+2022,rev,60,0.30155451,Other Grants And Contracts
+2022,rev,63,82.10634706,Investment Income
+2022,rev,78,2609.2402328400003,All Other Sources
+2023,rev,02,25309.54212934,Individual Income Taxes
+2023,rev,03,10484.326714539999,Corporate Income Taxes
+2023,rev,06,16222.46599457,Sales Taxes
+2023,rev,09,2569.22875202,Motor Fuel Tax
+2023,rev,12,1443.21222652,Public Utility Taxes
+2023,rev,15,784.86131246,Cigarette Taxes
+2023,rev,18,316.29617706,Liquor Gallonage Taxes
+2023,rev,21,502.66530162,Inheritance Tax
+2023,rev,24,662.3194271,Insurance Taxes&Fees&Licenses
+2023,rev,27,234.34049856000001,Corp Franchise Taxes & Fees
+2023,rev,30,7.770479409999999,Horse Racing Taxes & Fees
+2023,rev,31,4088.37992091,Medical Provider Assessments
+2023,rev,33,1557.73718277,Lottery Receipts
+2023,rev,35,1638.33656046,Other Taxes
+2023,rev,36,2589.09936285,Receipts From Revenue Producing
+2023,rev,39,2060.59908947,"Licenses, Fees & Registrations"
+2023,rev,42,1597.1267798699998,Motor Vehicle And Operators
+2023,rev,48,349.48803672,Riverboat Wagering Taxes
+2023,rev,54,2098.3857632,Gifts And Bequests
+2023,rev,57,10878.719803510001,Federal Other
+2023,rev,58,20205.13841998,Federal Medicaid
+2023,rev,59,2114.1018186700003,Federal Transportation
+2023,rev,60,1.7481583200000002,Other Grants And Contracts
+2023,rev,63,747.76371401,Investment Income
+2023,rev,78,3310.66912044,All Other Sources
+2024,rev,02,27378.23104303,Individual Income Taxes
+2024,rev,03,8301.79252883,Corporate Income Taxes
+2024,rev,06,16425.80955141,Sales Taxes
+2024,rev,09,2822.0554001400005,Motor Fuel Tax
+2024,rev,12,1439.4304841499998,Public Utility Taxes
+2024,rev,15,707.93506372,Cigarette Taxes
+2024,rev,18,311.13661325,Liquor Gallonage Taxes
+2024,rev,21,627.45039803,Inheritance Tax
+2024,rev,24,663.28117676,Insurance Taxes&Fees&Licenses
+2024,rev,27,210.98255442999996,Corp Franchise Taxes & Fees
+2024,rev,30,7.874200619999999,Horse Racing Taxes & Fees
+2024,rev,31,4341.593735189999,Medical Provider Assessments
+2024,rev,33,1605.42611582,Lottery Receipts
+2024,rev,35,1704.96293925,Other Taxes
+2024,rev,36,3012.77390344,Receipts From Revenue Producing
+2024,rev,39,2351.53702675,"Licenses, Fees & Registrations"
+2024,rev,42,1637.25887938,Motor Vehicle And Operators
+2024,rev,48,361.51899198,Riverboat Wagering Taxes
+2024,rev,54,2446.81923383,Gifts And Bequests
+2024,rev,57,10487.35325647,Federal Other
+2024,rev,58,21377.249346459997,Federal Medicaid
+2024,rev,59,2360.51704048,Federal Transportation
+2024,rev,60,2.63394787,Other Grants And Contracts
+2024,rev,63,1261.4849335899999,Investment Income
+2024,rev,78,3281.6816315,All Other Sources
+2025,rev,02,30125.20986996,Individual Income Taxes
+2025,rev,03,6954.5154633,Corporate Income Taxes
+2025,rev,06,16700.54601903,Sales Taxes
+2025,rev,09,2953.75248935,Motor Fuel Tax
+2025,rev,12,1477.5614354000002,Public Utility Taxes
+2025,rev,15,661.39160187,Cigarette Taxes
+2025,rev,18,303.03751148000003,Liquor Gallonage Taxes
+2025,rev,21,602.77028517,Inheritance Tax
+2025,rev,24,750.48906591,Insurance Taxes&Fees&Licenses
+2025,rev,27,205.30527482,Corp Franchise Taxes & Fees
+2025,rev,30,7.81519993,Horse Racing Taxes & Fees
+2025,rev,31,4712.627856470001,Medical Provider Assessments
+2025,rev,33,1462.87720996,Lottery Receipts
+2025,rev,35,2006.86739895,Other Taxes
+2025,rev,36,3285.50635994,Receipts From Revenue Producing
+2025,rev,39,2264.7486538000003,"Licenses, Fees & Registrations"
+2025,rev,42,1639.7672302,Motor Vehicle And Operators
+2025,rev,48,417.81933630000003,Riverboat Wagering Taxes
+2025,rev,54,2047.08898727,Gifts And Bequests
+2025,rev,57,11607.804499299998,Federal Other
+2025,rev,58,20583.05866902,Federal Medicaid
+2025,rev,59,2740.71538518,Federal Transportation
+2025,rev,60,5.615750779999999,Other Grants And Contracts
+2025,rev,63,1402.76875324,Investment Income
+2025,rev,78,3243.76630945,All Other Sources
