@@ -5,33 +5,50 @@
 library(tidyverse)
 library(haven)
 library(formatR)
-library(lubridate)
-library(smooth)
-library(forecast)
 library(scales)
 library(kableExtra)
 library(ggplot2)
 library(readxl)
 library(tidyverse)
 library(data.table)
-library(quantmod)
-library(geofacet)
 library(janitor)
 library(cmapplot)
+library(ggrepel)
 
-theme_set(theme_classic())
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+first_year = 1998
+current_year = 2025
 
+rev_temp <- read_csv(paste0("data/FY", current_year, " Files/rev_temp.csv"))
 
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+exp_temp <- read_csv(paste0("data/FY", current_year, " Files/exp_temp.csv"))
 
-exp_temp <- read_csv("./data/exp_temp.csv") %>% 
-  filter(agency != "799") 
-exp_temp <- exp_temp %>% mutate(fund_name = fund_name_ab)
+alea_theme <- function() {
+  font <-"Whitney"
+  
+  ggplot2::theme(
+    legend.position = "right",
+    legend.title = element_blank(),
+    
+    panel.background = ggplot2::element_blank(),
+    panel.grid.minor.x = ggplot2::element_blank(),
+    panel.grid.major.y = element_line(color = "grey"),
+    panel.grid.minor.y = element_line(color = "grey", 
+                                      linetype = "dashed"),
+     panel.grid.major.x = ggplot2::element_blank(),
+    axis.ticks = element_line(color = "gray"),
+    axis.ticks.x = element_blank()
+  )
+  
+}
 
-rev_temp <- read_csv("./data/rev_temp.csv") %>% 
-  filter(agency != "799"  & rev_type != "75") 
+theme_set(alea_theme())
 
-rev_temp <- rev_temp %>% mutate(fund_name = fund_name_ab)
+exp_temp <- exp_temp %>%   filter(agency != "799") |> 
+  mutate(fund_name = fund_name_ab)
+
+rev_temp <- rev_temp %>% 
+  filter(agency != "799"  & rev_type != "75")  %>% mutate(fund_name = fund_name_ab)
 ```
 
 ```{r include=FALSE}
@@ -138,9 +155,8 @@ rev_temp %>%
     geom_smooth(aes(x=fy, y = receipts), method = lm, se = FALSE, lty = "dashed", color = "red", alpha = .5, lwd = .5) + 
 
   geom_line(aes(x=fy, y=receipts,color=rev_type_name), lwd = 1.5) +
-  theme_classic() +
   scale_y_continuous(labels = comma)+
-  scale_x_continuous(expand = c(0,0)) +
+  scale_x_continuous(expand = c(0,.5), n.breaks = 6) +
   labs(title = "Other Federal Revenue
        with federal stimulus funds", 
        caption = "These values include stimulus funds after the Great Recession and the COVID pandemic response.",
@@ -156,9 +172,8 @@ rev_temp %>%
   geom_recessions(xformat = "numeric",text = FALSE)+
   geom_line(aes(x=fy, y=receipts, color=rev_type_name), lwd = 1.5) +
   geom_smooth(aes(x=fy, y = receipts), method = lm, se = FALSE, lty = "dashed", color = "red", alpha = .5, lwd = .5) + 
-  theme_classic() +
   scale_y_continuous(limits = c(0,20), labels = comma)+
-  scale_x_continuous(expand = c(0,0)) +
+  scale_x_continuous(expand = c(0,.5), n.breaks = 6) +
   labs(title = "Federal to State Transfers: All Other Fed Rev 
        without Federal Stimulus $", 
        caption = "These values do NOT include stimulus funds after the Great Recession and the COVID pandemic response.",
@@ -190,9 +205,8 @@ rev_temp %>%
   geom_recessions(xformat = "numeric",text = FALSE)+
     geom_smooth(aes(x=fy, y = receipts), method = lm, se = FALSE, lty = "dashed", color = "red", alpha = .5, lwd = .5) + 
   geom_line(aes(x=fy, y=receipts,color=rev_type_name), lwd = 1.5) +
-  theme_classic() +
   scale_y_continuous(limits = c(0,4), labels = comma)+
-  scale_x_continuous(expand = c(0,0)) +
+  scale_x_continuous(expand = c(0,.5), n.breaks = 6) +
   labs(title = "K-12 Federal Revenue (all revenue received)", 
        caption = "All funds received by the SBE fund",
        y = "Billions of Dollars", x = "") + 
@@ -209,7 +223,6 @@ rev_temp %>%
   geom_recessions(xformat = "numeric",text = FALSE)+
   geom_line(aes(x=fy, y=receipts, color=rev_type_name), lwd = 1.5) +
   geom_smooth(aes(x=fy, y = receipts), method = lm, se = FALSE, lty = "dashed", color = "red", alpha = .5, lwd = .5) + 
-  theme_classic() +
   scale_y_continuous(limits= c(0,4),labels = comma)+
   scale_x_continuous(expand = c(0,0)) +
   labs(title = "Federal Revenue for K-12", 
@@ -234,7 +247,7 @@ K12exp <- exp_temp %>%
 ggplot() +
   geom_line(data = K12rev, aes(x=fy, y = receipts), lty = 1 ) +
   geom_line(data = K12exp, aes(x=fy, y = expenditure), lty = 2) +
-  scale_x_continuous(expand = c(0,0)) 
+  scale_x_continuous(expand = c(0,.5), n.breaks = 6)
 ```
 
 ```{r}
@@ -267,11 +280,10 @@ fedrev %>%
   summarise(receipts = sum(receipts, na.rm = TRUE)/1000000000) %>% 
   ggplot() +
   geom_line(aes(x=fy, y=receipts)) +
-  theme_classic() +
-  scale_y_continuous(labels = comma)+
   labs(title = "All Federal Revenue w/ Fed. Stimulus Package", y = "Billions of Dollars", x = "") + 
   theme(legend.position = "bottom", legend.title = element_blank()  )+
-  scale_y_continuous(limits = c(0,45))
+  scale_x_continuous(expand = c(0,.5), n.breaks = 6) +
+  scale_y_continuous(limits = c(0,45), labels = comma)
 
 
 fedrev %>% 
@@ -280,14 +292,13 @@ fedrev %>%
   summarise(receipts = sum(receipts, na.rm = TRUE)/1000000000) %>% 
   ggplot() +
   geom_line(aes(x=fy, y=receipts)) +
-      theme_classic() +
-  scale_y_continuous(labels = comma)+
   labs(title = "All Federal Rev EXCEPT Federal Stimulus Package", 
        y = "Billions of Dollars", x = "",
        caption = "Note: Dropping Federal Stimulus Package revenue only removes the $3.5 billion from FY20, $0.3 billion from FY21, and 
        $8.5 billion from FY22. There is still over $12 billion more in Federal Revenue compared to FY19.") + 
   theme(legend.position = "bottom", legend.title = element_blank()  ) +
-  scale_y_continuous(limits = c(0,45))
+  scale_x_continuous(expand = c(0,.5), n.breaks = 6) +
+  scale_y_continuous(limits = c(0,45), labels = comma)
 ```
 
 ```{r}
