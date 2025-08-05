@@ -1040,10 +1040,11 @@ exp_long <- pivot_longer(ff_exp, exp_402:exp_970 , names_to = c("type", "Categor
            ) %>% 
   mutate(Category_name = str_to_title(Category_name))
 
-write_csv(exp_long, paste0("data/FY", current_year, " Files/expenditures_recoded_long_pensionchange_FY", current_year, ".csv"))
+# separate files for this stage is probably not needed? 
 
-write_csv(rev_long, paste0("data/FY", current_year, " Files/revenue_recoded_long_pensionchange_FY", current_year, ".csv"))
+#write_csv(exp_long, paste0("data/FY", current_year, " Files/expenditures_recoded_long_pensionchange_FY", current_year, ".csv"))
 
+#write_csv(rev_long, paste0("data/FY", current_year, " Files/revenue_recoded_long_pensionchange_FY", current_year, ".csv"))
 
 # combine revenue and expenditures into one data frame
 aggregated_totals_long <- rbind(rev_long, exp_long)
@@ -1052,7 +1053,7 @@ aggregated_totals_long <- rbind(rev_long, exp_long)
 aggregated_totals_long %>% mutate(`Dollars (Millions)` = round(Dollars, digits = 0)) %>% select(-Dollars) %>%
   select(Year, Category_name, `Dollars (Millions)`, type, Category)
 
-write_csv(aggregated_totals_long, paste0("data/FY", current_year, " Files/aggregated_totals_pensionchange", current_year, ".csv"))
+#write_csv(aggregated_totals_long, paste0("data/FY", current_year, " Files/aggregated_totals_pensionchange", current_year, ".csv"))
 
 ```
 
@@ -1682,21 +1683,26 @@ first_year = as.numeric(1998)
 n_year_change = as.numeric(current_year-1998)
 
 
+
 revenue_change2 <- rev_long %>%
   filter(Year >= past_year | Year == first_year) %>%
   pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
+  rename(    
+    Dollars_current = Dollars_2025,
+    Dollars_lastyear = Dollars_2024
+    )|>
   mutate(
-    "Current FY ($ billions)" = round(Dollars_2025/1000, digits = 2),
-    "Past FY ($ billions)" = round(Dollars_2024/1000, digits = 2),
+    "Current FY ($ billions)" = round(Dollars_current/1000, digits = 2),
+    "Past FY ($ billions)" = round(Dollars_lastyear/1000, digits = 2),
         "FY 1994 ($ billions)" = round(Dollars_1998/1000, digits = 2),
-    "1-Year Change" = percent((Dollars_2025 -Dollars_2024)/Dollars_2024, accuracy = .01)) |>
+    "1-Year Change" = percent((Dollars_current -Dollars_lastyear)/Dollars_lastyear, accuracy = .01)) |>
   left_join(CAGR_revenue_summary_tot, by = c("Category_name" = "Revenue Category")) %>% 
     arrange(-`Current FY ($ billions)`)%>%
     mutate(`27 Year CAGR` = percent(`27 Year CAGR`/100, accuracy=.01)) %>%
 
   rename(  
           "Revenue Category" = Category_name ) %>%
-  select(-c( Dollars_1998, Dollars_2025, Dollars_2024, `1 Year CAGR`:`10 Year CAGR`))
+  select(-c( Dollars_1998, Dollars_current, Dollars_lastyear, `1 Year CAGR`:`10 Year CAGR`))
 
 
 allother_row <- which(grepl("All Other", revenue_change2$`Revenue Category`))
@@ -1727,16 +1733,20 @@ expenditure_change2 <- exp_long %>%
   ungroup() |>
   filter(Year >= past_year | Year == first_year) %>%
   pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
+    rename(    
+    Dollars_current = Dollars_2025,
+    Dollars_lastyear = Dollars_2024
+    )|>
   mutate(
-    "FY 2025 ($ billions)" = round(Dollars_2025/1000, digits = 2),
-    "FY 2024 ($ billions)" = round(Dollars_2024/1000, digits = 2),
+    "FY 2025 ($ billions)" = round(Dollars_current/1000, digits = 2),
+    "FY 2024 ($ billions)" = round(Dollars_lastyear/1000, digits = 2),
     "FY 1998 ($ billions)" = round(Dollars_1998/1000, digits = 2),
-    "1-Year Change" = percent((Dollars_2025 -Dollars_2024)/Dollars_2024, accuracy = .01)) |>
+    "1-Year Change" = percent((Dollars_current -Dollars_lastyear)/Dollars_lastyear, accuracy = .01)) |>
   left_join(CAGR_expenditures_summary_tot, by = c("Category_name" = "Expenditure Category")) %>% 
   arrange(-`FY 2025 ($ billions)`)%>%
     mutate(`27 Year CAGR` = percent(`27 Year CAGR`/100, accuracy=.01)) %>%
 
-  select(-c( Dollars_1998, Dollars_2025, Dollars_2024, `1 Year CAGR`:`10 Year CAGR`)) %>%
+  select(-c( Dollars_1998, Dollars_current, Dollars_lastyear, `1 Year CAGR`:`10 Year CAGR`)) %>%
 
   rename("Expenditure Category" = Category_name ) # |> filter(!is.na(`Expenditure Category`))
 
@@ -1825,17 +1835,21 @@ revenue_change_majorcats <- rev_long_majorcats %>%
   #select(-c(Category)) %>%
   filter(Year >= past_year |  Year == first_year) %>%
   pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
+    rename(    
+    Dollars_current = Dollars_2025,
+    Dollars_lastyear = Dollars_2024
+    )|>
   mutate(
-    "FY 2025 ($ billions)" = round(Dollars_2025/1000, digits = 2),
-    "FY 2024 ($ billions)" = round(Dollars_2024/1000, digits = 2),
+    "Current FY ($ billions)" = round(Dollars_current/1000, digits = 2),
+    "Previous FY ($ billions)" = round(Dollars_lastyear/1000, digits = 2),
     "FY 1998 ($ billions)" = round(Dollars_1998/1000, digits = 2),
-    "1-Year Change" = percent((Dollars_2025 -Dollars_2024)/Dollars_2024, accuracy = .01),
+    "1-Year Change" = percent((Dollars_current -Dollars_lastyear)/Dollars_lastyear, accuracy = .01),
   )  %>%
   left_join(CAGR_revenue_majorcats_tot, by = c("Category_name" = "Revenue Category")
             ) %>% 
-  arrange(-`FY 2025 ($ billions)`)%>%
+  arrange(-`Current FY ($ billions)`)%>%
   mutate(`27 Year CAGR` = percent(`27 Year CAGR`/100, accuracy=.01)) %>%
-  select(-c(Dollars_1998, Dollars_2025, Dollars_2024, `1 Year CAGR`:`10 Year CAGR`
+  select(-c(Dollars_1998, Dollars_current, Dollars_lastyear, `1 Year CAGR`:`10 Year CAGR`
             )) %>%
   rename("Revenue Category" = Category_name )
 
@@ -1909,16 +1923,20 @@ CAGR_expenditures_majorcats_tot%>%
 expenditure_change_majorcats <- exp_long_majorcats %>%
   filter(Year >= past_year |
            Year == first_year) %>%
-  pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%
-  mutate("FY 2025 ($ Billions)" = round(Dollars_2025/1000, digits = 2),
-         "FY 2024 ($ Billions)" = round(Dollars_2024/1000, digits = 2),
+  pivot_wider(names_from = Year , values_from = Dollars,   names_prefix = "Dollars_") %>%   
+  rename(    
+    Dollars_current = Dollars_2025,
+    Dollars_lastyear = Dollars_2024
+    )|>
+  mutate("Current FY ($ Billions)" = round(Dollars_current/1000, digits = 2),
+         "Previous FY ($ Billions)" = round(Dollars_lastyear/1000, digits = 2),
          "FY 1998 ($ Billions)" = round(Dollars_1998/1000, digits = 2),
-         "1-Year Change" = percent((Dollars_2025 -Dollars_2024)/Dollars_2024, accuracy = .01),
+         "1-Year Change" = percent((Dollars_current -Dollars_lastyear)/Dollars_lastyear, accuracy = .01),
          )  %>%
  left_join(CAGR_expenditures_majorcats_tot, by = c("Category_name" = "Expenditure Category")) %>% 
-  arrange(-`FY 2025 ($ Billions)`)%>%
+  arrange(-`Current FY ($ Billions)`)%>%
   mutate(`27 Year CAGR` = percent(`27 Year CAGR`/100, accuracy=.01)) %>%
-  select(-c(Dollars_1998, Dollars_2025, Dollars_2024, `1 Year CAGR`:`10 Year CAGR`
+  select(-c(Dollars_1998, Dollars_current, Dollars_lastyear, `1 Year CAGR`:`10 Year CAGR`
             )) %>%
   rename(
    # "1-Year Change" = `1 Year CAGR`,
@@ -1949,6 +1967,9 @@ Export summary file with Totals
 #install.packages("openxlsx")
 library(openxlsx)
 
+#aggregated_totals_majorcats = rbind(rev_long, exp_long)
+
+todaysdate = Sys.Date()
 dataset_names <- list(#'Aggregate Revenues' = revenue_wide2, 
                       #'Aggregate Expenditures' = expenditure_wide2, 
 
@@ -1965,10 +1986,14 @@ dataset_names <- list(#'Aggregate Revenues' = revenue_wide2,
                                             
                       'Fiscal Gap' = year_totals,    # Total Revenue, Expenditure, and Fiscal gap per year
                       
-                      'aggregated_totals_long' = aggregated_totals_long # all data in long format. Good for creating pivot tables in Excel
+                      'aggregated_totals_long' = aggregated_totals_long#, # all data in long format. Good for creating pivot tables in Excel
+                      
+                   #   'aggregated_fewercategories' = aggregated_totals_majorcats # combines categories that have small amounts into "All Other" category
                       )
 
-write.xlsx(dataset_names, file = paste0("data/FY", current_year, " Files/summary_file_FY25_PensionChange_2025_07_016.xlsx"))
+# no pension categories included as separate cateogry (except for specific pension repayments that happened in some years.) 
+# pension costs are included with K-12 education, university education, etc
+write.xlsx(dataset_names, file = paste0("data/FY", current_year, " Files/summary_file_FY", current_year,"_pensionsdissolved_", todaysdate, ".xlsx"))
 ```
 
 Saves main items in one excel file named `summary_file.xlsx`. Delete `eval=FALSE` to run on local computer.
