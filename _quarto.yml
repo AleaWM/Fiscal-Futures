@@ -2,60 +2,104 @@ project:
   type: book
   output-dir: docs
 
+profile: 
+  default: personal
+
 book:
-  title: "Methodology for the Fiscal Futures Annual Report"
-  subtitle: "Part of IGPA's Fiscal Futures Project"
-  author: "Alea Wilbur-Mujtaba"
-  date: last-modified
-  search: true
-  repo-url: https://github.com/AleaWM/Fiscal-Futures/
   chapters:
     - index.qmd
     - part: "Reports"
       chapters:
-      - Everything.qmd 
+      # - Everything.qmd
       - Everything_changepensions.qmd
- #    - FiscalGap.qmd    
     - part: "Illinois State Budget Data"
-      chapters: 
+      chapters:
         - OwnSourceRev.qmd
-        - FederalRevenue.qmd
-        - LocalTransfers.qmd
-        - Medicaid.qmd
-        - Debt.qmd
-        - Pensions.qmd
-        - Healthcare.qmd
-        - TaxRefunds.qmd
-        - K12_Education.qmd
-        - FedMoneyReceived.qmd
+        # - FederalRevenue.qmd
+        # - LocalTransfers.qmd
+        # - Medicaid.qmd
+        # - Debt.qmd
+        # - Pensions.qmd
+        # - Healthcare.qmd
+        # - TaxRefunds.qmd
+        # - K12_Education.qmd
+        # - FedMoneyReceived.qmd
     - part: "Methodology"
-      chapters: 
+      chapters:
         - FundsIncluded.qmd
         - code-cleaning.qmd
         - past-mistakes.qmd
 
-  navbar: 
-    # right: 
-    #   - icon: github
-    #     href: https://github.com/AleaWM/Fiscal-Futures.git
-    left:
-      - text: "About"
-        file: index.qmd
-      - text: "Methodology"
-        menu:
-          - FundsIncluded.qmd
-          - code-cleaning.qmd
-          - Everything.qmd
-      - text: "Data"
-        href: https://github.com/AleaWM/Fiscal-Futures/tree/main/data
-#      - text: "Reports"
-#        file: FiscalGap.qmd
- #     - text: "COVID-related Federal Revenue"
- #       file: FedMoneyReceived.qmd
+profiles:
+  personal:
+    org_name: "Alea Wilbur / Fiscal Futures (Personal Edition)"
+    contact_url: "mailto:awilbu2@uic.edu"
+    # Markdown snippets that differ by profile (rendered in index.qmd)
+    author_note: "*Note from **Alea Wilbur-Mujtaba**: This edition reflects my personal working notes and documentation. It may include in-progress analyses and commentary intended for rapid iteration.*"
+    
+    profile_intro: "This **personal** build prioritizes fast iteration and exploratory content. Links to IGPA-managed resources may point back to this repo."
+     
+    book:
+    # Book specific overrides for personal build
+      title: "Methodology for the Fiscal Futures Annual Report"
+      subtitle: "Part of IGPA's Fiscal Futures Project"
+      #author: "Alea Wilbur-Mujtaba"
+      date: last-modified
+      search: true
+      repo-url: https://github.com/AleaWM/Fiscal-Futures/
+      navbar: 
+        left:
+          - text: "About"
+            file: index.qmd
+          - text: "Methodology"
+            menu:
+              - FundsIncluded.qmd
+              - code-cleaning.qmd
+              - Everything_changepensions.qmd
+          - text: "Data"
+            href: https://github.com/AleaWM/Fiscal-Futures/tree/main/data
+      # Profile-specific metadata for the PERSONAL build
+      # Structured authors (shows up in page header + HTML metadata)
+      author:
+        - name: "Alea Wilbur-Mujtaba"
+          email: "awilbu2@uic.edu"
+          roles: [author]
+          affiliations: [igpa]
+      
+    # Define affiliations once and reference by id in authors
+    affiliations:
+      - id: igpa
+        name: "Institute of Government & Public Affairs (IGPA)"
+        url: "https://igpa.uillinois.edu"
+      
 
+  igpa:
+    affiliations:
+    - id: igpa
+      name: "Institute of Government & Public Affairs (IGPA)"
+      url: "https://igpa.uillinois.edu"
+  
+    org_name: "IGPA – Fiscal Futures (Institute Edition)"
+    contact_url: "mailto:bsuperfi@uic.edu"
+    contact_name: "Benjamin Superfine, Senior Director, IGPA" 
+  
+    author_note: "*Prepared by the **IGPA Research Team**. This edition is curated for public dissemination and may omit draft or exploratory content.*"
+  
+    profile_intro: "This **institute** build reflects the officially reviewed version suitable for publication. For collaboration or issues, please contact the team at the address above."
+  
 
-        
-
+    book:
+      title: "Fiscal Futures (IGPA)"
+      search: true
+      repo-url: https://github.com/igpa-uillinois/Fiscal-Futures/
+      author:
+        - name: "IGPA Research Team"
+          roles: [author]
+          affiliations: [igpa]
+        - name: "Alea Wilbur-Mujtaba"
+          roles: [contributor]
+          affiliations: [igpa]
+          
 format:
   html:
     theme: zephyr
@@ -67,4 +111,4 @@ format:
     fig-cap-location: top
     tbl-cap-location: top
     df-print: paged
- 
+
