@@ -1,4 +1,4 @@
-name: Publish (Quarto Book)
+name: Publish to IGPA
 
 on:
   workflow_dispatch:
@@ -27,6 +27,6 @@ jobs:
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
-          path: _book         # use _site for website projects
+          path: docs-institute         # use _site for website projects
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
