@@ -701,7 +701,6 @@ Year,type,Category,Dollars,Category_name
 1998,exp,949,94.33091046,Other Boards & Commissions
 1998,exp,959,5604.80360031,K-12 Education
 1998,exp,960,2283.40741281,University Education
-1998,exp,901,NA,State Pension Contribution
 1998,exp,903,484.53383483,Debt Service
 1998,exp,970,3476.47340622,Local Govt Transfers
 1999,exp,402,236.28146299000002,Aging
@@ -731,7 +730,6 @@ Year,type,Category,Dollars,Category_name
 1999,exp,949,107.20270191,Other Boards & Commissions
 1999,exp,959,6229.8089062300005,K-12 Education
 1999,exp,960,2404.07500521,University Education
-1999,exp,901,NA,State Pension Contribution
 1999,exp,903,507.52762319,Debt Service
 1999,exp,970,4031.5164429099996,Local Govt Transfers
 2000,exp,402,261.04560476,Aging
@@ -761,7 +759,6 @@ Year,type,Category,Dollars,Category_name
 2000,exp,949,132.08594242,Other Boards & Commissions
 2000,exp,959,6733.0634085,K-12 Education
 2000,exp,960,2506.92996585,University Education
-2000,exp,901,NA,State Pension Contribution
 2000,exp,903,543.84052911,Debt Service
 2000,exp,970,4366.14101383,Local Govt Transfers
 2001,exp,402,284.31749805000004,Aging
@@ -791,7 +788,6 @@ Year,type,Category,Dollars,Category_name
 2001,exp,949,140.90948965,Other Boards & Commissions
 2001,exp,959,7183.31668943,K-12 Education
 2001,exp,960,2659.9799161399997,University Education
-2001,exp,901,NA,State Pension Contribution
 2001,exp,903,590.04423966,Debt Service
 2001,exp,970,4471.93355919,Local Govt Transfers
 2002,exp,402,297.86988292,Aging
@@ -821,7 +817,6 @@ Year,type,Category,Dollars,Category_name
 2002,exp,949,145.18670709,Other Boards & Commissions
 2002,exp,959,7513.775633179999,K-12 Education
 2002,exp,960,2915.03872959,University Education
-2002,exp,901,NA,State Pension Contribution
 2002,exp,903,640.25704888,Debt Service
 2002,exp,970,4300.10066935,Local Govt Transfers
 2003,exp,402,304.43458239999995,Aging
@@ -851,7 +846,6 @@ Year,type,Category,Dollars,Category_name
 2003,exp,949,93.61956792000001,Other Boards & Commissions
 2003,exp,959,7689.47472516,K-12 Education
 2003,exp,960,2843.28245627,University Education
-2003,exp,901,NA,State Pension Contribution
 2003,exp,903,731.2021835500001,Debt Service
 2003,exp,970,4119.48820917,Local Govt Transfers
 2004,exp,402,314.30140901,Aging
@@ -881,7 +875,6 @@ Year,type,Category,Dollars,Category_name
 2004,exp,949,87.32587486,Other Boards & Commissions
 2004,exp,959,12217.844895729999,K-12 Education
 2004,exp,960,4055.7395644000003,University Education
-2004,exp,901,NA,State Pension Contribution
 2004,exp,903,1288.58426201,Debt Service
 2004,exp,970,4256.60560819,Local Govt Transfers
 2005,exp,402,402.97646402,Aging
@@ -911,7 +904,6 @@ Year,type,Category,Dollars,Category_name
 2005,exp,949,95.86818929,Other Boards & Commissions
 2005,exp,959,8547.14007623,K-12 Education
 2005,exp,960,2630.7391597600003,University Education
-2005,exp,901,NA,State Pension Contribution
 2005,exp,903,1351.8173164500001,Debt Service
 2005,exp,970,4674.178671850001,Local Govt Transfers
 2006,exp,402,420.74231824000003,Aging
@@ -941,7 +933,6 @@ Year,type,Category,Dollars,Category_name
 2006,exp,949,160.93020984999998,Other Boards & Commissions
 2006,exp,959,8487.6210515,K-12 Education
 2006,exp,960,2552.56106196,University Education
-2006,exp,901,NA,State Pension Contribution
 2006,exp,903,1415.45327269,Debt Service
 2006,exp,970,5203.7770244,Local Govt Transfers
 2007,exp,402,488.66086377,Aging
@@ -971,7 +962,6 @@ Year,type,Category,Dollars,Category_name
 2007,exp,949,148.33261333000002,Other Boards & Commissions
 2007,exp,959,9084.7151679,K-12 Education
 2007,exp,960,2742.41237052,University Education
-2007,exp,901,NA,State Pension Contribution
 2007,exp,903,1417.2083298799998,Debt Service
 2007,exp,970,5578.12285448,Local Govt Transfers
 2008,exp,402,527.2105026099999,Aging
@@ -1001,7 +991,6 @@ Year,type,Category,Dollars,Category_name
 2008,exp,949,123.19313799,Other Boards & Commissions
 2008,exp,959,9997.02207227,K-12 Education
 2008,exp,960,2866.66951471,University Education
-2008,exp,901,NA,State Pension Contribution
 2008,exp,903,1414.2337261,Debt Service
 2008,exp,970,5873.26115267,Local Govt Transfers
 2009,exp,402,606.6570098999999,Aging
@@ -1031,7 +1020,6 @@ Year,type,Category,Dollars,Category_name
 2009,exp,949,182.78335033000002,Other Boards & Commissions
 2009,exp,959,10903.4815421,K-12 Education
 2009,exp,960,2964.3750348000003,University Education
-2009,exp,901,NA,State Pension Contribution
 2009,exp,903,1421.07800529,Debt Service
 2009,exp,970,5520.558796109999,Local Govt Transfers
 2010,exp,402,728.08372988,Aging
@@ -1050,18 +1038,17 @@ Year,type,Category,Dollars,Category_name
 2010,exp,532,533.79507125,Environmental Protect Agency
 2010,exp,557,1292.2441540799998,Il State Toll Highway Auth
 2010,exp,904,1792.2102457199999,State Employee Healthcare
-2010,exp,910,84.19877295,Legislative
-2010,exp,920,387.95012133999995,Judicial
+2010,exp,910,94.59504692,Legislative
+2010,exp,920,466.20993094,Judicial
 2010,exp,930,634.17690075,Elected Officers
 2010,exp,941,782.4292196800001,Public Safety
 2010,exp,944,254.96464039,Bus & Profession Regulation
 2010,exp,945,14155.9385009,Medicaid
 2010,exp,946,215.50493174000002,Capital Improvement
-2010,exp,948,117.03277639999999,Other Departments
+2010,exp,948,837.7780649399999,Other Departments
 2010,exp,949,351.93751530000003,Other Boards & Commissions
-2010,exp,959,10722.93942822,K-12 Education
+2010,exp,959,11943.80681675,K-12 Education
 2010,exp,960,2758.1001340099997,University Education
-2010,exp,901,809.40137211,State Pension Contribution
 2010,exp,903,1387.92024044,Debt Service
 2010,exp,970,5194.19321064,Local Govt Transfers
 2011,exp,402,715.47782211,Aging
@@ -1080,18 +1067,17 @@ Year,type,Category,Dollars,Category_name
 2011,exp,532,770.6849133100001,Environmental Protect Agency
 2011,exp,557,739.80110963,Il State Toll Highway Auth
 2011,exp,904,1884.42773143,State Employee Healthcare
-2011,exp,910,85.76148903,Legislative
-2011,exp,920,380.23731734999996,Judicial
+2011,exp,910,94.79883328999999,Legislative
+2011,exp,920,427.62426833,Judicial
 2011,exp,930,648.62827938,Elected Officers
 2011,exp,941,804.9866428500001,Public Safety
 2011,exp,944,239.78317912,Bus & Profession Regulation
 2011,exp,945,14161.02022563,Medicaid
 2011,exp,946,367.03495259,Capital Improvement
-2011,exp,948,164.67187275,Other Departments
+2011,exp,948,853.79407415,Other Departments
 2011,exp,949,377.93332553000005,Other Boards & Commissions
-2011,exp,959,9777.42483035,K-12 Education
+2011,exp,959,11778.34331935,K-12 Education
 2011,exp,960,2557.74994237,University Education
-2011,exp,901,745.54649664,State Pension Contribution
 2011,exp,903,1640.8520024000002,Debt Service
 2011,exp,970,5529.052197790001,Local Govt Transfers
 2012,exp,402,795.9358120899999,Aging
@@ -1121,7 +1107,6 @@ Year,type,Category,Dollars,Category_name
 2012,exp,949,330.19927584,Other Boards & Commissions
 2012,exp,959,11371.762608719999,K-12 Education
 2012,exp,960,3475.3413429,University Education
-2012,exp,901,NA,State Pension Contribution
 2012,exp,903,1784.8645659000001,Debt Service
 2012,exp,970,5568.990849299999,Local Govt Transfers
 2013,exp,402,1121.4135922799999,Aging
@@ -1151,7 +1136,6 @@ Year,type,Category,Dollars,Category_name
 2013,exp,949,281.5074729,Other Boards & Commissions
 2013,exp,959,11439.90268783,K-12 Education
 2013,exp,960,3714.61978735,University Education
-2013,exp,901,NA,State Pension Contribution
 2013,exp,903,1802.85670795,Debt Service
 2013,exp,970,5828.579201660001,Local Govt Transfers
 2014,exp,402,993.99703003,Aging
@@ -1181,7 +1165,6 @@ Year,type,Category,Dollars,Category_name
 2014,exp,949,268.94709935000003,Other Boards & Commissions
 2014,exp,959,12436.095890139999,K-12 Education
 2014,exp,960,3891.68846847,University Education
-2014,exp,901,NA,State Pension Contribution
 2014,exp,903,1920.01656271,Debt Service
 2014,exp,970,6030.58129638,Local Govt Transfers
 2015,exp,402,1032.28520912,Aging
@@ -1211,7 +1194,6 @@ Year,type,Category,Dollars,Category_name
 2015,exp,949,248.69468878,Other Boards & Commissions
 2015,exp,959,12349.90314908,K-12 Education
 2015,exp,960,3832.42751862,University Education
-2015,exp,901,NA,State Pension Contribution
 2015,exp,903,2014.55568518,Debt Service
 2015,exp,970,6283.47793569,Local Govt Transfers
 2016,exp,402,710.71382203,Aging
@@ -1241,7 +1223,6 @@ Year,type,Category,Dollars,Category_name
 2016,exp,949,213.04733271999999,Other Boards & Commissions
 2016,exp,959,13092.4521344,K-12 Education
 2016,exp,960,2472.24072372,University Education
-2016,exp,901,NA,State Pension Contribution
 2016,exp,903,1906.0034094300001,Debt Service
 2016,exp,970,6231.73605521,Local Govt Transfers
 2017,exp,402,1256.49877458,Aging
@@ -1271,7 +1252,6 @@ Year,type,Category,Dollars,Category_name
 2017,exp,949,217.98582346999999,Other Boards & Commissions
 2017,exp,959,13760.765585620002,K-12 Education
 2017,exp,960,4066.77929331,University Education
-2017,exp,901,NA,State Pension Contribution
 2017,exp,903,1851.63592052,Debt Service
 2017,exp,970,6459.7416522799995,Local Govt Transfers
 2018,exp,402,954.13448546,Aging
@@ -1301,7 +1281,6 @@ Year,type,Category,Dollars,Category_name
 2018,exp,949,218.36028625999998,Other Boards & Commissions
 2018,exp,959,14567.264292360001,K-12 Education
 2018,exp,960,3665.40555593,University Education
-2018,exp,901,NA,State Pension Contribution
 2018,exp,903,1970.69456089,Debt Service
 2018,exp,970,6180.91691266,Local Govt Transfers
 2019,exp,402,987.88190369,Aging
@@ -1331,7 +1310,6 @@ Year,type,Category,Dollars,Category_name
 2019,exp,949,229.01731015000001,Other Boards & Commissions
 2019,exp,959,15345.92899951,K-12 Education
 2019,exp,960,3714.3899996799996,University Education
-2019,exp,901,NA,State Pension Contribution
 2019,exp,903,2052.34078095,Debt Service
 2019,exp,970,6520.18424595,Local Govt Transfers
 2020,exp,402,1065.11499319,Aging
@@ -1361,7 +1339,6 @@ Year,type,Category,Dollars,Category_name
 2020,exp,949,210.73415912000002,Other Boards & Commissions
 2020,exp,959,16639.79886252,K-12 Education
 2020,exp,960,4057.00036709,University Education
-2020,exp,901,NA,State Pension Contribution
 2020,exp,903,1947.22765114,Debt Service
 2020,exp,970,6455.3859012,Local Govt Transfers
 2021,exp,402,1143.76560432,Aging
@@ -1391,7 +1368,6 @@ Year,type,Category,Dollars,Category_name
 2021,exp,949,247.90095024000001,Other Boards & Commissions
 2021,exp,959,17744.57896652,K-12 Education
 2021,exp,960,4202.44614998,University Education
-2021,exp,901,NA,State Pension Contribution
 2021,exp,903,2026.26050134,Debt Service
 2021,exp,970,7178.371065359999,Local Govt Transfers
 2022,exp,402,1174.49939729,Aging
@@ -1412,7 +1388,7 @@ Year,type,Category,Dollars,Category_name
 2022,exp,904,3005.2094902100002,State Employee Healthcare
 2022,exp,910,155.57248163,Legislative
 2022,exp,920,658.88734327,Judicial
-2022,exp,930,986.66932074,Elected Officers
+2022,exp,930,1286.66932074,Elected Officers
 2022,exp,941,1721.34628033,Public Safety
 2022,exp,944,218.97281990000002,Bus & Profession Regulation
 2022,exp,945,28651.80652707,Medicaid
@@ -1421,7 +1397,6 @@ Year,type,Category,Dollars,Category_name
 2022,exp,949,245.36771126,Other Boards & Commissions
 2022,exp,959,19496.6996582,K-12 Education
 2022,exp,960,4367.45779532,University Education
-2022,exp,901,300,State Pension Contribution
 2022,exp,903,2009.4535459299998,Debt Service
 2022,exp,970,10347.07955976,Local Govt Transfers
 2023,exp,402,1380.07838216,Aging
@@ -1442,7 +1417,7 @@ Year,type,Category,Dollars,Category_name
 2023,exp,904,3002.3629412,State Employee Healthcare
 2023,exp,910,239.81482522,Legislative
 2023,exp,920,753.9699354500001,Judicial
-2023,exp,930,1065.29471561,Elected Officers
+2023,exp,930,1465.29471561,Elected Officers
 2023,exp,941,1741.6551063,Public Safety
 2023,exp,944,231.83463486000002,Bus & Profession Regulation
 2023,exp,945,32406.41271788,Medicaid
@@ -1451,7 +1426,6 @@ Year,type,Category,Dollars,Category_name
 2023,exp,949,327.65707205,Other Boards & Commissions
 2023,exp,959,21054.235006490002,K-12 Education
 2023,exp,960,4668.43918244,University Education
-2023,exp,901,400,State Pension Contribution
 2023,exp,903,1951.4366831900002,Debt Service
 2023,exp,970,10901.30023769,Local Govt Transfers
 2024,exp,402,1542.5475745899998,Aging
@@ -1481,6 +1455,5 @@ Year,type,Category,Dollars,Category_name
 2024,exp,949,349.77865227999996,Other Boards & Commissions
 2024,exp,959,21706.66184103,K-12 Education
 2024,exp,960,5015.67565965,University Education
-2024,exp,901,0,State Pension Contribution
 2024,exp,903,2288.36071001,Debt Service
 2024,exp,970,9655.795549550001,Local Govt Transfers
