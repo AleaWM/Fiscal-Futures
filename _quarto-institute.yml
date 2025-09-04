@@ -1,0 +1,70 @@
+project:
+  type: book
+  output-dir: docs-institute
+
+
+book:
+  title: "Fiscal Futures Project (IGPA)"
+  subtitle: "Methodology and Report Replication"
+  search: true
+  repo-url: https://github.com/igpa-uillinois/Fiscal-Futures/
+  author:
+    - name: "IGPA Research Team"
+      roles: [author]
+      affiliations: [igpa]
+    - name: "Alea Wilbur-Mujtaba"
+      roles: [contributor]
+      affiliations: [igpa]
+  
+  chapters:
+    - index.qmd
+    - part: "Reports"
+      chapters:
+  #      - Everything.qmd
+        - Everything_changepensions.qmd
+    - part: "Illinois State Budget Data"
+      chapters:
+        - OwnSourceRev.qmd
+        - FederalRevenue.qmd
+        - LocalTransfers.qmd
+        - Medicaid.qmd
+        - Debt.qmd
+        - Pensions.qmd
+        - Healthcare.qmd
+        - TaxRefunds.qmd
+        - K12_Education.qmd
+        - FedMoneyReceived.qmd
+    - part: "Methodology"
+      chapters:
+        - FundsIncluded.qmd
+        - code-cleaning.qmd
+        - past-mistakes.qmd
+
+
+affiliations:
+- id: igpa
+  name: "Institute of Government & Public Affairs (IGPA)"
+  url: "https://igpa.uillinois.edu"
+
+org_name: "IGPA – Fiscal Futures (Institute Edition)"
+contact_url: "mailto:bsuperfi@uic.edu"
+contact_name: "Benjamin Superfine, Senior Director, IGPA" 
+
+author_note: "*Prepared by the **IGPA Research Team**. This edition is curated for public dissemination and may omit draft or exploratory content.*"
+
+profile_intro: "This **institute** build reflects the officially reviewed version suitable for publication. For collaboration or issues, please contact the team at the address above."
+
+
+          
+format:
+  html:
+    theme: zephyr
+    toc: true
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+    code-copy: true
+    fig-cap-location: top
+    tbl-cap-location: top
+    df-print: paged
+
