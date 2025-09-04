@@ -1,0 +1,32 @@
+name: Publish (Quarto Book)
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: "Quarto profile"
+        type: choice
+        required: true
+        options: [personal, igpa]
+        default: personal
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: quarto-dev/quarto-actions/setup@v2
+      - uses: r-lib/actions/setup-r@v2
+        with: { use-public-rspm: true }
+
+      - name: Render
+        run: |
+          quarto render --profile "${{ inputs.profile }}"
+
+      - name: Publish to gh-pages
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+          path: _book         # use _site for website projects
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
