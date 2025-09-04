@@ -1,0 +1,12 @@
+---
+title: "FY 2025 Revenue Report"
+---
+
+{{< include "../Fiscal Futures FY2025/revenue_report_fy25.qmd" >}}
+
+
+```{r}
+#library(quarto)
+#quarto_render("../Fiscal Futures FY2025/revenue_report_fy25.qmd")
+```
+
