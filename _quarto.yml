@@ -12,12 +12,13 @@ book:
       roles: [author]
       affiliations: [igpa]
     - name: "Alea Wilbur-Mujtaba"
-      roles: [author][contributor][maintainer]
+      roles: [contributor]
       affiliations: [igpa]
   chapters:
     - index.qmd
     - part: "Reports"
       chapters:
+    #    - fy25_revenue_report.qmd
         - Everything.qmd
         - Everything_changepensions.qmd
     - part: "Illinois State Budget Data"
@@ -41,8 +42,8 @@ book:
 # Define affiliations once and reference by id in authors
 affiliations:
   - id: igpa
-        name: "Institute of Government & Public Affairs (IGPA)"
-        url: "https://igpa.uillinois.edu"
+    name: "Institute of Government & Public Affairs (IGPA)"
+    url: "https://igpa.uillinois.edu"
       
           
 format:
