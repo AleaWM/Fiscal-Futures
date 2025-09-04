@@ -3,22 +3,14 @@ project:
   output-dir: docs
 
 
-
 book:
   search: true
   repo-url: https://github.com/igpa-uillinois/Fiscal-Futures/
-  author:
-    - name: "IGPA Research Team"
-      roles: [author]
-      affiliations: [igpa]
-    - name: "Alea Wilbur-Mujtaba"
-      roles: [contributor]
-      affiliations: [igpa]
   chapters:
     - index.qmd
     - part: "Reports"
       chapters:
-    #    - fy25_revenue_report.qmd
+        - fy25_revenue_report.qmd
         - Everything.qmd
         - Everything_changepensions.qmd
     - part: "Illinois State Budget Data"
@@ -38,18 +30,38 @@ book:
         - FundsIncluded.qmd
         - code-cleaning.qmd
         - past-mistakes.qmd
-        
-# Define affiliations once and reference by id in authors
-affiliations:
-  - id: igpa
-    name: "Institute of Government & Public Affairs (IGPA)"
-    url: "https://igpa.uillinois.edu"
+ 
+ 
+  navbar: 
+    left:
+      - text: "About"
+        file: index.qmd
+      - text: "Methodology"
+        menu:
+          - FundsIncluded.qmd
+          - code-cleaning.qmd
+          - Everything.qmd
+      - text: "Data"
+        href: https://github.com/igpa-uillinois/Fiscal-Futures/tree/main/data
+      - text: "Recent Reports"
+        file: fy25_revenue_report.qmd
+      - text: "Additional Topics"
+        menu:
+          - OwnSourceRev.qmd
+          - FederalRevenue.qmd
+          - LocalTransfers.qmd
+          - Medicaid.qmd
+          - Debt.qmd
+          - Pensions.qmd
+          - Healthcare.qmd
+          - TaxRefunds.qmd
+          - K12_Education.qmd
+          - FedMoneyReceived.qmd
       
-          
 format:
   html:
     theme: zephyr
-    toc: true
+    #toc: true
     code-fold: true
     code-tools: true
     code-overflow: wrap
@@ -57,4 +69,5 @@ format:
     fig-cap-location: top
     tbl-cap-location: top
     df-print: paged
+
 
