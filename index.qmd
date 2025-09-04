@@ -1,5 +1,10 @@
 # Background Information {#sec-background-info .unnumbered}
 
+{{< var author_note >}}
+
+{{< var profile_intro >}}
+
+
 
 While the main purpose of this site is documenting methodology used in the Fiscal Futures Annual Report, it **also contains useful information on Illinois budget variables used by the Illinois Office of the Comptroller (IOC) that may be valuable to other researchers**. Frequently discussed topics (e.g. Pensions, Debt, Federal Revenue Sources, Medicaid, etc.) each have their own section on this site dedicated to looking at the many relevant variables for that topic, even if the budget variables are not directly included while calculating the Fiscal Gap for the Fiscal Futures Annual Report.
 
@@ -36,10 +41,8 @@ The authors and IGPA believe that these novel datasets will be valuable to other
   
 -  `allexp_fy23_recoded.csv` and `allrev_fy23_recoded` are probably the best for any researchers trying to use this data in their own projects.
 
-<!--- Recreate for FY24 --->
-
-    -   Cleanest version of data before aggregating totals or dropping observations not included in the Fiscal Futures fiscal gap calculation. All years in one file. Funds and agencies should have numbers and consistent labels. Includes the "Group" variable used in the FF Annual Report used for calculating expenditures by function. *To do: Add group names to go with group number code. Done after pivoting and merging in normal Fiscal Gap calculation code.*
-    -   Created in February 2023. Still checking accuracy. AWM made this version of the data specifically for other researchers. The normal work flow for the Annual Report involves dropping observations gradually while cleaning and coding the data. Significant changes to the code used for the Annual Report were made to create a new dataset that attempts to keep all Illinois budget observations that have been consistently coded over time with the additional descriptive variables used by Fiscal Futures researchers. Again, I cannot guarantee the accuracy of this file but the original data and code for cleaning the data is available to get you started.
+    - Cleanest version of data before aggregating totals or dropping observations not included in the Fiscal Futures fiscal gap calculation. All years in one file. Funds and agencies should have numbers and consistent labels. Includes the "Group" variable used in the FF Annual Report used for calculating expenditures by function. *To do: Add group names to go with group number code. Done after pivoting and merging in normal Fiscal Gap calculation code.*   
+    - Still checking accuracy. AWM made this version of the data specifically for other researchers. The normal work flow for the Annual Report involves dropping observations gradually while cleaning and coding the data. Significant changes to the code used for the Annual Report were made to create a new dataset that attempts to keep all Illinois budget observations that have been consistently coded over time with the additional descriptive variables used by Fiscal Futures researchers. Again, I cannot guarantee the accuracy of this file but the original data and code for cleaning the data is available to get you started.    
 
 `exp_temp` and `rev_temp`
 
@@ -48,3 +51,6 @@ The authors and IGPA believe that these novel datasets will be valuable to other
 
 
 *The Annual Report is part of Fiscal Futures project associated with the University of Illinois System Institute of Government and Policy Affairs (IGPA). Creating the R code, Github folder, and website for methodology was done by Alea Wilbur-Mujtaba. Any errors with code or findings are the fault of the author, not the research institute. Data is originally from annual FOIA requests to the Illinois Office of the Comptroller.*
+
+#> Questions? {{< var contact_url >}} — {{< var org_name >}}.
+
